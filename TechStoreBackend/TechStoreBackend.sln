@@ -7,21 +7,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{397C7331-9DE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{913B9498-745B-45B3-AFDB-46CC988CC648}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStore.Domain", "src\TechStore.Domain\TechStore.Domain.csproj", "{00B89CD3-C11E-40E1-BB24-2110DB6AAF56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechStore.Domain", "src\TechStore.Domain\TechStore.Domain.csproj", "{00B89CD3-C11E-40E1-BB24-2110DB6AAF56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStore.Application", "src\TechStore.Application\TechStore.Application.csproj", "{E65D7479-5655-4C02-8FAC-67C0B1324EF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechStore.Application", "src\TechStore.Application\TechStore.Application.csproj", "{E65D7479-5655-4C02-8FAC-67C0B1324EF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStore.Infrastructure", "src\TechStore.Infrastructure\TechStore.Infrastructure.csproj", "{D4FB0A15-589F-4EEE-9B33-A4D506E2F5B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechStore.Infrastructure", "src\TechStore.Infrastructure\TechStore.Infrastructure.csproj", "{D4FB0A15-589F-4EEE-9B33-A4D506E2F5B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStore.API", "src\TechStore.API\TechStore.API.csproj", "{8CE26B27-F523-45D1-BBC9-E65D42CDF1C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechStore.API", "src\TechStore.API\TechStore.API.csproj", "{8CE26B27-F523-45D1-BBC9-E65D42CDF1C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStore.Domain.Tests", "tests\TechStore.Domain.Tests\TechStore.Domain.Tests.csproj", "{B21F2BA7-510C-4B4B-A1DC-F4546E58DCB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechStore.Domain.Tests", "tests\TechStore.Domain.Tests\TechStore.Domain.Tests.csproj", "{B21F2BA7-510C-4B4B-A1DC-F4546E58DCB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStore.Application.Tests", "tests\TechStore.Application.Tests\TechStore.Application.Tests.csproj", "{FC9D2613-DA6F-4ACC-89F3-C37B3AAF8CA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechStore.Application.Tests", "tests\TechStore.Application.Tests\TechStore.Application.Tests.csproj", "{FC9D2613-DA6F-4ACC-89F3-C37B3AAF8CA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStore.Infrastructure.Tests", "tests\TechStore.Infrastructure.Tests\TechStore.Infrastructure.Tests.csproj", "{1FBBF7E1-16D7-4CBD-9F32-A3BE4F784A89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechStore.Infrastructure.Tests", "tests\TechStore.Infrastructure.Tests\TechStore.Infrastructure.Tests.csproj", "{1FBBF7E1-16D7-4CBD-9F32-A3BE4F784A89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStore.API.Tests", "tests\TechStore.API.Tests\TechStore.API.Tests.csproj", "{D74DC02A-B444-400A-995F-0A53AE760A03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechStore.API.Tests", "tests\TechStore.API.Tests\TechStore.API.Tests.csproj", "{D74DC02A-B444-400A-995F-0A53AE760A03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
