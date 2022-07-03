@@ -22,14 +22,14 @@ namespace TechStore.Application.Services
         {
             var brand = _mapper.Map<Brand>(brandModel);
 
-            _repository.Brand.CreateBrand(brand);
+            _repository.Brand.Create(brand);
             await _repository.SaveAsync();
         }
 
         public async Task UpdateBrand(BrandUpdateModel brandModel)
         {
             var brand = _mapper.Map<Brand>(brandModel);
-            _repository.Brand.UpdateBrand(brand);
+            _repository.Brand.Update(brand);
 
             await _repository.SaveAsync();
         }
@@ -38,7 +38,7 @@ namespace TechStore.Application.Services
         {
             var brand = await _repository.Brand.GetBrandByIdAsync(brandId);
 
-            _repository.Brand.DeleteBrand(brand);
+            _repository.Brand.Delete(brand);
             await _repository.SaveAsync();
         }
 

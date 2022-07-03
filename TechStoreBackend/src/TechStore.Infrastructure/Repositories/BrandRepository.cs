@@ -11,21 +11,6 @@ namespace TechStore.Infrastructure.Repositories
     {
         public BrandRepository(TechStoreContext techStoreContext) : base(techStoreContext) { }
 
-        public void CreateBrand(Brand brand)
-        {
-            Create(brand);
-        }
-
-        public void UpdateBrand(Brand brand)
-        {
-            Update(brand);
-        }
-
-        public void DeleteBrand(Brand brand)
-        {
-            Delete(brand);
-        }
-
         public async Task<Brand> GetBrandByIdAsync(int brandId)
         {
             return await FindByCondition(brand => brand.Id.Equals(brandId)).FirstOrDefaultAsync();
