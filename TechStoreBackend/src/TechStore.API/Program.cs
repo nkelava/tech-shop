@@ -7,12 +7,17 @@ using TechStore.Infrastructure.Data;
 using TechStore.Infrastructure.Repositories;
 using TechStore.Infrastructure.Repositories.Base;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 
+// Add project services
 ConfigureServices(builder.Services);
+
+// AutoMapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddDbContext<TechStoreContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -58,6 +63,7 @@ void ConfigureApplicationLayer(IServiceCollection services)
 void ConfigureInfrastructureLayer(IServiceCollection services)
 {
     services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+    services.AddScoped(typeof(IRepositoryWrapper), typeof(RepositoryWrapper));
     services.AddScoped<IBrandRepository, BrandRepository>();
 }
 

@@ -1,10 +1,15 @@
-﻿using TechStore.Domain.Entities.Base;
+﻿using System.Linq.Expressions;
 
 
 namespace TechStore.Application.Interfaces.Repositories.Base
 {
-    public interface IRepository<T> where T : Entity
+    public interface IRepository<T> where T : class
     {
-        Task<IReadOnlyList<T>> GetAllAsync();
+        void Create(T entity);
+        void Update(T entity);
+        void Delete(T entity);
+
+        IQueryable<T> FindAll();
+        IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression);
     }
 }

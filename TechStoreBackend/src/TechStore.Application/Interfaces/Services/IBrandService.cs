@@ -1,15 +1,17 @@
-﻿using TechStore.Domain.Entities.ProductAggregate;
+﻿using TechStore.Application.Models.Brand;
+using TechStore.Domain.Entities.ProductAggregate;
 
 
 namespace TechStore.Application.Interfaces.Services
 {
     public interface IBrandService
     {
-        Task<IEnumerable<Brand>> GetAllBrands();
+        Task CreateBrand(BrandCreateModel brand);
+        Task UpdateBrand(BrandUpdateModel brand);
+        Task DeleteBrand(int brandId);
 
-        //Task<BrandDTO> Create(BrandDTO brand);
-        //Task<BrandDTO> Delete(int brandId;
-        //Task<BrandDTO> Get(int brandId);
-        //Task<IList<BrandDTO>> GetBrands();
+        Task<Brand> GetBrandByIdAsync(int brandId);
+
+        Task<IEnumerable<Brand>> GetAllBrandsAsync();
     }
 }

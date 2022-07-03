@@ -40,7 +40,6 @@ namespace TechStore.Domain.Entities.ProductAggregate
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         // n - 1
-        public int BrandId { get; set; }
         public Brand Brand { get; set; }
 
         public int SubcategoryId { get; set; }

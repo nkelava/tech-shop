@@ -448,7 +448,7 @@ namespace TechStore.Infrastructure.Migrations
             modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.Product", b =>
                 {
                     b.HasOne("TechStore.Domain.Entities.ProductAggregate.Brand", "Brand")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -549,11 +549,6 @@ namespace TechStore.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("TechStore.Domain.Entities.Order.Order", b =>
-                {
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.Brand", b =>
                 {
                     b.Navigation("Products");
                 });
