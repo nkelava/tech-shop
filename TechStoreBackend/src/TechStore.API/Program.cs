@@ -58,6 +58,8 @@ void ConfigureServices(IServiceCollection services)
 void ConfigureApplicationLayer(IServiceCollection services)
 {
     services.AddScoped<IBrandService, BrandService>();
+    services.AddScoped<ISubcategoryService, SubcategoryService>();
+    services.AddScoped<ICategoryService, CategoryService>();
 }
 
 void ConfigureInfrastructureLayer(IServiceCollection services)
@@ -65,6 +67,8 @@ void ConfigureInfrastructureLayer(IServiceCollection services)
     services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
     services.AddScoped(typeof(IRepositoryWrapper), typeof(RepositoryWrapper));
     services.AddScoped<IBrandRepository, BrandRepository>();
+    services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
+    services.AddScoped<ICategoryRepository, CategoryRepository>();
 }
 
 void ConfigureWebLayer(IServiceCollection services)

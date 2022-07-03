@@ -1,4 +1,5 @@
-﻿using TechStore.Domain.Entities.Base;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using TechStore.Domain.Entities.Base;
 using TechStore.Domain.Entities.ProductAggregate;
 
 
@@ -11,12 +12,9 @@ namespace TechStore.Domain.Entities.SubcategoryAggregate
 
 
         // n - 1
+        [ForeignKey("Category")]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-
-
-        // 1 - n
-        public IList<Product> Products { get; set; }
 
 
         // n - n 

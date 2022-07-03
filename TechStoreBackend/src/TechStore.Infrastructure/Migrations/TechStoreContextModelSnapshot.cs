@@ -454,7 +454,7 @@ namespace TechStore.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("TechStore.Domain.Entities.SubcategoryAggregate.Subcategory", "Subcategory")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("SubcategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -580,8 +580,6 @@ namespace TechStore.Infrastructure.Migrations
 
             modelBuilder.Entity("TechStore.Domain.Entities.SubcategoryAggregate.Subcategory", b =>
                 {
-                    b.Navigation("Products");
-
                     b.Navigation("Properties");
                 });
 

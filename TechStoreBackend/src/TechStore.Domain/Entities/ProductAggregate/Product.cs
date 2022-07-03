@@ -41,8 +41,6 @@ namespace TechStore.Domain.Entities.ProductAggregate
 
         // n - 1
         public Brand Brand { get; set; }
-
-        public int SubcategoryId { get; set; }
         public Subcategory Subcategory { get; set; }
 
         //// 1 - n

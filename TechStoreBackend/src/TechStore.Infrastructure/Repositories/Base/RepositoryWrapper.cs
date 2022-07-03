@@ -9,6 +9,8 @@ namespace TechStore.Infrastructure.Repositories.Base
     {
         private TechStoreContext _repositoryContext;
         private IBrandRepository _brand;
+        private ISubcategoryRepository _subcategory;
+        private ICategoryRepository _category;
 
         public IBrandRepository Brand
         {
@@ -20,6 +22,32 @@ namespace TechStore.Infrastructure.Repositories.Base
                 }
 
                 return _brand;
+            }
+        }
+
+        public ISubcategoryRepository Subcategory
+        {
+            get
+            {
+                if (_subcategory == null)
+                {
+                    _subcategory = new SubcategoryRepository(_repositoryContext);
+                }
+
+                return _subcategory;
+            }
+        }
+
+        public ICategoryRepository Category
+        {
+            get
+            {
+                if (_category == null)
+                {
+                    _category = new CategoryRepository(_repositoryContext);
+                }
+
+                return _category;
             }
         }
 
