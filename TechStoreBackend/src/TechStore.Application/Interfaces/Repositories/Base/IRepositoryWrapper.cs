@@ -8,6 +8,8 @@ namespace TechStore.Application.Interfaces.Repositories.Base
         ISubcategoryRepository Subcategory { get; }
         ICategoryRepository Category { get; }
 
+        IWishlistRepository Wishlist { get; }
+
         Task SaveAsync();
     }
 }

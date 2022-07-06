@@ -11,6 +11,7 @@ namespace TechStore.Infrastructure.Repositories.Base
         private IBrandRepository _brand;
         private ISubcategoryRepository _subcategory;
         private ICategoryRepository _category;
+        private IWishlistRepository _wishlist;
 
         public IBrandRepository Brand
         {
@@ -48,6 +49,19 @@ namespace TechStore.Infrastructure.Repositories.Base
                 }
 
                 return _category;
+            }
+        }
+
+        public IWishlistRepository Wishlist
+        {
+            get
+            {
+                if (_wishlist == null)
+                {
+                    _wishlist = new WishlistRepository(_repositoryContext);
+                }
+
+                return _wishlist;
             }
         }
 
