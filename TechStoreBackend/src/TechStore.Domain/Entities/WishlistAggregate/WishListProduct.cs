@@ -4,7 +4,7 @@ using TechStore.Domain.Entities.ProductAggregate;
 
 namespace TechStore.Domain.Entities.Wishlist
 {
-    public class WishListProduct : Entity
+    public class WishListProduct
     {
         // n - n
         public int WishListId { get; set; }

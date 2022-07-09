@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using TechStore.Application.Interfaces.Repositories.Base;
+using TechStore.Application.Interfaces.Specifications;
 using TechStore.Infrastructure.Data;
+using TechStore.Infrastructure.Specifications;
 
 
 namespace TechStore.Infrastructure.Repositories.Base
@@ -22,12 +24,22 @@ namespace TechStore.Infrastructure.Repositories.Base
 
         public void Update(T entity)
         {
-            _repositoryContext.Set<T>().Update(entity);
+            _repositoryContext.Entry(entity).State = EntityState.Modified;
         }
 
         public void Delete(T entity)
         {
             _repositoryContext.Set<T>().Remove(entity);
+        }
+
+        public async Task<int> Count(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).CountAsync();
+        }
+
+        public async Task<IList<T>> Find(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).ToListAsync();
         }
 
         public IQueryable<T> FindAll()
@@ -38,6 +50,11 @@ namespace TechStore.Infrastructure.Repositories.Base
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
         {
             return _repositoryContext.Set<T>().Where(expression).AsNoTracking();
+        }
+
+        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+        {
+            return SpecificationEvaluator<T>.GetQuery(_repositoryContext.Set<T>().AsQueryable(), spec);
         }
     }
 }

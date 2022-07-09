@@ -50,6 +50,6 @@ namespace TechStore.Domain.Entities.ProductAggregate
         public IList<ProductProperty> Properties { get; set; }
         public IList<OrderProduct> Orders { get; set; }
         public IList<CartProduct> Carts { get; set; }
-        public IList<WishListProduct> WishLists { get; set; }
+        public List<WishListProduct> WishLists { get; set; }
     }
 }

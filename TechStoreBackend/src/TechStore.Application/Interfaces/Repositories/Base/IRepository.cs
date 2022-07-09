@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using TechStore.Application.Interfaces.Specifications;
 
 
 namespace TechStore.Application.Interfaces.Repositories.Base
@@ -11,5 +12,8 @@ namespace TechStore.Application.Interfaces.Repositories.Base
 
         IQueryable<T> FindAll();
         IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression);
+
+        Task<int> Count(ISpecification<T> spec);
+        Task<IList<T>> Find(ISpecification<T> spec);
     }
 }

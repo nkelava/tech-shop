@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TechStore.Application.Interfaces.Repositories;
+using TechStore.Application.Specifications.WishlistSpecification;
 using TechStore.Domain.Entities.Wishlist;
 using TechStore.Infrastructure.Data;
 using TechStore.Infrastructure.Repositories.Base;
@@ -11,15 +12,10 @@ namespace TechStore.Infrastructure.Repositories
     {
         public WishlistRepository(TechStoreContext techStoreContext) : base(techStoreContext) { }
 
-        public async Task<Wishlist> GetWishlistByIdAsync(int wishlistId)
+        public async Task<Wishlist> GetWishlistByUsernameAsync(string username)
         {
-            return await FindByCondition(wishlist => wishlist.Id.Equals(wishlistId)).FirstOrDefaultAsync();
+            var spec = new WishlistWithProductsSpecification(username);
+            return (await Find(spec)).FirstOrDefault();
         }
-
-        public async Task<IEnumerable<Wishlist>> GetAllWishlistsAsync()
-        {
-            return await FindAll().ToListAsync();
-        }
-
     }
 }

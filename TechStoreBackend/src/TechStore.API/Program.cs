@@ -60,6 +60,7 @@ void ConfigureApplicationLayer(IServiceCollection services)
     services.AddScoped<IBrandService, BrandService>();
     services.AddScoped<ISubcategoryService, SubcategoryService>();
     services.AddScoped<ICategoryService, CategoryService>();
+    services.AddScoped<IWishlistService, WishlistService>();
 }
 
 void ConfigureInfrastructureLayer(IServiceCollection services)
@@ -69,6 +70,7 @@ void ConfigureInfrastructureLayer(IServiceCollection services)
     services.AddScoped<IBrandRepository, BrandRepository>();
     services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
     services.AddScoped<ICategoryRepository, CategoryRepository>();
+    services.AddScoped<IWishlistRepository, WishlistRepository>();
 }
 
 void ConfigureWebLayer(IServiceCollection services)
