@@ -9,6 +9,6 @@ namespace TechStore.Application.Interfaces.Services
         Task AddItem(string username, int productId);
         Task RemoveItem(int wishlistId, int productId);
 
-        Task<WishlistReadModel> GetWishlistByUsernameAsync(string username);
+        Task<WishlistReadModel> GetByUsernameAsync(string username);
     }
 }

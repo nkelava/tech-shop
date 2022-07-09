@@ -4,7 +4,7 @@ using TechStore.Application.Interfaces.Specifications;
 
 namespace TechStore.Application.Specifications.Base
 {
-    public class SpecificationBase<T> : ISpecification<T>
+    public class BaseSpecification<T> : ISpecification<T>
     {
         public int Take { get; private set; }
         public int Skip { get; private set; }
@@ -16,7 +16,7 @@ namespace TechStore.Application.Specifications.Base
         public Expression<Func<T, object>> OrderBy { get; private set; }
         public Expression<Func<T, object>> OrderByDescending { get; private set; }
 
-        protected SpecificationBase(Expression<Func<T, bool>> criteria)
+        protected BaseSpecification(Expression<Func<T, bool>> criteria)
         {
             Criteria = criteria;
         }

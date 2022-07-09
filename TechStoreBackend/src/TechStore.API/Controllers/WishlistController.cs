@@ -27,7 +27,7 @@ namespace TechStore.API.Controllers
             if(username.Length == 0)
                 return BadRequest();
 
-            var wishlist = await _wishlistService.GetWishlistByUsernameAsync(username);
+            var wishlist = await _wishlistService.GetByUsernameAsync(username);
 
             if (wishlist == null)
                 return NotFound();

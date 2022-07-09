@@ -2,7 +2,7 @@
 
 namespace TechStore.Application.Models.Base
 {
-    public class ModelBase
+    public class BaseModel
     {
         public int Id { get; set; }
     }

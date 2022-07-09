@@ -3,7 +3,7 @@
 
 namespace TechStore.Application.Models.Category
 {
-    public class CategoryUpdateModel : ModelBase
+    public class CategoryUpdateModel : BaseModel
     {
         public string Name { get; set; }
     }

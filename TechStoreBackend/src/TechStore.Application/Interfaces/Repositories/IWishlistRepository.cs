@@ -6,6 +6,6 @@ namespace TechStore.Application.Interfaces.Repositories
 {
     public interface IWishlistRepository : IRepository<Wishlist>
     {
-        Task<Wishlist> GetWishlistByUsernameAsync(string username);
+        Task<Wishlist> GetByUsernameAsync(string username);
     }
 }

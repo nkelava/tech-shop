@@ -3,7 +3,7 @@
 
 namespace TechStore.Application.Models.Subcategory
 {
-    public class SubcategoryUpdateModel : ModelBase
+    public class SubcategoryUpdateModel : BaseModel
     {
         public string Name { get; set; }
 

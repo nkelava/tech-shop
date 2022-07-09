@@ -9,8 +9,9 @@ namespace TechStore.Infrastructure.Repositories.Base
     {
         private TechStoreContext _repositoryContext;
         private IBrandRepository _brand;
-        private ISubcategoryRepository _subcategory;
+        private ICartRepository _cart;
         private ICategoryRepository _category;
+        private ISubcategoryRepository _subcategory;
         private IWishlistRepository _wishlist;
 
         public IBrandRepository Brand
@@ -26,16 +27,16 @@ namespace TechStore.Infrastructure.Repositories.Base
             }
         }
 
-        public ISubcategoryRepository Subcategory
+        public ICartRepository Cart
         {
             get
             {
-                if (_subcategory == null)
+                if (_cart == null)
                 {
-                    _subcategory = new SubcategoryRepository(_repositoryContext);
+                    _cart = new CartRepository(_repositoryContext);
                 }
 
-                return _subcategory;
+                return _cart;
             }
         }
 
@@ -49,6 +50,19 @@ namespace TechStore.Infrastructure.Repositories.Base
                 }
 
                 return _category;
+            }
+        }
+
+        public ISubcategoryRepository Subcategory
+        {
+            get
+            {
+                if (_subcategory == null)
+                {
+                    _subcategory = new SubcategoryRepository(_repositoryContext);
+                }
+
+                return _subcategory;
             }
         }
 

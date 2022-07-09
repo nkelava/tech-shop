@@ -3,7 +3,7 @@
 
 namespace TechStore.Application.Models.Brand
 {
-    public class BrandUpdateModel : ModelBase
+    public class BrandUpdateModel : BaseModel
     {
         public string Name { get; set; }
     }

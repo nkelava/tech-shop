@@ -5,8 +5,9 @@ namespace TechStore.Application.Interfaces.Repositories.Base
     public interface IRepositoryWrapper
     {
         IBrandRepository Brand { get; }
-        ISubcategoryRepository Subcategory { get; }
+        ICartRepository Cart { get; }
         ICategoryRepository Category { get; }
+        ISubcategoryRepository Subcategory { get; }
         IWishlistRepository Wishlist { get; }
 
         Task SaveAsync();

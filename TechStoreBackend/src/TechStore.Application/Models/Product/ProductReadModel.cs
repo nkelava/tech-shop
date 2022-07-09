@@ -3,7 +3,7 @@
 
 namespace TechStore.Application.Models.Product
 {
-    public class ProductReadModel : ModelBase
+    public class ProductReadModel : BaseModel
     {
         public string Name { get; set; }
     }

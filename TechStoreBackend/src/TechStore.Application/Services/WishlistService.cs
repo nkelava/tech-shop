@@ -42,7 +42,7 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task<WishlistReadModel> GetWishlistByUsernameAsync(string username)
+        public async Task<WishlistReadModel> GetByUsernameAsync(string username)
         {
             var wishlist = await GetExistingOrCreateNewWishlist(username);
             var wishlistReadModel = _mapper.Map<WishlistReadModel>(wishlist);
@@ -64,7 +64,7 @@ namespace TechStore.Application.Services
 
         private async Task<Wishlist> GetExistingOrCreateNewWishlist(string username)
         {
-            var wishlist = await _repository.Wishlist.GetWishlistByUsernameAsync(username);
+            var wishlist = await _repository.Wishlist.GetByUsernameAsync(username);
 
             if (wishlist != null)
                 return wishlist;

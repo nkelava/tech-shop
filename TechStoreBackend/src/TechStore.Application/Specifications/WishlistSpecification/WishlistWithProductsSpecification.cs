@@ -4,7 +4,7 @@ using TechStore.Domain.Entities.Wishlist;
 
 namespace TechStore.Application.Specifications.WishlistSpecification
 {
-    public class WishlistWithProductsSpecification: SpecificationBase<Wishlist>
+    public class WishlistWithProductsSpecification: BaseSpecification<Wishlist>
     {
         public WishlistWithProductsSpecification(string username) : base(w => w.Username.ToLower().Equals(username.ToLower()))
         {
