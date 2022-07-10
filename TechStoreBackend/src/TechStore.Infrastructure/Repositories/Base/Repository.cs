@@ -17,14 +17,14 @@ namespace TechStore.Infrastructure.Repositories.Base
             _repositoryContext = repositoryContext ?? throw new ArgumentNullException(nameof(repositoryContext));
         }
 
-        public void Create(T entity)
+        public void Add(T entity)
         {
             _repositoryContext.Set<T>().Add(entity);
         }
 
-        public void Update(T entity)
+        public void AddRange(IEnumerable<T> entities)
         {
-            _repositoryContext.Entry(entity).State = EntityState.Modified;
+            _repositoryContext.Set<T>().AddRange(entities);
         }
 
         public void Delete(T entity)
@@ -32,14 +32,43 @@ namespace TechStore.Infrastructure.Repositories.Base
             _repositoryContext.Set<T>().Remove(entity);
         }
 
-        public async Task<int> Count(ISpecification<T> spec)
+        public void DeleteRange(IEnumerable<T> entities)
         {
-            return await ApplySpecification(spec).CountAsync();
+            _repositoryContext.Set<T>().RemoveRange(entities);
         }
 
-        public async Task<IList<T>> Find(ISpecification<T> spec)
+
+        public void Update(T entity)
         {
-            return await ApplySpecification(spec).ToListAsync();
+            _repositoryContext.Entry(entity).State = EntityState.Modified;
+        }
+        public bool Contains(ISpecification<T> specification )
+        {
+            return Count(specification) > 0 ? true : false;
+        }
+
+        public bool Contains(Expression<Func<T, bool>> predicate)
+        {
+            return Count(predicate) > 0 ? true : false;
+        }
+
+        public int Count(ISpecification<T> specification)
+        {
+            return ApplySpecification(specification).Count();
+        }
+
+        public int Count(Expression<Func<T, bool>> predicate)
+        {
+            return _repositoryContext.Set<T>().Where(predicate).Count();
+        }
+
+        public T FindById(int id)
+        {
+            return _repositoryContext.Set<T>().Find(id);
+        }
+        public IQueryable<T> Find(ISpecification<T> specification)
+        {
+            return ApplySpecification(specification);
         }
 
         public IQueryable<T> FindAll()

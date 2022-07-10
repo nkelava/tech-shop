@@ -20,7 +20,7 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task AddItem(string username, int productId)
+        public async Task AddProductAsync(string username, int productId)
         {
             var wishlist = await GetExistingOrCreateNewWishlist(username);
             wishlist.AddProduct(productId);
@@ -29,10 +29,10 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task RemoveItem(int wishlistId, int productId)
+        public async Task RemoveProductAsync(int wishlistId, int productId)
         {
             var spec = new WishlistWithProductsSpecification(wishlistId);
-            var wishlist = (await _repository.Wishlist.Find(spec)).FirstOrDefault();
+            var wishlist = _repository.Wishlist.Find(spec).FirstOrDefault();
 
             if (wishlist == null) return;
 
@@ -64,7 +64,7 @@ namespace TechStore.Application.Services
 
         private async Task<Wishlist> GetExistingOrCreateNewWishlist(string username)
         {
-            var wishlist = await _repository.Wishlist.GetByUsernameAsync(username);
+            var wishlist = _repository.Wishlist.GetByUsernameAsync(username);
 
             if (wishlist != null)
                 return wishlist;
@@ -75,7 +75,7 @@ namespace TechStore.Application.Services
                 Username = username
             };
 
-            _repository.Wishlist.Create(newWishlist);
+            _repository.Wishlist.Add(newWishlist);
             await _repository.SaveAsync();
 
             return newWishlist;

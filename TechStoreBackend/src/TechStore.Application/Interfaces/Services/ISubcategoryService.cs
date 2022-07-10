@@ -5,9 +5,9 @@ namespace TechStore.Application.Interfaces.Services
 {
     public interface ISubcategoryService
     {
-        Task CreateSubcategory(SubcategoryCreateModel subcategory);
-        Task UpdateSubcategory(SubcategoryUpdateModel subcategory);
-        Task DeleteSubcategory(int subcategoryId);
+        Task AddAsync(SubcategoryCreateModel subcategory);
+        Task DeleteAsync(int subcategoryId);
+        Task UpdateAsync(SubcategoryUpdateModel subcategory);
 
         Task<SubcategoryReadModel> GetSubcategoryByIdAsync(int subcategoryId);
         

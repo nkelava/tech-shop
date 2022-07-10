@@ -6,12 +6,14 @@ namespace TechStore.Application.Specifications.WishlistSpecification
 {
     public class WishlistWithProductsSpecification: BaseSpecification<Wishlist>
     {
-        public WishlistWithProductsSpecification(string username) : base(w => w.Username.ToLower().Equals(username.ToLower()))
+        public WishlistWithProductsSpecification(int wishlistId)
+      : base(w => w.Id.Equals(wishlistId))
         {
             AddInclude(w => w.Products);
         }
 
-        public WishlistWithProductsSpecification(int wishlistId) : base(w => w.Id == wishlistId)
+        public WishlistWithProductsSpecification(string username) 
+            : base(w => w.Username.ToLower().Equals(username.ToLower()))
         {
             AddInclude(w => w.Products);
         }

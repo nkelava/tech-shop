@@ -2,8 +2,10 @@
 using TechStore.Application.Interfaces.Repositories.Base;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Cart;
+using TechStore.Application.Models.Product;
 using TechStore.Application.Specifications.CartSpecification;
 using TechStore.Domain.Entities.Cart;
+
 
 namespace TechStore.Application.Services
 {
@@ -18,25 +20,22 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task AddProduct(string username, int productId)
+        public async Task AddProductAsync(string username, int productId)
         {
             var cart = await GetExistingOrCreateNewCart(username);
-            //var productUnitPrice = await _repository.Product.GetProductPrice(productId);
-            //var product = await _repository.Product.GetByIdAsync(productId);
+            var product = await _repository.Product.GetProductByIdAsync(productId);
 
-            //cart.AddProduct(productId, productUnitPrice);
-            //cart.AddProduct(productId, unitPrice: product.UnitPrice);
-            cart.AddProduct(productId, unitPrice: 10);
+            cart.AddProduct(productId, unitPrice: product.Price);
 
             _repository.Cart.Update(cart);
             await _repository.SaveAsync();
         }
 
 
-        public async Task RemoveProduct(int cartId, int productId)
+        public async Task RemoveProductAsync(int cartId, int productId)
         {
             var spec = new CartWithProductsSpecification(cartId);
-            var cart = (await _repository.Cart.Find(spec)).FirstOrDefault();
+            var cart = _repository.Cart.Find(spec).FirstOrDefault();
 
             if (cart == null)
                 return;
@@ -67,7 +66,7 @@ namespace TechStore.Application.Services
             var cart = await GetExistingOrCreateNewCart(username);
             var cartModel = _mapper.Map<CartReadModel>(cart);
 
-            // If movie can't be loaded from razor page, we than manual map it
+            // If movie can't be loaded from page we than manual map it
             if (cart.Products.Any(c => c.Product == null))
             {
                 cartModel.CartProducts.Clear();
@@ -75,9 +74,9 @@ namespace TechStore.Application.Services
                 foreach (var item in cart.Products)
                 {
                     var cartProductModel = _mapper.Map<CartProductModel>(item);
-                    var product = await _repository.Product.GetProductWithSubcategoryByIdAsync(item.ProductId);
+                    var product = await _repository.Product.GetProductByIdAsync(item.ProductId);
                     var productModel = _mapper.Map<ProductReadModel>(product);
-                    cartProductModel.Product = productModel;
+                    cartProductModel.ProductId = productModel.Id;
                     cartModel.CartProducts.Add(cartProductModel);
                 }
             }
@@ -99,7 +98,7 @@ namespace TechStore.Application.Services
                 Username = username
             };
 
-            _repository.Cart.Create(newCart);
+            _repository.Cart.Add(newCart);
             await _repository.SaveAsync();
 
             return newCart;

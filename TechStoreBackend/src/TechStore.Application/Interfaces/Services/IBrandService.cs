@@ -6,9 +6,9 @@ namespace TechStore.Application.Interfaces.Services
 {
     public interface IBrandService
     {
-        Task CreateBrand(BrandCreateModel brand);
-        Task UpdateBrand(BrandUpdateModel brand);
-        Task DeleteBrand(int brandId);
+        Task AddAsync(BrandCreateModel brand);
+        Task DeleteAsync(int brandId);
+        Task UpdateAsync(BrandUpdateModel brand);
 
         Task<Brand> GetBrandByIdAsync(int brandId);
 

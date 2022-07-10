@@ -7,7 +7,7 @@ using TechStore.Domain.Entities.SubcategoryAggregate;
 namespace TechStore.API.Controllers
 
 {
-    [Route("api/[controller]")]
+    [Route("api/category")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -20,14 +20,39 @@ namespace TechStore.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<CategoryReadModel>> GetAllCategories()
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] CategoryCreateModel category)
         {
-            var categories = await _categoryService.GetAllCategoriesAsync();
-         
-            return _mapper.Map<IEnumerable<CategoryReadModel>>(categories);
+            if (category == null)
+                return BadRequest();
+
+            await _categoryService.AddAsync(category);
+
+            return Ok(category);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] CategoryUpdateModel category)
+        {
+            if (category == null)
+                return BadRequest();
+
+            await _categoryService.UpdateAsync(category);
+
+            return Ok(category);
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id < 1)
+                return BadRequest();
+
+            await _categoryService.DeleteAsync(id);
+
+            return Ok(id);
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryReadModel>> GetCategoryById(int id)
@@ -40,42 +65,23 @@ namespace TechStore.API.Controllers
             if (category == null)
                 return NotFound();
 
-            return Ok(_mapper.Map<CategoryReadModel>(category));
+            return Ok(category);
         }
 
-
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CategoryCreateModel category)
+        [HttpGet("{id}/subcategories")]
+        public async Task<IActionResult> GetCategoryWithSubcategories(int id)
         {
-            if (category == null)
-                return BadRequest();
+            var category = await _categoryService.GetCategoryWithSubcategoriesAsync(id);
 
-            await _categoryService.CreateCategory(category);
-
-            return Ok();
+            return Ok(category);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] CategoryUpdateModel category)
+        [HttpGet("/api/categories")]
+        public async Task<IList<CategoryReadModel>> GetAllCategories()
         {
-            if (category == null)
-                return BadRequest();
+            var categories = await _categoryService.GetAllCategoriesAsync();
 
-            await _categoryService.UpdateCategory(category);
-
-            return Ok();
-        }
-
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (id < 1)
-                return BadRequest();
-
-            await _categoryService.DeleteCategory(id);
-
-            return Ok();
+            return categories;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace TechStore.Infrastructure.Repositories
         {
             var spec = new CartWithProductsSpecification(username);
 
-            return (await Find(spec)).FirstOrDefault();
+            return Find(spec).FirstOrDefault();
         }
     }
 }

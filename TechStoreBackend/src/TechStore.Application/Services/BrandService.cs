@@ -18,27 +18,30 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task CreateBrand(BrandCreateModel brandModel)
+        public async Task AddAsync(BrandCreateModel brandModel)
         {
             var brand = _mapper.Map<Brand>(brandModel);
 
-            _repository.Brand.Create(brand);
+            _repository.Brand.Add(brand);
             await _repository.SaveAsync();
         }
 
-        public async Task UpdateBrand(BrandUpdateModel brandModel)
+        public async Task DeleteAsync(int brandId)
+        {
+            var brand = await _repository.Brand.GetBrandByIdAsync(brandId);
+
+            if (brand == null)
+                return;
+
+            _repository.Brand.Delete(brand);
+            await _repository.SaveAsync();
+        }
+
+        public async Task UpdateAsync(BrandUpdateModel brandModel)
         {
             var brand = _mapper.Map<Brand>(brandModel);
             _repository.Brand.Update(brand);
 
-            await _repository.SaveAsync();
-        }
-
-        public async Task DeleteBrand(int brandId)
-        {
-            var brand = await _repository.Brand.GetBrandByIdAsync(brandId);
-
-            _repository.Brand.Delete(brand);
             await _repository.SaveAsync();
         }
 

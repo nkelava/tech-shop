@@ -9,7 +9,8 @@ namespace TechStore.Infrastructure.Repositories
 {
     public class SubcategoryRepository : Repository<Subcategory>, ISubcategoryRepository
     {
-        public SubcategoryRepository(TechStoreContext techStoreContext) : base(techStoreContext) { }
+        public SubcategoryRepository(TechStoreContext techStoreContext) 
+            : base(techStoreContext) { }
 
         public async Task<Subcategory> GetSubcategoryByIdAsync(int subcategoryId)
         {

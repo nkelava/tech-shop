@@ -10,6 +10,7 @@ namespace TechStore.Application.Interfaces.Specifications
         int Take { get; }
 
         Expression<Func<T, bool>> Criteria { get; }
+        Expression<Func<T, object>> GroupBy { get; }
         List<Expression<Func<T, object>>> Includes { get; }
         List<string> IncludeStrings { get; }
         Expression<Func<T, object>> OrderBy { get; }

@@ -7,13 +7,13 @@ namespace TechStore.Application.Specifications.CartSpecification
     public class CartWithProductsSpecification : BaseSpecification<Cart>
     {
         public CartWithProductsSpecification(string username)
-           : base(c => c.Username.ToLower() == username.ToLower())
+           : base(c => c.Username.ToLower().Equals(username.ToLower()))
         {
             AddInclude(c => c.Products);
         }
 
         public CartWithProductsSpecification(int cartId)
-            : base(c => c.Id == cartId)
+            : base(c => c.Id.Equals(cartId))
         {
             AddInclude(c => c.Products);
         }

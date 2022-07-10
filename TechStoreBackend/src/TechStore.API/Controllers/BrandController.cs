@@ -7,7 +7,7 @@ using TechStore.Domain.Entities.ProductAggregate;
 
 namespace TechStore.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/brand")]
     [ApiController]
     public class BrandController : ControllerBase
     {
@@ -21,14 +21,38 @@ namespace TechStore.API.Controllers
         }
 
 
-        [HttpGet]
-        public async Task<IEnumerable<Brand>> GetAllBrands()
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody]BrandCreateModel brand)
         {
-            var brands = await _brandService.GetAllBrandsAsync();
+            if (brand == null)
+                return BadRequest();
 
-            return brands;
+            await _brandService.AddAsync(brand);
+
+            return Ok(brand);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id < 1)
+                return BadRequest();
+
+            await _brandService.DeleteAsync(id);
+
+            return Ok(id);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody]BrandUpdateModel brand)
+        {
+            if (brand == null)
+                return BadRequest();
+
+            await _brandService.UpdateAsync(brand);
+
+            return Ok(brand);
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBrandById(int id)
@@ -44,39 +68,12 @@ namespace TechStore.API.Controllers
             return Ok(brand);
         }
 
-
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody]BrandCreateModel brand)
+        [HttpGet("/api/brands")]
+        public async Task<IEnumerable<Brand>> GetAllBrands()
         {
-            if (brand == null)
-                return BadRequest();
+            var brands = await _brandService.GetAllBrandsAsync();
 
-            await _brandService.CreateBrand(brand);
-
-            return Ok();
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody]BrandUpdateModel brand)
-        {
-            if (brand == null)
-                return BadRequest();
-
-            await _brandService.UpdateBrand(brand);
-
-            return Ok();
-        }
-
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (id < 1)
-                return BadRequest();
-
-            await _brandService.DeleteBrand(id);
-
-            return Ok();
+            return brands;
         }
     }
 }

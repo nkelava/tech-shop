@@ -51,15 +51,16 @@ void ConfigureServices(IServiceCollection services)
 {
     ConfigureApplicationLayer(services);
     ConfigureInfrastructureLayer(services);
-    ConfigureWebLayer(services);
 }
 
 
 void ConfigureApplicationLayer(IServiceCollection services)
 {
     services.AddScoped<IBrandService, BrandService>();
-    services.AddScoped<ISubcategoryService, SubcategoryService>();
+    services.AddScoped<ICartService, CartService>();
     services.AddScoped<ICategoryService, CategoryService>();
+    services.AddScoped<IProductService, ProductService>();
+    services.AddScoped<ISubcategoryService, SubcategoryService>();
     services.AddScoped<IWishlistService, WishlistService>();
 }
 
@@ -68,11 +69,8 @@ void ConfigureInfrastructureLayer(IServiceCollection services)
     services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
     services.AddScoped(typeof(IRepositoryWrapper), typeof(RepositoryWrapper));
     services.AddScoped<IBrandRepository, BrandRepository>();
-    services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
+    services.AddScoped<ICartRepository, CartRepository>();
     services.AddScoped<ICategoryRepository, CategoryRepository>();
+    services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
     services.AddScoped<IWishlistRepository, WishlistRepository>();
-}
-
-void ConfigureWebLayer(IServiceCollection services)
-{
 }

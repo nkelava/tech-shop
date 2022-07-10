@@ -9,7 +9,8 @@ namespace TechStore.Infrastructure.Repositories
 {
     public class BrandRepository : Repository<Brand>, IBrandRepository
     {
-        public BrandRepository(TechStoreContext techStoreContext) : base(techStoreContext) { }
+        public BrandRepository(TechStoreContext techStoreContext)
+            : base(techStoreContext) { }
 
         public async Task<Brand> GetBrandByIdAsync(int brandId)
         {

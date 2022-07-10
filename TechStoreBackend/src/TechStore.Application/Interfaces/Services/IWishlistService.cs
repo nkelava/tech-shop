@@ -6,8 +6,8 @@ namespace TechStore.Application.Interfaces.Services
 {
     public interface IWishlistService
     {
-        Task AddItem(string username, int productId);
-        Task RemoveItem(int wishlistId, int productId);
+        Task AddProductAsync(string username, int productId);
+        Task RemoveProductAsync(int wishlistId, int productId);
 
         Task<WishlistReadModel> GetByUsernameAsync(string username);
     }

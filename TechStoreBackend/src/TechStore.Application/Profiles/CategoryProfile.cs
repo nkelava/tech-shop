@@ -12,6 +12,7 @@ namespace TechStore.Application.Profiles
             CreateMap<Category, CategoryCreateModel>().ReverseMap();
             CreateMap<Category, CategoryReadModel>().ReverseMap();
             CreateMap<Category, CategoryUpdateModel>().ReverseMap();
+            CreateMap<Category, CategoryWithSubcategoriesModel>().ReverseMap();
         }
     }
 }

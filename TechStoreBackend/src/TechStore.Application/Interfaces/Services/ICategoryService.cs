@@ -1,17 +1,17 @@
 ﻿using TechStore.Application.Models.Category;
-using TechStore.Domain.Entities.SubcategoryAggregate;
 
 
 namespace TechStore.Application.Interfaces.Services
 {
     public interface ICategoryService
     {
-        Task CreateCategory(CategoryCreateModel category);
-        Task UpdateCategory(CategoryUpdateModel category);
-        Task DeleteCategory(int categoryId);
+        Task AddAsync(CategoryCreateModel category);
+        Task UpdateAsync(CategoryUpdateModel category);
+        Task DeleteAsync(int categoryId);
 
-        Task<Category> GetCategoryByIdAsync(int categoryId);
+        Task<CategoryReadModel> GetCategoryByIdAsync(int categoryId);
+        Task<CategoryWithSubcategoriesModel> GetCategoryWithSubcategoriesAsync(int categoryId);
 
-        Task<IEnumerable<Category>> GetAllCategoriesAsync();
+        Task<IList<CategoryReadModel>> GetAllCategoriesAsync();
     }
 }

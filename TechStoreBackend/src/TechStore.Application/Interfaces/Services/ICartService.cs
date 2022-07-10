@@ -5,8 +5,8 @@ namespace TechStore.Application.Interfaces.Services
 {
     public interface ICartService
     {
-        Task AddProduct(string username, int movieId);
-        Task RemoveProduct(int cartId, int productId);
+        Task AddProductAsync(string username, int movieId);
+        Task RemoveProductAsync(int cartId, int productId);
         Task ClearCart(string username);
 
         Task<CartReadModel> GetByUsername(string username);

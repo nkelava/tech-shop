@@ -18,23 +18,23 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task CreateSubcategory(SubcategoryCreateModel subcategoryModel)
+        public async Task AddAsync(SubcategoryCreateModel subcategoryModel)
         {
             var subcategory = _mapper.Map<Subcategory>(subcategoryModel);
 
-            _repository.Subcategory.Create(subcategory);
+            _repository.Subcategory.Add(subcategory);
             await _repository.SaveAsync();
         }
 
-        public async Task UpdateSubcategory(SubcategoryUpdateModel subcategoryModel)
+        public async Task UpdateAsync(SubcategoryUpdateModel subcategoryModel)
         {
             var subcategory = _mapper.Map<Subcategory>(subcategoryModel);
+            
             _repository.Subcategory.Update(subcategory);
-
             await _repository.SaveAsync();
         }
 
-        public async Task DeleteSubcategory(int subcategoryId)
+        public async Task DeleteAsync(int subcategoryId)
         {
             var subcategory= await _repository.Subcategory.GetSubcategoryByIdAsync(subcategoryId);
 

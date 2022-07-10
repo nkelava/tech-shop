@@ -11,6 +11,7 @@ namespace TechStore.Infrastructure.Repositories.Base
         private IBrandRepository _brand;
         private ICartRepository _cart;
         private ICategoryRepository _category;
+        private IProductRepository _product;
         private ISubcategoryRepository _subcategory;
         private IWishlistRepository _wishlist;
 
@@ -50,6 +51,18 @@ namespace TechStore.Infrastructure.Repositories.Base
                 }
 
                 return _category;
+            }
+        }
+        public IProductRepository Product
+        {
+            get
+            {
+                if (_product == null)
+                {
+                    _product = new ProductRepository(_repositoryContext);
+                }
+
+                return _product;
             }
         }
 

@@ -11,6 +11,7 @@ namespace TechStore.Application.Specifications.Base
         public bool isPagingEnabled { get; private set; } = false;
 
         public Expression<Func<T, bool>> Criteria { get; }
+        public Expression<Func<T, object>> GroupBy { get; private set; }
         public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
         public List<string> IncludeStrings { get; } = new List<string>();
         public Expression<Func<T, object>> OrderBy { get; private set; }
@@ -21,6 +22,15 @@ namespace TechStore.Application.Specifications.Base
             Criteria = criteria;
         }
 
+        protected BaseSpecification()
+        {
+
+        }
+
+        protected virtual void ApplyGroupBy(Expression<Func<T, object>> groupByExpression)
+        {
+            GroupBy = groupByExpression;
+        }
 
         protected virtual void AddInclude(Expression<Func<T, object>> includeExpression)
         {
