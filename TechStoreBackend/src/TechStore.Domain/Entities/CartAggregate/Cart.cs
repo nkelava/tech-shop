@@ -9,7 +9,7 @@ namespace TechStore.Domain.Entities.Cart
         public decimal TotalPrice { get; set; } = 0;
 
         // n - n
-        public IList<CartProduct> Products { get; set; }
+        public List<CartProduct> Products { get; set; }
 
         public void AddProduct(int productId, int quantity = 1, decimal unitPrice = 0)
         {

@@ -4,7 +4,7 @@ using TechStore.Domain.Entities.ProductAggregate;
 
 namespace TechStore.Domain.Entities.Order
 {
-    public class OrderProduct : Entity
+    public class OrderProduct
     {
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }

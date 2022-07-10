@@ -1,10 +1,9 @@
-﻿using TechStore.Domain.Entities.Base;
-using TechStore.Domain.Enums.Order;
+﻿using TechStore.Domain.Enums.Order;
 
 
-namespace TechStore.Domain.Entities.Order
+namespace TechStore.Application.Models.Order
 {
-    public class Order : Entity
+    public class BaseOrderModel
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -14,15 +13,7 @@ namespace TechStore.Domain.Entities.Order
         public string City { get; set; }
         public string ShippingAddress { get; set; }
         public int PostalCode { get; set; }
-        public decimal TotalPrice { get; set; }
         public OrderStatus Status { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
-        public DateTime ShippedAt { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-
-
-        // n - n
-        public List<OrderProduct> Products { get; set; }
     }
 }

@@ -1,6 +1,4 @@
-﻿
-
-namespace TechStore.Application.Interfaces.Repositories.Base
+﻿namespace TechStore.Application.Interfaces.Repositories.Base
 {
     public interface IRepositoryWrapper
     {
@@ -10,6 +8,8 @@ namespace TechStore.Application.Interfaces.Repositories.Base
         IProductRepository Product { get; }
         ISubcategoryRepository Subcategory { get; }
         IWishlistRepository Wishlist { get; }
+        IOrderRepository Order { get; }
+        IReviewRepository Review { get; }
 
         Task SaveAsync();
     }

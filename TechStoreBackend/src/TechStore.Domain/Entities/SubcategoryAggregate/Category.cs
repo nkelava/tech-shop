@@ -9,6 +9,6 @@ namespace TechStore.Domain.Entities.SubcategoryAggregate
         //public int Sort { get; set; }
 
         // 1 - n
-        public IList<Subcategory> Subcategories { get; set; }
+        public List<Subcategory> Subcategories { get; set; }
     }
 }

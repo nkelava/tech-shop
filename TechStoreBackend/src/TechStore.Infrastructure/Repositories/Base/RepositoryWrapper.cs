@@ -11,7 +11,9 @@ namespace TechStore.Infrastructure.Repositories.Base
         private IBrandRepository _brand;
         private ICartRepository _cart;
         private ICategoryRepository _category;
+        private IOrderRepository _order;
         private IProductRepository _product;
+        private IReviewRepository _review;
         private ISubcategoryRepository _subcategory;
         private IWishlistRepository _wishlist;
 
@@ -53,6 +55,20 @@ namespace TechStore.Infrastructure.Repositories.Base
                 return _category;
             }
         }
+
+        public IOrderRepository Order
+        {
+            get
+            {
+                if(_order == null)
+                {
+                    _order = new OrderRepository(_repositoryContext);
+                }
+
+                return _order;
+            }
+        }
+
         public IProductRepository Product
         {
             get
@@ -63,6 +79,19 @@ namespace TechStore.Infrastructure.Repositories.Base
                 }
 
                 return _product;
+            }
+        }
+
+        public IReviewRepository Review
+        {
+            get
+            {
+                if (_review == null)
+                {
+                    _review = new ReviewRepository(_repositoryContext);
+                }
+
+                return _review;
             }
         }
 

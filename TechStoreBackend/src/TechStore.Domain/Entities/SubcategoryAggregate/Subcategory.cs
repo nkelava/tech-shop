@@ -18,6 +18,6 @@ namespace TechStore.Domain.Entities.SubcategoryAggregate
 
 
         // n - n 
-        public IList<SubcategoryProperty> Properties { get; set; }
+        public List<SubcategoryProperty> Properties { get; set; }
     }
 }

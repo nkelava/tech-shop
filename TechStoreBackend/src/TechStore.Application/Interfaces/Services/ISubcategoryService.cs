@@ -11,6 +11,6 @@ namespace TechStore.Application.Interfaces.Services
 
         Task<SubcategoryReadModel> GetSubcategoryByIdAsync(int subcategoryId);
         
-        Task<IEnumerable<SubcategoryReadModel>> GetAllSubcategoriesAsync();
+        Task<IList<SubcategoryReadModel>> GetAllSubcategoriesAsync();
     }
 }

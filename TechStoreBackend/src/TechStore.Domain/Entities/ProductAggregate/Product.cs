@@ -44,12 +44,28 @@ namespace TechStore.Domain.Entities.ProductAggregate
         public Subcategory Subcategory { get; set; }
 
         //// 1 - n
-        public IList<Review> Reviews { get; set; }
+        public List<Review> Reviews { get; set; }
 
         //// n - n
-        public IList<ProductProperty> Properties { get; set; }
-        public IList<OrderProduct> Orders { get; set; }
-        public IList<CartProduct> Carts { get; set; }
+        public List<ProductProperty> Properties { get; set; }
+        public List<OrderProduct> Orders { get; set; }
+        public List<CartProduct> Carts { get; set; }
         public List<WishListProduct> WishLists { get; set; }
+
+
+        public void AddReview(Review review)
+        {
+            if (review != null)
+                Reviews.Add(review);
+        }
+
+
+        public void RemoveReview(int reviewId)
+        {
+            //var reviewToRemove = Reviews.Where(r => r.Id == reviewId).FirstOrDefault();
+            //Reviews.Remove(reviewToRemove);
+
+            Reviews.RemoveAll(r => r.Id == reviewId);
+        }
     }
 }
