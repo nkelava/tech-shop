@@ -11,6 +11,7 @@ namespace TechStore.Infrastructure.Repositories.Base
         private IBrandRepository _brand;
         private ICartRepository _cart;
         private ICategoryRepository _category;
+        private INewsletterRepository _newsletter;
         private IOrderRepository _order;
         private IProductRepository _product;
         private IReviewRepository _review;
@@ -53,6 +54,19 @@ namespace TechStore.Infrastructure.Repositories.Base
                 }
 
                 return _category;
+            }
+        }
+
+        public INewsletterRepository Newsletter
+        {
+            get
+            {
+                if (_newsletter == null)
+                {
+                    _newsletter = new NewsletterRepository(_repositoryContext);
+                }
+
+                return _newsletter;
             }
         }
 

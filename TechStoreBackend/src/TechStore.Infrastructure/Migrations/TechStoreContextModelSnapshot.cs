@@ -69,6 +69,26 @@ namespace TechStore.Infrastructure.Migrations
                     b.ToTable("CartProduct", (string)null);
                 });
 
+            modelBuilder.Entity("TechStore.Domain.Entities.Newsletter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Newsletter", (string)null);
+                });
+
             modelBuilder.Entity("TechStore.Domain.Entities.Order.Order", b =>
                 {
                     b.Property<int>("Id")

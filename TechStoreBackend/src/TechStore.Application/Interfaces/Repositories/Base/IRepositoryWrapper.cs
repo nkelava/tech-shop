@@ -5,11 +5,12 @@
         IBrandRepository Brand { get; }
         ICartRepository Cart { get; }
         ICategoryRepository Category { get; }
+        INewsletterRepository Newsletter { get; }
+        IOrderRepository Order { get; }
         IProductRepository Product { get; }
+        IReviewRepository Review { get; }
         ISubcategoryRepository Subcategory { get; }
         IWishlistRepository Wishlist { get; }
-        IOrderRepository Order { get; }
-        IReviewRepository Review { get; }
 
         Task SaveAsync();
     }
