@@ -6,7 +6,7 @@ using TechStore.Application.Models.Review;
 
 namespace TechStore.API.Controllers
 {
-    [Route("api/review")]
+    [Route("api/reviews")]
     [ApiController]
     public class ReviewController : ControllerBase
     {
@@ -41,7 +41,7 @@ namespace TechStore.API.Controllers
             return Ok(reviewId);
         }
 
-        [HttpGet("/api/reviews/{productId:int}")]
+        [HttpGet("{productId:int}")]
         public async Task<IActionResult> GetReviewsByProductId(int productId)
         {
             if (productId < 1)
@@ -55,7 +55,7 @@ namespace TechStore.API.Controllers
             return Ok(reviews);
         }
 
-        [HttpGet("/api/reviews/{email}")]
+        [HttpGet("{email}")]
         public async Task<IActionResult> GetReviewsByEmail(string email)
         {
             if (email == null || email.Length == 0)

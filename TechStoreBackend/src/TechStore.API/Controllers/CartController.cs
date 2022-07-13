@@ -5,7 +5,7 @@ using TechStore.Application.Interfaces.Services;
 
 namespace TechStore.API.Controllers
 {
-    [Route("api/cart")]
+    [Route("api/carts")]
     [ApiController]
     public class CartController : ControllerBase
     {

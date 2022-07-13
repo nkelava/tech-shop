@@ -19,18 +19,17 @@ namespace TechStore.Infrastructure.Repositories
 
             return order;
         }
-
-        public Order GetOrderByEmail(string email)
-        {
-            var spec = new OrderWithProductsSpecification(email);
-            var order = Find(spec).FirstOrDefault();
-
-            return order;
-        }
         
         public IList<Order> GetAllOrders()
         {
             var orders = FindAll().ToList();
+
+            return orders;
+        }
+
+        public IList<Order> GetAllOrders(string email)
+        {
+            var orders = FindByCondition(o => o.Email.ToLower().Equals(email.ToLower())).ToList();
 
             return orders;
         }

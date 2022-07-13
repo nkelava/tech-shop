@@ -6,7 +6,7 @@ using TechStore.Application.Models.Subcategory;
 
 namespace TechStore.API.Controllers
 {
-    [Route("api/subcategory")]
+    [Route("api/subcategories")]
     [ApiController]
     public class SubcategoryController : ControllerBase
     {
@@ -41,6 +41,13 @@ namespace TechStore.API.Controllers
             return Ok(subcategory);
         }
 
+        [HttpGet]
+        public async Task<IEnumerable<SubcategoryReadModel>> GetAllSubcategories()
+        {
+            var subcategories = await _subcategoryService.GetAllSubcategoriesAsync();
+
+            return subcategories;
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
@@ -65,14 +72,6 @@ namespace TechStore.API.Controllers
                 return NotFound();
 
             return Ok(subcategory);
-        }
-
-        [HttpGet("/api/subcategories")]
-        public async Task<IEnumerable<SubcategoryReadModel>> GetAllSubcategories()
-        {
-            var subcategories = await _subcategoryService.GetAllSubcategoriesAsync();
-
-            return subcategories;
         }
     }
 }

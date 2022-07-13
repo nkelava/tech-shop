@@ -6,7 +6,7 @@ using TechStore.Application.Models.Order;
 
 namespace TechStore.API.Controllers
 {
-    [Route("api/order")]
+    [Route("api/orders")]
     [ApiController]
     public class OrderController : ControllerBase
     {
@@ -52,6 +52,14 @@ namespace TechStore.API.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        public IActionResult GetOrders(string? email)
+        {
+            var orders = (email == null) ? _orderService.GetOrders() : _orderService.GetOrders(email);
+
+            return Ok(orders);
+        }
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -66,26 +74,18 @@ namespace TechStore.API.Controllers
             return Ok(order);
         }
 
-        [HttpGet("{email}")]
-        public async Task<IActionResult> GetByEmail(string email)
-        {
-            if (email == null || email.Length == 0)
-                return BadRequest();
+        //[HttpGet("{email}")]
+        //public async Task<IActionResult> GetByEmail(string email)
+        //{
+        //    if (email == null || email.Length == 0)
+        //        return BadRequest();
 
-            var order = _orderService.GetOrderByEmail(email);
+        //    var orders = _orderService.GetOrdersByEmail(email);
 
-            if (order == null)
-                return NotFound();
+        //    if (orders == null)
+        //        return NotFound();
 
-            return Ok(order);
-        }
-
-        [HttpGet("/api/orders")]
-        public async Task<IActionResult> GetOrders()
-        {
-            var orders = _orderService.GetOrders();
-
-            return Ok(orders);
-        }
+        //    return Ok(orders);
+        //}
     }
 }

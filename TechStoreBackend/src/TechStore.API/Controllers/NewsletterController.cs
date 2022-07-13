@@ -6,7 +6,7 @@ using TechStore.Application.Models.Newsletter;
 
 namespace TechStore.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/newsletters")]
     [ApiController]
     public class NewsletterController : ControllerBase
     {
@@ -43,7 +43,7 @@ namespace TechStore.API.Controllers
             return Ok(email);
         }
 
-        [HttpGet("/api/subscribers")]
+        [HttpGet]
         public IActionResult GetSubscribers()
         {
             var subscribers = _newsletterService.GetAllNewsletterSubsribers();

@@ -9,6 +9,7 @@ namespace TechStore.Application.Profiles
     {
         public BrandProfile()
         {
+            CreateMap<Brand, BrandReadModel>().ReverseMap();
             CreateMap<Brand, BrandCreateModel>().ReverseMap();
             CreateMap<Brand, BrandUpdateModel>().ReverseMap();
         }

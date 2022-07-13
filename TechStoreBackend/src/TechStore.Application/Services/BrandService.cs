@@ -45,18 +45,20 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task<Brand> GetBrandByIdAsync(int brandId)
+        public async Task<BrandReadModel> GetBrandByIdAsync(int brandId)
         {
             var brand = await _repository.Brand.GetBrandByIdAsync(brandId);
+            var brandModel = _mapper.Map<BrandReadModel>(brand);
 
-            return brand;
+            return brandModel;
         }
 
-        public async Task<IEnumerable<Brand>> GetAllBrandsAsync()
+        public async Task<IEnumerable<BrandReadModel>> GetAllBrandsAsync()
         {
             var brands = await _repository.Brand.GetAllBrandsAsync();
+            var brandsModel = _mapper.Map<IEnumerable<BrandReadModel>>(brands);
 
-            return brands;
+            return brandsModel;
         }
     }
 }

@@ -30,6 +30,7 @@ namespace TechStore.Application.Services
 
         public async Task Unsubscribe(string email)
         {
+            var test = email;
             var subscription = _repository.Newsletter.FindByCondition(n => n.Email.ToLower().Equals(email.ToLower())).FirstOrDefault();
 
             if (subscription == null)

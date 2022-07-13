@@ -2,12 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Brand;
-using TechStore.Domain.Entities.ProductAggregate;
 
 
 namespace TechStore.API.Controllers
 {
-    [Route("api/brand")]
+    [Route("api/brands")]
     [ApiController]
     public class BrandController : ControllerBase
     {
@@ -32,7 +31,7 @@ namespace TechStore.API.Controllers
             return Ok(brand);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
             if (id < 1)
@@ -54,6 +53,14 @@ namespace TechStore.API.Controllers
             return Ok(brand);
         }
 
+        [HttpGet]
+        public async Task<IEnumerable<BrandReadModel>> GetAllBrands()
+        {
+            var brands = await _brandService.GetAllBrandsAsync();
+
+            return brands;
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBrandById(int id)
         {
@@ -66,14 +73,6 @@ namespace TechStore.API.Controllers
                 return NotFound();
 
             return Ok(brand);
-        }
-
-        [HttpGet("/api/brands")]
-        public async Task<IEnumerable<Brand>> GetAllBrands()
-        {
-            var brands = await _brandService.GetAllBrandsAsync();
-
-            return brands;
         }
     }
 }

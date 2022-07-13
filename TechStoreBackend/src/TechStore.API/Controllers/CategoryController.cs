@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Category;
-using TechStore.Domain.Entities.SubcategoryAggregate;
+
 
 namespace TechStore.API.Controllers
 
 {
-    [Route("api/category")]
+    [Route("api/categories")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -54,6 +54,14 @@ namespace TechStore.API.Controllers
             return Ok(id);
         }
 
+        [HttpGet]
+        public async Task<IList<CategoryReadModel>> GetAllCategories()
+        {
+            var categories = await _categoryService.GetAllCategoriesAsync();
+
+            return categories;
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryReadModel>> GetCategoryById(int id)
         {
@@ -74,14 +82,6 @@ namespace TechStore.API.Controllers
             var category = await _categoryService.GetCategoryWithSubcategoriesAsync(id);
 
             return Ok(category);
-        }
-
-        [HttpGet("/api/categories")]
-        public async Task<IList<CategoryReadModel>> GetAllCategories()
-        {
-            var categories = await _categoryService.GetAllCategoriesAsync();
-
-            return categories;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TechStore.Application.Interfaces.Services;
-using TechStore.Application.Models.Wishlist;
+
 
 namespace TechStore.API.Controllers
 {

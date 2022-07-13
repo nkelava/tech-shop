@@ -52,17 +52,17 @@ namespace TechStore.Application.Services
             return orderModel;
         }
 
-        public OrderReadModel GetOrderByEmail(string email)
-        {
-            var order = _repository.Order.GetOrderByEmail(email);
-            var orderModel = _mapper.Map<OrderReadModel>(order);
-
-            return orderModel;
-        }
-
         public IList<OrderReadModel> GetOrders()
         {
             var orders = _repository.Order.GetAllOrders();
+            var ordersModel = _mapper.Map<IList<OrderReadModel>>(orders);
+
+            return ordersModel;
+        }
+
+        public IList<OrderReadModel> GetOrders(string email)
+        {
+            var orders = _repository.Order.GetAllOrders(email);
             var ordersModel = _mapper.Map<IList<OrderReadModel>>(orders);
 
             return ordersModel;

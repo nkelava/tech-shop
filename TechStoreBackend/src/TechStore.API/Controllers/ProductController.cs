@@ -5,7 +5,7 @@ using TechStore.Application.Models.Product;
 
 namespace TechStore.API.Controllers
 {
-    [Route("api/product")]
+    [Route("api/products")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -49,6 +49,13 @@ namespace TechStore.API.Controllers
             return Ok(product);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetProducts()
+        {
+            var products = await _productService.GetAllProductsAsync();
+
+            return Ok(products);
+        }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetProductById(int id)
@@ -75,15 +82,7 @@ namespace TechStore.API.Controllers
             return Ok(product);
         }
 
-        [HttpGet("/api/products")]
-        public async Task<IActionResult> GetProducts()
-        {
-            var products = await _productService.GetAllProductsAsync();
-
-            return Ok(products);
-        }
-
-        [HttpGet("/api/products/onsale")]
+        [HttpGet("onsale")]
         public async Task<IActionResult> GetProductsOnSaleAsync()
         {
             var products = await _productService.GetProductsOnSaleAsync();
@@ -91,7 +90,7 @@ namespace TechStore.API.Controllers
             return Ok(products);
         }
 
-        [HttpGet("/api/products/brand/{id:int}")]
+        [HttpGet("brand/{id:int}")]
         public async Task<IActionResult> GetProductsByBrandId(int id)
         {
             var products = await _productService.GetProductsByBrandIdAsync(id);
@@ -102,7 +101,7 @@ namespace TechStore.API.Controllers
             return Ok(products);
         }
 
-        [HttpGet("/api/products/brand/{name}")]
+        [HttpGet("brand/{name}")]
         public async Task<IActionResult> GetProductsByBrandNameAsync(string name)
         {
             var products = await _productService.GetProductsByBrandNameAsync(name);
@@ -113,7 +112,7 @@ namespace TechStore.API.Controllers
             return Ok(products);
         }
 
-        [HttpGet("/api/products/subcategory/{id:int}")]
+        [HttpGet("subcategory/{id:int}")]
         public async Task<IActionResult> GetProductsBySubcategoryIdAsync(int id)
         {
             var products = await _productService.GetProductsBySubcategoryIdAsync(id);
@@ -124,7 +123,7 @@ namespace TechStore.API.Controllers
             return Ok(products);
         }
 
-        [HttpGet("/api/products/subcategory/{name}")]
+        [HttpGet("subcategory/{name}")]
         public async Task<IActionResult> GetProductsBySubcategoryName(string name)
         {
             var products = await _productService.GetProductsBySubcategoryNameAsync(name);
@@ -135,7 +134,7 @@ namespace TechStore.API.Controllers
             return Ok(products);
         }
 
-        [HttpGet("/api/products/name/{name}")]
+        [HttpGet("name/{name}")]
         public async Task<IActionResult> GetProductsByName(string name)
         {
             var products = await _productService.GetProductsByNameAsync(name);
@@ -143,7 +142,7 @@ namespace TechStore.API.Controllers
             return Ok(products);
         }
 
-        [HttpGet("/api/products/price")]
+        [HttpGet("price")]
         public async Task<IActionResult> GetProductsByPrice(decimal priceFrom, decimal priceTo)
         {
             var products = await _productService.GetProductsByPriceAsync(priceFrom, priceTo);
@@ -151,7 +150,7 @@ namespace TechStore.API.Controllers
             return Ok(products);
         }
 
-        [HttpGet("/api/products/rating")]
+        [HttpGet("rating")]
         public async Task<IActionResult> GetProductsByRating(decimal rating)
         {
             var products = await _productService.GetProductsByRatingAsync(rating);

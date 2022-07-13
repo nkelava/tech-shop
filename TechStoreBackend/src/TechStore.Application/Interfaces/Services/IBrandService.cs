@@ -1,5 +1,4 @@
 ﻿using TechStore.Application.Models.Brand;
-using TechStore.Domain.Entities.ProductAggregate;
 
 
 namespace TechStore.Application.Interfaces.Services
@@ -10,8 +9,8 @@ namespace TechStore.Application.Interfaces.Services
         Task DeleteAsync(int brandId);
         Task UpdateAsync(BrandUpdateModel brand);
 
-        Task<Brand> GetBrandByIdAsync(int brandId);
+        Task<BrandReadModel> GetBrandByIdAsync(int brandId);
 
-        Task<IEnumerable<Brand>> GetAllBrandsAsync();
+        Task<IEnumerable<BrandReadModel>> GetAllBrandsAsync();
     }
 }
