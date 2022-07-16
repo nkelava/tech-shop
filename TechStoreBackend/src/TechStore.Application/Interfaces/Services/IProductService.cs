@@ -14,6 +14,9 @@ namespace TechStore.Application.Interfaces.Services
 
         Task<IList<ProductReadModel>> GetAllProductsAsync();
         Task<IList<ProductReadModel>> GetProductsOnSaleAsync();
+        Task<IList<ProductReadModel>> GetNewProductsAsync();
+        Task<IList<ProductReadModel>> GetTopSellingProductsAsync();
+        Task<IList<ProductReadModel>> GetTopRatedProductsAsync();
         Task<IList<ProductReadModel>> GetProductsByBrandIdAsync(int brandId);
         Task<IList<ProductReadModel>> GetProductsByBrandNameAsync(string brandName);
         Task<IList<ProductReadModel>> GetProductsBySubcategoryIdAsync(int subcategoryId);

@@ -12,8 +12,8 @@ namespace TechStore.Application.Specifications.WishlistSpecification
             AddInclude(w => w.Products);
         }
 
-        public WishlistWithProductsSpecification(string username) 
-            : base(w => w.Username.ToLower().Equals(username.ToLower()))
+        public WishlistWithProductsSpecification(string email) 
+            : base(w => w.Email.ToLower().Equals(email.ToLower()))
         {
             AddInclude(w => w.Products);
         }

@@ -90,6 +90,31 @@ namespace TechStore.API.Controllers
             return Ok(products);
         }
 
+        [HttpGet("new")]
+        public async Task<IActionResult> GetNewProducts()
+        {
+            var newProducts = await _productService.GetNewProductsAsync();
+
+            return Ok(newProducts);
+        }
+
+        [HttpGet("bestsellers")]
+        public async Task<IActionResult> GetTopSellingProducts()
+        {
+            var topSellingProducts = await _productService.GetTopSellingProductsAsync();
+
+            return Ok(topSellingProducts);
+        }
+
+
+        [HttpGet("top")]
+        public async Task<IActionResult> GetTopRatedProducts()
+        {
+            var topRatedProducts = await _productService.GetTopRatedProductsAsync();
+
+            return Ok(topRatedProducts);
+        }
+
         [HttpGet("brand/{id:int}")]
         public async Task<IActionResult> GetProductsByBrandId(int id)
         {

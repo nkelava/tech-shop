@@ -3,7 +3,7 @@
 
 namespace TechStore.Domain.Entities.ProductAggregate
 {
-    public class ProductProperty : Entity
+    public class ProductProperty
     {
         public string Value { get; set; }
 

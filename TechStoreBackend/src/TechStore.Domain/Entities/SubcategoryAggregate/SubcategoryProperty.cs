@@ -3,7 +3,7 @@
 
 namespace TechStore.Domain.Entities.SubcategoryAggregate
 {
-    public class SubcategoryProperty : Entity
+    public class SubcategoryProperty
     {
         public int SubcategoryId { get; set; }
         public  Subcategory Subcategory { get; set; }

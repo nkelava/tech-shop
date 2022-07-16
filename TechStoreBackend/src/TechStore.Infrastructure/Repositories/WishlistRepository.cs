@@ -12,9 +12,9 @@ namespace TechStore.Infrastructure.Repositories
         public WishlistRepository(TechStoreContext techStoreContext) 
             : base(techStoreContext) { }
 
-        public Wishlist GetByUsernameAsync(string username)
+        public Wishlist GetByEmailAsync(string email)
         {
-            var spec = new WishlistWithProductsSpecification(username);
+            var spec = new WishlistWithProductsSpecification(email);
             var wishlist = Find(spec).FirstOrDefault();
 
             return wishlist;

@@ -20,9 +20,9 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task AddProductAsync(string username, int productId)
+        public async Task AddProductAsync(string email, int productId)
         {
-            var wishlist = await GetExistingOrCreateNewWishlist(username);
+            var wishlist = await GetExistingOrCreateNewWishlist(email);
             wishlist.AddProduct(productId);
 
             _repository.Wishlist.Update(wishlist);
@@ -62,9 +62,9 @@ namespace TechStore.Application.Services
             return wishlistReadModel;
         }
 
-        private async Task<Wishlist> GetExistingOrCreateNewWishlist(string username)
+        private async Task<Wishlist> GetExistingOrCreateNewWishlist(string email)
         {
-            var wishlist = _repository.Wishlist.GetByUsernameAsync(username);
+            var wishlist = _repository.Wishlist.GetByEmailAsync(email);
 
             if (wishlist != null)
                 return wishlist;
@@ -72,7 +72,7 @@ namespace TechStore.Application.Services
             // Create new in case of first attempt
             var newWishlist = new Wishlist
             {
-                Username = username
+                Email = email
             };
 
             _repository.Wishlist.Add(newWishlist);

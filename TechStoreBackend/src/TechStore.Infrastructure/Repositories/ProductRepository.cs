@@ -39,6 +39,27 @@ namespace TechStore.Infrastructure.Repositories
             return products;
         }
 
+        public async Task<IList<Product>> GetNewProductsAsync()
+        {
+            var products = await FindAll().OrderByDescending(p => p.CreatedAt).Take(20).ToListAsync();
+
+            return products;
+        }
+        
+        public async Task<IList<Product>> GetTopSellingProductsAsync()
+        {
+            var products = await FindAll().OrderByDescending(p => p.UnitsSold).Take(20).ToListAsync();
+
+            return products;
+        }
+
+        public async Task<IList<Product>> GetTopRatedProductsAsync()
+        {
+            var products = await FindAll().OrderByDescending(p => p.Rating).Take(20).ToListAsync();
+
+            return products;
+        }
+
         public async Task<IList<Product>> GetProductsByBrandIdAsync(int brandId)
         {
             var spec = new ProductsWithBrandSpecification(brandId);

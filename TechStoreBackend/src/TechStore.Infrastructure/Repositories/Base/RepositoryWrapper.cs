@@ -14,6 +14,7 @@ namespace TechStore.Infrastructure.Repositories.Base
         private INewsletterRepository _newsletter;
         private IOrderRepository _order;
         private IProductRepository _product;
+        private IPropertyRepository _property;
         private IReviewRepository _review;
         private ISubcategoryRepository _subcategory;
         private IWishlistRepository _wishlist;
@@ -93,6 +94,19 @@ namespace TechStore.Infrastructure.Repositories.Base
                 }
 
                 return _product;
+            }
+        }
+
+        public IPropertyRepository Property
+        {
+            get
+            {
+                if (_property == null)
+                {
+                    _property = new PropertyRepository(_repositoryContext);
+                }
+
+                return _property;
             }
         }
 

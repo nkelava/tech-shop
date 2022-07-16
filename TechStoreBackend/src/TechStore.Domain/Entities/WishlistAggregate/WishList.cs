@@ -5,7 +5,7 @@ namespace TechStore.Domain.Entities.Wishlist
 {
     public class Wishlist : Entity
     {
-        public string Username { get; set; }
+        public string Email { get; set; }
         // n - n
         public List<WishListProduct> Products { get; set; } = new List<WishListProduct>();
 

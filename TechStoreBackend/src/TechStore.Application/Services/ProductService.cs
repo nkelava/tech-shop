@@ -20,9 +20,9 @@ namespace TechStore.Application.Services
 
         public async Task AddAsync(ProductCreateModel productModel)
         {
-            var productMapped = _mapper.Map<Product>(productModel);
-            
-            _repository.Product.Add(productMapped);
+            var product = _mapper.Map<Product>(productModel);
+
+            _repository.Product.Add(product);
             await _repository.SaveAsync();
         }
 
@@ -69,6 +69,30 @@ namespace TechStore.Application.Services
         public async Task<IList<ProductReadModel>> GetProductsOnSaleAsync()
         {
             var products = await _repository.Product.GetProductsOnSaleAsync();
+            var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
+
+            return productsMapped;
+        }
+
+        public async Task<IList<ProductReadModel>> GetNewProductsAsync()
+        {
+            var products = await _repository.Product.GetNewProductsAsync();
+            var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
+
+            return productsMapped;
+        }
+
+        public async Task<IList<ProductReadModel>> GetTopSellingProductsAsync()
+        {
+            var products = await _repository.Product.GetTopSellingProductsAsync();
+            var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
+
+            return productsMapped;
+        }
+
+        public async Task<IList<ProductReadModel>> GetTopRatedProductsAsync()
+        {
+            var products = await _repository.Product.GetTopRatedProductsAsync();
             var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
 
             return productsMapped;
