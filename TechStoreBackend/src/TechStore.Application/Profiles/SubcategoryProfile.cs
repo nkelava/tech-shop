@@ -9,9 +9,10 @@ namespace TechStore.Application.Profiles
     {
         public SubcategoryProfile()
         {
-           CreateMap<Subcategory, SubcategoryReadModel>().ReverseMap();    
-           CreateMap<Subcategory, SubcategoryCreateModel>().ReverseMap();    
-           CreateMap<Subcategory, SubcategoryUpdateModel>().ReverseMap();    
+           CreateMap<Subcategory, SubcategoryReadModel>().ReverseMap();
+           CreateMap<Subcategory, SubcategoryCreateModel>().ReverseMap();
+           CreateMap<Subcategory, SubcategoryUpdateModel>().ReverseMap();
+           CreateMap<SubcategoryProperty, SubcategoryPropertyModel>().ReverseMap();
         }
     }
 }

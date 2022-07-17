@@ -7,5 +7,7 @@ namespace TechStore.Application.Models.Subcategory
         public string Name { get; set; }
 
         public int CategoryId { get; set; }
+
+        public IList<SubcategoryPropertyModel> Properties { get; set; }
     }
 }
