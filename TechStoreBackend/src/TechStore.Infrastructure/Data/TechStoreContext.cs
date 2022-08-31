@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TechStore.Application.Models.Authorization;
 using TechStore.Domain.Entities;
 using TechStore.Domain.Entities.Cart;
 using TechStore.Domain.Entities.Order;
@@ -10,7 +12,7 @@ using TechStore.Domain.Entities.Wishlist;
 
 namespace TechStore.Infrastructure.Data
 {
-    public  class TechStoreContext : DbContext
+    public  class TechStoreContext : IdentityDbContext
     {
         public TechStoreContext(DbContextOptions<TechStoreContext> options) : base(options) { }
 
@@ -29,6 +31,7 @@ namespace TechStore.Infrastructure.Data
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
         public DbSet<Newsletter> Newsletters { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
 
 

@@ -1,8 +1,11 @@
-﻿using TechStore.Domain.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using TechStore.Domain.Entities;
 using TechStore.Domain.Entities.Cart;
 using TechStore.Domain.Entities.Order;
 using TechStore.Domain.Entities.ProductAggregate;
 using TechStore.Domain.Entities.SubcategoryAggregate;
+using TechStore.Domain.Entities.User;
 using TechStore.Domain.Entities.Wishlist;
 using TechStore.Domain.Enums.Order;
 
@@ -66,6 +69,9 @@ namespace TechStore.Infrastructure.Data.Seed
 
                 if (!_techStoreContext.OrderProducts.Any())
                     await SeedOrderProducts();
+
+                if (!_techStoreContext.UserRoles.Any())
+                    await SeedRoles();
             }
             catch (Exception ex)
             {
@@ -826,6 +832,22 @@ namespace TechStore.Infrastructure.Data.Seed
 
             _techStoreContext.OrderProducts.AddRange(orderProducts);
             await _techStoreContext.SaveChangesAsync();
+        }
+
+        private async Task SeedRoles()
+        {
+            var roleStore = new RoleStore<IdentityRole>(_techStoreContext);
+            var userRoles = new List<string> { UserRoles.Admin, UserRoles.User };
+
+            foreach(var role in userRoles)
+            {
+                if (!_techStoreContext.Roles.Any(r => r.Name.ToLower().Equals(role.ToLower())))
+                    await roleStore.CreateAsync(new IdentityRole
+                    {
+                        Name = role,
+                        NormalizedName = role.ToUpper()
+                    });
+            }
         }
     }
 }
