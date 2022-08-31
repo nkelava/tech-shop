@@ -1,4 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using TechStore.API.Configuration;
 using TechStore.Application.Interfaces.Repositories;
 using TechStore.Application.Interfaces.Repositories.Base;
 using TechStore.Application.Interfaces.Services;
@@ -13,9 +18,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-
-
-builder.Services.AddTransient<DataSeeder>();
 // Add project services
 ConfigureServices(builder.Services);
 
@@ -37,9 +39,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
@@ -49,9 +51,12 @@ app.Run();
 
 void ConfigureServices(IServiceCollection services)
 {
+    ConfigureAuthentication(services);
+    ConfigureDatabase(services);
+    ConfigureIdentity(services);
+    ConfigureSeeder(services);
     ConfigureApplicationLayer(services);
     ConfigureInfrastructureLayer(services);
-    ConfigureDatabase(services);
 }
 
 void ConfigureDatabase(IServiceCollection services)
@@ -59,6 +64,65 @@ void ConfigureDatabase(IServiceCollection services)
     services.AddDbContext<TechStoreContext>(options => {
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     });
+}
+
+void ConfigureSeeder(IServiceCollection services)
+{
+    services.AddTransient<DataSeeder>();
+}
+
+void ConfigureIdentity(IServiceCollection services)
+{
+    services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<TechStoreContext>()
+    .AddDefaultTokenProviders();
+
+    services.Configure<IdentityOptions>(options =>
+    {
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequiredUniqueChars = 0;
+        options.Password.RequiredLength = 8;
+
+        options.User.AllowedUserNameCharacters =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@";
+        options.User.RequireUniqueEmail = true;
+    });
+}
+
+void ConfigureAuthentication(IServiceCollection services)
+{
+    services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+
+    var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtSettings:SecretKey").Value);
+    var tokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration.GetSection("JwtSettings:Issuer").Value,
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration.GetSection("JwtSettings:Audience").Value,
+        RequireExpirationTime = false, // for dev purposes
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+    };
+
+    services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(jwt =>
+    {
+        jwt.SaveToken = true;
+        jwt.TokenValidationParameters = tokenValidationParameters; 
+    });
+
+    services.AddSingleton(tokenValidationParameters);
 }
 
 void ConfigureApplicationLayer(IServiceCollection services)
