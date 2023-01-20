@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function NotFound() {
     return(
         <>
@@ -5,7 +7,7 @@ function NotFound() {
             <p>
                 Let's get you back home.
             </p>
-
+            <Link to="/">GO HOME</Link>
         </>
     )
 }
