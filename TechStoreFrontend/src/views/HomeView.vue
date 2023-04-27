@@ -35,6 +35,14 @@ import TheCard from "@/components/TheCard.vue";
     </div>
     <!-- ------------ -->
     <!-- Add section -->
+    <div class="ads">
+      <div class="left"></div>
+      <div class="right">
+        <div class="top"></div>
+        <div class="bottom"></div>
+      </div>
+    </div>
+    <!-- ----------- -->
   </div>
 </template>
 
@@ -74,5 +82,39 @@ import TheCard from "@/components/TheCard.vue";
 
 .best-sellers h3 {
   color: var(--my-t);
+}
+
+.ads {
+  background-color: var(--my-s);
+  height: 500px;
+  width: 100%;
+  display: flex;
+  margin: 2rem 0;
+  padding: 2rem;
+}
+
+.left,
+.top,
+.bottom {
+  background-color: #847c5f;
+}
+
+.left,
+.right {
+  width: 50%;
+  margin: 1rem;
+}
+
+.right {
+  display: block;
+}
+
+.top {
+  margin-bottom: 40px;
+}
+
+.top,
+.bottom {
+  height: 45%;
 }
 </style>
