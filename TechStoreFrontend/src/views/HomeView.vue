@@ -30,7 +30,7 @@ import AsusAdImage from "../assets/images/test/banners/asus.png";
       </div>
     </div>
     <!-- ----------------------------------------------------- -->
-    <!-- Best sellers -->
+    <!-- Best sellers - TODO: product list could be a separate component -->
     <div class="best-sellers">
       <h3>Best Sellers</h3>
       <hr />
@@ -52,6 +52,21 @@ import AsusAdImage from "../assets/images/test/banners/asus.png";
       </div>
     </div>
     <!-- ----------- -->
+    <!-- Top rated, New arrivals, Hot offers - TODO: product list could be a separate component -->
+    <div>
+      <div class="topnewhot">
+        <div class="links">
+          <a href="#">Top Rated</a>
+          |
+          <a href="#">New Arrivals</a>
+          |
+          <a href="#">Hot Offer</a>
+        </div>
+        <hr />
+        <TheCard />
+      </div>
+    </div>
+    <!-- ----------------------------------- -->
   </div>
 </template>
 
@@ -84,8 +99,9 @@ import AsusAdImage from "../assets/images/test/banners/asus.png";
   border-radius: 0 10px 10px 0;
 }
 
-.best-sellers {
-  margin-top: 40px;
+.best-sellers,
+.topnewhot {
+  margin: 40px 0;
   padding: 0.5rem 5rem;
 }
 
@@ -132,5 +148,16 @@ import AsusAdImage from "../assets/images/test/banners/asus.png";
 .bottom img {
   height: 100%;
   width: 100%;
+}
+
+.links a:first-child {
+  color: var(--my-t);
+}
+
+.links a {
+  color: #cabb9d;
+  text-decoration: none;
+  font-size: 1rem;
+  margin: 0 0.5rem;
 }
 </style>
