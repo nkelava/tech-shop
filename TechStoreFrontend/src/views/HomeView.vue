@@ -1,5 +1,8 @@
 <script setup>
 import TheCard from "@/components/TheCard.vue";
+import DellAdImage from "../assets/images/test/banners/dell.jpg";
+import LogitechAdImage from "../assets/images/test/banners/logitech.jpg";
+import AsusAdImage from "../assets/images/test/banners/asus.png";
 </script>
 
 <template>
@@ -36,10 +39,16 @@ import TheCard from "@/components/TheCard.vue";
     <!-- ------------ -->
     <!-- Add section -->
     <div class="ads">
-      <div class="left"></div>
+      <div class="left">
+        <img :src="DellAdImage" alt="" />
+      </div>
       <div class="right">
-        <div class="top"></div>
-        <div class="bottom"></div>
+        <div class="top">
+          <img :src="AsusAdImage" alt="" />
+        </div>
+        <div class="bottom">
+          <img :src="LogitechAdImage" alt="" />
+        </div>
       </div>
     </div>
     <!-- ----------- -->
@@ -116,5 +125,12 @@ import TheCard from "@/components/TheCard.vue";
 .top,
 .bottom {
   height: 45%;
+}
+
+.left img,
+.top img,
+.bottom img {
+  height: 100%;
+  width: 100%;
 }
 </style>
