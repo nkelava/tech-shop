@@ -1,3 +1,7 @@
+<script setup>
+import TheCard from "@/components/TheCard.vue";
+</script>
+
 <template>
   <div>
     <div class="hero">
@@ -27,8 +31,10 @@
     <div class="best-sellers">
       <h3>Best Sellers</h3>
       <hr />
+      <TheCard />
     </div>
     <!-- ------------ -->
+    <!-- Add section -->
   </div>
 </template>
 
@@ -40,7 +46,7 @@
 
 .banner-container {
   width: 100%;
-  margin-top: 40px;
+  margin-top: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -62,6 +68,11 @@
 }
 
 .best-sellers {
+  margin-top: 40px;
   padding: 0.5rem 5rem;
+}
+
+.best-sellers h3 {
+  color: var(--my-t);
 }
 </style>
