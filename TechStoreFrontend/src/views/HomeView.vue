@@ -1,5 +1,7 @@
 <script setup>
 import TheCard from "@/components/TheCard.vue";
+import TheNewsletters from "@/components/TheNewsletters.vue";
+
 import DellAdImage from "../assets/images/test/banners/dell.jpg";
 import LogitechAdImage from "../assets/images/test/banners/logitech.jpg";
 import AsusAdImage from "../assets/images/test/banners/asus.png";
@@ -30,14 +32,14 @@ import AsusAdImage from "../assets/images/test/banners/asus.png";
       </div>
     </div>
     <!-- ----------------------------------------------------- -->
-    <!-- Best sellers - TODO: product list could be a separate component -->
+    <!-- Best sellers section - TODO: product list could be a separate component -->
     <div class="best-sellers">
       <h3>Best Sellers</h3>
       <hr />
       <TheCard />
     </div>
     <!-- ------------ -->
-    <!-- Add section -->
+    <!-- Ad section -->
     <div class="ads">
       <div class="left">
         <img :src="DellAdImage" alt="" />
@@ -52,21 +54,22 @@ import AsusAdImage from "../assets/images/test/banners/asus.png";
       </div>
     </div>
     <!-- ----------- -->
-    <!-- Top rated, New arrivals, Hot offers - TODO: product list could be a separate component -->
-    <div>
-      <div class="topnewhot">
-        <div class="links">
-          <a href="#">Top Rated</a>
-          |
-          <a href="#">New Arrivals</a>
-          |
-          <a href="#">Hot Offer</a>
-        </div>
-        <hr />
-        <TheCard />
+    <!-- Top rated, New arrivals, Hot offers section - TODO: product list could be a separate component -->
+    <div class="topnewhot">
+      <div class="links">
+        <a href="#">Top Rated</a>
+        |
+        <a href="#">New Arrivals</a>
+        |
+        <a href="#">Hot Offer</a>
       </div>
+      <hr />
+      <TheCard />
     </div>
     <!-- ----------------------------------- -->
+    <!-- Newsletters section -->
+    <TheNewsletters />
+    <!-- ------------------- -->
   </div>
 </template>
 
