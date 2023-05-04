@@ -1,46 +1,70 @@
 <script setup>
-import TheCard from "@/components/TheCard.vue";
+import AppCard from "@/components/AppCard.vue";
 import TheNewsletters from "@/components/TheNewsletters.vue";
 
 import DellAdImage from "../assets/images/test/banners/dell.jpg";
 import LogitechAdImage from "../assets/images/test/banners/logitech.jpg";
 import AsusAdImage from "../assets/images/test/banners/asus.png";
+
+import HomeIcon from "../assets/icons/house.png";
+import RefundIcon from "../assets/icons/refund.png";
+import SupportIcon from "../assets/icons/shield.png";
+import RocketIcon from "../assets/icons/rocket.png";
 </script>
 
 <template>
   <div>
-    <div class="hero">
+    <div class="slider">
       <img src="" alt="" />
     </div>
     <!-- TODO: separate components - banner list, banner item -->
     <div class="banner-container">
       <div class="banner-item">
-        <h3>Lorem ipsum</h3>
-        Lorem, ipsum.
+        <div class="banner-item--left">
+          <img :src="HomeIcon" alt="" />
+        </div>
+        <div class="banner-item--right">
+          <h3>Lorem ipsum</h3>
+          Lorem, ipsum.
+        </div>
       </div>
       <div class="banner-item">
-        <h3>Lorem ipsum</h3>
-        Lorem, ipsum.
+        <div class="banner-item--left">
+          <img :src="RefundIcon" alt="" />
+        </div>
+        <div class="banner-item--right">
+          <h3>Lorem ipsum</h3>
+          Lorem, ipsum.
+        </div>
       </div>
       <div class="banner-item">
-        <h3>Lorem ipsum</h3>
-        Lorem, ipsum.
+        <div class="banner-item--left bl">
+          <img :src="SupportIcon" alt="" />
+        </div>
+        <div class="banner-item--right">
+          <h3>Lorem ipsum</h3>
+          Lorem, ipsum.
+        </div>
       </div>
       <div class="banner-item">
-        <h3>Lorem ipsum</h3>
-        Lorem, ipsum.
+        <div class="banner-item--left">
+          <img :src="RocketIcon" alt="" />
+        </div>
+        <div class="banner-item--right">
+          <h3>Lorem ipsum</h3>
+          Lorem, ipsum.
+        </div>
       </div>
     </div>
-    <!-- ----------------------------------------------------- -->
     <!-- Best sellers section - TODO: product list could be a separate component -->
     <div class="best-sellers">
       <h3>Best Sellers</h3>
       <hr />
-      <TheCard />
+      <AppCard />
     </div>
     <!-- ------------ -->
-    <!-- Ad section -->
-    <div class="ads">
+    <!-- Promotions section -->
+    <div class="promotions">
       <div class="left">
         <img :src="DellAdImage" alt="" />
       </div>
@@ -64,7 +88,7 @@ import AsusAdImage from "../assets/images/test/banners/asus.png";
         <a href="#">Hot Offer</a>
       </div>
       <hr />
-      <TheCard />
+      <AppCard />
     </div>
     <!-- ----------------------------------- -->
     <!-- Newsletters section -->
@@ -74,7 +98,7 @@ import AsusAdImage from "../assets/images/test/banners/asus.png";
 </template>
 
 <style scoped>
-.hero {
+.slider {
   background: var(--my-s);
   height: 500px;
 }
@@ -89,9 +113,12 @@ import AsusAdImage from "../assets/images/test/banners/asus.png";
 
 .banner-item {
   background-color: var(--my-s);
-  color: var(--my-p);
   border: 1px solid var(--my-p);
-  padding: 1rem 2rem;
+  padding: 1rem 3rem;
+  color: var(--my-p);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .banner-item:first-child {
@@ -100,6 +127,14 @@ import AsusAdImage from "../assets/images/test/banners/asus.png";
 
 .banner-item:last-child {
   border-radius: 0 10px 10px 0;
+}
+
+.banner-item--left {
+  padding-right: 1.5rem;
+}
+
+.banner-item .bl {
+  padding: 0rem 3rem;
 }
 
 .best-sellers,
@@ -112,7 +147,7 @@ import AsusAdImage from "../assets/images/test/banners/asus.png";
   color: var(--my-t);
 }
 
-.ads {
+.promotions {
   background-color: var(--my-s);
   height: 500px;
   width: 100%;
