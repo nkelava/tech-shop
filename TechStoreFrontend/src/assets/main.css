@@ -1,1 +1,10 @@
-@import './base.css';
+@import "./base.css";
+
+a {
+  text-decoration: none;
+  pointer: cursor;
+}
+
+a:hover {
+  text-decoration: underline;
+}
