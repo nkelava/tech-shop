@@ -2,7 +2,7 @@
 
 a {
   text-decoration: none;
-  pointer: cursor;
+  cursor: pointer;
 }
 
 a:hover {
