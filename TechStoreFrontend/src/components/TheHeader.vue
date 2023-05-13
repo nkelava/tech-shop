@@ -84,7 +84,7 @@ const counter = 3;
 
 <style scoped>
 .header {
-  color: var(--my-p);
+  color: var(--ts-c-header-dark);
   width: 100%;
 }
 
@@ -98,7 +98,7 @@ const counter = 3;
 }
 
 .header-top {
-  background-color: var(--my-s);
+  background-color: var(--ts-c-bg-light);
 }
 
 .header-contact,
@@ -116,11 +116,7 @@ const counter = 3;
 }
 
 .link-p {
-  color: var(--my-p);
-}
-
-.link-s {
-  color: var(--my-s);
+  color: var(--ts-c-text-dark);
 }
 
 .header-icon {
@@ -132,11 +128,12 @@ const counter = 3;
 }
 
 .header-middle {
-  color: var(--my-s);
+  color: var(--ts-c-text-light);
 }
 
 .header-search,
 .header-greeting {
+  position: relative;
   display: flex;
 }
 
@@ -148,16 +145,16 @@ const counter = 3;
 .header-search input {
   border-radius: 30px;
   padding-left: 1rem;
-  width: 100%;
+  width: 500px;
   border: none;
 }
 
 .search-btn {
-  background-color: var(--my-s);
+  background-color: var(--ts-c-bg-light);
   border: none;
   border-radius: 30px;
   width: 3rem;
-  height: 100%;
+  height: 25px;
   position: absolute;
   right: 0;
 }
@@ -167,12 +164,12 @@ const counter = 3;
 }
 
 .header-bottom {
-  color: var(--my-s);
+  color: var(--ts-c-text-light);
 }
 
 .categories-btn {
-  background-color: var(--my-s);
-  color: var(--my-p);
+  background-color: var(--ts-c-bg-light);
+  color: var(--ts-c-text-dark);
   border: none;
   border-radius: 30px;
   padding: 5px 30px;
@@ -186,7 +183,7 @@ const counter = 3;
 }
 
 .categories-link {
-  color: var(--my-s);
+  color: var(--ts-c-text-light);
   margin: 0 10px;
 }
 
@@ -196,7 +193,7 @@ const counter = 3;
 }
 
 .counter {
-  border: 1px solid var(--my-s);
+  border: 1px solid var(--ts-c-border-light);
   border-radius: 50%;
   padding: 3px;
   vertical-align: top;

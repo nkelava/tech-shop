@@ -1,61 +1,18 @@
 <script setup>
 import AppCard from "@/components/AppCard.vue";
+import TheSlider from "@/components/TheSlider.vue";
+import TheBenefitList from "@/components/TheBenefitList.vue";
 import TheNewsletters from "@/components/TheNewsletters.vue";
 
 import DellAdImage from "../assets/images/test/banners/dell.jpg";
 import LogitechAdImage from "../assets/images/test/banners/logitech.jpg";
 import AsusAdImage from "../assets/images/test/banners/asus.png";
-
-import HomeIcon from "../assets/icons/house.png";
-import RefundIcon from "../assets/icons/refund.png";
-import SupportIcon from "../assets/icons/shield.png";
-import RocketIcon from "../assets/icons/rocket.png";
 </script>
 
 <template>
   <div>
-    <div class="slider">
-      <img src="" alt="" />
-    </div>
-    <!-- TODO: separate components - banner list, banner item -->
-    <div class="banner-container">
-      <div class="banner-item">
-        <div class="banner-item--left">
-          <img :src="HomeIcon" alt="" />
-        </div>
-        <div class="banner-item--right">
-          <h3>Lorem ipsum</h3>
-          Lorem, ipsum.
-        </div>
-      </div>
-      <div class="banner-item">
-        <div class="banner-item--left">
-          <img :src="RefundIcon" alt="" />
-        </div>
-        <div class="banner-item--right">
-          <h3>Lorem ipsum</h3>
-          Lorem, ipsum.
-        </div>
-      </div>
-      <div class="banner-item">
-        <div class="banner-item--left bl">
-          <img :src="SupportIcon" alt="" />
-        </div>
-        <div class="banner-item--right">
-          <h3>Lorem ipsum</h3>
-          Lorem, ipsum.
-        </div>
-      </div>
-      <div class="banner-item">
-        <div class="banner-item--left">
-          <img :src="RocketIcon" alt="" />
-        </div>
-        <div class="banner-item--right">
-          <h3>Lorem ipsum</h3>
-          Lorem, ipsum.
-        </div>
-      </div>
-    </div>
+    <TheSlider />
+    <TheBenefitList />
     <!-- Best sellers section - TODO: product list could be a separate component -->
     <div class="best-sellers">
       <h3>Best Sellers</h3>
@@ -98,45 +55,6 @@ import RocketIcon from "../assets/icons/rocket.png";
 </template>
 
 <style scoped>
-.slider {
-  background: var(--my-s);
-  height: 500px;
-}
-
-.banner-container {
-  width: 100%;
-  margin-top: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.banner-item {
-  background-color: var(--my-s);
-  border: 1px solid var(--my-p);
-  padding: 1rem 3rem;
-  color: var(--my-p);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.banner-item:first-child {
-  border-radius: 10px 0 0 10px;
-}
-
-.banner-item:last-child {
-  border-radius: 0 10px 10px 0;
-}
-
-.banner-item--left {
-  padding-right: 1.5rem;
-}
-
-.banner-item .bl {
-  padding: 0rem 3rem;
-}
-
 .best-sellers,
 .topnewhot {
   margin: 40px 0;
@@ -144,11 +62,11 @@ import RocketIcon from "../assets/icons/rocket.png";
 }
 
 .best-sellers h3 {
-  color: var(--my-t);
+  color: var(--ts-c-text-highlight);
 }
 
 .promotions {
-  background-color: var(--my-s);
+  background-color: var(--ts-c-bg-light);
   height: 500px;
   width: 100%;
   display: flex;
@@ -159,7 +77,7 @@ import RocketIcon from "../assets/icons/rocket.png";
 .left,
 .top,
 .bottom {
-  background-color: #847c5f;
+  background-color: var(--ts-c-secondary-darker);
 }
 
 .left,
@@ -189,11 +107,11 @@ import RocketIcon from "../assets/icons/rocket.png";
 }
 
 .links a:first-child {
-  color: var(--my-t);
+  color: var(--ts-c-text-highlight);
 }
 
 .links a {
-  color: #cabb9d;
+  color: var(--ts-c-secondary-dark);
   text-decoration: none;
   font-size: 1rem;
   margin: 0 0.5rem;

@@ -15,14 +15,14 @@
 
 <style scoped>
 .newsletters {
-  background-color: var(--my-t);
+  background-color: var(--ts-c-bg-highlight);
   height: 200px;
   margin-bottom: 3rem;
   display: flex;
 }
 
 .left {
-  color: var(--my-p);
+  color: var(--ts-c-text-dark);
 }
 
 .left,

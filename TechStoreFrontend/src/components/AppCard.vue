@@ -14,10 +14,10 @@ import pcImage from "@/assets/images/test/products/pc.png";
 
 <style scoped>
 .card {
-  background-color: var(--my-s);
-  color: var(--my-p);
-  padding: 1rem;
+  background-color: var(--ts-c-bg-light);
+  color: var(--ts-c-text-dark);
   margin-top: 40px;
+  padding: 1rem;
   display: block;
   text-align: center;
   width: 250px;
@@ -28,12 +28,12 @@ import pcImage from "@/assets/images/test/products/pc.png";
 }
 
 .card-summary {
-  color: #847c5f;
+  color: var(--ts-c-secondary-darker);
 }
 
 button {
+  background-color: var(--ts-c-bg-dark);
+  color: var(--ts-c-text-light);
   padding: 10px;
-  background-color: var(--my-p);
-  color: var(--my-s);
 }
 </style>

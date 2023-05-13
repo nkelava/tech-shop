@@ -44,7 +44,7 @@ const categories = ["Laptops", "Computers", "Monitors", "Peripherals", "Memory"]
 <style scoped>
 h3 {
   text-decoration: underline;
-  color: var(--my-t);
+  color: var(--ts-c-text-highlight);
 }
 .footer {
   width: 100%;
@@ -59,13 +59,12 @@ h3 {
 }
 
 .send {
-  position: absolute;
   bottom: 10px;
   right: 20px;
 }
 
 .categories a {
-  color: var(--my-s);
+  color: var(--ts-c-text-light);
   text-decoration: none;
   display: block;
 }
