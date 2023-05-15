@@ -84,7 +84,6 @@ const counter = 3;
 
 <style scoped>
 .header {
-  color: var(--ts-c-header-dark);
   width: 100%;
 }
 
@@ -99,6 +98,11 @@ const counter = 3;
 
 .header-top {
   background-color: var(--ts-c-bg-light);
+  color: var(--ts-c-header-dark);
+}
+
+.header-contact a {
+  color: var(--ts-c-header-dark);
 }
 
 .header-contact,
