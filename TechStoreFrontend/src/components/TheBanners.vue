@@ -46,7 +46,13 @@ import AsusAdImage from "@/assets/images/test/banners/asus.png";
   height: 100%;
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (min-width: 1400px) {
+  .banners {
+    padding-inline: 10rem;
+  }
+}
+
+@media only screen and (max-width: 750px) {
   .banners {
     grid-template-areas:
       "first"
