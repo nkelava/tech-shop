@@ -17,7 +17,7 @@ import AsusAdImage from "@/assets/images/test/banners/asus.png";
 .banners {
   background-color: var(--ts-c-bg-light);
   height: 40em;
-  padding: 2rem;
+  padding: 3rem;
   display: grid;
   grid-template-areas:
     "first second"
@@ -42,6 +42,7 @@ import AsusAdImage from "@/assets/images/test/banners/asus.png";
 }
 
 .banners img {
+  border-radius: 1rem;
   width: 100%;
   height: 100%;
 }
@@ -49,6 +50,12 @@ import AsusAdImage from "@/assets/images/test/banners/asus.png";
 @media only screen and (min-width: 1400px) {
   .banners {
     padding-inline: 10rem;
+  }
+}
+
+@media only screen and (min-width: 500px) {
+  .banners {
+    padding-inline: 7rem;
   }
 }
 
