@@ -55,6 +55,7 @@
   --ts-c-highlight: var(--ts-c-ternary);
 }
 
+*,
 *::before,
 *::after {
   box-sizing: border-box;
