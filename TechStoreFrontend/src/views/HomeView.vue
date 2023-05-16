@@ -1,38 +1,37 @@
 <script setup>
-import AppCard from "@/components/AppCard.vue";
 import TheSlider from "@/components/TheSlider.vue";
 import TheBenefitList from "@/components/TheBenefitList.vue";
 import TheBanners from "@/components/TheBanners.vue";
 import TheNewsletters from "@/components/TheNewsletters.vue";
+
+import AppProductList from "@/components/AppProductList.vue";
+import { products } from "@/data/products.js";
+
+const productsSlider = products.slice(0, 5);
 </script>
 
 <template>
   <div>
     <TheSlider />
     <TheBenefitList />
-    <!-- Best sellers section - TODO: product list could be a separate component -->
     <div class="best-sellers">
-      <h3>Best Sellers</h3>
+      <!-- TODO: add product grid component and pagination to it -->
+      <h2>Best Sellers</h2>
       <hr />
-      <AppCard />
+      <AppProductList :products="products" />
     </div>
-    <!-- ------------ -->
-    <!-- Promotions section -->
     <TheBanners />
-    <!-- ----------- -->
-    <!-- Top rated, New arrivals, Hot offers section - TODO: product list could be a separate component -->
-    <div class="topnewhot">
-      <div class="links">
-        <a href="#">Top Rated</a>
-        |
-        <a href="#">New Arrivals</a>
-        |
-        <a href="#">Hot Offer</a>
-      </div>
+    <!-- Add product slider component  -->
+    <div class="new">
+      <h2>New Arrivals</h2>
       <hr />
-      <AppCard />
+      <AppProductList :products="productsSlider" />
     </div>
-    <!-- ----------------------------------- -->
+    <div class="top">
+      <h2>Top Rated</h2>
+      <hr />
+      <AppProductList :products="productsSlider" />
+    </div>
     <!-- Newsletters section -->
     <TheNewsletters />
     <!-- ------------------- -->
@@ -40,24 +39,24 @@ import TheNewsletters from "@/components/TheNewsletters.vue";
 </template>
 
 <style scoped>
-.best-sellers,
-.topnewhot {
+.best-sellers {
   margin: 40px 0;
   padding: 0.5rem 5rem;
 }
 
-.best-sellers h3 {
+.best-sellers h2,
+.new h2,
+.top h2 {
   color: var(--ts-c-text-highlight);
 }
 
-.links a:first-child {
-  color: var(--ts-c-text-highlight);
+hr {
+  margin-bottom: 2rem;
 }
 
-.links a {
-  color: var(--ts-c-secondary-dark);
-  text-decoration: none;
-  font-size: 1rem;
-  margin: 0 0.5rem;
+.new,
+.top {
+  margin: 40px 0;
+  padding: 0.5rem 5rem;
 }
 </style>
