@@ -83,16 +83,13 @@ const counter = 3;
 </template>
 
 <style scoped>
-.header {
-  width: 100%;
-}
-
 .header-top,
 .header-middle,
 .header-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
   padding: 0.5rem 2rem;
 }
 
@@ -139,6 +136,7 @@ const counter = 3;
 .header-greeting {
   position: relative;
   display: flex;
+  align-items: center;
 }
 
 .header-search {
@@ -150,6 +148,7 @@ const counter = 3;
   border-radius: 30px;
   padding-left: 1rem;
   width: 500px;
+  height: 100%;
   border: none;
 }
 
