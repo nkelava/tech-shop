@@ -13,7 +13,7 @@ const { products } = defineProps(["products"]);
 <style scoped>
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 250px);
+  grid-template-columns: repeat(auto-fit, 200px);
   gap: 1rem;
   justify-content: center;
 }
