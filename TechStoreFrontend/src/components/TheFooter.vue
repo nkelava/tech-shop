@@ -1,79 +1,136 @@
 <script setup>
+import EmailIcon from "@/assets/icons/gmail.png";
+import PhoneIcon from "@/assets/icons/phone.png";
+import FacebookIcon from "@/assets/icons/socials/facebook.png";
+import InstagramIcon from "@/assets/icons/socials/instagram.png";
+import YoutubeIcon from "@/assets/icons/socials/youtube.png";
+
 const categories = ["Laptops", "Computers", "Monitors", "Peripherals", "Memory"];
 </script>
 
 <template>
   <div class="footer">
-    <div class="contact">
-      <form class="contactform item">
-        <div>
-          <h3>CONTACT US</h3>
-        </div>
-        <div>
+    <div class="footer__content">
+      <div class="contact-container">
+        <h3 class="footer__header">CONTACT US</h3>
+        <form class="contact-form">
           <input type="text" placeholder="Enter email..." />
-        </div>
-        <div>
           <input type="text" placeholder="Enter subject..." />
-        </div>
-        <div>
           <textarea cols="50" rows="10" placeholder="Enter message here..." />
-          <input type="submit" class="send" value="Send" />
+          <input type="submit" class="contact-form__btn" value="Send" />
+        </form>
+      </div>
+      <div class="categories-container">
+        <h3 class="footer__header">CATEGORIES</h3>
+        <a v-for="(category, index) in categories" :key="index" href="#">
+          {{ category }}
+        </a>
+      </div>
+      <div class="info-container">
+        <h3 class="footer__header">CONTACT INFO</h3>
+        <div class="info__email">
+          <img :src="EmailIcon" alt="email icon" class="header-icon" />
+          <p>Email: support@gmail.com</p>
         </div>
-      </form>
-    </div>
-    <div class="categories item">
-      <h3>CATEGORIES</h3>
-      <a v-for="(category, index) in categories" :key="index" href="#">
-        {{ category }}
-      </a>
-    </div>
-    <div class="contact-info item">
-      <h3>CONTACT INFO</h3>
-      <p>Email:</p>
-      <p>support@gmail.com</p>
-      <p>Phone:</p>
-      <p>123-456-7890</p>
+        <div class="info__phone">
+          <img :src="PhoneIcon" alt="phone icon" class="header-icon" />
+          <p>Phone: 123-456-7890</p>
+        </div>
+        <div class="info__socials">
+          <img :src="FacebookIcon" class="socials__icon" title="Facebook" alt="facebook icon" />
+          <img :src="InstagramIcon" class="socials__icon" title="Instagram" alt="instagram icon" />
+          <img :src="YoutubeIcon" class="socials__icon" title="Youtube" alt="youtube icon" />
+        </div>
+      </div>
     </div>
     <div class="copyright">
-      <hr />
-      Copyright © 2023 TechShop
+      <h4>Copyright © 2023 TechShop</h4>
     </div>
   </div>
 </template>
 
 <style scoped>
-h3 {
-  text-decoration: underline;
-  color: var(--ts-c-text-highlight);
-}
 .footer {
-  height: 100%;
-  padding: 0.5rem 5rem;
+  padding: 2rem 5rem;
+}
+
+.footer__content {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 2rem;
 }
 
-.item {
-  height: 100%;
+.footer__header {
+  color: var(--ts-c-text-highlight);
+  margin-bottom: 1rem;
 }
 
-.send {
-  bottom: 10px;
-  right: 20px;
+.contact-form {
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  padding-right: 1rem;
 }
 
-.categories a {
+.contact-form > * {
+  background-color: var(--ts-c-bg-light);
+  border: none;
+  border-radius: 5px;
+  color: var(--ts-c-text-dark);
+  padding: 3px 5px;
+}
+
+.contact-form__btn {
+  background: none;
+  position: absolute;
+  bottom: 5px;
+  right: 1.5rem;
+  cursor: pointer;
+}
+
+.categories-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.categories-container a {
   color: var(--ts-c-text-light);
-  text-decoration: none;
-  display: block;
+  padding-bottom: 5px;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.info__email,
+.info__phone {
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+img {
+  margin-right: 10px;
+}
+
+.info__socials {
+  padding-top: 2rem;
+  display: flex;
+}
+
+.info__socials > * {
+  padding-right: 10px;
 }
 
 .copyright {
+  color: var(--ts-c-primary-mute);
+  border-top: 1px solid var(--ts-c-primary-dark);
+  margin-top: 1rem;
+  padding: 5px;
   text-align: center;
-  padding: 1rem;
-}
-
-.copyright hr {
-  margin-top: 2rem;
 }
 </style>
