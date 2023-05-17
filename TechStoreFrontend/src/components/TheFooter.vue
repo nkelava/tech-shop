@@ -11,12 +11,14 @@ const categories = ["Laptops", "Computers", "Monitors", "Peripherals", "Memory"]
 <template>
   <div class="footer">
     <div class="footer__content">
+      <!-- TODO: maybe add one more section -->
       <div class="contact-container">
         <h3 class="footer__header">CONTACT US</h3>
         <form class="contact-form">
-          <input type="text" placeholder="Enter email..." />
-          <input type="text" placeholder="Enter subject..." />
-          <textarea cols="50" rows="10" placeholder="Enter message here..." />
+          <input type="text" placeholder="Enter email..." required />
+          <input type="text" placeholder="Enter subject..." required />
+          <!-- TODO: fix textarea resizing min and max -->
+          <textarea cols="50" rows="10" placeholder="Enter message here..." required />
           <input type="submit" class="contact-form__btn" value="Send" />
         </form>
       </div>

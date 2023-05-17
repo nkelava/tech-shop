@@ -47,9 +47,12 @@ import { products } from "@/data/products.js";
 .new h2,
 .top h2 {
   color: var(--ts-c-text-highlight);
+  padding: 3px;
 }
 
 hr {
+  border: 1px solid var(--ts-c-primary-darker);
+  border-radius: 5px;
   margin-bottom: 2rem;
 }
 
