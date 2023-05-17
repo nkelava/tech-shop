@@ -44,6 +44,7 @@
 }
 
 input[type="text"] {
+  background-color: var(--ts-c-bg-light);
   border: none;
   border-radius: 2rem;
   outline: none;
@@ -55,11 +56,11 @@ input[type="text"] {
 }
 
 input[type="submit"] {
-  background-color: var(--ts-c-primary-soft);
+  background-color: var(--ts-c-bg-dark);
   border: none;
   border-radius: 2rem;
   outline: none;
-  color: white;
+  color: var(--ts-c-text-light);
   font-weight: bold;
   height: 2rem;
   width: 7rem;
