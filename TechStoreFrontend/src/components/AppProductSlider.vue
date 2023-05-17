@@ -48,6 +48,6 @@ const breakpoints = {
 
 <style scoped>
 .carousel__pagination {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 </style>
