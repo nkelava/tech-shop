@@ -33,7 +33,7 @@ const { product } = defineProps(["product"]);
 
 .card__title {
   font-size: 1rem;
-  margin: 1rem;
+  margin: 0.5rem;
 }
 
 .card__summary {
