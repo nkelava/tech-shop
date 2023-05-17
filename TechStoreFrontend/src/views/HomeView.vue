@@ -5,9 +5,8 @@ import TheBanners from "@/components/TheBanners.vue";
 import TheNewsletters from "@/components/TheNewsletters.vue";
 
 import AppProductList from "@/components/AppProductList.vue";
+import AppProductSlider from "../components/AppProductSlider.vue";
 import { products } from "@/data/products.js";
-
-const productsSlider = products.slice(0, 5);
 </script>
 
 <template>
@@ -25,12 +24,12 @@ const productsSlider = products.slice(0, 5);
     <div class="new">
       <h2>New Arrivals</h2>
       <hr />
-      <AppProductList :products="productsSlider" />
+      <AppProductSlider :products="products" />
     </div>
     <div class="top">
       <h2>Top Rated</h2>
       <hr />
-      <AppProductList :products="productsSlider" />
+      <AppProductSlider :products="products" />
     </div>
     <!-- Newsletters section -->
     <TheNewsletters />
