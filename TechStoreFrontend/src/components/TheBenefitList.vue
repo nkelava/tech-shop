@@ -1,10 +1,10 @@
 <script setup>
 import BenefitItem from "@/components/AppBenefitItem.vue";
 
-import HomeIcon from "../assets/icons/house.png";
-import RefundIcon from "../assets/icons/refund.png";
-import SupportIcon from "../assets/icons/shield.png";
-import RocketIcon from "../assets/icons/rocket.png";
+import HomeIcon from "../assets/icons/benefits/house.png";
+import RefundIcon from "../assets/icons/benefits/refund.png";
+import SupportIcon from "../assets/icons/benefits/shield.png";
+import RocketIcon from "../assets/icons/benefits/rocket.png";
 </script>
 
 <template>

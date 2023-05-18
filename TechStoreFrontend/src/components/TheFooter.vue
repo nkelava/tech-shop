@@ -1,6 +1,6 @@
 <script setup>
-import EmailIcon from "@/assets/icons/gmail.png";
-import PhoneIcon from "@/assets/icons/phone.png";
+import EmailIcon from "@/assets/icons/contact/gmail.png";
+import PhoneIcon from "@/assets/icons/contact/phone.png";
 import FacebookIcon from "@/assets/icons/socials/facebook.png";
 import InstagramIcon from "@/assets/icons/socials/instagram.png";
 import YoutubeIcon from "@/assets/icons/socials/youtube.png";
@@ -90,7 +90,6 @@ const categories = ["Laptops", "Computers", "Monitors", "Peripherals", "Memory"]
   position: absolute;
   bottom: 5px;
   right: 1.5rem;
-  cursor: pointer;
 }
 
 .categories-container {

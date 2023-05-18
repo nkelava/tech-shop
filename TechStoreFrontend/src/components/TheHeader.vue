@@ -1,12 +1,12 @@
 <script setup>
 import { RouterLink } from "vue-router";
-import EmailIcon from "@/assets/icons/gmail.png";
-import PhoneIcon from "@/assets/icons/phone.png";
-import UserIcon from "@/assets/icons/user.png";
-import SearchIcon from "@/assets/icons/search.png";
-import MenuIcon from "@/assets/icons/menu.png";
-import FavoriteIcon from "@/assets/icons/favorite.png";
-import CartIcon from "@/assets/icons/cart.png";
+import EmailIcon from "@/assets/icons/contact/gmail.png";
+import PhoneIcon from "@/assets/icons/contact/phone.png";
+import UserIcon from "@/assets/icons/header/user.png";
+import SearchIcon from "@/assets/icons/header/search.png";
+import MenuIcon from "@/assets/icons/header/menu.png";
+import FavoriteIcon from "@/assets/icons/header/favorite.png";
+import CartIcon from "@/assets/icons/header/cart.png";
 
 const userEmail = "test@gmail.com";
 const counter = 3;
