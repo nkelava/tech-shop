@@ -60,11 +60,11 @@ const counter = 3;
         </button>
       </div>
       <div class="categories">
-        <router-link class="categories-link" to="/">Laptops</router-link>
-        <router-link class="categories-link" to="/">Computers</router-link>
-        <router-link class="categories-link" to="/">Monitors</router-link>
-        <router-link class="categories-link" to="/">Peripherals</router-link>
-        <router-link class="categories-link" to="/">Memory</router-link>
+        <router-link class="categories-link" to="/laptops">Laptops</router-link>
+        <router-link class="categories-link" to="/computers">Computers</router-link>
+        <router-link class="categories-link" to="/components">Components</router-link>
+        <router-link class="categories-link" to="/peripherals">Peripherals</router-link>
+        <router-link class="categories-link" to="/software">Software</router-link>
         <router-link class="categories-link" to="/">Contact Us</router-link>
       </div>
       <div>

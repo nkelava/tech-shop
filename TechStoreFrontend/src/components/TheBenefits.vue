@@ -1,5 +1,5 @@
 <script setup>
-import BenefitItem from "@/components/AppBenefitItem.vue";
+import BenefitCard from "@/components/BenefitCard.vue";
 
 import HomeIcon from "../assets/icons/benefits/house.png";
 import RefundIcon from "../assets/icons/benefits/refund.png";
@@ -9,10 +9,10 @@ import RocketIcon from "../assets/icons/benefits/rocket.png";
 
 <template>
   <div class="benefits-container">
-    <BenefitItem :icon="HomeIcon" title="Home Shipping" text="Lorem, ipsum." />
-    <BenefitItem :icon="RefundIcon" title="100% Refund" text="Lorem, ipsum." />
-    <BenefitItem :icon="SupportIcon" title="Client Support" text="Lorem, ipsum." />
-    <BenefitItem :icon="RocketIcon" title="Fast Delivery" text="Lorem, ipsum." />
+    <BenefitCard :icon="HomeIcon" title="Home Shipping" text="Lorem, ipsum." />
+    <BenefitCard :icon="RefundIcon" title="100% Refund" text="Lorem, ipsum." />
+    <BenefitCard :icon="SupportIcon" title="Client Support" text="Lorem, ipsum." />
+    <BenefitCard :icon="RocketIcon" title="Fast Delivery" text="Lorem, ipsum." />
   </div>
 </template>
 

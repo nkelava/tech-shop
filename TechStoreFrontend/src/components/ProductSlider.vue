@@ -1,5 +1,5 @@
 <script setup>
-import AppProductCard from "@/components/AppProductCard.vue";
+import ProductCard from "@/components/ProductCard.vue";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 
@@ -36,7 +36,7 @@ const breakpoints = {
 <template>
   <Carousel :items-to-show="5.5" :wrap-around="true" :breakpoints="breakpoints">
     <Slide v-for="product in products" :key="product">
-      <AppProductCard :product="product" />
+      <ProductCard :product="product" />
     </Slide>
 
     <template #addons>

@@ -1,13 +1,11 @@
 <script setup>
-import pcImage from "@/assets/images/test/products/pc.png";
-
 const { product } = defineProps(["product"]);
 </script>
 
 <template>
   <!-- TODO: add favorites and cart icon on hover -->
   <div class="card">
-    <img :src="pcImage" alt="" class="card__image" />
+    <img :src="product.img" alt="" class="card__image" />
     <h2 class="card__title">{{ product.name }}</h2>
     <p class="card__summary">{{ product.summary }}</p>
     <!-- TODO: add currency as separate property -->
@@ -20,6 +18,7 @@ const { product } = defineProps(["product"]);
 .card {
   background-color: var(--ts-c-bg-light);
   border-radius: 10px;
+  box-shadow: 7px 5px 5px var(--ts-c-primary-darker);
   color: var(--ts-c-text-dark);
   padding: 1rem;
   text-align: center;

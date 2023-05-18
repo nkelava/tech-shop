@@ -9,6 +9,7 @@ const categories = ["Laptops", "Computers", "Monitors", "Peripherals", "Memory"]
 </script>
 
 <template>
+  <!-- TODO: fix footer position (not sticking to bottom) -->
   <div class="footer">
     <div class="footer__content">
       <!-- TODO: maybe add one more section -->

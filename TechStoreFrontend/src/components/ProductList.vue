@@ -1,12 +1,12 @@
 <script setup>
-import AppProductCard from "@/components/AppProductCard.vue";
+import ProductCard from "@/components/ProductCard.vue";
 
 const { products } = defineProps(["products"]);
 </script>
 
 <template>
   <div class="products">
-    <AppProductCard v-for="product in products" :key="product.id" :product="product" />
+    <ProductCard v-for="product in products" :key="product.id" :product="product" />
   </div>
 </template>
 

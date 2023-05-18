@@ -3,9 +3,9 @@ const { icon, title, text } = defineProps(["icon", "title", "text"]);
 </script>
 
 <template>
-  <div class="benefit-item">
-    <img :src="icon" alt="home icon" class="benefit-item__img" />
-    <div class="benefit-item__content">
+  <div class="benefit-card">
+    <img :src="icon" alt="home icon" class="benefit-card__img" />
+    <div class="benefit-card__content">
       <h2>{{ title }}</h2>
       <p>{{ text }}</p>
     </div>
@@ -13,7 +13,7 @@ const { icon, title, text } = defineProps(["icon", "title", "text"]);
 </template>
 
 <style scoped>
-.benefit-item {
+.benefit-card {
   background-color: var(--ts-c-bg-light);
   border-right: 1px solid var(--ts-c-bg-dark);
   color: var(--ts-c-text-dark);
@@ -23,42 +23,42 @@ const { icon, title, text } = defineProps(["icon", "title", "text"]);
   align-items: center;
 }
 
-.benefit-item > * {
+.benefit-card > * {
   flex-wrap: wrap;
 }
 
-.benefit-item:first-child {
+.benefit-card:first-child {
   border-radius: 10px 0 0 10px;
 }
 
-.benefit-item:last-child {
+.benefit-card:last-child {
   border-radius: 0 10px 10px 0;
 }
 
-.benefit-item__img {
+.benefit-card__img {
   width: 48px;
   height: 48px;
   margin-right: 1rem;
 }
 
-.benefit-item__content h2 {
+.benefit-card__content h2 {
   font-size: 1rem;
 }
 
-.benefit-item__content p {
+.benefit-card__content p {
   color: var(--ts-c-primary-soft);
 }
 
 @media only screen and (max-width: 1200px) {
-  .benefit-item,
-  .benefit-item:first-child,
-  .benefit-item:last-child {
+  .benefit-card,
+  .benefit-card:first-child,
+  .benefit-card:last-child {
     border-radius: 10px;
   }
 }
 
 @media only screen and (max-width: 600px) {
-  .benefit-item {
+  .benefit-card {
     border-radius: 10px;
   }
 }
