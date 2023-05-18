@@ -83,7 +83,7 @@ input[type="submit"] {
   }
 
   .newsletters__subscribe,
-  .newsletters__subscribe input {
+  .newsletters__subscribe input[type="text"] {
     width: 100%;
   }
 }
