@@ -1,11 +1,13 @@
 <script setup>
+import { RouterLink } from "vue-router";
+
 import EmailIcon from "@/assets/icons/contact/gmail.png";
 import PhoneIcon from "@/assets/icons/contact/phone.png";
 import FacebookIcon from "@/assets/icons/socials/facebook.png";
 import InstagramIcon from "@/assets/icons/socials/instagram.png";
 import YoutubeIcon from "@/assets/icons/socials/youtube.png";
 
-const categories = ["Laptops", "Computers", "Monitors", "Peripherals", "Memory"];
+const categories = ["laptops", "computers", "components", "peripherals", "software"];
 </script>
 
 <template>
@@ -25,9 +27,9 @@ const categories = ["Laptops", "Computers", "Monitors", "Peripherals", "Memory"]
       </div>
       <div class="categories-container">
         <h3 class="footer__header">CATEGORIES</h3>
-        <a v-for="(category, index) in categories" :key="index" href="#">
+        <router-link v-for="(category, index) in categories" :key="index" :to="category">
           {{ category }}
-        </a>
+        </router-link>
       </div>
       <div class="info-container">
         <h3 class="footer__header">CONTACT INFO</h3>
@@ -100,6 +102,7 @@ const categories = ["Laptops", "Computers", "Monitors", "Peripherals", "Memory"]
 
 .categories-container a {
   color: var(--ts-c-text-light);
+  text-transform: capitalize;
   padding-bottom: 5px;
 }
 

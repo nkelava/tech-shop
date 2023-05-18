@@ -43,6 +43,7 @@ import AsusAdImage from "@/assets/images/test/banners/asus.png";
 
 .banners img {
   border-radius: 1rem;
+  box-shadow: 5px 5px 5px var(--ts-c-primary-darker);
   width: 100%;
   height: 100%;
 }
