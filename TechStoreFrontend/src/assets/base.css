@@ -76,3 +76,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+a,
+button,
+input[type="submit"] {
+  cursor: pointer;
+}
