@@ -24,6 +24,23 @@ export const categories = {
       img: headphonesImage,
     },
   ],
+  computers: [
+    {
+      id: 1,
+      name: "Desktop",
+      img: pcImage,
+    },
+    {
+      id: 2,
+      name: "Gaming",
+      img: pcImage,
+    },
+    {
+      id: 3,
+      name: "Workstation",
+      img: pcImage,
+    },
+  ],
   peripherals: [
     {
       id: 1,
