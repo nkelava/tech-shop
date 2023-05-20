@@ -4,147 +4,121 @@ import EmailIcon from "@/assets/icons/contact/gmail.png";
 import PhoneIcon from "@/assets/icons/contact/phone.png";
 import UserIcon from "@/assets/icons/header/user.png";
 import SearchIcon from "@/assets/icons/header/search.png";
-import MenuIcon from "@/assets/icons/header/menu.png";
 import FavoriteIcon from "@/assets/icons/header/favorite.png";
 import CartIcon from "@/assets/icons/header/cart.png";
 
-const userEmail = "test@gmail.com";
-const counter = 3;
+const cartCounter = 3;
 </script>
 
 <template>
   <div class="header">
     <!-- CONTACT INFO AND LOGIN/REGISTER -->
-    <div class="header-top">
-      <div class="header-contact">
-        <div class="contact-item">
-          <img :src="EmailIcon" alt="email icon" class="header-icon" />
-          <a href="techshop@gmail.com"> Email: techshop@gmail.com </a>
-        </div>
+    <div class="header__info">
+      <div class="info__contacts">
+        <img :src="EmailIcon" class="contact__icon" alt="email icon" />
+        <a href="techshop@gmail.com" class="contact__text"> Email: techshop@gmail.com </a>
         <p class="separator">|</p>
-        <div class="contact-item">
-          <img :src="PhoneIcon" alt="phone icon" class="header-icon" />
-          <p>Phone: 123-456-7890</p>
-        </div>
+        <img :src="PhoneIcon" alt="phone icon" class="contact__icon" />
+        <p class="contact__text">Phone: 123-456-7890</p>
       </div>
-      <div class="header-auth">
-        <router-link to="/" class="link-p">Login</router-link>
+      <div class="info__auth">
+        <router-link to="/" class="contact__text">Register</router-link>
         <p class="separator">|</p>
-        <router-link to="/" class="link-p">Register</router-link>
+        <router-link to="/" class="contact__text">Login</router-link>
       </div>
     </div>
 
     <!-- SHOP LOGO, SEARCH BAR AND USER GREETING/ICON -->
-    <div class="header-middle">
-      <div class="header-brand">
+    <div class="header__main">
+      <div class="header__brand">
         <h1>TechShop</h1>
       </div>
-      <div class="header-search">
-        <input type="text" placeholder="Search..." />
-        <button class="search-btn">
-          <img :src="SearchIcon" alt="phone icon" class="header-icon" />
+      <div class="header__search">
+        <input class="search__input" type="text" placeholder="Search..." />
+        <button class="search__btn">
+          <img :src="SearchIcon" alt="phone icon" class="search__icon" />
         </button>
       </div>
-      <div class="header-greeting">
-        <p>Hello, {{ userEmail }}</p>
-        <img :src="UserIcon" alt="email icon" class="user-icon" />
+      <div class="header__dropdowns">
+        <button class="dropdown__btn">
+          <img :src="FavoriteIcon" alt="favorites icon" class="dropdown__icon" />
+        </button>
+        <button class="dropdown__btn">
+          <img :src="CartIcon" alt="cart icon" class="dropdown__icon" />
+          <span class="cartCounter">
+            {{ cartCounter }}
+          </span>
+        </button>
+        <button class="dropdown__btn">
+          <img :src="UserIcon" alt="email icon" class="dropdown__icon" />
+        </button>
       </div>
     </div>
 
-    <!-- CATEGORIES, FAVORITES, CART -->
-    <div class="header-bottom">
-      <div>
-        <button class="categories-btn">
-          <img :src="MenuIcon" alt="menu icon" class="header-icon" />
-          <span>All Categories</span>
-        </button>
-      </div>
-      <div class="categories">
-        <router-link class="categories-link" to="/laptops">Laptops</router-link>
-        <router-link class="categories-link" to="/computers">Computers</router-link>
-        <router-link class="categories-link" to="/components">Components</router-link>
-        <router-link class="categories-link" to="/peripherals">Peripherals</router-link>
-        <router-link class="categories-link" to="/software">Software</router-link>
-        <router-link class="categories-link" to="/">Contact Us</router-link>
-      </div>
-      <div>
-        <button class="btn">
-          <img :src="FavoriteIcon" alt="favorites icon" class="header-icon" />
-        </button>
-        <button class="btn cart-btn">
-          <img :src="CartIcon" alt="cart icon" class="header-icon" />
-        </button>
-        <span class="counter">
-          {{ counter }}
-        </span>
-      </div>
+    <div class="header__nav">
+      <router-link class="nav__item" to="/laptops">Laptops</router-link>
+      <router-link class="nav__item" to="/computers">Computers</router-link>
+      <router-link class="nav__item" to="/components">Components</router-link>
+      <router-link class="nav__item" to="/peripherals">Peripherals</router-link>
+      <router-link class="nav__item" to="/software">Software</router-link>
+      <router-link class="nav__item" to="/">Contact Us</router-link>
     </div>
   </div>
 </template>
 
 <style scoped>
-.header-top,
-.header-middle,
-.header-bottom {
+.header__info,
+.header__main,
+.header__nav {
+  color: var(--ts-c-text-light);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   flex-wrap: wrap;
+  align-items: center;
+}
+
+.header__info,
+.header__main {
+  justify-content: space-between;
   padding: 0.5rem 2rem;
 }
 
-.header-top {
+.header__info {
   background-color: var(--ts-c-bg-light);
-  color: var(--ts-c-header-dark);
+  color: var(--ts-c-text-dark);
 }
 
-.header-contact a {
-  color: var(--ts-c-header-dark);
-}
-
-.header-contact,
-.header-auth {
-  display: flex;
-}
-
-.contact-item {
+.info__contacts,
+.info__auth {
   display: flex;
   align-items: center;
+}
+
+.contact__icon {
+  margin-inline: 0.5rem;
 }
 
 .separator {
   margin: 0 1rem;
 }
 
-.link-p {
+.contact__text {
   color: var(--ts-c-text-dark);
 }
 
-.header-icon {
-  padding: 0 6px;
+.feature__icon,
+.dropdown__icon {
+  margin-inline: 0.5rem;
 }
 
-.user-icon {
-  padding-left: 6px;
-}
-
-.header-middle {
-  color: var(--ts-c-text-light);
-}
-
-.header-search,
-.header-greeting {
+.header__search {
   position: relative;
   display: flex;
   align-items: center;
-}
-
-.header-search {
   width: 500px;
   height: 25px;
 }
 
-.header-search input {
+.search__input {
   border-radius: 30px;
   padding-left: 1rem;
   width: 500px;
@@ -152,7 +126,7 @@ const counter = 3;
   border: none;
 }
 
-.search-btn {
+.search__btn {
   background-color: var(--ts-c-bg-light);
   border: none;
   border-radius: 30px;
@@ -166,39 +140,27 @@ const counter = 3;
   vertical-align: middle;
 }
 
-.header-bottom {
-  color: var(--ts-c-text-light);
-}
-
-.categories-btn {
-  background-color: var(--ts-c-bg-light);
-  color: var(--ts-c-text-dark);
-  border: none;
-  border-radius: 30px;
-  padding: 5px 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.categories-btn:hover {
-  text-decoration: underline;
-}
-
-.categories-link {
-  color: var(--ts-c-text-light);
-  margin: 0 10px;
-}
-
-.btn {
+.dropdown__btn {
   border: none;
   background: transparent;
 }
 
-.counter {
+.cartCounter {
   border: 1px solid var(--ts-c-border-light);
   border-radius: 50%;
+  color: var(--ts-c-text-light);
   padding: 3px;
   vertical-align: top;
+}
+
+.header__nav {
+  border-bottom: 1px solid var(--ts-c-primary-darker);
+  justify-content: center;
+  gap: 1rem;
+  padding: 10px 0;
+}
+
+.nav__item {
+  color: var(--ts-c-text-light);
 }
 </style>
