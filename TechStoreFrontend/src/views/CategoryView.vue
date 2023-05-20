@@ -1,6 +1,7 @@
 <script setup>
 import { useRoute } from "vue-router";
 import { ref, watch } from "vue";
+import TheSlider from "@/components/TheSlider.vue";
 import BaseGrid from "@/components/BaseGrid.vue";
 import SubcategoryCard from "@/components/SubcategoryCard.vue";
 import { categories } from "@/data/categories.js";
@@ -19,16 +20,19 @@ watch(
 </script>
 
 <template>
-  <div class="category-container">
-    <h1 class="category__title">{{ category }}</h1>
-    <hr />
-    <BaseGrid>
-      <SubcategoryCard
-        v-for="subcategory in subcategories"
-        :key="subcategory.id"
-        :subcategory="subcategory"
-      />
-    </BaseGrid>
+  <div>
+    <TheSlider height="200px" />
+    <div class="category-container">
+      <h1 class="category__title">{{ category }}</h1>
+      <hr />
+      <BaseGrid>
+        <SubcategoryCard
+          v-for="subcategory in subcategories"
+          :key="subcategory.id"
+          :subcategory="subcategory"
+        />
+      </BaseGrid>
+    </div>
   </div>
 </template>
 

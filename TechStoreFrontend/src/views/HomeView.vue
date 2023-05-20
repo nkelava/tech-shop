@@ -10,7 +10,7 @@ import { products } from "@/data/products.js";
 
 <template>
   <div>
-    <TheSlider />
+    <TheSlider height="500px" />
     <TheBenefits />
     <div class="best-sellers">
       <!-- TODO: add product grid component and pagination to it -->
