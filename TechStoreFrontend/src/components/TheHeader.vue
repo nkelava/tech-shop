@@ -56,12 +56,13 @@ const cartCounter = 3;
     </div>
 
     <div class="header__nav">
+      <router-link class="nav__item" to="/">Home</router-link>
       <router-link class="nav__item" to="/laptops">Laptops</router-link>
       <router-link class="nav__item" to="/computers">Computers</router-link>
       <router-link class="nav__item" to="/components">Components</router-link>
       <router-link class="nav__item" to="/peripherals">Peripherals</router-link>
       <router-link class="nav__item" to="/software">Software</router-link>
-      <router-link class="nav__item" to="/">Contact Us</router-link>
+      <router-link class="nav__item" to="/contact">Contact Us</router-link>
     </div>
   </div>
 </template>
@@ -91,10 +92,7 @@ const cartCounter = 3;
 .info__auth {
   display: flex;
   align-items: center;
-}
-
-.contact__icon {
-  margin-inline: 0.5rem;
+  gap: 0.5rem;
 }
 
 .separator {
@@ -105,7 +103,6 @@ const cartCounter = 3;
   color: var(--ts-c-text-dark);
 }
 
-.feature__icon,
 .dropdown__icon {
   margin-inline: 0.5rem;
 }
