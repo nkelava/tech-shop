@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink } from "vue-router";
-import EmailIcon from "@/assets/icons/contact/gmail.png";
-import PhoneIcon from "@/assets/icons/contact/phone.png";
+import EmailIcon from "@/assets/icons/contact/gmail16.png";
+import PhoneIcon from "@/assets/icons/contact/phone16.png";
 import UserIcon from "@/assets/icons/header/user.png";
 import SearchIcon from "@/assets/icons/header/search.png";
 import FavoriteIcon from "@/assets/icons/header/favorite.png";

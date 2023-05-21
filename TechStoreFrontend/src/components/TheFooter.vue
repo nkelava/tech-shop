@@ -1,8 +1,8 @@
 <script setup>
 import { RouterLink } from "vue-router";
 
-import EmailIcon from "@/assets/icons/contact/gmail.png";
-import PhoneIcon from "@/assets/icons/contact/phone.png";
+import EmailIcon from "@/assets/icons/contact/gmail16.png";
+import PhoneIcon from "@/assets/icons/contact/phone16.png";
 import FacebookIcon from "@/assets/icons/socials/facebook.png";
 import InstagramIcon from "@/assets/icons/socials/instagram.png";
 import YoutubeIcon from "@/assets/icons/socials/youtube.png";

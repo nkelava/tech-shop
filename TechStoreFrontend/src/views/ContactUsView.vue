@@ -1,7 +1,7 @@
 <script setup>
 import ContactImage from "@/assets/images/test/contact/contact_us.png";
-import EmailIcon from "@/assets/icons/contact/gmail_m.png";
-import PhoneIcon from "@/assets/icons/contact/phone_m.png";
+import EmailIcon from "@/assets/icons/contact/gmail32.png";
+import PhoneIcon from "@/assets/icons/contact/phone32.png";
 </script>
 
 <template>
@@ -32,6 +32,7 @@ import PhoneIcon from "@/assets/icons/contact/phone_m.png";
         <input type="email" placeholder="Enter your email..." />
         <input type="tel" name="" id="" placeholder="Enter your phone number..." />
         <textarea cols="50" rows="10" placeholder="Enter your message..." />
+        <input type="submit" value="Send" />
       </form>
     </div>
   </section>
@@ -42,7 +43,7 @@ import PhoneIcon from "@/assets/icons/contact/phone_m.png";
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
+  gap: 3rem;
   margin: 5rem 0;
   width: 100%;
   height: 100%;
@@ -50,14 +51,15 @@ import PhoneIcon from "@/assets/icons/contact/phone_m.png";
 
 .contact__image {
   height: auto;
-  max-width: 100%;
+  width: 100%;
+  max-width: 600px;
 }
 
 .contact__info {
   display: flex;
   justify-content: space-evenly;
   gap: 2rem;
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 
 .info__item {
@@ -72,13 +74,15 @@ import PhoneIcon from "@/assets/icons/contact/phone_m.png";
 }
 
 .contact__form h1 {
+  text-transform: uppercase;
   letter-spacing: 2px;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
 .form {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 2rem;
   height: 100%;
   width: 100%;
@@ -92,12 +96,21 @@ import PhoneIcon from "@/assets/icons/contact/phone_m.png";
   font-size: 1rem;
 }
 
-.form input {
+input[type]:not([type="submit"]) {
   border: none;
   border-bottom: 1px solid var(--ts-c-bg-light);
 }
 
 .form textarea {
   border: 1px solid var(--ts-c-bg-light);
+}
+
+input[type="submit"] {
+  background-color: var(--ts-c-bg-highlight);
+  border-radius: 20px;
+  border: none;
+  color: var(--ts-c-text-dark);
+  font-weight: bold;
+  padding: 8px 0;
 }
 </style>
