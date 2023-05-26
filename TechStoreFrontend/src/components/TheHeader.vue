@@ -24,7 +24,7 @@ const cartCounter = 3;
       <div class="info__auth">
         <router-link to="/" class="contact__text">Register</router-link>
         <p class="separator">|</p>
-        <router-link to="/" class="contact__text">Login</router-link>
+        <router-link to="/login" class="contact__text">Login</router-link>
       </div>
     </div>
 
