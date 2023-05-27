@@ -8,8 +8,16 @@ import TheFooter from "@/components/TheFooter.vue";
 <template>
   <div>
     <TheHeader />
-    <RouterView />
+    <main>
+      <RouterView />
+    </main>
     <TheNewsletters />
     <TheFooter />
   </div>
 </template>
+
+<style scoped>
+main {
+  min-height: calc(100vh - 128px - 498px);
+}
+</style>
