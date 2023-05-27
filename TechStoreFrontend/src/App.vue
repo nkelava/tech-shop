@@ -6,6 +6,7 @@ import TheFooter from "@/components/TheFooter.vue";
 </script>
 
 <template>
+  <!-- TODO: add basic and sidebar layout -->
   <div>
     <TheHeader />
     <main>
