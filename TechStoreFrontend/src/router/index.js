@@ -23,6 +23,11 @@ const router = createRouter({
       name: "category",
       component: () => import("../views/CategoryView.vue"),
     },
+    {
+      path: "/:category/:subcategory",
+      name: "subcategory",
+      component: () => import("../views/SubcategoryView.vue"),
+    },
   ],
 });
 

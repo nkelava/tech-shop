@@ -29,6 +29,7 @@ watch(
         <SubcategoryCard
           v-for="subcategory in subcategories"
           :key="subcategory.id"
+          :category="category"
           :subcategory="subcategory"
         />
       </BaseGrid>
