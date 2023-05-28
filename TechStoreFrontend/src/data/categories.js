@@ -1,4 +1,27 @@
-import pcImage from "@/assets/images/test/products/pc.png";
-import headphonesImage from "@/assets/images/test/products/headphones.webp";
-
-export const categories = ["laptops", "computers", "peripherals", "components", "software"];
+export const categoriesDb = [
+  {
+    id: 1,
+    name: "laptops",
+    slug: "laptops",
+  },
+  {
+    id: 2,
+    name: "computers",
+    slug: "computers",
+  },
+  {
+    id: 3,
+    name: "peripherals",
+    slug: "peripherals",
+  },
+  {
+    id: 4,
+    name: "components",
+    slug: "components",
+  },
+  {
+    id: 5,
+    name: "software",
+    slug: "software",
+  },
+];

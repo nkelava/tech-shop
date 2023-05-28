@@ -1,7 +1,7 @@
 import pcImage from "@/assets/images/test/products/pc.png";
 import headphonesImage from "@/assets/images/test/products/headphones.webp";
 
-export const products = [
+export const productsDb = [
   {
     id: 1,
     name: "Test 1",
