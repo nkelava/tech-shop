@@ -4,17 +4,24 @@ import { ref, watch } from "vue";
 import TheSlider from "@/components/TheSlider.vue";
 import BaseGrid from "@/components/BaseGrid.vue";
 import SubcategoryCard from "@/components/SubcategoryCard.vue";
-import { categories } from "@/data/categories.js";
+import { categoriesDb } from "@/data/categories.js";
+import { subcategoriesDb } from "@/data/subcategories.js";
 
 const route = useRoute();
-const category = ref(route.params.category);
-const subcategories = ref(categories[category.value]);
+const categorySlug = ref(route.params.category);
+let category = categoriesDb.find((category) => category.slug === categorySlug.value);
+const subcategories = ref(
+  subcategoriesDb.filter((subcategory) => subcategory.categoryId === category.id)
+);
 
 watch(
   () => route.params.category,
   (newCategory) => {
-    category.value = newCategory;
-    subcategories.value = categories[newCategory];
+    categorySlug.value = newCategory;
+    category = categoriesDb.find((category) => category.slug === categorySlug.value);
+    subcategories.value = subcategoriesDb.find(
+      (subcategory) => subcategory.categoryId === category.id
+    );
   }
 );
 </script>
@@ -23,13 +30,13 @@ watch(
   <div>
     <TheSlider height="200px" />
     <div class="category-container">
-      <h1 class="category__title">{{ category }}</h1>
+      <h1 class="category__title">{{ category.name }}</h1>
       <hr />
       <BaseGrid>
         <SubcategoryCard
           v-for="subcategory in subcategories"
           :key="subcategory.id"
-          :category="category"
+          :category="category.name"
           :subcategory="subcategory"
         />
       </BaseGrid>

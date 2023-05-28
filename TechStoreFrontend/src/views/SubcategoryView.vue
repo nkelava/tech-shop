@@ -1,7 +1,7 @@
 <script setup>
 import { useRoute } from "vue-router";
 import { ref, watch } from "vue";
-import { products } from "@/data/products.js";
+import { productsDb } from "@/data/products.js";
 import ProductList from "@/components/ProductList.vue";
 
 const route = useRoute();
@@ -68,7 +68,7 @@ watch(
     <div class="main">
       <h1>{{ category }} > {{ subcategory }}</h1>
       <hr />
-      <ProductList :products="products" />
+      <ProductList :products="productsDb" />
     </div>
   </div>
 </template>
