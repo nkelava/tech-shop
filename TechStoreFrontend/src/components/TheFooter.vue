@@ -49,7 +49,7 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
       </div>
     </div>
     <div class="copyright">
-      <h4>Copyright © 2023 TechShop</h4>
+      <h4>Copyright &copy; 2023 TechShop</h4>
     </div>
   </div>
 </template>
