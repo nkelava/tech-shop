@@ -1,24 +1,10 @@
 <script setup>
 import { RouterView } from "vue-router";
-import TheHeader from "@/components/TheHeader.vue";
-import TheNewsletters from "@/components/TheNewsletters.vue";
-import TheFooter from "@/components/TheFooter.vue";
+import BaseLayout from "@/layouts/BaseLayout.vue";
 </script>
 
 <template>
-  <!-- TODO: add basic and sidebar layout -->
-  <div>
-    <TheHeader />
-    <main>
-      <RouterView />
-    </main>
-    <TheNewsletters />
-    <TheFooter />
-  </div>
+  <BaseLayout>
+    <RouterView />
+  </BaseLayout>
 </template>
-
-<style scoped>
-main {
-  min-height: calc(100vh - 128px - 498px);
-}
-</style>
