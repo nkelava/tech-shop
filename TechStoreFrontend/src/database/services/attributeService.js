@@ -4,22 +4,25 @@ import { subcategoryAttributesDb } from "../seed/subcategoryAttributes.js";
 import { getValueById } from "./valuesService.js";
 
 export function getAttributesWithValues(subcategoryId) {
-  const attributesWithValues = [];
   const attributeValueIds = subcategoryAttributesDb
     .filter((sa) => sa.subcategoryId === subcategoryId)
     .map((sa) => sa.attributeValuesId);
 
-  attributeValuesDb.forEach((av) => {
-    if (attributeValueIds.includes(av.id)) {
-      const attribute = {
-        ...getAttributeById(av.attributeId),
-        values: getValueById(av.valueId),
-      };
-      attributesWithValues.push(attribute);
-    }
-  });
+  const attributesWithValues = attributeValuesDb.reduce((attributes, currAttributeValue) => {
+    if (attributeValueIds.includes(currAttributeValue.id)) {
+      let attribute = attributes.find((attr) => attr.id === currAttributeValue.attributeId);
 
-  console.log(attributesWithValues);
+      if (attribute) {
+        attribute.values.push(getValueById(currAttributeValue.valueId));
+      } else {
+        attribute = getAttributeById(currAttributeValue.attributeId);
+        attribute.values = [getValueById(currAttributeValue.valueId)];
+        attributes.push(attribute);
+      }
+    }
+    return attributes;
+  }, []);
+
   return attributesWithValues;
 }
 
