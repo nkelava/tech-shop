@@ -4,24 +4,20 @@ import { ref, watch } from "vue";
 import TheSlider from "@/components/TheSlider.vue";
 import BaseGrid from "@/components/BaseGrid.vue";
 import SubcategoryCard from "@/components/SubcategoryCard.vue";
-import { categoriesDb } from "@/data/categories.js";
-import { subcategoriesDb } from "@/data/subcategories.js";
+import { getCategoryBySlug } from "@/database/services/categoryService.js";
+import { getSubcategoriesByCategoryId } from "@/database/services/subcategoryService.js";
 
 const route = useRoute();
 const categorySlug = ref(route.params.category);
-let category = categoriesDb.find((category) => category.slug === categorySlug.value);
-const subcategories = ref(
-  subcategoriesDb.filter((subcategory) => subcategory.categoryId === category.id)
-);
+let category = getCategoryBySlug(categorySlug.value);
+const subcategories = ref(getSubcategoriesByCategoryId(category.id));
 
 watch(
   () => route.params.category,
   (newCategory) => {
     categorySlug.value = newCategory;
-    category = categoriesDb.find((category) => category.slug === categorySlug.value);
-    subcategories.value = subcategoriesDb.find(
-      (subcategory) => subcategory.categoryId === category.id
-    );
+    category = getCategoryBySlug(categorySlug.value);
+    subcategories.value = getSubcategoriesByCategoryId(category.id);
   }
 );
 </script>

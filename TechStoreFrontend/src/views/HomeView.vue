@@ -4,8 +4,10 @@ import TheBenefits from "@/components/TheBenefits.vue";
 import TheBanners from "@/components/TheBanners.vue";
 
 import ProductList from "@/components/ProductList.vue";
-import ProductSlider from "../components/ProductSlider.vue";
-import { productsDb } from "@/data/products.js";
+import ProductSlider from "@/components/ProductSlider.vue";
+import { getProducts } from "@/database/services/productService";
+
+const products = getProducts();
 </script>
 
 <template>
@@ -16,19 +18,19 @@ import { productsDb } from "@/data/products.js";
       <!-- TODO: add product grid component and pagination to it -->
       <h2>Best Sellers</h2>
       <hr />
-      <ProductList :products="productsDb" />
+      <ProductList :products="products" />
     </div>
     <TheBanners />
     <!-- Add product slider component  -->
     <div class="new">
       <h2>New Arrivals</h2>
       <hr />
-      <ProductSlider :products="productsDb" />
+      <ProductSlider :products="products" />
     </div>
     <div class="hot">
       <h2>Hot Offers</h2>
       <hr />
-      <ProductSlider :products="productsDb" />
+      <ProductSlider :products="products" />
     </div>
   </div>
 </template>

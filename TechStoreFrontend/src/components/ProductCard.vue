@@ -9,7 +9,7 @@ const { product } = defineProps(["product"]);
     <h2 class="card__title">{{ product.name }}</h2>
     <p class="card__summary">{{ product.summary }}</p>
     <!-- TODO: add currency as separate property -->
-    <h3 class="card__price">{{ product.price }}</h3>
+    <h3 class="card__price">{{ product.price + product.currency }}</h3>
     <button>VIEW MORE</button>
   </div>
 </template>
