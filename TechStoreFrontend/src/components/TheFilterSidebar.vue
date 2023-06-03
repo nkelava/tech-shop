@@ -65,7 +65,6 @@ const handleFilter = () => {
         <label for="lorem">{{ attributeValue.value }} {{ attributeValue.unit || "" }}</label>
       </div>
     </div>
-    <button @click="handleFilter">Filter</button>
   </div>
 </template>
 
