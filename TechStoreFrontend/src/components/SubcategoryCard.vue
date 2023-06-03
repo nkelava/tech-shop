@@ -2,7 +2,6 @@
 import { RouterLink } from "vue-router";
 
 const { category, subcategory } = defineProps(["category", "subcategory"]);
-const subcategoryURL = `${category}/${subcategory.slug}`;
 </script>
 
 <template>
@@ -10,7 +9,15 @@ const subcategoryURL = `${category}/${subcategory.slug}`;
   <div class="card">
     <img :src="subcategory.img" alt="" class="card__image" />
     <h2 class="card__title">
-      <router-link :to="subcategoryURL">
+      <router-link
+        :to="{
+          name: 'subcategory',
+          params: {
+            category,
+            subcategory: subcategory.slug,
+          },
+        }"
+      >
         {{ subcategory.name }}
       </router-link>
     </h2>
