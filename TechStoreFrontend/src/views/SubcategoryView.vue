@@ -1,118 +1,114 @@
 <script setup>
 import { useRoute } from "vue-router";
-import { ref, watch } from "vue";
-import { productsDb } from "@/data/products.js";
+import { ref, computed, onMounted } from "vue";
+import TheSlider from "@/components/TheSlider.vue";
 import ProductList from "@/components/ProductList.vue";
+import FilterSidebar from "@/components/TheFilterSidebar.vue";
+import { getSubcategoryBySlug } from "@/database/services/subcategoryService.js";
+import {
+  getProductsBySubcategoryId,
+  getFilteredProductsBySubcategoryId,
+} from "@/database/services/productService.js";
 
 const route = useRoute();
-const category = ref(route.params.category);
-const subcategory = ref(route.params.subcategory);
+const categorySlug = ref(route.params.category);
+const subcategorySlug = ref(route.params.subcategory);
+const subcategory = getSubcategoryBySlug(subcategorySlug.value);
+const products = ref([]);
+const sortType = ref("");
 
-watch(
-  () => route.params.category,
-  (newCategory) => {
-    category.value = newCategory;
+onMounted(() => {
+  products.value = getProductsBySubcategoryId(subcategory.id);
+});
+
+const updateSort = (event) => {
+  sortType.value = event.target.value;
+};
+const sortedProducts = computed(() => {
+  // TODO: maybe add sort type enum
+  switch (sortType.value) {
+    case "low":
+      return products.value.sort((a, b) => a.price - b.price);
+    case "high":
+      return products.value.sort((a, b) => a.price - b.price).reverse();
+    case "asc":
+      return products.value.sort((a, b) => a.name.localeCompare(b.name));
+    case "desc":
+      return products.value.sort((a, b) => a.name.localeCompare(b.name)).reverse();
+    default:
+      return products.value;
   }
-);
+});
+
+function handleFilter(filters) {
+  products.value = getFilteredProductsBySubcategoryId(subcategory.id, filters);
+}
 </script>
 
 <template>
-  <div class="layout">
-    <div class="sidebar">
-      <div class="item">
-        <h3>Price</h3>
-        <hr />
-        <input type="number" />
-        <input type="number" />
-      </div>
-      <div class="item">
-        <h3>Brand</h3>
-        <hr />
-        <div class="brands">
-          <div>
-            <input type="checkbox" id="lorem" />
-            <label for="lorem">Lorem</label>
-          </div>
-          <div>
-            <input type="checkbox" id="lorem" />
-            <label for="lorem">Lorem</label>
-          </div>
-          <div>
-            <input type="checkbox" id="lorem" />
-            <label for="lorem">Lorem</label>
-          </div>
-          <div>
-            <input type="checkbox" id="lorem" />
-            <label for="lorem">Lorem</label>
-          </div>
-          <div>
-            <input type="checkbox" id="lorem" />
-            <label for="lorem">Lorem</label>
-          </div>
-          <div>
-            <input type="checkbox" id="lorem" />
-            <label for="lorem">Lorem</label>
-          </div>
-          <div>
-            <input type="checkbox" id="lorem" />
-            <label for="lorem">Lorem</label>
-          </div>
+  <div>
+    <TheSlider height="200px" />
+    <div class="layout">
+      <FilterSidebar :subcategoryId="subcategory.id" @filter="handleFilter" />
+      <div class="content">
+        <div class="heading">
+          <h1 class="heading__title">{{ categorySlug }} > {{ subcategory.name }}</h1>
+          <!-- TODO: create sort select component -->
+          <select class="heading__sort" name="sort" @change="updateSort">
+            <option value="" hidden>Sort...</option>
+            <option value="asc">Alphabetically: A-Z</option>
+            <option value="desc">Alphabetically: Z-A</option>
+            <option value="low">Price: Low to High</option>
+            <option value="high">Price: High to Low</option>
+          </select>
         </div>
-      </div>
-      <div class="item">
-        <h3>Rating</h3>
         <hr />
-        <input type="range" min="0" max="5" />
+        <ProductList :products="sortedProducts" />
       </div>
-    </div>
-    <div class="main">
-      <h1>{{ category }} > {{ subcategory }}</h1>
-      <hr />
-      <ProductList :products="productsDb" />
     </div>
   </div>
 </template>
 
 <style scoped>
 .layout {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-areas: "sidebar main";
+  grid-template-columns: 300px auto;
+  align-items: start;
   gap: 3rem;
-  margin: 3rem 0;
+  margin: 3rem;
 }
 
-h1 {
+.layout:nth-child(1) {
+  grid-area: sidebar;
+}
+
+.layout:nth-child(2) {
+  grid-area: main;
+}
+
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-bottom: 5px;
+}
+
+.heading__title {
   text-transform: capitalize;
+}
+
+.heading__sort {
+  background-color: var(--ts-c-bg-light);
+  border: none;
+  border-radius: 5px;
+  color: var(--ts-c-text-dark);
+  padding-inline: 10px;
+  height: 1.5rem;
+  align-self: end;
 }
 
 hr {
   margin-bottom: 1rem;
-  margin-right: 2rem;
-}
-
-.sidebar {
-  background-color: var(--ts-c-bg-light);
-  border-radius: 10px;
-  color: var(--ts-c-text-dark);
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.item {
-  margin-inline: 20px;
-  margin-top: 2rem;
-}
-
-.brands {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 5px;
-}
-
-input[type="checkbox"] {
-  margin-right: 10px;
 }
 </style>
