@@ -6,7 +6,7 @@ export function getProducts() {
 }
 
 export function getProductById(productId) {
-  return productId.find((product) => product.id === productId);
+  return productsDb.find((product) => product.id === productId);
 }
 
 export function getProductsBySubcategoryId(subcategoryId) {
