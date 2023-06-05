@@ -143,10 +143,7 @@ const cartCounter = 3;
 }
 
 .cartCounter {
-  border: 1px solid var(--ts-c-border-light);
-  border-radius: 50%;
   color: var(--ts-c-text-light);
-  padding: 3px;
   vertical-align: top;
 }
 
