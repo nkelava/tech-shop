@@ -18,6 +18,7 @@ dependencies:
   pinia: 2.0.33_vue@3.2.47
   vue: 3.2.47
   vue-router: 4.1.6_vue@3.2.47
+  vue3-carousel: 0.3.1_vue@3.2.47
 
 devDependencies:
   '@rushstack/eslint-patch': 1.2.0
@@ -28,7 +29,6 @@ devDependencies:
   eslint-plugin-vue: 9.10.0_eslint@8.37.0
   prettier: 2.8.7
   vite: 4.2.1
-  vue3-carousel: 0.3.1_vue@3.2.47
 
 packages:
 
@@ -1802,7 +1802,7 @@ packages:
       vue: ^3.2.0
     dependencies:
       vue: 3.2.47
-    dev: true
+    dev: false
 
   /which/2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
