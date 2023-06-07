@@ -1,5 +1,9 @@
 <script setup>
+import { RouterLink } from "vue-router";
+
 const { product } = defineProps(["product"]);
+const category = "laptops";
+const subcategory = "notebooks";
 </script>
 
 <template>
@@ -10,7 +14,15 @@ const { product } = defineProps(["product"]);
     <p class="card__summary">{{ product.summary }}</p>
     <!-- TODO: add currency as separate property -->
     <h3 class="card__price">{{ product.price + product.currency }}</h3>
-    <button>VIEW MORE</button>
+    <button>
+      <router-link
+        :to="{
+          name: 'product',
+          params: { category: category, subcategory: subcategory, productId: product.id },
+        }"
+        >VIEW MORE
+      </router-link>
+    </button>
   </div>
 </template>
 
