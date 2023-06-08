@@ -26,17 +26,19 @@ const updateSort = (event) => {
 };
 const sortedProducts = computed(() => {
   // TODO: maybe add sort type enum
+  const sortedProducts = products.value;
+
   switch (sortType.value) {
     case "low":
-      return products.value.sort((a, b) => a.price - b.price);
+      return sortedProducts.sort((a, b) => a.price - b.price);
     case "high":
-      return products.value.sort((a, b) => a.price - b.price).reverse();
+      return sortedProducts.sort((a, b) => a.price - b.price).reverse();
     case "asc":
-      return products.value.sort((a, b) => a.name.localeCompare(b.name));
+      return sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
     case "desc":
-      return products.value.sort((a, b) => a.name.localeCompare(b.name)).reverse();
+      return sortedProducts.sort((a, b) => a.name.localeCompare(b.name)).reverse();
     default:
-      return products.value;
+      return sortedProducts;
   }
 });
 
