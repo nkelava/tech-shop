@@ -4,20 +4,20 @@ import { useRoute } from "vue-router";
 import ProductGallery from "@/components/ProductGallery.vue";
 import ProductDetails from "../components/ProductDetails.vue";
 import TabsWrapper from "@/components/TabsWrapper.vue";
-import TabsItem from "@/components/TabsItem.vue";
 
-import { getProductById } from "@/database/services/productService.js";
+// import { getProductById } from "@/database/services/productService.js";
+import { getProductWithSpecification } from "../database/services/productService";
 
 const route = useRoute();
 const productId = ref(route.params.productId);
-const product = getProductById(Number(productId.value));
+const product = getProductWithSpecification(Number(productId.value));
 </script>
 
 <template>
   <div class="product-container">
     <ProductGallery class="gallery" />
-    <ProductDetails :product="product" class="info" />
-    <TabsWrapper class="tabs"> </TabsWrapper>
+    <ProductDetails class="info" :product="product" />
+    <TabsWrapper class="tabs" :product="product" />
   </div>
 </template>
 
@@ -42,11 +42,7 @@ const product = getProductById(Number(productId.value));
 
 .tabs {
   grid-area: tabs;
-  margin-top: 3rem;
-}
-
-.spec {
-  margin-top: 3rem;
+  margin-top: 5rem;
 }
 
 @media (max-width: 1000px) {
@@ -57,6 +53,13 @@ const product = getProductById(Number(productId.value));
       "tabs";
 
     grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 1450px) {
+  .tabs {
+    width: 75%;
+    margin-inline: auto;
   }
 }
 </style>

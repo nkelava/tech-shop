@@ -95,6 +95,7 @@ input[type="number"] {
   border: none;
   border-radius: 30px;
   color: var(--ts-c-text-dark);
+  background-color: #fff;
   outline: none;
   padding: 2px 5px;
   text-align: center;

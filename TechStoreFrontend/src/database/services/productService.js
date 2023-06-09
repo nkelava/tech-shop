@@ -43,3 +43,9 @@ export function getProductsWithSpecification(products) {
 
   return productsWithSpecifications;
 }
+
+export function getProductWithSpecification(productId) {
+  const product = getProductById(productId);
+  product.specification = getSpecificationByProductId(productId);
+  return product;
+}
