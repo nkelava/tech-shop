@@ -2,7 +2,6 @@
 import { ref } from "vue";
 import { Carousel, Slide } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
-import DefaultProductImage from "@/assets/images/test/products/defaultProductImage.png";
 import Helios from "@/assets/images/test/products/helios300.png";
 import HeliosL from "@/assets/images/test/products/helios300-lside.png";
 import HeliosR from "@/assets/images/test/products/helios300-rside.png";
