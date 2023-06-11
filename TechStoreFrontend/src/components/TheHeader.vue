@@ -1,13 +1,13 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import ProductFavoritesModal from "./ProductFavoritesModal.vue";
+import ProductCartModal from "./ProductCartModal.vue";
+import TheNavbar from "./TheNavbar.vue";
+
 import EmailIcon from "@/assets/icons/contact/gmail16.png";
 import PhoneIcon from "@/assets/icons/contact/phone16.png";
 import UserIcon from "@/assets/icons/header/user.png";
 import SearchIcon from "@/assets/icons/header/search.png";
-import FavoriteIcon from "@/assets/icons/header/favorite.png";
-import CartIcon from "@/assets/icons/header/cart.png";
-
-const cartCounter = 3;
 </script>
 
 <template>
@@ -40,30 +40,15 @@ const cartCounter = 3;
         </button>
       </div>
       <div class="header__dropdowns">
-        <button class="dropdown__btn">
-          <img :src="FavoriteIcon" alt="favorites icon" class="dropdown__icon" />
-        </button>
-        <button class="dropdown__btn">
-          <img :src="CartIcon" alt="cart icon" class="dropdown__icon" />
-          <span class="cartCounter">
-            {{ cartCounter }}
-          </span>
-        </button>
+        <ProductFavoritesModal />
+        <ProductCartModal />
+
         <button class="dropdown__btn">
           <img :src="UserIcon" alt="email icon" class="dropdown__icon" />
         </button>
       </div>
     </div>
-
-    <div class="header__nav">
-      <router-link class="nav__item" to="/">Home</router-link>
-      <router-link class="nav__item" to="/laptops">Laptops</router-link>
-      <router-link class="nav__item" to="/computers">Computers</router-link>
-      <router-link class="nav__item" to="/components">Components</router-link>
-      <router-link class="nav__item" to="/peripherals">Peripherals</router-link>
-      <router-link class="nav__item" to="/software">Software</router-link>
-      <router-link class="nav__item" to="/contact">Contact Us</router-link>
-    </div>
+    <TheNavbar class="header__nav" />
   </div>
 </template>
 
@@ -137,24 +122,12 @@ const cartCounter = 3;
   vertical-align: middle;
 }
 
+.header__dropdowns {
+  display: flex;
+}
+
 .dropdown__btn {
   border: none;
   background: transparent;
-}
-
-.cartCounter {
-  color: var(--ts-c-text-light);
-  vertical-align: top;
-}
-
-.header__nav {
-  border-bottom: 1px solid var(--ts-c-primary-darker);
-  justify-content: center;
-  gap: 1rem;
-  padding: 10px 0;
-}
-
-.nav__item {
-  color: var(--ts-c-text-light);
 }
 </style>

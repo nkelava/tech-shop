@@ -14,7 +14,7 @@ const toggleDialog = () => {
 
 <template>
   <div>
-    <v-btn color="primary" @click="toggleDialog">
+    <v-btn class="pa-1" variant="text" @click="toggleDialog">
       <img :src="CartIcon" alt="favorites icon" class="dropdown__icon" />
       <sub> ({{ counter }}) </sub>
     </v-btn>
