@@ -40,6 +40,7 @@ const handleDelete = (productId) => {
             <th class="text-left">Product</th>
             <th class="text-left">Price</th>
             <th class="text-left">Quantity</th>
+            <!-- TODO: add promo code here -->
             <th class="text-left">Total</th>
             <th class="text-left">Actions</th>
           </tr>
@@ -80,7 +81,7 @@ const handleDelete = (productId) => {
     <v-card-actions class="justify-space-between">
       <v-btn color="red-darken-1" variant="text" @click="handleToggle"> Close </v-btn>
       <v-btn color="green-darken-1" variant="text" @click="handleToggle">
-        <router-link to="order" class="checkout">Checkout</router-link>
+        <router-link to="/order" class="checkout">Checkout</router-link>
       </v-btn>
     </v-card-actions>
   </v-card>
