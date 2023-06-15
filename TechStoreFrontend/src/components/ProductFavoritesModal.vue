@@ -4,7 +4,7 @@ import FavoriteIcon from "@/assets/icons/header/favorite.png";
 import ProductFavoritesItem from "./ProductFavoritesItem.vue";
 
 const dialog = ref(false);
-const counter = 3;
+const count = 3;
 const title = "Your Wishlist";
 
 const toggleDialog = () => {
@@ -15,8 +15,9 @@ const toggleDialog = () => {
 <template>
   <div>
     <v-btn variant="text" @click="toggleDialog">
-      <img :src="FavoriteIcon" alt="favorites icon" class="dropdown__icon" />
-      <sub> ({{ counter }}) </sub>
+      <v-badge :content="count" color="var(--ts-c-primary-mute)">
+        <img :src="FavoriteIcon" alt="favorites icon" class="dropdown__icon" />
+      </v-badge>
     </v-btn>
     <v-dialog v-model="dialog" persistent width="auto">
       <ProductFavoritesItem @toggleDialog="toggleDialog" :title="title" />
