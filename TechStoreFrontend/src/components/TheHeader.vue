@@ -2,17 +2,18 @@
 import { RouterLink } from "vue-router";
 import ProductFavoritesModal from "./ProductFavoritesModal.vue";
 import ProductCartModal from "./ProductCartModal.vue";
+import UserProfileDropdown from "./UserProfileDropdown.vue";
 import TheNavbar from "./TheNavbar.vue";
 
 import EmailIcon from "@/assets/icons/contact/gmail16.png";
 import PhoneIcon from "@/assets/icons/contact/phone16.png";
-import UserIcon from "@/assets/icons/header/user.png";
 import SearchIcon from "@/assets/icons/header/search.png";
 </script>
 
 <template>
   <div class="header">
     <!-- CONTACT INFO AND LOGIN/REGISTER -->
+    <!-- this is called top bar  -->
     <div class="header__info">
       <div class="info__contacts">
         <img :src="EmailIcon" class="contact__icon" alt="email icon" />
@@ -42,10 +43,7 @@ import SearchIcon from "@/assets/icons/header/search.png";
       <div class="header__dropdowns">
         <ProductFavoritesModal />
         <ProductCartModal />
-
-        <button class="dropdown__btn">
-          <img :src="UserIcon" alt="email icon" class="dropdown__icon" />
-        </button>
+        <UserProfileDropdown />
       </div>
     </div>
     <TheNavbar class="header__nav" />
