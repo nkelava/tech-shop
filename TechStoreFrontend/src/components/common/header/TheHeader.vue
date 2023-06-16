@@ -1,35 +1,19 @@
 <script setup>
-import { RouterLink } from "vue-router";
+import TheTopBar from "./TheTopBar.vue";
 import FavoritesModal from "@/components/common/header/favorites/FavoritesModal.vue";
 import CartModal from "@/components/common/header/cart/CartModal.vue";
 import UserProfileDropdown from "@/components/common/header/account/UserProfileDropdown.vue";
-import TheNavbar from "@/components/common/header/TheNavbar.vue";
-
-import EmailIcon from "@/assets/icons/contact/gmail16.png";
-import PhoneIcon from "@/assets/icons/contact/phone16.png";
+import TheNavbar from "./TheNavbar.vue";
 import SearchIcon from "@/assets/icons/header/search.png";
+
+const isSignedIn = true;
 </script>
 
 <template>
   <div class="header">
     <!-- CONTACT INFO AND LOGIN/REGISTER -->
-    <!-- this is called top bar  -->
-    <div class="header__info">
-      <div class="info__contacts">
-        <img :src="EmailIcon" class="contact__icon" alt="email icon" />
-        <a href="techshop@gmail.com" class="contact__text"> Email: techshop@gmail.com </a>
-        <p class="separator">|</p>
-        <img :src="PhoneIcon" alt="phone icon" class="contact__icon" />
-        <p class="contact__text">Phone: 123-456-7890</p>
-      </div>
-      <div class="info__auth">
-        <router-link to="/" class="contact__text">Register</router-link>
-        <p class="separator">|</p>
-        <router-link to="/login" class="contact__text">Login</router-link>
-      </div>
-    </div>
-
-    <!-- SHOP LOGO, SEARCH BAR AND USER GREETING/ICON -->
+    <the-top-bar />
+    <!-- SHOP LOGO, SEARCH BAR AND ACTION ICONS -->
     <div class="header__main">
       <div class="header__brand">
         <h1>TechShop</h1>
@@ -43,15 +27,15 @@ import SearchIcon from "@/assets/icons/header/search.png";
       <div class="header__dropdowns">
         <favorites-modal />
         <cart-modal />
-        <UserProfileDropdown />
+        <user-profile-dropdown v-if="isSignedIn" />
       </div>
     </div>
+    <!-- NAVIGATION LINKS -->
     <TheNavbar class="header__nav" />
   </div>
 </template>
 
 <style scoped>
-.header__info,
 .header__main,
 .header__nav {
   color: var(--ts-c-text-light);
@@ -60,30 +44,9 @@ import SearchIcon from "@/assets/icons/header/search.png";
   align-items: center;
 }
 
-.header__info,
 .header__main {
   justify-content: space-between;
   padding: 0.5rem 2rem;
-}
-
-.header__info {
-  background-color: var(--ts-c-bg-light);
-  color: var(--ts-c-text-dark);
-}
-
-.info__contacts,
-.info__auth {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.separator {
-  margin: 0 1rem;
-}
-
-.contact__text {
-  color: var(--ts-c-text-dark);
 }
 
 .dropdown__icon {
