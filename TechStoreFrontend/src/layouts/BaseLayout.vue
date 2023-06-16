@@ -1,17 +1,17 @@
 <script setup>
-import TheHeader from "@/components/TheHeader.vue";
-import TheNewsletters from "@/components/TheNewsletters.vue";
-import TheFooter from "@/components/TheFooter.vue";
+import TheHeader from "@/components/common/header/TheHeader.vue";
+import TheNewsletters from "@/components/common/newsletters/TheNewsletters.vue";
+import TheFooter from "@/components/common/footer/TheFooter.vue";
 </script>
 
 <template>
   <div class="baselayout">
-    <TheHeader class="baselayout__header" />
+    <the-header class="baselayout__header" />
     <main class="baselayout__main">
       <slot />
     </main>
-    <TheNewsletters class="baselayout__newsletters" />
-    <TheFooter class="baselayout__footer" />
+    <the-newsletters class="baselayout__newsletters" />
+    <the-footer class="baselayout__footer" />
   </div>
 </template>
 

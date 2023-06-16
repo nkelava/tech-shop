@@ -19,7 +19,7 @@ const items = [
 
       <v-list>
         <v-list-item v-for="(item, i) in items" :key="i">
-          <RouterLink :to="item.to">{{ item.title }}</RouterLink>
+          <router-link :to="item.to">{{ item.title }}</router-link>
         </v-list-item>
       </v-list>
     </v-menu>

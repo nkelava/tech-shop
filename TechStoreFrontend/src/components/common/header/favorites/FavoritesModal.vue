@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import FavoriteIcon from "@/assets/icons/header/favorite.png";
-import ProductFavoritesItem from "./ProductFavoritesItem.vue";
+import FavoritesItem from "./FavoritesItem.vue";
 
 const dialog = ref(false);
 const count = 3;
@@ -20,7 +20,7 @@ const toggleDialog = () => {
       </v-badge>
     </v-btn>
     <v-dialog v-model="dialog" persistent width="auto">
-      <ProductFavoritesItem @toggleDialog="toggleDialog" :title="title" />
+      <favorites-item @toggleDialog="toggleDialog" :title="title" />
     </v-dialog>
   </div>
 </template>

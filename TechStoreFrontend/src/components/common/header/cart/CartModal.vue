@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import CartIcon from "@/assets/icons/header/cart.png";
-import ProductCartItem from "./ProductCartItem.vue";
+import CartItem from "./CartItem.vue";
 
 const dialog = ref(false);
 const count = 3;
@@ -20,7 +20,7 @@ const toggleDialog = () => {
       </v-badge>
     </v-btn>
     <v-dialog v-model="dialog" persistent width="auto" class="dialog">
-      <ProductCartItem @toggleDialog="toggleDialog" :title="title" />
+      <cart-item @toggleDialog="toggleDialog" :title="title" />
     </v-dialog>
   </div>
 </template>

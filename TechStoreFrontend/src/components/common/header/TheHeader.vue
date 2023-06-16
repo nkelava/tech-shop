@@ -1,9 +1,9 @@
 <script setup>
 import { RouterLink } from "vue-router";
-import ProductFavoritesModal from "./ProductFavoritesModal.vue";
-import ProductCartModal from "./ProductCartModal.vue";
-import UserProfileDropdown from "./UserProfileDropdown.vue";
-import TheNavbar from "./TheNavbar.vue";
+import FavoritesModal from "@/components/common/header/favorites/FavoritesModal.vue";
+import CartModal from "@/components/common/header/cart/CartModal.vue";
+import UserProfileDropdown from "@/components/common/header/account/UserProfileDropdown.vue";
+import TheNavbar from "@/components/common/header/TheNavbar.vue";
 
 import EmailIcon from "@/assets/icons/contact/gmail16.png";
 import PhoneIcon from "@/assets/icons/contact/phone16.png";
@@ -41,8 +41,8 @@ import SearchIcon from "@/assets/icons/header/search.png";
         </button>
       </div>
       <div class="header__dropdowns">
-        <ProductFavoritesModal />
-        <ProductCartModal />
+        <favorites-modal />
+        <cart-modal />
         <UserProfileDropdown />
       </div>
     </div>
