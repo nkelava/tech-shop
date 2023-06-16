@@ -6,5 +6,6 @@ const props = defineProps(["label", "v$"]);
   <v-text-field
     :error-messages="v$.$errors.map((e) => e.$message)"
     :label="props.label"
+    variant="outlined"
   ></v-text-field>
 </template>

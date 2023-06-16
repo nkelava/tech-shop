@@ -13,5 +13,6 @@ const isInputHidden = ref(true);
     :error-messages="v$.$errors.map((e) => e.$message)"
     :label="props.label"
     @click:append="() => (isInputHidden = !isInputHidden)"
+    variant="outlined"
   ></v-text-field>
 </template>
