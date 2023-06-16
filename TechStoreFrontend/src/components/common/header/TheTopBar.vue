@@ -4,6 +4,7 @@ import EmailIcon from "@/assets/icons/contact/gmail16.png";
 import PhoneIcon from "@/assets/icons/contact/phone16.png";
 import ContactInfo from "@/components/common/ContactInfo.vue";
 
+// TODO: implement user state
 const isSignedIn = false;
 </script>
 

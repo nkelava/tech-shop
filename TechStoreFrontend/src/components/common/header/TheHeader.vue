@@ -6,11 +6,12 @@ import UserProfileDropdown from "@/components/common/header/account/UserProfileD
 import TheNavbar from "./TheNavbar.vue";
 import SearchIcon from "@/assets/icons/header/search.png";
 
+// TODO: implement user state
 const isSignedIn = true;
 </script>
 
 <template>
-  <div class="header">
+  <header class="header">
     <!-- CONTACT INFO AND LOGIN/REGISTER -->
     <the-top-bar />
     <!-- SHOP LOGO, SEARCH BAR AND ACTION ICONS -->
@@ -31,13 +32,12 @@ const isSignedIn = true;
       </div>
     </div>
     <!-- NAVIGATION LINKS -->
-    <TheNavbar class="header__nav" />
-  </div>
+    <the-navbar />
+  </header>
 </template>
 
 <style scoped>
-.header__main,
-.header__nav {
+.header__main {
   color: var(--ts-c-text-light);
   display: flex;
   flex-wrap: wrap;
