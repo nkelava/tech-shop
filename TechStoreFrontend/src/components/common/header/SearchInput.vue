@@ -6,7 +6,9 @@ const search = ref("");
 const emit = defineEmits(["search"]);
 
 function handleSearch() {
-  emit("search", search.value);
+  if (search.value.length > 0) {
+    emit("search", search.value);
+  }
 }
 </script>
 
