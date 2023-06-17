@@ -1,6 +1,6 @@
 <script setup>
-import { useRoute } from "vue-router";
 import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import TheSlider from "@/components/TheSlider.vue";
 import ProductList from "@/components/ProductList.vue";
 import FilterSidebar from "@/components/TheFilterSidebar.vue";

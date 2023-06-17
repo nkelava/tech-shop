@@ -1,6 +1,6 @@
 <script setup>
-import { useRoute } from "vue-router";
 import { ref, watch } from "vue";
+import { useRoute } from "vue-router";
 import TheSlider from "@/components/TheSlider.vue";
 import BaseGrid from "@/components/BaseGrid.vue";
 import SubcategoryCard from "@/components/SubcategoryCard.vue";

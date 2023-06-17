@@ -1,9 +1,9 @@
 <script setup>
 import TheTopBar from "./TheTopBar.vue";
 import SearchInput from "./SearchInput.vue";
-import FavoritesModal from "@/components/common/header/favorites/FavoritesModal.vue";
-import CartModal from "@/components/common/header/cart/CartModal.vue";
-import UserProfileDropdown from "@/components/common/header/account/UserProfileDropdown.vue";
+import FavoritesModal from "./favorites/FavoritesModal.vue";
+import CartModal from "./cart/CartModal.vue";
+import UserProfileDropdown from "./account/UserProfileDropdown.vue";
 import TheNavbar from "./TheNavbar.vue";
 
 // TODO: implement user state

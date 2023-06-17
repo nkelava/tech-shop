@@ -1,5 +1,3 @@
-<script setup></script>
-
 <template>
   <v-card class="mx-auto">
     <v-list lines="10">

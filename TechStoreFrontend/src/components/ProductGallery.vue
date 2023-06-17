@@ -17,27 +17,27 @@ const slideTo = (val) => {
 
 <template>
   <section class="gallery-container">
-    <Carousel id="gallery" :items-to-show="1" :wrap-around="true" v-model="currentSlide">
-      <Slide v-for="(image, i) in productImages" :key="i">
+    <carousel id="gallery" :items-to-show="1" :wrap-around="true" v-model="currentSlide">
+      <slide v-for="(image, i) in productImages" :key="i">
         <div class="carousel__item">
           <img :src="image" class="gallery__img" alt="default product image" />
         </div>
-      </Slide>
-    </Carousel>
+      </slide>
+    </carousel>
 
-    <Carousel
+    <carousel
       id="thumbnails"
       :items-to-show="3.5"
       :wrap-around="true"
       v-model="currentSlide"
       ref="carousel"
     >
-      <Slide v-for="(imageUrl, i) in productImages" :key="i">
+      <slide v-for="(imageUrl, i) in productImages" :key="i">
         <div class="carousel__item" @click="slideTo(i)">
           <img :src="imageUrl" class="tumbnails__img" alt="default product image" />
         </div>
-      </Slide>
-    </Carousel>
+      </slide>
+    </carousel>
   </section>
 </template>
 

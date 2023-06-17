@@ -1,6 +1,5 @@
 <script setup>
 const props = defineProps(["order"]);
-
 const category = "laptops";
 const subcategory = "notebooks";
 </script>

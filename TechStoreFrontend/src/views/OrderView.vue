@@ -1,6 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
-import { reactive } from "vue";
+import { computed, ref, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { initialState as initPaymentState, rules as paymentRules } from "@/vuelidate/payment";
 import { initialState as initDeliveryState, rules as deliveryRules } from "@/vuelidate/delivery";

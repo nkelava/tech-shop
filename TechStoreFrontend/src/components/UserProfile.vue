@@ -89,11 +89,11 @@ const clearForm = (form, initialFormState, formState) => {
       <v-col>
         <form class="pt-4">
           <v-row>
-            <BaseInput class="mr-2" v-model="state.firstName" label="First Name" :v$="v$" />
-            <BaseInput v-model="state.lastName" label="Last Name" :v$="v$" />
+            <base-input class="mr-2" v-model="state.firstName" label="First Name" :v$="v$" />
+            <base-input v-model="state.lastName" label="Last Name" :v$="v$" />
           </v-row>
           <v-row>
-            <BaseInput v-model="state.phone" label="Phone Number" :v$="v$" />
+            <base-input v-model="state.phone" label="Phone Number" :v$="v$" />
           </v-row>
           <v-row>
             <v-btn class="my-4 text-capitalize w-25 btn" @click="v$.$validate"> Save </v-btn>
@@ -111,7 +111,7 @@ const clearForm = (form, initialFormState, formState) => {
       </v-col>
       <v-col>
         <form class="pt-2">
-          <BaseInput v-model="emailState.email" label="E-mail Address" :v$="ve$.email" />
+          <base-input v-model="emailState.email" label="E-mail Address" :v$="ve$.email" />
           <v-btn class="my-4 text-capitalize w-25 btn" @click="ve$.$validate"> Save </v-btn>
         </form>
       </v-col>
@@ -126,17 +126,17 @@ const clearForm = (form, initialFormState, formState) => {
       </v-col>
       <v-col>
         <form class="pt-2">
-          <HiddenInput
+          <hidden-input
             v-model="passwordState.password"
             label="Current Password"
             :v$="vp$.password"
           />
-          <HiddenInput
+          <hidden-input
             v-model="passwordState.newPassword"
             label="New Password"
             :v$="vp$.newPassword"
           />
-          <HiddenInput
+          <hidden-input
             v-model="passwordState.confirmPassword"
             label="Confirm Password"
             :v$="vp$.confirmPassword"

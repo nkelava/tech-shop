@@ -2,7 +2,6 @@
 import TheSlider from "@/components/TheSlider.vue";
 import TheBenefits from "@/components/TheBenefits.vue";
 import TheBanners from "@/components/TheBanners.vue";
-
 import ProductList from "@/components/ProductList.vue";
 import ProductSlider from "@/components/ProductSlider.vue";
 import { getProducts } from "@/database/services/productService";

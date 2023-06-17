@@ -1,6 +1,6 @@
 <script setup>
-import ProductCard from "@/components/ProductCard.vue";
 import { computed } from "vue";
+import ProductCard from "@/components/ProductCard.vue";
 
 const props = defineProps(["products"]);
 // TODO: add slice count as prop if you dont think of another solution
@@ -11,7 +11,7 @@ const slicedProducts = computed(() => {
 
 <template>
   <div class="products">
-    <ProductCard v-for="product in slicedProducts" :key="product.id" :product="product" />
+    <product-card v-for="product in slicedProducts" :key="product.id" :product="product" />
   </div>
 </template>
 

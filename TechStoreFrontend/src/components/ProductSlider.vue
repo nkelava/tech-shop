@@ -1,7 +1,7 @@
 <script setup>
-import ProductCard from "@/components/ProductCard.vue";
-import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+import "vue3-carousel/dist/carousel.css";
+import ProductCard from "@/components/ProductCard.vue";
 
 const { products } = defineProps(["products"]);
 const breakpoints = {
@@ -34,16 +34,16 @@ const breakpoints = {
 };
 </script>
 <template>
-  <Carousel :items-to-show="5.5" :wrap-around="true" :breakpoints="breakpoints">
-    <Slide v-for="product in products" :key="product">
-      <ProductCard :product="product" />
-    </Slide>
+  <carousel :items-to-show="5.5" :wrap-around="true" :breakpoints="breakpoints">
+    <slide v-for="product in products" :key="product">
+      <product-card :product="product" />
+    </slide>
 
     <template #addons>
-      <Navigation />
-      <Pagination />
+      <navigation />
+      <pagination />
     </template>
-  </Carousel>
+  </carousel>
 </template>
 
 <style scoped>

@@ -18,11 +18,11 @@ const reviewCount = 3;
     <v-card-text class="text">
       <v-window v-model="tab">
         <v-window-item value="specs">
-          <ProductSpecification :product="props.product" />
+          <product-specification :product="props.product" />
         </v-window-item>
 
         <v-window-item value="reviews">
-          <ProductReviews />
+          <product-reviews />
         </v-window-item>
       </v-window>
     </v-card-text>

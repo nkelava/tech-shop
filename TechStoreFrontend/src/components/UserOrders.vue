@@ -1,6 +1,7 @@
 <script setup>
 import OrderDetails from "@/components/OrderDetails.vue";
 import { getProducts } from "@/database/services/productService";
+
 const orders = [
   {
     id: 1,
@@ -27,7 +28,7 @@ const orders = [
       <h2>My Orders</h2>
     </v-row>
     <v-row v-for="order in orders" :key="order.id">
-      <OrderDetails :order="order" />
+      <order-details :order="order" />
     </v-row>
   </v-container>
 </template>
