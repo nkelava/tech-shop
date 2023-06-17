@@ -6,7 +6,7 @@ const categories = getCategories();
 </script>
 
 <template>
-  <nav class="header__nav">
+  <nav class="nav-container">
     <router-link class="nav__item" to="/">Home</router-link>
     <router-link
       v-for="category in categories"
@@ -20,7 +20,7 @@ const categories = getCategories();
 </template>
 
 <style scoped>
-.header__nav {
+.nav-container {
   border-bottom: 1px solid var(--ts-c-primary-darker);
   color: var(--ts-c-text-light);
   display: flex;
@@ -29,6 +29,7 @@ const categories = getCategories();
   align-items: center;
   gap: 1rem;
   padding: 10px 0;
+  font-size: 16px;
 }
 
 .nav__item {
