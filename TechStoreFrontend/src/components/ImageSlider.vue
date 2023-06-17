@@ -8,8 +8,7 @@ import Hyperx from "@/assets/images/test/carousel/hyperx.jpg";
 // TODO: either separate hero slider from this or add images as props
 const images = [Skola, SpiderMan, Visa, Hyperx];
 
-// TODO: Fix slider responsiveness
-const { height } = defineProps(["height"]);
+const { maxHeight } = defineProps(["maxHeight"]);
 </script>
 
 <template>
@@ -29,13 +28,13 @@ const { height } = defineProps(["height"]);
 <style scoped>
 .carousel__item {
   height: 100%;
-  max-height: 800px;
+  max-height: v-bind(maxHeight);
   width: 100%;
 }
 
 .carousel__item img {
   height: 100%;
-  max-height: 800px;
+  max-height: v-bind(maxHeight);
   width: 100%;
 }
 </style>

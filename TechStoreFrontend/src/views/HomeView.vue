@@ -1,5 +1,5 @@
 <script setup>
-import TheSlider from "@/components/TheSlider.vue";
+import ImageSlider from "@/components/ImageSlider.vue";
 import TheBenefits from "@/components/TheBenefits.vue";
 import TheBanners from "@/components/TheBanners.vue";
 import ProductList from "@/components/ProductList.vue";
@@ -11,7 +11,7 @@ const products = getProducts();
 
 <template>
   <div>
-    <the-slider height="800px" />
+    <image-slider maxHeight="800px" />
     <the-benefits />
     <div class="best-sellers">
       <!-- TODO: add product grid component and pagination to it -->
