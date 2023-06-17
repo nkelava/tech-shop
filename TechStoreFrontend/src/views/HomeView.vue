@@ -11,25 +11,25 @@ const products = getProducts();
 
 <template>
   <div>
-    <TheSlider height="500px" />
-    <TheBenefits />
+    <the-slider height="800px" />
+    <the-benefits />
     <div class="best-sellers">
       <!-- TODO: add product grid component and pagination to it -->
       <h2>Best Sellers</h2>
       <hr />
-      <ProductList :products="products" />
+      <product-list :products="products" />
     </div>
-    <TheBanners />
+    <the-banners />
     <!-- Add product slider component  -->
     <div class="new">
       <h2>New Arrivals</h2>
       <hr />
-      <ProductSlider :products="products" />
+      <product-slider :products="products" />
     </div>
     <div class="hot">
       <h2>Hot Offers</h2>
       <hr />
-      <ProductSlider :products="products" />
+      <product-slider :products="products" />
     </div>
   </div>
 </template>

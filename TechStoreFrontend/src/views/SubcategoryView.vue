@@ -49,9 +49,9 @@ function handleFilter(filters) {
 
 <template>
   <div>
-    <TheSlider height="200px" />
+    <the-slider height="200px" />
     <div class="layout">
-      <FilterSidebar :subcategoryId="subcategory.id" @filter="handleFilter" />
+      <filter-sidebar :subcategoryId="subcategory.id" @filter="handleFilter" />
       <div class="content">
         <div class="heading">
           <h1 class="heading__title">{{ categorySlug }} > {{ subcategory.name }}</h1>
@@ -65,7 +65,7 @@ function handleFilter(filters) {
           </select>
         </div>
         <hr />
-        <ProductList :products="sortedProducts" />
+        <product-list :products="sortedProducts" />
       </div>
     </div>
   </div>

@@ -24,18 +24,18 @@ watch(
 
 <template>
   <div>
-    <TheSlider height="200px" />
+    <the-slider height="200px" />
     <div class="category-container">
       <h1 class="category__title">{{ category.name }}</h1>
       <hr />
-      <BaseGrid>
-        <SubcategoryCard
+      <base-grid>
+        <subcategory-card
           v-for="subcategory in subcategories"
           :key="subcategory.id"
           :category="category.name"
           :subcategory="subcategory"
         />
-      </BaseGrid>
+      </base-grid>
     </div>
   </div>
 </template>

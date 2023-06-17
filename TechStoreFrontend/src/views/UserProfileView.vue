@@ -31,10 +31,10 @@ const tab = ref("details");
       <v-col>
         <v-window v-model="tab">
           <v-window-item value="details">
-            <UserProfile />
+            <user-profile />
           </v-window-item>
           <v-window-item value="orders">
-            <UserOrders />
+            <user-orders />
           </v-window-item>
         </v-window>
       </v-col>

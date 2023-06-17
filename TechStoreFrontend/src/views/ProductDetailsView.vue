@@ -15,9 +15,9 @@ const product = getProductWithSpecification(Number(productId.value));
 
 <template>
   <div class="product-container">
-    <ProductGallery class="gallery" />
-    <ProductDetails class="info" :product="product" />
-    <TabsWrapper class="tabs" :product="product" />
+    <product-gallery class="gallery" />
+    <product-details class="info" :product="product" />
+    <tabs-wrapper class="tabs" :product="product" />
   </div>
 </template>
 
