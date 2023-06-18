@@ -27,7 +27,8 @@ export const productsDb = [
     id: 2,
     subcategoryId: 1,
     name: "Test 2",
-    title: "",
+    title:
+      "Acer Predator Helios 300, 15.6' FHD IPS, Intel i7 8750H, NVidia GeForce 1060 4GB, 16GB RAM DDR4, 512GB SSD",
     slug: "test2",
     price: 123.42,
     currency: "$",
@@ -46,7 +47,8 @@ export const productsDb = [
     id: 3,
     subcategoryId: 1,
     name: "Test 3",
-    title: "",
+    title:
+      "Acer Predator Helios 300, 15.6' FHD IPS, Intel i7 8750H, NVidia GeForce 1060 4GB, 16GB RAM DDR4, 512GB SSD",
     slug: "test3",
     price: 123.43,
     currency: "$",
@@ -65,7 +67,8 @@ export const productsDb = [
     id: 4,
     subcategoryId: 1,
     name: "Test 4",
-    title: "",
+    title:
+      "Acer Predator Helios 300, 15.6' FHD IPS, Intel i7 8750H, NVidia GeForce 1060 4GB, 16GB RAM DDR4, 512GB SSD",
     slug: "test4",
     price: 123.44,
     currency: "$",
@@ -84,7 +87,8 @@ export const productsDb = [
     id: 5,
     subcategoryId: 1,
     name: "Test 5",
-    title: "",
+    title:
+      "Acer Predator Helios 300, 15.6' FHD IPS, Intel i7 8750H, NVidia GeForce 1060 4GB, 16GB RAM DDR4, 512GB SSD",
     slug: "test5",
     price: 123.45,
     currency: "$",
@@ -103,7 +107,8 @@ export const productsDb = [
     id: 6,
     subcategoryId: 1,
     name: "Test 6",
-    title: "",
+    title:
+      "Acer Predator Helios 300, 15.6' FHD IPS, Intel i7 8750H, NVidia GeForce 1060 4GB, 16GB RAM DDR4, 512GB SSD",
     slug: "test6",
     price: 123.46,
     currency: "$",
@@ -122,7 +127,8 @@ export const productsDb = [
     id: 7,
     subcategoryId: 1,
     name: "Test 7",
-    title: "",
+    title:
+      "Acer Predator Helios 300, 15.6' FHD IPS, Intel i7 8750H, NVidia GeForce 1060 4GB, 16GB RAM DDR4, 512GB SSD",
     slug: "test7",
     price: 123.47,
     currency: "$",
@@ -141,7 +147,8 @@ export const productsDb = [
     id: 8,
     subcategoryId: 1,
     name: "Test 8",
-    title: "",
+    title:
+      "Acer Predator Helios 300, 15.6' FHD IPS, Intel i7 8750H, NVidia GeForce 1060 4GB, 16GB RAM DDR4, 512GB SSD",
     slug: "test8",
     price: 123.48,
     currency: "$",
@@ -160,7 +167,8 @@ export const productsDb = [
     id: 9,
     subcategoryId: 2,
     name: "Test 9",
-    title: "",
+    title:
+      "Acer Predator Helios 300, 15.6' FHD IPS, Intel i7 8750H, NVidia GeForce 1060 4GB, 16GB RAM DDR4, 512GB SSD",
     slug: "test9",
     price: 123.41,
     currency: "$",
@@ -179,7 +187,8 @@ export const productsDb = [
     id: 10,
     subcategoryId: 2,
     name: "Test 10",
-    title: "",
+    title:
+      "Acer Predator Helios 300, 15.6' FHD IPS, Intel i7 8750H, NVidia GeForce 1060 4GB, 16GB RAM DDR4, 512GB SSD",
     slug: "test10",
     price: 123.42,
     currency: "$",
@@ -198,7 +207,8 @@ export const productsDb = [
     id: 11,
     subcategoryId: 3,
     name: "Test 11",
-    title: "",
+    title:
+      "Acer Predator Helios 300, 15.6' FHD IPS, Intel i7 8750H, NVidia GeForce 1060 4GB, 16GB RAM DDR4, 512GB SSD",
     slug: "test11",
     price: 123.43,
     currency: "$",
@@ -217,7 +227,8 @@ export const productsDb = [
     id: 12,
     subcategoryId: 3,
     name: "Test 12",
-    title: "",
+    title:
+      "Acer Predator Helios 300, 15.6' FHD IPS, Intel i7 8750H, NVidia GeForce 1060 4GB, 16GB RAM DDR4, 512GB SSD",
     slug: "test12",
     price: 123.44,
     currency: "$",
@@ -236,7 +247,8 @@ export const productsDb = [
     id: 13,
     subcategoryId: 3,
     name: "Test 13",
-    title: "",
+    title:
+      "Acer Predator Helios 300, 15.6' FHD IPS, Intel i7 8750H, NVidia GeForce 1060 4GB, 16GB RAM DDR4, 512GB SSD",
     slug: "test13",
     price: 123.45,
     currency: "$",
@@ -255,7 +267,8 @@ export const productsDb = [
     id: 14,
     subcategoryId: 3,
     name: "Test 14",
-    title: "",
+    title:
+      "Acer Predator Helios 300, 15.6' FHD IPS, Intel i7 8750H, NVidia GeForce 1060 4GB, 16GB RAM DDR4, 512GB SSD",
     slug: "test14",
     price: 123.46,
     currency: "$",
@@ -274,7 +287,8 @@ export const productsDb = [
     id: 15,
     subcategoryId: 4,
     name: "Test 15",
-    title: "",
+    title:
+      "Acer Predator Helios 300, 15.6' FHD IPS, Intel i7 8750H, NVidia GeForce 1060 4GB, 16GB RAM DDR4, 512GB SSD",
     slug: "test15",
     price: 123.47,
     currency: "$",
@@ -293,7 +307,8 @@ export const productsDb = [
     id: 16,
     subcategoryId: 4,
     name: "Test 16",
-    title: "",
+    title:
+      "Acer Predator Helios 300, 15.6' FHD IPS, Intel i7 8750H, NVidia GeForce 1060 4GB, 16GB RAM DDR4, 512GB SSD",
     slug: "test16",
     price: 123.48,
     currency: "$",
