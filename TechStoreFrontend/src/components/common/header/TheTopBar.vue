@@ -18,7 +18,8 @@ const isSignedIn = false;
       <contact-info :imgUrl="PhoneIcon" imgAlt="phone icon"> Phone: 123-456-7890 </contact-info>
     </div>
     <div class="top__auth">
-      <router-link v-if="!isSignedIn" to="/auth" class="auth__link">Sign In</router-link>
+      <v-icon icon="mdi-login-variant"></v-icon>
+      <router-link v-if="!isSignedIn" to="/auth" class="auth__link">Sign In / Sign Up</router-link>
     </div>
   </div>
 </template>
