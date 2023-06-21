@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import ContactInfo from "@/components/common/ContactInfo.vue";
 import EmailIcon from "@/assets/icons/contact/gmail16.png";
 import PhoneIcon from "@/assets/icons/contact/phone16.png";
 import FacebookIcon from "@/assets/icons/socials/facebook.png";
@@ -32,14 +33,11 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
       </div>
       <div class="info-container">
         <h3 class="footer__header">CONTACT INFO</h3>
-        <div class="info__email">
-          <img :src="EmailIcon" alt="email icon" class="header-icon" />
-          <p>Email: support@gmail.com</p>
-        </div>
-        <div class="info__phone">
-          <img :src="PhoneIcon" alt="phone icon" class="header-icon" />
-          <p>Phone: 123-456-7890</p>
-        </div>
+        <contact-info :imgUrl="EmailIcon" imgAlt="email icon">
+          Email: tech-store@gmail.com
+        </contact-info>
+        <v-divider class="my-1" />
+        <contact-info :imgUrl="PhoneIcon" imgAlt="phone icon"> Phone: 123-456-7890 </contact-info>
         <div class="info__socials">
           <img :src="FacebookIcon" class="socials__icon" title="Facebook" alt="facebook icon" />
           <img :src="InstagramIcon" class="socials__icon" title="Instagram" alt="instagram icon" />
@@ -108,13 +106,6 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
 .info-container {
   display: flex;
   flex-direction: column;
-}
-
-.info__email,
-.info__phone {
-  display: flex;
-  align-items: center;
-  padding-bottom: 10px;
 }
 
 img {

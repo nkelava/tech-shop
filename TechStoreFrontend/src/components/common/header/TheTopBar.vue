@@ -12,7 +12,7 @@ const isSignedIn = false;
   <div class="top-bar">
     <div class="top__contacts">
       <contact-info :imgUrl="EmailIcon" imgAlt="email icon">
-        Email: techshop@gmail.com
+        Email: tech-store@gmail.com
       </contact-info>
       <v-divider class="mx-2" vertical />
       <contact-info :imgUrl="PhoneIcon" imgAlt="phone icon"> Phone: 123-456-7890 </contact-info>

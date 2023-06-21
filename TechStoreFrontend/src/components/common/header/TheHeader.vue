@@ -20,7 +20,7 @@ function handleSearch(searchText) {
     <the-top-bar />
     <!-- SHOP LOGO, SEARCH BAR AND ACTION ICONS -->
     <div class="header__main">
-      <h1>TechShop</h1>
+      <h1>TechStore</h1>
       <search-input @search="handleSearch" />
       <div class="d-flex">
         <favorites-modal />
