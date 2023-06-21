@@ -12,7 +12,7 @@ const categories = getCategories();
       v-for="category in categories"
       :key="category.id"
       class="nav__item"
-      :to="category.slug"
+      :to="`/${category.slug}`"
       >{{ category.name }}
     </router-link>
     <router-link class="nav__item" to="/contact">Contact Us</router-link>
