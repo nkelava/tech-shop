@@ -2,7 +2,7 @@
 import ImageSlider from "@/components/ImageSlider.vue";
 import TheBenefits from "@/components/TheBenefits.vue";
 import TheBanners from "@/components/TheBanners.vue";
-import ProductList from "@/components/ProductList.vue";
+import ProductGrid from "@/components/ProductGrid.vue";
 import ProductSlider from "@/components/ProductSlider.vue";
 import { getProducts } from "@/database/services/productService";
 
@@ -13,49 +13,17 @@ const products = getProducts();
   <div>
     <image-slider maxHeight="800px" />
     <the-benefits />
-    <div class="best-sellers">
-      <!-- TODO: add product grid component and pagination to it -->
-      <h2>Best Sellers</h2>
-      <hr />
-      <product-list :products="products" />
-    </div>
+    <product-grid class="container" header="Best Sellers" :products="products" />
+    <!-- <product-slider header="Best Sellers" :products="products" /> -->
     <the-banners />
-    <!-- Add product slider component  -->
-    <div class="new">
-      <h2>New Arrivals</h2>
-      <hr />
-      <product-slider :products="products" />
-    </div>
-    <div class="hot">
-      <h2>Hot Offers</h2>
-      <hr />
-      <product-slider :products="products" />
-    </div>
+    <product-slider class="container" header="New Arrivals" :products="products" />
+    <product-slider class="container" header="Hot Offers" :products="products" />
   </div>
 </template>
 
 <style scoped>
-.best-sellers {
-  margin: 40px 0;
-  padding: 0.5rem 5rem;
-}
-
-.best-sellers h2,
-.new h2,
-.hot h2 {
-  color: var(--ts-c-text-highlight);
-  padding: 3px;
-}
-
-hr {
-  border: 1px solid var(--ts-c-primary-darker);
-  border-radius: 5px;
-  margin-bottom: 2rem;
-}
-
-.new,
-.hot {
-  margin: 40px 0;
+.container {
+  margin: 40px auto;
   padding: 0.5rem 5rem;
 }
 </style>
