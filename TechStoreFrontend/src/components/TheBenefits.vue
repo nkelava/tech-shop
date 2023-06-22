@@ -8,19 +8,36 @@ import RocketIcon from "../assets/icons/benefits/rocket.png";
 
 <template>
   <div class="benefits-container">
-    <benefit-card :icon="HomeIcon" title="Home Shipping" text="Lorem, ipsum." />
-    <benefit-card :icon="RefundIcon" title="100% Refund" text="Lorem, ipsum." />
-    <benefit-card :icon="SupportIcon" title="Client Support" text="Lorem, ipsum." />
-    <benefit-card :icon="RocketIcon" title="Fast Delivery" text="Lorem, ipsum." />
+    <benefit-card
+      :icon="HomeIcon"
+      title="Home Delivery"
+      content="Get your products delivered straight to your door, saving you time and effort."
+    />
+    <benefit-card
+      :icon="RocketIcon"
+      title="Fast Delivery"
+      content="Experience prompt shipping and receive your items swiftly, ensuring timely satisfaction."
+    />
+    <benefit-card
+      :icon="RefundIcon"
+      title="100% Refund"
+      content="Rest easy knowing that we offer a complete refund, ensuring your peace of mind."
+    />
+    <benefit-card
+      :icon="SupportIcon"
+      title="Client Support"
+      content="Access round-the-clock client support to assist you whenever you need assistance."
+    />
   </div>
 </template>
 
 <style scoped>
 .benefits-container {
-  margin-top: 2rem;
+  margin: 2rem;
   display: grid;
   grid-template-areas: "home refund support delivery";
   justify-content: center;
+  align-content: center;
 }
 
 .benefits-container:nth-child(1) {
@@ -41,21 +58,21 @@ import RocketIcon from "../assets/icons/benefits/rocket.png";
 
 @media only screen and (max-width: 1200px) {
   .benefits-container {
-    gap: 0.5rem;
     grid-template-areas:
       "home refund"
       "support delivery";
+    gap: 0.5rem;
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 700px) {
   .benefits-container {
-    gap: 0.5rem;
     grid-template-areas:
       "home"
       "refund"
       "support"
       "delivery";
+    gap: 0.5rem;
   }
 }
 </style>

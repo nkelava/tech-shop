@@ -1,13 +1,13 @@
 <script setup>
-const { icon, title, text } = defineProps(["icon", "title", "text"]);
+const props = defineProps(["icon", "title", "content"]);
 </script>
 
 <template>
   <div class="benefit-card">
-    <img :src="icon" alt="home icon" class="benefit-card__img" />
+    <img :src="props.icon" alt="home icon" class="benefit-card__img" />
     <div class="benefit-card__content">
-      <h2>{{ title }}</h2>
-      <p>{{ text }}</p>
+      <h2>{{ props.title }}</h2>
+      <p>{{ props.content }}</p>
     </div>
   </div>
 </template>
@@ -17,14 +17,12 @@ const { icon, title, text } = defineProps(["icon", "title", "text"]);
   background-color: var(--ts-c-bg-light);
   border-right: 1px solid var(--ts-c-bg-dark);
   color: var(--ts-c-text-dark);
-  padding: 1rem 3rem;
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
-}
-
-.benefit-card > * {
-  flex-wrap: wrap;
+  min-height: 120px;
+  max-width: 500px;
+  padding: 1rem 3rem;
 }
 
 .benefit-card:first-child {
@@ -36,9 +34,11 @@ const { icon, title, text } = defineProps(["icon", "title", "text"]);
 }
 
 .benefit-card__img {
-  width: 48px;
-  height: 48px;
-  margin-right: 1rem;
+  width: 100%;
+  max-width: 48px;
+  height: 100%;
+  max-height: 48px;
+  margin-right: 2rem;
 }
 
 .benefit-card__content h2 {
@@ -60,6 +60,31 @@ const { icon, title, text } = defineProps(["icon", "title", "text"]);
 @media only screen and (max-width: 600px) {
   .benefit-card {
     border-radius: 10px;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .benefit-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 1rem;
+  }
+
+  .benefit-card__img {
+    width: 100%;
+    max-width: 48px;
+    height: 100%;
+    max-height: 48px;
+    margin-right: 0;
+  }
+
+  .benefit-card__content {
+    text-align: center;
+  }
+
+  .benefit-card__content h2 {
+    margin-top: 10px;
   }
 }
 </style>
