@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import TheSlider from "@/components/TheSlider.vue";
+import ImageSlider from "@/components/ImageSlider.vue";
 import BaseGrid from "@/components/BaseGrid.vue";
 import SubcategoryCard from "@/components/SubcategoryCard.vue";
 import { getCategoryBySlug } from "@/database/services/categoryService.js";
@@ -24,7 +24,7 @@ watch(
 
 <template>
   <div>
-    <the-slider height="200px" />
+    <image-slider maxHeight="400px" />
     <div class="category-container">
       <h1 class="category__title">{{ category.name }}</h1>
       <hr />

@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import TheSlider from "@/components/TheSlider.vue";
-import ProductList from "@/components/ProductList.vue";
+import ImageSlider from "@/components/ImageSlider.vue";
+import ProductGrid from "@/components/ProductGrid.vue";
 import FilterSidebar from "@/components/TheFilterSidebar.vue";
 import { getSubcategoryBySlug } from "@/database/services/subcategoryService.js";
 import {
@@ -49,7 +49,7 @@ function handleFilter(filters) {
 
 <template>
   <div>
-    <the-slider height="200px" />
+    <image-slider maxHeight="400px" />
     <div class="layout">
       <filter-sidebar :subcategoryId="subcategory.id" @filter="handleFilter" />
       <div class="content">
@@ -65,7 +65,8 @@ function handleFilter(filters) {
           </select>
         </div>
         <hr />
-        <product-list :products="sortedProducts" />
+        <!-- TODO: paginated list, this is temp -->
+        <product-grid :products="sortedProducts" />
       </div>
     </div>
   </div>
