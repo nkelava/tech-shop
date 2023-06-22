@@ -6,67 +6,54 @@ import AsusAdImage from "@/assets/images/test/banners/asus.png";
 
 <template>
   <div class="banners">
-    <img :src="DellAdImage" alt="" />
-    <img :src="LogitechAdImage" alt="" />
-    <img :src="LogitechAdImage" alt="" />
-    <img :src="AsusAdImage" alt="" />
+    <img class="banners__img" :src="DellAdImage" alt="" />
+    <img class="banners__img" :src="LogitechAdImage" alt="" />
+    <img class="banners__img" :src="AsusAdImage" alt="" />
   </div>
 </template>
 
 <style scoped>
 .banners {
   background-color: var(--ts-c-bg-light);
-  height: 40em;
-  padding: 3rem;
   display: grid;
   grid-template-areas:
     "first second"
-    "third fourth";
+    "first third";
   gap: 1rem;
+  justify-content: center;
+  height: 40em;
+  padding: 3rem;
 }
 
-.banners:nth-child(1) {
+.banners__img:nth-child(1) {
   grid-area: first;
 }
 
-.banners:nth-child(2) {
+.banners__img:nth-child(2) {
   grid-area: second;
 }
 
-.banners:nth-child(3) {
+.banners__img:nth-child(3) {
   grid-area: third;
 }
 
-.banners:nth-child(4) {
-  grid-area: fourth;
-}
-
-.banners img {
-  border-radius: 1rem;
+.banners__img {
+  border-radius: 1.5rem;
   box-shadow: 5px 5px 5px var(--ts-c-primary-darker);
   width: 100%;
+  min-width: 350px;
+  max-width: 1000px;
   height: 100%;
 }
 
-@media only screen and (min-width: 1400px) {
-  .banners {
-    padding-inline: 10rem;
-  }
-}
-
-@media only screen and (min-width: 500px) {
-  .banners {
-    padding-inline: 7rem;
-  }
-}
-
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 800px) {
   .banners {
     grid-template-areas:
       "first"
       "second"
       "third"
       "fourth";
+    padding-inline: 5rem;
   }
 }
 </style>
