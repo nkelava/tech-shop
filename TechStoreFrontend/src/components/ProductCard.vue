@@ -1,68 +1,66 @@
 <script setup>
-import { RouterLink } from "vue-router";
+import { useRouter } from "vue-router";
 
-const { product } = defineProps(["product"]);
+const props = defineProps(["product"]);
 const category = "laptops";
 const subcategory = "notebooks";
+const router = useRouter();
+
+function handleDetails() {
+  router.push({
+    name: "product",
+    params: { category: category, subcategory: subcategory, productId: props.product.id },
+  });
+}
 </script>
 
 <template>
   <!-- TODO: add favorites and cart icon on hover -->
-  <div class="card">
-    <img :src="product.img" alt="" class="card__image" />
-    <h2 class="card__title">{{ product.name }}</h2>
-    <p class="card__summary">{{ product.summary }}</p>
-    <!-- TODO: add currency as separate property -->
-    <h3 class="card__price">{{ product.price + product.currency }}</h3>
-    <button>
-      <router-link
-        :to="{
-          name: 'product',
-          params: { category: category, subcategory: subcategory, productId: product.id },
-        }"
-        >VIEW MORE
-      </router-link>
-    </button>
-  </div>
+  <!-- TODO: add currency as separate property -->
+  <v-card class="card" elevation="8">
+    <v-card-title class="font-weight-bold">
+      <img class="card__image" :src="props.product.img" />
+    </v-card-title>
+    <v-card-text class="pa-2">
+      <h4 class="truncate" :title="props.product.title">{{ props.product.title }}</h4>
+      <h3 class="card__price">{{ props.product.currency + props.product.price }}</h3>
+    </v-card-text>
+    <v-card-actions>
+      <v-btn class="card__button" @click="handleDetails">VIEW MORE</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <style scoped>
 .card {
   background-color: var(--ts-c-bg-light);
-  border-radius: 10px;
-  box-shadow: 7px 5px 5px var(--ts-c-primary-darker);
+  border-radius: 15px;
   color: var(--ts-c-text-dark);
-  padding: 1rem;
   text-align: center;
-  width: 200px;
+  max-width: 250px;
 }
 
 .card__image {
-  width: 150px;
-  height: 150px;
-}
-
-.card__title {
-  font-size: 1rem;
-  margin: 0.5rem;
-}
-
-.card__summary {
-  font-size: 12px;
-  color: var(--ts-c-secondary-darker);
+  max-height: 200px;
+  width: 100%;
+  object-fit: contain;
 }
 
 .card__price {
-  margin: 1rem 0;
+  margin-top: 30px;
 }
 
-.card button {
+.card__button {
   background-color: var(--ts-c-bg-dark);
-  border: none;
-  border-radius: 30px;
+  border-radius: 10px;
   color: var(--ts-c-text-light);
   font-weight: bold;
-  padding: 0.5rem;
-  width: 10rem;
+  width: 100%;
+}
+.truncate {
+  display: block;
+  overflow: hidden;
+  max-height: 2.6em;
+  line-height: 1.3em;
 }
 </style>
