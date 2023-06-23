@@ -26,7 +26,7 @@ function handleDetails() {
       <h3 class="card__price">{{ props.product.currency + props.product.price }}</h3>
     </v-card-text>
     <v-card-actions>
-      <v-btn class="card__button" @click="handleDetails">VIEW MORE</v-btn>
+      <v-btn class="card__btn" @click="handleDetails">VIEW MORE</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -50,13 +50,18 @@ function handleDetails() {
   margin-top: 30px;
 }
 
-.card__button {
+.card__btn {
   background-color: var(--ts-c-bg-dark);
   border-radius: 10px;
   color: var(--ts-c-text-light);
   font-weight: bold;
   width: 100%;
 }
+
+.card__btn:hover {
+  background-color: var(--ts-c-primary-soft);
+}
+
 .truncate {
   display: block;
   overflow: hidden;
