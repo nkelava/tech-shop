@@ -1,8 +1,13 @@
 <script setup>
 import { RouterLink } from "vue-router";
 import { getCategories } from "@/database/services/categoryService.js";
+import { onMounted, ref } from "vue";
 
-const categories = getCategories();
+const categories = ref([]);
+
+onMounted(() => {
+  categories.value = getCategories();
+});
 </script>
 
 <template>
@@ -13,7 +18,8 @@ const categories = getCategories();
       :key="category.id"
       class="nav__item"
       :to="`/${category.slug}`"
-      >{{ category.name }}
+    >
+      {{ category.name }}
     </router-link>
     <router-link class="nav__item" to="/contact">Contact Us</router-link>
   </nav>
@@ -27,13 +33,19 @@ const categories = getCategories();
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
-  padding: 10px 0;
   font-size: 16px;
 }
 
 .nav__item {
+  border: 3px solid transparent;
   color: var(--ts-c-text-light);
+  text-decoration: none;
   text-transform: capitalize;
+  margin-right: 1rem;
+  padding: 5px;
+}
+
+.nav__item:hover {
+  border-bottom: 3px solid var(--ts-c-bg-light);
 }
 </style>
