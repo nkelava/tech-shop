@@ -34,27 +34,18 @@ const breakpoints = {
 };
 </script>
 <template>
-  <div class="carousel-container">
-    <h2>{{ props.header }}</h2>
-    <hr />
-    <carousel :items-to-show="4.5" :wrap-around="true" :breakpoints="breakpoints">
-      <slide v-for="product in props.products" :key="product">
-        <product-card :product="product" />
-      </slide>
+  <carousel :items-to-show="4.5" :wrap-around="true" :breakpoints="breakpoints">
+    <slide v-for="product in props.products" :key="product">
+      <product-card :product="product" />
+    </slide>
 
-      <template #addons>
-        <navigation />
-      </template>
-    </carousel>
-  </div>
+    <template #addons>
+      <navigation />
+    </template>
+  </carousel>
 </template>
 
 <style>
-.carousel-container {
-  max-width: 70%;
-  margin: 0 auto;
-}
-
 .carousel__pagination {
   margin-top: 1.5rem;
 }
