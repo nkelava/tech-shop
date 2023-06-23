@@ -3,7 +3,7 @@ import { Carousel, Slide, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 import ProductCard from "@/components/ProductCard.vue";
 
-const props = defineProps(["header", "products"]);
+const props = defineProps(["products"]);
 const breakpoints = {
   400: {
     itemsToShow: 1,

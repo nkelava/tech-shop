@@ -33,11 +33,11 @@ import RocketIcon from "../assets/icons/benefits/rocket.png";
 
 <style scoped>
 .benefits-container {
-  margin: 2rem;
   display: grid;
   grid-template-areas: "home refund support delivery";
   justify-content: center;
   align-content: center;
+  margin: 2rem;
 }
 
 .benefits-container:nth-child(1) {
