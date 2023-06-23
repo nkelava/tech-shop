@@ -50,9 +50,9 @@ function handleFilter(filters) {
 <template>
   <div>
     <image-slider maxHeight="400px" />
-    <div class="layout">
-      <filter-sidebar :subcategoryId="subcategory.id" @filter="handleFilter" />
-      <div class="content">
+    <div class="sidebar-layout">
+      <filter-sidebar class="sidebar" :subcategoryId="subcategory.id" @filter="handleFilter" />
+      <div class="main">
         <div class="heading">
           <h1 class="heading__title">{{ categorySlug }} > {{ subcategory.name }}</h1>
           <!-- TODO: create sort select component -->
@@ -73,20 +73,20 @@ function handleFilter(filters) {
 </template>
 
 <style scoped>
-.layout {
+.sidebar-layout {
   display: grid;
   grid-template-areas: "sidebar main";
-  grid-template-columns: 300px auto;
-  align-items: start;
-  gap: 3rem;
-  margin: 3rem;
+  grid-template-columns: minmax(300px, 350px) auto;
+  gap: 50px;
+  max-width: 70%;
+  margin: 6rem auto;
 }
 
-.layout:nth-child(1) {
+.sidebar {
   grid-area: sidebar;
 }
 
-.layout:nth-child(2) {
+.main {
   grid-area: main;
 }
 
@@ -111,7 +111,23 @@ function handleFilter(filters) {
   align-self: end;
 }
 
-hr {
-  margin-bottom: 1rem;
+@media only screen and (max-width: 1200px) {
+  .sidebar-layout {
+    grid-template-areas:
+      "sidebar"
+      "main";
+    grid-template-columns: auto;
+    gap: 1rem;
+    max-width: 100%;
+    margin-inline: 1rem;
+  }
+
+  .sidebar {
+    min-width: 100%;
+  }
+
+  .main {
+    min-width: 100%;
+  }
 }
 </style>
