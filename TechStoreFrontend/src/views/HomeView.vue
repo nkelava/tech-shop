@@ -25,28 +25,29 @@ onMounted(() => {
   <div>
     <image-slider maxHeight="800px" />
     <the-benefits />
-    <div class="grid-container">
+    <div class="w-75 my-16 mx-auto">
       <h1>Best Sellers</h1>
       <hr />
       <product-grid :products="bestSellers" />
     </div>
     <the-banners />
-    <div class="tabs-container">
-      <div class="tabs__header">
+    <div class="w-75 my-16 mx-auto">
+      <div class="mb-15">
+        <!-- TODO: fix tabs on mobile -->
         <v-tabs v-model="tab">
           <v-tab value="new">
-            <h2 class="tab">New Arrivals</h2>
+            <h2 class="text-capitalize">New Arrivals</h2>
           </v-tab>
           <v-tab value="hot">
-            <h2 class="tab">Hot Offers</h2>
+            <h2 class="text-capitalize">Hot Offers</h2>
           </v-tab>
           <v-tab value="top">
-            <h2 class="tab">Top Rated</h2>
+            <h2 class="text-capitalize">Top Rated</h2>
           </v-tab>
         </v-tabs>
       </div>
       <v-card-text>
-        <v-window v-model="tab" class="tabs__content">
+        <v-window v-model="tab" class="overflow-visible">
           <v-window-item value="new">
             <product-slider :products="newArrivals" />
           </v-window-item>
@@ -56,30 +57,10 @@ onMounted(() => {
           </v-window-item>
 
           <v-window-item value="top">
-            <product-slider value="three" :products="topRated" />
+            <product-slider :products="topRated" />
           </v-window-item>
         </v-window>
       </v-card-text>
     </div>
   </div>
 </template>
-
-<style scoped>
-.grid-container,
-.tabs-container {
-  max-width: 70%;
-  margin: 6rem auto;
-}
-
-.tabs__header {
-  margin-bottom: 3rem;
-}
-
-.tab {
-  text-transform: capitalize;
-}
-
-.tabs__content {
-  overflow: visible;
-}
-</style>
