@@ -49,7 +49,7 @@ const breakpoints = {
   </div>
 </template>
 
-<style scoped>
+<style>
 .carousel-container {
   max-width: 70%;
   margin: 0 auto;
@@ -59,9 +59,17 @@ const breakpoints = {
   margin-top: 1.5rem;
 }
 
-hr {
-  border: 1px solid var(--ts-c-primary-darker);
-  border-radius: 5px;
-  margin-bottom: 2rem;
+.carousel__prev,
+.carousel__next {
+  color: var(--ts-c-primary-darker);
+  height: 3rem;
+  width: 3rem;
+  font-size: 3rem;
+  margin: 0 -50px;
+}
+
+.carousel__prev:hover,
+.carousel__next:hover {
+  color: var(--ts-c-primary-soft);
 }
 </style>
