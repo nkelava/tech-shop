@@ -1,14 +1,12 @@
 <script setup>
-import DellAdImage from "@/assets/images/test/banners/dell.jpg";
-import LogitechAdImage from "@/assets/images/test/banners/logitech.jpg";
-import AsusAdImage from "@/assets/images/test/banners/asus.png";
+import { DellImage, LogitechImage, AsusImage } from "@/assets/images/test/banners";
 </script>
 
 <template>
   <div class="banners">
-    <img class="banners__img" :src="DellAdImage" alt="" />
-    <img class="banners__img" :src="LogitechAdImage" alt="" />
-    <img class="banners__img" :src="AsusAdImage" alt="" />
+    <img class="banners__img" :src="DellImage" alt="" />
+    <img class="banners__img" :src="LogitechImage" alt="" />
+    <img class="banners__img" :src="AsusImage" alt="" />
   </div>
 </template>
 

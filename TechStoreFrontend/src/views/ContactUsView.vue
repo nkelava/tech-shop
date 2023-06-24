@@ -1,5 +1,5 @@
 <script setup>
-import ContactImage from "@/assets/images/test/contact/contact_us.png";
+import { ContactUsImage } from "@/assets/images/test/contact";
 import EmailIcon from "@/assets/icons/contact/gmail32.png";
 import PhoneIcon from "@/assets/icons/contact/phone32.png";
 </script>
@@ -7,7 +7,7 @@ import PhoneIcon from "@/assets/icons/contact/phone32.png";
 <template>
   <section id="contact">
     <div classk="contact__content">
-      <img :src="ContactImage" class="contact__image" alt="" />
+      <img :src="ContactUsImage" class="contact__image" alt="" />
       <div class="contact__info">
         <div class="info__item">
           <img :src="EmailIcon" class="info__icon" alt="email icon" />
