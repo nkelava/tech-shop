@@ -12,17 +12,17 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
 
 <template>
   <!-- TODO: fix footer position (not sticking to bottom) -->
-  <div class="footer">
-    <div class="footer__content">
+  <footer class="py-10 px-10">
+    <div class="footer-container">
       <!-- TODO: maybe add one more section -->
       <div class="contact-container">
         <h3 class="footer__header">CONTACT US</h3>
-        <form class="contact-form">
+        <form class="contact__form">
           <input type="text" placeholder="Enter email..." required />
           <input type="text" placeholder="Enter subject..." required />
           <!-- TODO: fix textarea resizing min and max -->
           <textarea cols="50" rows="10" placeholder="Enter message here..." required />
-          <input type="submit" class="contact-form__btn" value="Send" />
+          <input type="submit" class="contact__btn" value="Send" />
         </form>
       </div>
       <div class="categories-container">
@@ -38,7 +38,7 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
         </contact-info>
         <v-divider class="my-1" />
         <contact-info :imgUrl="PhoneIcon" imgAlt="phone icon"> Phone: 123-456-7890 </contact-info>
-        <div class="info__socials">
+        <div class="socials">
           <img :src="FacebookIcon" class="socials__icon" title="Facebook" alt="facebook icon" />
           <img :src="InstagramIcon" class="socials__icon" title="Instagram" alt="instagram icon" />
           <img :src="YoutubeIcon" class="socials__icon" title="Youtube" alt="youtube icon" />
@@ -48,15 +48,11 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
     <div class="copyright">
       <h4>Copyright &copy; 2023 TechShop</h4>
     </div>
-  </div>
+  </footer>
 </template>
 
 <style scoped>
-.footer {
-  padding: 2rem 5rem;
-}
-
-.footer__content {
+.footer-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -68,16 +64,15 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
   margin-bottom: 1rem;
 }
 
-.contact-form {
+.contact__form {
   max-width: 300px;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   position: relative;
-  padding-right: 1rem;
 }
 
-.contact-form > * {
+.contact__form > * {
   background-color: var(--ts-c-bg-light);
   border: none;
   border-radius: 5px;
@@ -85,11 +80,11 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
   padding: 3px 5px;
 }
 
-.contact-form__btn {
+.contact__btn {
   background: none;
   position: absolute;
-  bottom: 5px;
-  right: 1.5rem;
+  bottom: 0;
+  right: 1rem;
 }
 
 .categories-container {
@@ -100,7 +95,7 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
 .categories-container a {
   color: var(--ts-c-text-light);
   text-transform: capitalize;
-  padding-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 .info-container {
@@ -108,24 +103,30 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
   flex-direction: column;
 }
 
-img {
-  margin-right: 10px;
-}
-
-.info__socials {
-  padding-top: 2rem;
-  display: flex;
-}
-
-.info__socials > * {
-  padding-right: 10px;
+.socials__icon {
+  margin-top: 2rem;
+  margin-right: 1.5rem;
 }
 
 .copyright {
   color: var(--ts-c-primary-mute);
   border-top: 1px solid var(--ts-c-primary-dark);
+  text-align: center;
   margin-top: 1rem;
   padding: 5px;
-  text-align: center;
+}
+
+@media only screen and (max-width: 500px) {
+  .contact-container,
+  .categories-container,
+  .info-container {
+    text-align: center;
+  }
+
+  .contact-container *,
+  .categories-container *,
+  .info-container * {
+    justify-content: center;
+  }
 }
 </style>
