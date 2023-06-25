@@ -5,6 +5,7 @@ import FavoritesModal from "./favorites/FavoritesModal.vue";
 import CartModal from "./cart/CartModal.vue";
 import UserProfileDropdown from "./account/UserProfileDropdown.vue";
 import TheNavbar from "./TheNavbar.vue";
+import BrandLogo from "@/assets/icons/header/brand.png";
 
 // TODO: implement user state
 const isSignedIn = true;
@@ -20,7 +21,7 @@ function handleSearch(searchText) {
     <the-top-bar />
     <!-- SHOP LOGO, SEARCH BAR AND ACTION ICONS -->
     <div class="header__main">
-      <h1>TechStore</h1>
+      <img class="brand-logo" :src="BrandLogo" alt="tech planet logo" />
       <search-input @search="handleSearch" />
       <div class="d-flex">
         <favorites-modal />
@@ -40,6 +41,11 @@ function handleSearch(searchText) {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0.5rem 2rem;
+}
+
+.brand-logo {
+  max-height: 70px;
+  max-width: 200px;
 }
 </style>
