@@ -26,6 +26,8 @@
   --ts-c-black-soft: #222222;
   --ts-c-black-mute: #282828;
 
+  --ts-c-danger: #cf4747;
+
   /* Background */
   --ts-c-bg-dark: var(--ts-c-primary);
   --ts-c-bg-light: var(--ts-c-secondary);
@@ -70,7 +72,7 @@ body {
   background: var(--ts-c-bg-dark);
   color: var(--ts-c-text-light);
   font-size: 14px;
-  font-family: Roboto, "Open Sans", sans-serif;
+  font-family: Lato, Roboto, "Open Sans", sans-serif;
   min-height: 100vh;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -93,4 +95,10 @@ a:hover {
 
 ul {
   list-style: none;
+}
+
+hr {
+  border: 1px solid var(--ts-c-primary-darker);
+  border-radius: 5px;
+  margin-bottom: 2rem;
 }
