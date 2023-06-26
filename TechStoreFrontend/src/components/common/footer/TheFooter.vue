@@ -38,9 +38,20 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
         <v-divider class="my-1" />
         <contact-info :imgUrl="PhoneIcon" imgAlt="phone icon"> Phone: 123-456-7890 </contact-info>
         <div class="socials">
-          <img :src="FacebookIcon" class="socials__icon" title="Facebook" alt="facebook icon" />
-          <img :src="InstagramIcon" class="socials__icon" title="Instagram" alt="instagram icon" />
-          <img :src="YoutubeIcon" class="socials__icon" title="Youtube" alt="youtube icon" />
+          <a href="https://www.facebook.com/" title="Facebook">
+            <img :src="FacebookIcon" class="socials__icon" title="Facebook" alt="facebook icon" />
+          </a>
+          <a href="https://www.instagram.com/" title="Instagram">
+            <img
+              :src="InstagramIcon"
+              class="socials__icon"
+              title="Instagram"
+              alt="instagram icon"
+            />
+          </a>
+          <a href="https://www.youtube.com/" title="Youtube">
+            <img :src="YoutubeIcon" class="socials__icon" title="Youtube" alt="youtube icon" />
+          </a>
         </div>
       </div>
     </div>
