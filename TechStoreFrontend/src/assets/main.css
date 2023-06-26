@@ -1,7 +1,13 @@
 @import "./base.css";
 
-hr {
-  border: 1px solid var(--ts-c-primary-darker);
-  border-radius: 5px;
-  margin-bottom: 2rem;
+.v-input__details {
+  background: var(--ts-c-danger);
+  border-radius: 0 0 5px 5px;
+  padding: 5px 15px !important;
+  align-items: center !important;
+}
+
+.v-messages__message {
+  color: var(--ts-c-text-light);
+  letter-spacing: 0.1rem;
 }

@@ -1,6 +1,8 @@
 <script setup>
 import { RouterLink } from "vue-router";
 import ContactInfo from "@/components/common/ContactInfo.vue";
+import ContactForm from "@/components/ContactForm.vue";
+
 import EmailIcon from "@/assets/icons/contact/gmail16.png";
 import PhoneIcon from "@/assets/icons/contact/phone16.png";
 import FacebookIcon from "@/assets/icons/socials/facebook.png";
@@ -11,23 +13,20 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
 </script>
 
 <template>
-  <!-- TODO: fix footer position (not sticking to bottom) -->
-  <footer class="py-10 px-10">
+  <footer class="pt-10 pb-2 px-16">
     <div class="footer-container">
-      <!-- TODO: maybe add one more section -->
       <div class="contact-container">
         <h3 class="footer__header">CONTACT US</h3>
-        <form class="contact__form">
-          <input type="text" placeholder="Enter email..." required />
-          <input type="text" placeholder="Enter subject..." required />
-          <!-- TODO: fix textarea resizing min and max -->
-          <textarea cols="50" rows="10" placeholder="Enter message here..." required />
-          <input type="submit" class="contact__btn" value="Send" />
-        </form>
+        <contact-form class="contact__form" density="compact" isBtnAbsolute="true" />
       </div>
       <div class="categories-container">
         <h3 class="footer__header">CATEGORIES</h3>
-        <router-link v-for="(category, index) in categories" :key="index" :to="category">
+        <router-link
+          class="link"
+          v-for="(category, index) in categories"
+          :key="index"
+          :to="category"
+        >
           {{ category }}
         </router-link>
       </div>
@@ -45,7 +44,7 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
         </div>
       </div>
     </div>
-    <div class="copyright">
+    <div class="footer-copyright">
       <h4>Copyright &copy; 2023 TechShop</h4>
     </div>
   </footer>
@@ -57,6 +56,7 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
   flex-wrap: wrap;
   justify-content: space-around;
   gap: 2rem;
+  font-size: 1rem;
 }
 
 .footer__header {
@@ -65,26 +65,7 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
 }
 
 .contact__form {
-  max-width: 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  position: relative;
-}
-
-.contact__form > * {
-  background-color: var(--ts-c-bg-light);
-  border: none;
-  border-radius: 5px;
-  color: var(--ts-c-text-dark);
-  padding: 3px 5px;
-}
-
-.contact__btn {
-  background: none;
-  position: absolute;
-  bottom: 0;
-  right: 1rem;
+  max-width: 350px;
 }
 
 .categories-container {
@@ -103,17 +84,20 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
   flex-direction: column;
 }
 
+.socials {
+  margin-top: 3rem;
+}
+
 .socials__icon {
-  margin-top: 2rem;
   margin-right: 1.5rem;
 }
 
-.copyright {
-  color: var(--ts-c-primary-mute);
+.footer-copyright {
   border-top: 1px solid var(--ts-c-primary-dark);
+  color: var(--ts-c-primary-mute);
   text-align: center;
   margin-top: 1rem;
-  padding: 5px;
+  padding-top: 5px;
 }
 
 @media only screen and (max-width: 500px) {

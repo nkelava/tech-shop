@@ -1,4 +1,5 @@
 <script setup>
+import ContactForm from "@/components/ContactForm.vue";
 import { ContactUsImage } from "@/assets/images/test/contact";
 import EmailIcon from "@/assets/icons/contact/gmail32.png";
 import PhoneIcon from "@/assets/icons/contact/phone32.png";
@@ -6,7 +7,7 @@ import PhoneIcon from "@/assets/icons/contact/phone32.png";
 
 <template>
   <section id="contact">
-    <div classk="contact__content">
+    <div class="contact__content">
       <img :src="ContactUsImage" class="contact__image" alt="" />
       <div class="contact__info">
         <div class="info__item">
@@ -26,14 +27,8 @@ import PhoneIcon from "@/assets/icons/contact/phone32.png";
       </div>
     </div>
     <div class="contact__form">
-      <h1>Contact Us</h1>
-      <form class="form">
-        <input type="text" placeholder="Enter your name..." />
-        <input type="email" placeholder="Enter your email..." />
-        <input type="tel" name="" id="" placeholder="Enter your phone number..." />
-        <textarea cols="50" rows="10" placeholder="Enter your message..." />
-        <input type="submit" value="Send" />
-      </form>
+      <h1 class="form__title">Contact Us</h1>
+      <contact-form />
     </div>
   </section>
 </template>
@@ -43,21 +38,23 @@ import PhoneIcon from "@/assets/icons/contact/phone32.png";
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 3rem;
-  margin: 5rem 0;
-  width: 100%;
-  height: 100%;
+  gap: 4rem;
+  margin: 5rem 2rem;
+}
+
+.contact__content {
+  min-width: 300px;
+  max-width: 600px;
 }
 
 .contact__image {
   height: auto;
   width: 100%;
-  max-width: 600px;
 }
 
 .contact__info {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   gap: 2rem;
   margin-top: 2rem;
 }
@@ -66,51 +63,19 @@ import PhoneIcon from "@/assets/icons/contact/phone32.png";
   display: flex;
   align-items: center;
   gap: 1rem;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
-.contact__form {
-  text-align: center;
-}
-
-.contact__form h1 {
-  text-transform: uppercase;
+.form__title {
+  color: var(--ts-c-ternary);
+  font-size: 1.5rem;
   letter-spacing: 2px;
   margin-bottom: 1rem;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2rem;
-  height: 100%;
-  width: 100%;
-}
-
-.form > * {
-  background: none;
-  border-radius: 5px;
-  color: var(--ts-c-text-light);
-  padding: 5px 10px;
-  font-size: 1rem;
-}
-
-input[type]:not([type="submit"]) {
-  border: none;
-  border-bottom: 1px solid var(--ts-c-bg-light);
-}
-
-.form textarea {
-  border: 1px solid var(--ts-c-bg-light);
-}
-
-input[type="submit"] {
-  background-color: var(--ts-c-bg-highlight);
-  border-radius: 20px;
-  border: none;
-  color: var(--ts-c-text-dark);
-  font-weight: bold;
-  padding: 8px 0;
+@media only screen and (max-width: 450px) {
+  .contact__content {
+    display: none;
+  }
 }
 </style>
