@@ -1,10 +1,12 @@
 <script setup>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { alpha, email, required } from "@vuelidate/validators";
 import BaseInput from "@/components/BaseInput.vue";
+import BaseAlert from "./common/BaseAlert.vue";
 
 const props = defineProps(["density", "isBtnAbsolute"]);
+const showAlert = ref(false);
 const initialContactState = {
   name: "",
   email: "",
@@ -32,9 +34,13 @@ async function onMessageSend() {
     return;
   }
 
-  alert("Success!");
+  toggleAlert();
   clearForm(v$, initialContactState, contactState);
 }
+
+const toggleAlert = () => {
+  showAlert.value = !showAlert.value;
+};
 
 const clearForm = (form, initialFormState, formState) => {
   form.value.$reset();
@@ -46,45 +52,54 @@ const clearForm = (form, initialFormState, formState) => {
 </script>
 
 <template>
-  <form class="contact__form" @submit.prevent="onMessageSend">
-    <base-input
-      v-model="contactState.name"
-      class="contact__input"
-      label="Name"
-      :v$="v$.name"
-      :density="props.density"
+  <div>
+    <form class="contact__form" @submit.prevent="onMessageSend">
+      <base-input
+        v-model="contactState.name"
+        class="contact__input"
+        label="Name"
+        :v$="v$.name"
+        :density="props.density"
+      />
+      <base-input
+        v-model="contactState.email"
+        class="contact__input"
+        label="Email"
+        :v$="v$.email"
+        :density="props.density"
+      />
+      <base-input
+        v-model="contactState.subject"
+        class="contact__input"
+        label="Subject"
+        :v$="v$.subject"
+        :density="props.density"
+      />
+      <v-textarea
+        v-model="contactState.message"
+        :error-messages="v$.message.$errors.map((e) => e.$message)"
+        class="contact__input"
+        label="Message"
+        hide-details="auto"
+        variant="outlined"
+        rows="7"
+        cols="50"
+        :density="props.density"
+      />
+      <input
+        :class="props.isBtnAbsolute ? 'contact__btn--absolute' : 'contact__btn'"
+        type="submit"
+        value="Send"
+      />
+    </form>
+    <base-alert
+      v-if="showAlert"
+      type="success"
+      title="Success!"
+      message="Thanks for contacting us! We will be in touch with you shortly."
+      @toggleShowAlert="toggleAlert"
     />
-    <base-input
-      v-model="contactState.email"
-      class="contact__input"
-      label="Email"
-      :v$="v$.email"
-      :density="props.density"
-    />
-    <base-input
-      v-model="contactState.subject"
-      class="contact__input"
-      label="Subject"
-      :v$="v$.subject"
-      :density="props.density"
-    />
-    <v-textarea
-      v-model="contactState.message"
-      :error-messages="v$.message.$errors.map((e) => e.$message)"
-      class="contact__input"
-      label="Message"
-      hide-details="auto"
-      variant="outlined"
-      rows="7"
-      cols="50"
-      :density="props.density"
-    />
-    <input
-      :class="props.isBtnAbsolute ? 'contact__btn--absolute' : 'contact__btn'"
-      type="submit"
-      value="Send"
-    />
-  </form>
+  </div>
 </template>
 
 <style scoped>
