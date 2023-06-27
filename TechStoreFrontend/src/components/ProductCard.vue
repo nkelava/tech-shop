@@ -26,7 +26,7 @@ function handleDetails() {
       <h3 class="card__price">{{ props.product.currency + props.product.price }}</h3>
     </v-card-text>
     <v-card-actions>
-      <v-btn class="card__btn" @click="handleDetails">VIEW MORE</v-btn>
+      <v-btn class="card__btn" @click="handleDetails">View More</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -56,6 +56,7 @@ function handleDetails() {
   color: var(--ts-c-text-light);
   font-weight: bold;
   width: 100%;
+  text-transform: capitalize;
 }
 
 .card__btn:hover {

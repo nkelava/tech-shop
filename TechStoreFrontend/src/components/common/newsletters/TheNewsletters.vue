@@ -1,12 +1,57 @@
+<script setup>
+import { reactive } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { email, required } from "@vuelidate/validators";
+import BaseInput from "@/components/BaseInput.vue";
+
+const initialState = {
+  email: "",
+};
+
+const rules = {
+  email: { email, required },
+};
+
+const state = reactive({
+  ...initialState,
+});
+
+const v$ = useVuelidate(rules, state);
+
+async function onSubscribe() {
+  const isValid = await v$.value.$validate();
+
+  if (!isValid) {
+    return;
+  }
+
+  clearForm();
+}
+
+function clearForm() {
+  v$.value.$reset();
+
+  for (const [key, value] of Object.entries(initialState)) {
+    state[key] = value;
+  }
+}
+</script>
+
 <template>
   <div class="newsletters">
     <div class="newsletters__heading">
-      <h1>Subscribe to newsletter</h1>
-      <h3>Lorem ipsum dolor sit.</h3>
+      <h1>Subscribe to our newsletter!</h1>
+      <h3>Get early access to new tech products and sales.</h3>
     </div>
     <div class="newsletters__subscribe">
-      <input type="text" placeholder="Enter yout email..." />
-      <input type="submit" value="Subscribe" />
+      <base-input
+        v-model="state.email"
+        class="subscribe__input"
+        label="Email"
+        :v$="v$.email"
+        density="compact"
+      />
+      <input type="submit" value="Subscribe" @click="onSubscribe" />
     </div>
   </div>
 </template>
@@ -39,33 +84,34 @@
 
 .newsletters__subscribe {
   position: relative;
+  display: flex;
+  align-items: center;
   align-self: center;
   justify-self: start;
 }
 
-input[type="text"] {
-  background-color: var(--ts-c-bg-light);
-  border: none;
-  border-radius: 2rem;
-  outline: none;
+.subscribe__input {
+  background-color: var(--ts-c-bg-light) !important;
+  border-radius: 5px;
   color: var(--ts-c-text-dark);
   font-weight: bold;
-  padding-left: 1rem;
-  height: 2rem;
   width: 40em;
+  margin-bottom: 0 !important;
 }
 
 input[type="submit"] {
   background-color: var(--ts-c-bg-dark);
-  border: none;
-  border-radius: 2rem;
-  outline: none;
+  border-radius: 5px;
   color: var(--ts-c-text-light);
   font-weight: bold;
   height: 2rem;
   width: 7rem;
   position: absolute;
-  right: 0;
+  right: 5px;
+}
+
+input[type="submit"]:hover {
+  background-color: var(--ts-c-primary-soft);
 }
 
 @media only screen and (max-width: 1000px) {
@@ -83,7 +129,7 @@ input[type="submit"] {
   }
 
   .newsletters__subscribe,
-  .newsletters__subscribe input[type="text"] {
+  .newsletters__subscribe .subscribe__input {
     width: 100%;
   }
 }

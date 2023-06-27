@@ -11,9 +11,8 @@ const tab = ref("details");
     <v-row>
       <v-breadcrumbs :items="['Home', 'My Account']"></v-breadcrumbs>
     </v-row>
-    <v-row class="py-8 px-4">
+    <v-row class="pt-8 px-4">
       <h1>My Account</h1>
-      <v-divider color="warning"></v-divider>
     </v-row>
     <v-row>
       <v-col cols="3">
