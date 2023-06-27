@@ -1,4 +1,5 @@
 <script setup>
+import { RouterLink } from "vue-router";
 import TheTopBar from "./TheTopBar.vue";
 import SearchInput from "./SearchInput.vue";
 import FavoritesModal from "./favorites/FavoritesModal.vue";
@@ -21,7 +22,9 @@ function handleSearch(searchText) {
     <the-top-bar />
     <!-- SHOP LOGO, SEARCH BAR AND ACTION ICONS -->
     <div class="header__main">
-      <img class="brand-logo" :src="BrandLogo" alt="tech planet logo" />
+      <router-link to="/">
+        <img class="brand-logo" :src="BrandLogo" alt="tech planet logo" />
+      </router-link>
       <search-input @search="handleSearch" />
       <div class="d-flex">
         <favorites-modal />
