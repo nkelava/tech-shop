@@ -36,7 +36,7 @@ import { DellImage, LogitechImage, AsusImage } from "@/assets/images/test/banner
 }
 
 .banners__img {
-  border-radius: 1.5rem;
+  border-radius: 10px;
   box-shadow: 5px 5px 5px var(--ts-c-primary-darker);
   width: 100%;
   min-width: 350px;

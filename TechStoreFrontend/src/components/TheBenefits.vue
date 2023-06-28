@@ -56,7 +56,7 @@ import RocketIcon from "../assets/icons/benefits/rocket.png";
   grid-area: delivery;
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1600px) {
   .benefits-container {
     grid-template-areas:
       "home refund"
