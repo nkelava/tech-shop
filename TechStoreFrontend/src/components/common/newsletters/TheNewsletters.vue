@@ -47,7 +47,6 @@ function toggleAlert() {
 
 <template>
   <div class="newsletters">
-    <!-- TODO: fix button position on error display -->
     <div class="newsletters__heading">
       <h1>Subscribe to our newsletter!</h1>
       <h3>Get early access to new tech products and sales.</h3>
