@@ -5,7 +5,7 @@ import ProductCard from "@/components/ProductCard.vue";
 
 const props = defineProps(["products"]);
 const breakpoints = {
-  400: {
+  250: {
     itemsToShow: 1,
     snapAlign: "center",
   },
