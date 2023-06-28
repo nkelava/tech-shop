@@ -49,7 +49,7 @@ const props = defineProps(["icon", "title", "content"]);
   color: var(--ts-c-primary-soft);
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1600px) {
   .benefit-card,
   .benefit-card:first-child,
   .benefit-card:last-child {
