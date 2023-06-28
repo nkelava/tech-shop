@@ -10,10 +10,6 @@ import BrandLogo from "@/assets/icons/header/brand.png";
 
 // TODO: implement user state
 const isSignedIn = true;
-
-function handleSearch(searchText) {
-  console.log("Search: ", searchText);
-}
 </script>
 
 <template>
@@ -25,7 +21,7 @@ function handleSearch(searchText) {
       <router-link to="/">
         <img class="brand-logo" :src="BrandLogo" alt="tech planet logo" />
       </router-link>
-      <search-input @search="handleSearch" />
+      <search-input />
       <div class="d-flex">
         <favorites-modal />
         <cart-modal />

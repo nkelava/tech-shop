@@ -1,29 +1,24 @@
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
 import SearchIcon from "@/assets/icons/header/search.png";
 
+const router = useRouter();
 const search = ref("");
-const emit = defineEmits(["search"]);
 
 function handleSearch() {
   if (search.value.length > 0) {
-    emit("search", search.value);
+    router.push({ path: "/search", query: { q: search.value } });
   }
 }
 </script>
 
 <template>
   <div class="search-container">
-    <v-text-field
-      v-model="search"
-      placeholder="Search..."
-      variant="solo"
-      density="compact"
-      hide-details
-      rounded
-    />
-    <v-btn class="search__btn" @click="handleSearch" rounded>
-      <img :src="SearchIcon" alt="" />
+    <v-text-field v-model="search" label="Search" variant="solo" density="compact" hide-details />
+    <v-btn class="search__btn" @click="handleSearch">
+      <img :src="SearchIcon" alt="Search" />
     </v-btn>
   </div>
 </template>
@@ -40,8 +35,7 @@ function handleSearch() {
 
 .search__btn {
   background-color: var(--ts-c-bg-light);
-  min-height: 100%;
   position: absolute;
-  right: 0;
+  right: 5px;
 }
 </style>
