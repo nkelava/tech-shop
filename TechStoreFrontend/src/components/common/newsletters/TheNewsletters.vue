@@ -1,15 +1,17 @@
 <script setup>
-import { reactive } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { email, required } from "@vuelidate/validators";
+import { email } from "@vuelidate/validators";
 import BaseInput from "@/components/BaseInput.vue";
+import BaseAlert from "@/components/common/BaseAlert.vue";
 
+const showAlert = ref(false);
 const initialState = {
   email: "",
 };
 
 const rules = {
-  email: { email, required },
+  email: { email },
 };
 
 const state = reactive({
@@ -17,6 +19,7 @@ const state = reactive({
 });
 
 const v$ = useVuelidate(rules, state);
+const isFieldEmpty = computed(() => state.email.length < 1);
 
 async function onSubscribe() {
   const isValid = await v$.value.$validate();
@@ -25,6 +28,7 @@ async function onSubscribe() {
     return;
   }
 
+  toggleAlert();
   clearForm();
 }
 
@@ -35,10 +39,15 @@ function clearForm() {
     state[key] = value;
   }
 }
+
+function toggleAlert() {
+  showAlert.value = !showAlert.value;
+}
 </script>
 
 <template>
   <div class="newsletters">
+    <!-- TODO: fix button position on error display -->
     <div class="newsletters__heading">
       <h1>Subscribe to our newsletter!</h1>
       <h3>Get early access to new tech products and sales.</h3>
@@ -49,9 +58,18 @@ function clearForm() {
         class="subscribe__input"
         label="Email"
         :v$="v$.email"
+        variant="filled"
         density="compact"
       />
-      <input type="submit" value="Subscribe" @click="onSubscribe" />
+
+      <input type="submit" value="Subscribe" @click="onSubscribe" :disabled="isFieldEmpty" />
+      <base-alert
+        v-if="showAlert"
+        type="success"
+        title="Success!"
+        message="Welcome to Tech Planet. Thank you for subscribing."
+        @toggleShowAlert="toggleAlert"
+      />
     </div>
   </div>
 </template>
@@ -85,7 +103,7 @@ function clearForm() {
 .newsletters__subscribe {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: start;
   align-self: center;
   justify-self: start;
 }
@@ -108,10 +126,11 @@ input[type="submit"] {
   width: 7rem;
   position: absolute;
   right: 5px;
+  margin-top: 5px;
 }
 
 input[type="submit"]:hover {
-  background-color: var(--ts-c-primary-soft);
+  background-color: var(--ts-c-primary-dark);
 }
 
 @media only screen and (max-width: 1000px) {
