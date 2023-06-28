@@ -60,7 +60,7 @@ function handleDetails() {
 }
 
 .card__btn:hover {
-  background-color: var(--ts-c-primary-soft);
+  background-color: var(--ts-c-primary-dark);
 }
 
 .truncate {

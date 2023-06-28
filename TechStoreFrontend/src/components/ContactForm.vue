@@ -3,7 +3,7 @@ import { reactive, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { alpha, email, required } from "@vuelidate/validators";
 import BaseInput from "@/components/BaseInput.vue";
-import BaseAlert from "./common/BaseAlert.vue";
+import BaseAlert from "@/components/common/BaseAlert.vue";
 
 const props = defineProps(["density", "isBtnAbsolute"]);
 const showAlert = ref(false);
