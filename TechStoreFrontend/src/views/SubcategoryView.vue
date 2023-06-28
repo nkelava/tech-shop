@@ -77,6 +77,7 @@ function handleFilter(filters) {
   display: grid;
   grid-template-areas: "sidebar main";
   grid-template-columns: minmax(300px, 350px) auto;
+  align-items: start;
   gap: 50px;
   max-width: 70%;
   margin: 6rem auto;
