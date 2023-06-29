@@ -3,7 +3,7 @@ import { RouterLink } from "vue-router";
 import TheTopBar from "./TheTopBar.vue";
 import SearchInput from "./SearchInput.vue";
 import FavoritesModal from "./favorites/FavoritesModal.vue";
-import CartModal from "./cart/CartModal.vue";
+import CartDialog from "./cart/CartDialog.vue";
 import UserProfileDropdown from "./account/UserProfileDropdown.vue";
 import TheNavbar from "./TheNavbar.vue";
 import BrandLogo from "@/assets/icons/header/brand.png";
@@ -24,7 +24,7 @@ const isSignedIn = true;
       <search-input />
       <div class="d-flex">
         <favorites-modal />
-        <cart-modal />
+        <cart-dialog />
         <user-profile-dropdown v-if="isSignedIn" />
       </div>
     </div>
