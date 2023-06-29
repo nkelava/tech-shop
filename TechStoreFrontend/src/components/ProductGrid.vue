@@ -5,24 +5,23 @@ import ProductCard from "@/components/ProductCard.vue";
 const props = defineProps(["products"]);
 // TODO: add slice count as prop if you dont think of another solution
 const slicedProducts = computed(() => {
-  return props.products.slice(0, 10);
+  return props.products.slice(0, 12);
 });
 </script>
 
 <template>
-  <div class="grid__list">
-    <product-card v-for="product in slicedProducts" :key="product.id" :product="product" />
-  </div>
+  <v-row justify="center" class="space">
+    <v-col
+      cols="12"
+      xs="12"
+      sm="6"
+      md="4"
+      lg="4"
+      xl="2"
+      v-for="product in slicedProducts"
+      :key="product.id"
+    >
+      <product-card :product="product" />
+    </v-col>
+  </v-row>
 </template>
-
-<style scoped>
-.grid__list {
-  display: grid;
-  grid-auto-columns: max-content;
-  grid-auto-flow: dense;
-  grid-auto-rows: minmax(250px, auto);
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  grid-gap: 2rem;
-  width: 100%;
-}
-</style>
