@@ -25,8 +25,9 @@ watch(
 <template>
   <div>
     <image-slider maxHeight="400px" />
+    <v-breadcrumbs class="text-capitalize ml-16" :items="['Home', `${category.name}`]" />
     <div class="category-container">
-      <h1 class="category__title">{{ category.name }}</h1>
+      <h1 class="category__title text-capitalize">{{ category.name }}</h1>
       <hr />
       <base-grid>
         <subcategory-card
@@ -43,10 +44,6 @@ watch(
 <style scoped>
 .category-container {
   padding: 2rem 5rem;
-}
-
-.category__title {
-  text-transform: capitalize;
 }
 
 .category__list {

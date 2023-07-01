@@ -50,11 +50,15 @@ function handleFilter(filters) {
 <template>
   <div>
     <image-slider maxHeight="400px" />
+    <v-breadcrumbs
+      class="text-capitalize ml-16"
+      :items="['Home', `${categorySlug}`, `${subcategorySlug}`]"
+    />
     <div class="sidebar-layout">
       <filter-sidebar class="sidebar" :subcategoryId="subcategory.id" @filter="handleFilter" />
       <div class="main">
         <div class="heading">
-          <h1 class="heading__title">{{ categorySlug }} > {{ subcategory.name }}</h1>
+          <h1 class="heading__title">{{ subcategory.name }}</h1>
           <!-- TODO: create sort select component -->
           <select class="heading__sort" name="sort" @change="updateSort">
             <option value="" hidden>Sort...</option>
@@ -80,7 +84,7 @@ function handleFilter(filters) {
   align-items: start;
   gap: 50px;
   max-width: 70%;
-  margin: 6rem auto;
+  margin: 2rem auto;
 }
 
 .sidebar {

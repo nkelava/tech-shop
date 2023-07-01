@@ -9,15 +9,23 @@ import TabsWrapper from "@/components/TabsWrapper.vue";
 import { getProductWithSpecification } from "../database/services/productService";
 
 const route = useRoute();
+const categorySlug = ref(route.params.category);
+const subcategorySlug = ref(route.params.subcategory);
 const productId = ref(route.params.productId);
 const product = getProductWithSpecification(Number(productId.value));
 </script>
 
 <template>
-  <div class="product-container">
-    <product-gallery class="gallery" />
-    <product-details class="info" :product="product" />
-    <tabs-wrapper class="tabs" :product="product" />
+  <div>
+    <v-breadcrumbs
+      class="text-capitalize ml-16"
+      :items="['Home', `${categorySlug}`, `${subcategorySlug}`, `${product.name}`]"
+    />
+    <div class="product-container">
+      <product-gallery class="gallery" />
+      <product-details class="info" :product="product" />
+      <tabs-wrapper class="tabs" :product="product" />
+    </div>
   </div>
 </template>
 

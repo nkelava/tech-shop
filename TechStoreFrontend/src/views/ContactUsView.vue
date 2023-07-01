@@ -6,40 +6,46 @@ import PhoneIcon from "@/assets/icons/contact/phone32.png";
 </script>
 
 <template>
-  <section id="contact">
-    <div class="contact__content">
-      <img :src="ContactUsImage" class="contact__image" alt="" />
-      <div class="contact__info">
-        <div class="info__item">
-          <img :src="EmailIcon" class="info__icon" alt="email icon" />
-          <div>
-            <p>Email:</p>
-            <p>techshop@gmail.com</p>
+  <div class="contact-container">
+    <section id="contact">
+      <div class="contact__content">
+        <img :src="ContactUsImage" class="contact__image" alt="" />
+        <div class="contact__info">
+          <div class="info__item">
+            <img :src="EmailIcon" class="info__icon" alt="email icon" />
+            <div>
+              <p>Email:</p>
+              <p>techshop@gmail.com</p>
+            </div>
           </div>
-        </div>
-        <div class="info__item">
-          <img :src="PhoneIcon" class="info__icon" alt="phone icon" />
-          <div>
-            <p>Phone:</p>
-            <p>123-456-7890</p>
+          <div class="info__item">
+            <img :src="PhoneIcon" class="info__icon" alt="phone icon" />
+            <div>
+              <p>Phone:</p>
+              <p>123-456-7890</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="contact__form">
-      <h1 class="form__title">Contact Us</h1>
-      <contact-form />
-    </div>
-  </section>
+      <div class="contact__form">
+        <h1 class="form__title">Contact Us</h1>
+        <contact-form />
+      </div>
+    </section>
+  </div>
 </template>
 
 <style scoped>
+.contact-container {
+  padding: 2rem 5rem;
+}
+
 #contact {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 4rem;
-  margin: 5rem 2rem;
+  gap: 5rem;
+  margin: 5rem 0;
 }
 
 .contact__content {
@@ -76,6 +82,10 @@ import PhoneIcon from "@/assets/icons/contact/phone32.png";
 @media only screen and (max-width: 450px) {
   .contact__content {
     display: none;
+  }
+
+  .contact__form {
+    min-width: 250px;
   }
 }
 </style>
