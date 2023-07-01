@@ -6,25 +6,32 @@ import { getPromoCode } from "@/database/services/promoCodeService.js";
 import CartIcon from "@/assets/icons/header/cart.png";
 import CartTable from "./CartTable.vue";
 
-const promoCodeInput = ref("");
-const isPromoCodeActive = ref(false);
-const promoCodeDiscount = ref(0);
 const dialog = ref(false);
 const products = ref(getProducts());
-const page = ref(1);
-const pageItems = 3;
-const pageCount = ref(Math.ceil(products.value.length / pageItems));
-
-const getProductCount = computed(() => products.value.length);
-const getPageProducts = computed(() => {
-  return products.value.slice((page.value - 1) * pageItems, page.value * pageItems);
+const promoCodeState = ref({
+  input: "",
+  isActive: false,
+  discount: 0,
 });
-const getTotal = computed(() => {
-  const totalPrice = products.value
-    .reduce((total, product) => (total += product.price), 0)
-    .toFixed(2);
-  const discount = totalPrice * (promoCodeDiscount.value / 100).toFixed(2);
-  return totalPrice - discount;
+const pageState = ref({
+  currentPage: 1,
+  itemsPerPage: 3,
+});
+
+const totalCartItemCount = computed(() => products.value.length);
+const totalPageCount = computed(() =>
+  Math.ceil(products.value.length / pageState.value.itemsPerPage)
+);
+const currentPageItems = computed(() => {
+  return products.value.slice(
+    (pageState.value.currentPage - 1) * pageState.value.itemsPerPage,
+    pageState.value.currentPage * pageState.value.itemsPerPage
+  );
+});
+const totalPrice = computed(() => {
+  const sum = products.value.reduce((total, product) => (total += product.price), 0).toFixed(2);
+  const discount = sum * (promoCodeState.value.discount / 100).toFixed(2);
+  return sum - discount;
 });
 
 function toggleDialog() {
@@ -34,32 +41,31 @@ function toggleDialog() {
 function deleteItem(productId) {
   const filteredProducts = products.value.filter((product) => product.id != productId);
   products.value = filteredProducts;
-  pageCount.value = Math.ceil(products.value.length / pageItems);
 }
 
 function addPromoCode() {
-  if (promoCodeInput.value < 1) return;
+  if (promoCodeState.value.input < 1) return;
 
-  const promoCode = getPromoCode(promoCodeInput.value);
+  const promoCode = getPromoCode(promoCodeState.value.input);
 
   // Check promo code
   // If false display error
   if (!promoCode) return;
   // Else apply promo code and display success message
-  promoCodeDiscount.value = promoCode.discount;
-  isPromoCodeActive.value = true;
+  promoCodeState.value.discount = promoCode.discount;
+  promoCodeState.value.isActive = true;
 }
 
 function removePromoCode() {
-  promoCodeDiscount.value = 0;
-  isPromoCodeActive.value = false;
+  promoCodeState.value.discount = 0;
+  promoCodeState.value.isActive = false;
 }
 </script>
 
 <template>
   <v-card variant="text">
     <v-btn class="pa-1" variant="text" @click="toggleDialog">
-      <v-badge :content="getProductCount" color="var(--ts-c-primary-mute)">
+      <v-badge :content="totalCartItemCount" color="var(--ts-c-primary-mute)">
         <img :src="CartIcon" alt="favorites icon" class="dropdown__icon" />
       </v-badge>
     </v-btn>
@@ -67,12 +73,16 @@ function removePromoCode() {
       <v-card class="dialog">
         <v-card-title> Your Shopping Cart</v-card-title>
         <v-card-text>
-          <cart-table :products="getPageProducts" @deleteItem="deleteItem" />
+          <cart-table :products="currentPageItems" @deleteItem="deleteItem" />
           <v-container>
             <v-row justify="center">
               <v-col cols="10">
                 <v-container class="max-width">
-                  <v-pagination v-model="page" class="my-4" :length="pageCount" />
+                  <v-pagination
+                    v-model="pageState.currentPage"
+                    class="my-4"
+                    :length="totalPageCount"
+                  />
                 </v-container>
               </v-col>
             </v-row>
@@ -81,25 +91,25 @@ function removePromoCode() {
         <div class="price">
           <form @submit.prevent>
             <input
-              v-model="promoCodeInput"
+              v-model="promoCodeState.input"
               class="promo-code"
               type="text"
               placeholder="Promo Code"
-              :disabled="isPromoCodeActive"
+              :disabled="promoCodeState.isActive"
               required
             />
             <input
-              v-if="!isPromoCodeActive"
+              v-if="!promoCodeState.isActive"
               class="btn-submit"
               type="submit"
               value="Add"
               @click="addPromoCode"
             />
-            <button v-if="isPromoCodeActive" class="btn-submit" @click="removePromoCode">
+            <button v-if="promoCodeState.isActive" class="btn-submit" @click="removePromoCode">
               Remove
             </button>
           </form>
-          <h2 class="text-end pr-4">Total: {{ getTotal }}$</h2>
+          <h2 class="text-end pr-4">Total: {{ totalPrice }}$</h2>
         </div>
         <v-card-actions class="justify-space-between">
           <v-btn color="red-darken-1" variant="text" @click="toggleDialog"> Close </v-btn>
