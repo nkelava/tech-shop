@@ -16,6 +16,23 @@ const subcategorySlug = ref(route.params.subcategory);
 const subcategory = getSubcategoryBySlug(subcategorySlug.value);
 const products = ref([]);
 const sortType = ref("");
+const breadcrumbsItems = [
+  {
+    text: "Home",
+    disabled: false,
+    href: "/",
+  },
+  {
+    text: `${categorySlug.value}`,
+    disabled: false,
+    href: `/${categorySlug.value}`,
+  },
+  {
+    text: `${subcategorySlug.value}`,
+    disabled: true,
+    href: `/${categorySlug.value}/${subcategorySlug.value}`,
+  },
+];
 
 onMounted(() => {
   products.value = getProductsBySubcategoryId(subcategory.id);
@@ -50,10 +67,11 @@ function handleFilter(filters) {
 <template>
   <div>
     <image-slider maxHeight="400px" />
-    <v-breadcrumbs
-      class="text-capitalize ml-16"
-      :items="['Home', `${categorySlug}`, `${subcategorySlug}`]"
-    />
+    <v-breadcrumbs class="text-capitalize ml-16" :items="breadcrumbsItems">
+      <template v-slot:divider>
+        <v-icon>mdi-chevron-right</v-icon>
+      </template>
+    </v-breadcrumbs>
     <div class="sidebar-layout">
       <filter-sidebar class="sidebar" :subcategoryId="subcategory.id" @filter="handleFilter" />
       <div class="main">

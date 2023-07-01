@@ -4,12 +4,28 @@ import UserProfile from "@/components/UserProfile.vue";
 import UserOrders from "@/components/UserOrders.vue";
 
 const tab = ref("details");
+const breadcrumbsItems = [
+  {
+    text: "Home",
+    disabled: false,
+    href: "/",
+  },
+  {
+    text: "My Account",
+    disabled: true,
+    href: "/user",
+  },
+];
 </script>
 
 <template>
-  <v-container class="pa-15">
+  <v-container class="mb-10">
     <v-row>
-      <v-breadcrumbs :items="['Home', 'My Account']"></v-breadcrumbs>
+      <v-breadcrumbs class="text-capitalize" :items="breadcrumbsItems">
+        <template v-slot:divider>
+          <v-icon>mdi-chevron-right</v-icon>
+        </template>
+      </v-breadcrumbs>
     </v-row>
     <v-row class="pt-8 px-4">
       <h1>My Account</h1>

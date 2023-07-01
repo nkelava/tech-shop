@@ -11,6 +11,18 @@ const route = useRoute();
 const categorySlug = ref(route.params.category);
 let category = getCategoryBySlug(categorySlug.value);
 const subcategories = ref(getSubcategoriesByCategoryId(category.id));
+const breadcrumbsItems = [
+  {
+    text: "Home",
+    disabled: false,
+    href: "/",
+  },
+  {
+    text: `${categorySlug.value}`,
+    disabled: true,
+    href: `/${categorySlug.value}`,
+  },
+];
 
 watch(
   () => route.params.category,
@@ -25,7 +37,11 @@ watch(
 <template>
   <div>
     <image-slider maxHeight="400px" />
-    <v-breadcrumbs class="text-capitalize ml-16" :items="['Home', `${category.name}`]" />
+    <v-breadcrumbs class="text-capitalize ml-16" :items="breadcrumbsItems">
+      <template v-slot:divider>
+        <v-icon>mdi-chevron-right</v-icon>
+      </template>
+    </v-breadcrumbs>
     <div class="category-container">
       <h1 class="category__title text-capitalize">{{ category.name }}</h1>
       <hr />

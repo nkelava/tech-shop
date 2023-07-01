@@ -13,14 +13,37 @@ const categorySlug = ref(route.params.category);
 const subcategorySlug = ref(route.params.subcategory);
 const productId = ref(route.params.productId);
 const product = getProductWithSpecification(Number(productId.value));
+const breadcrumbsItems = [
+  {
+    text: "Home",
+    disabled: false,
+    href: "/",
+  },
+  {
+    text: `${categorySlug.value}`,
+    disabled: false,
+    href: `/${categorySlug.value}`,
+  },
+  {
+    text: `${subcategorySlug.value}`,
+    disabled: false,
+    href: `/${categorySlug.value}/${subcategorySlug.value}`,
+  },
+  {
+    text: `${product.name}`,
+    disabled: true,
+    href: `/${categorySlug.value}/${subcategorySlug.value}/${product.id}`,
+  },
+];
 </script>
 
 <template>
   <div>
-    <v-breadcrumbs
-      class="text-capitalize ml-16"
-      :items="['Home', `${categorySlug}`, `${subcategorySlug}`, `${product.name}`]"
-    />
+    <v-breadcrumbs class="text-capitalize ml-16" :items="breadcrumbsItems">
+      <template v-slot:divider>
+        <v-icon>mdi-chevron-right</v-icon>
+      </template>
+    </v-breadcrumbs>
     <div class="product-container">
       <product-gallery class="gallery" />
       <product-details class="info" :product="product" />
