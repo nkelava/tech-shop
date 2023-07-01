@@ -1,24 +1,24 @@
 <script setup>
 import { RouterLink } from "vue-router";
 
-const { category, subcategory } = defineProps(["category", "subcategory"]);
+const props = defineProps(["category", "subcategory"]);
 </script>
 
 <template>
   <!-- TODO: add favorites and cart icon on hover -->
   <div class="card">
-    <img :src="subcategory.img" alt="" class="card__image" />
+    <img :src="props.subcategory.img" alt="" class="card__image" />
     <h2 class="card__title">
       <router-link
         :to="{
           name: 'subcategory',
           params: {
-            category,
-            subcategory: subcategory.slug,
+            category: props.category,
+            subcategory: props.subcategory.slug,
           },
         }"
       >
-        {{ subcategory.name }}
+        {{ props.subcategory.name }}
       </router-link>
     </h2>
   </div>
@@ -32,12 +32,17 @@ const { category, subcategory } = defineProps(["category", "subcategory"]);
   color: var(--ts-c-text-dark);
   padding: 1rem;
   text-align: center;
-  width: 200px;
+  width: 100%;
+  max-width: 300px;
+  height: 100%;
+  max-height: 300px;
 }
 
 .card__image {
-  width: 150px;
-  height: 150px;
+  width: 100%;
+  max-width: 250px;
+  height: 100%;
+  max-height: 200px;
 }
 
 .card__title {
