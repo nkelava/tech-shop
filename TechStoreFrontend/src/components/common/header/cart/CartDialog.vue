@@ -1,12 +1,13 @@
 <script setup>
 import { computed, ref } from "vue";
-import { RouterLink } from "vue-router";
+import CartTable from "./CartTable.vue";
+import OrderDialog from "@/components/OrderDialog.vue";
 import { getProducts } from "@/database/services/productService.js";
 import { getPromoCode } from "@/database/services/promoCodeService.js";
 import CartIcon from "@/assets/icons/header/cart.png";
-import CartTable from "./CartTable.vue";
 
-const dialog = ref(false);
+const cartDialog = ref(false);
+const orderDialog = ref(false);
 const products = ref(getProducts());
 const promoCodeState = ref({
   input: "",
@@ -35,7 +36,7 @@ const totalPrice = computed(() => {
 });
 
 function toggleDialog() {
-  dialog.value = !dialog.value;
+  orderDialog.value = !orderDialog.value;
 }
 
 function deleteItem(productId) {
@@ -64,12 +65,12 @@ function removePromoCode() {
 
 <template>
   <v-card variant="text">
-    <v-btn class="pa-1" variant="text" @click="toggleDialog">
+    <v-btn class="pa-1" variant="text" @click="cartDialog = !cartDialog">
       <v-badge :content="totalCartItemCount" color="var(--ts-c-primary-mute)">
         <img :src="CartIcon" alt="favorites icon" class="dropdown__icon" />
       </v-badge>
     </v-btn>
-    <v-dialog v-model="dialog" persistent width="auto">
+    <v-dialog v-model="cartDialog" persistent width="auto">
       <v-card class="dialog">
         <v-card-title> Your Shopping Cart</v-card-title>
         <v-card-text>
@@ -112,13 +113,16 @@ function removePromoCode() {
           <h2 class="text-end pr-4">Total: {{ totalPrice }}$</h2>
         </div>
         <v-card-actions class="justify-space-between">
-          <v-btn color="red-darken-1" variant="text" @click="toggleDialog"> Close </v-btn>
-          <v-btn color="green-darken-1" variant="text" @click="toggleDialog">
-            <router-link to="/order" class="checkout">Checkout</router-link>
+          <v-btn color="red-darken-1" variant="text" @click="cartDialog = !cartDialog">
+            Close
+          </v-btn>
+          <v-btn color="green-darken-1" variant="text" @click="orderDialog = !orderDialog">
+            Checkout
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <OrderDialog v-model="orderDialog" @toggleDialog="toggleDialog" />
   </v-card>
 </template>
 
