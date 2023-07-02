@@ -9,5 +9,6 @@ const props = defineProps(["label", "v$"]);
     :label="props.label"
     hide-details="auto"
     variant="outlined"
+    clearable
   ></v-text-field>
 </template>

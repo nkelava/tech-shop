@@ -10,11 +10,12 @@ const isInputHidden = ref(true);
   <v-text-field
     class="mb-4"
     :type="isInputHidden ? 'password' : 'text'"
-    :append-icon="isInputHidden ? 'mdi-eye-off' : 'mdi-eye'"
+    :append-inner-icon="isInputHidden ? 'mdi-eye-off' : 'mdi-eye'"
     :error-messages="v$.$errors.map((e) => e.$message)"
     :label="props.label"
     hide-details="auto"
     variant="outlined"
-    @click:append="() => (isInputHidden = !isInputHidden)"
+    @click:append-inner="() => (isInputHidden = !isInputHidden)"
+    clearable
   ></v-text-field>
 </template>
