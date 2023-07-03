@@ -1,14 +1,14 @@
 <script setup>
 import { computed, ref } from "vue";
+import { useCartStore } from "@/stores";
 import CartTable from "./CartTable.vue";
 import OrderDialog from "@/components/OrderDialog.vue";
-import { getProducts } from "@/database/services/productService.js";
 import { getPromoCode } from "@/database/services/promoCodeService.js";
 import CartIcon from "@/assets/icons/header/cart.png";
 
+const cart = useCartStore();
 const cartDialog = ref(false);
 const orderDialog = ref(false);
-const products = ref(getProducts());
 const promoCodeState = ref({
   input: "",
   isActive: false,
@@ -19,20 +19,12 @@ const pageState = ref({
   itemsPerPage: 3,
 });
 
-const totalCartItemCount = computed(() => products.value.length);
-const totalPageCount = computed(() =>
-  Math.ceil(products.value.length / pageState.value.itemsPerPage)
-);
+const totalPageCount = computed(() => Math.ceil(cart.items.length / pageState.value.itemsPerPage));
 const currentPageItems = computed(() => {
-  return products.value.slice(
+  return cart.items.slice(
     (pageState.value.currentPage - 1) * pageState.value.itemsPerPage,
     pageState.value.currentPage * pageState.value.itemsPerPage
   );
-});
-const totalPrice = computed(() => {
-  const sum = products.value.reduce((total, product) => (total += product.price), 0).toFixed(2);
-  const discount = sum * (promoCodeState.value.discount / 100).toFixed(2);
-  return sum - discount;
 });
 
 function toggleDialog() {
@@ -40,8 +32,7 @@ function toggleDialog() {
 }
 
 function deleteItem(productId) {
-  const filteredProducts = products.value.filter((product) => product.id != productId);
-  products.value = filteredProducts;
+  cart.removeItem(productId);
 }
 
 function addPromoCode() {
@@ -66,7 +57,7 @@ function removePromoCode() {
 <template>
   <v-card variant="text">
     <v-btn class="pa-1" variant="text" @click="cartDialog = !cartDialog">
-      <v-badge :content="totalCartItemCount" color="var(--ts-c-primary-mute)">
+      <v-badge :content="cart.itemCount" color="var(--ts-c-primary-mute)">
         <img :src="CartIcon" alt="favorites icon" class="dropdown__icon" />
       </v-badge>
     </v-btn>
@@ -110,7 +101,7 @@ function removePromoCode() {
               Remove
             </button>
           </form>
-          <h2 class="text-end pr-4">Total: {{ totalPrice }}$</h2>
+          <h2 class="text-end pr-4">Total: {{ cart.totalPrice(promoCodeState.discount) }}$</h2>
         </div>
         <v-card-actions class="justify-space-between">
           <v-btn color="red-darken-1" variant="text" @click="cartDialog = !cartDialog">

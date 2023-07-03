@@ -1,19 +1,22 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import { useCartStore, useWishlistStore } from "@/stores";
 import CartIcon from "@/assets/icons/header/cart.png";
 import FavoriteIcon from "@/assets/icons/header/favorite.png";
 
 // eslint-disable-next-line no-unused-vars
 const props = defineProps(["product"]);
+const cart = useCartStore();
+const wishlist = useWishlistStore();
 const category = "laptops";
 const subcategory = "notebooks";
 
-function addToCart(productId) {
-  console.log(`Added to Cart: ${productId}`);
+function addToCart(product) {
+  cart.addItem(product);
 }
 
-function addToWishlist(productId) {
-  console.log(`Added to Wishlist: ${productId}`);
+function addToWishlist(product) {
+  wishlist.addItem(product);
 }
 </script>
 
@@ -34,7 +37,7 @@ function addToWishlist(productId) {
           class="btn--absolute btn--hide"
           :class="{ 'btn--show': isHovering }"
           title="Add to Cart"
-          @click="addToCart(product.id)"
+          @click="addToCart(product)"
         >
           <img :src="CartIcon" alt="cart icon" />
         </v-btn>
@@ -42,7 +45,7 @@ function addToWishlist(productId) {
           class="btn--absolute btn--hide"
           :class="{ 'btn--show': isHovering }"
           title="Add to Wishlist"
-          @click="addToWishlist(product.id)"
+          @click="addToWishlist(product)"
         >
           <img :src="FavoriteIcon" alt="favorites icon" />
         </v-btn>
