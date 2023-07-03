@@ -7,8 +7,8 @@ import { getPromoCode } from "@/database/services/promoCodeService.js";
 import CartIcon from "@/assets/icons/header/cart.png";
 
 const cart = useCartStore();
-const cartDialog = ref(false);
-const orderDialog = ref(false);
+const cartDialogActive = ref(false);
+const orderDialogActive = ref(false);
 const promoCodeState = ref({
   input: "",
   isActive: false,
@@ -28,7 +28,7 @@ const currentPageItems = computed(() => {
 });
 
 function toggleDialog() {
-  orderDialog.value = !orderDialog.value;
+  orderDialogActive.value = !orderDialogActive.value;
 }
 
 function deleteItem(productId) {
@@ -56,12 +56,12 @@ function removePromoCode() {
 
 <template>
   <v-card variant="text">
-    <v-btn class="pa-1" variant="text" @click="cartDialog = !cartDialog">
+    <v-btn class="pa-1" variant="text" @click="cartDialogActive = !cartDialogActive">
       <v-badge :content="cart.itemCount" color="var(--ts-c-primary-mute)">
-        <img :src="CartIcon" alt="favorites icon" class="dropdown__icon" />
+        <img :src="CartIcon" alt="favorites icon" />
       </v-badge>
     </v-btn>
-    <v-dialog v-model="cartDialog" persistent width="auto">
+    <v-dialog v-model="cartDialogActive" persistent width="auto">
       <v-card class="dialog">
         <v-card-title> Your Shopping Cart</v-card-title>
         <v-card-text>
@@ -104,16 +104,20 @@ function removePromoCode() {
           <h2 class="text-end pr-4">Total: {{ cart.totalPrice(promoCodeState.discount) }}$</h2>
         </div>
         <v-card-actions class="justify-space-between">
-          <v-btn color="red-darken-1" variant="text" @click="cartDialog = !cartDialog">
+          <v-btn color="red-darken-1" variant="text" @click="cartDialogActive = !cartDialogActive">
             Close
           </v-btn>
-          <v-btn color="green-darken-1" variant="text" @click="orderDialog = !orderDialog">
+          <v-btn
+            color="green-darken-1"
+            variant="text"
+            @click="orderDialogActive = !orderDialogActive"
+          >
             Checkout
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <OrderDialog v-model="orderDialog" @toggleDialog="toggleDialog" />
+    <order-dialog v-model="orderDialogActive" @toggleDialog="toggleDialog" />
   </v-card>
 </template>
 
