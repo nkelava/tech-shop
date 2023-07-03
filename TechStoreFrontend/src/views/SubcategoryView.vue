@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import ImageSlider from "@/components/ImageSlider.vue";
-import ProductGrid from "@/components/ProductGrid.vue";
+import ProductList from "@/components/ProductList.vue";
 import FilterSidebar from "@/components/TheFilterSidebar.vue";
 import { getSubcategoryBySlug } from "@/database/services/subcategoryService.js";
 import {
@@ -62,8 +62,6 @@ const sortedProducts = computed(() => {
 function handleFilterPrice(price, filters) {
   handleFilter(filters);
 
-  if (!price.from && !price.to) return;
-
   products.value = products.value.filter(
     (product) => product.price > price.from && product.price < price.to
   );
@@ -109,7 +107,7 @@ function handleFilter(filters) {
         </div>
         <hr />
         <!-- TODO: paginated list, this is temp -->
-        <product-grid :products="sortedProducts" />
+        <product-list :products="sortedProducts" />
       </div>
     </div>
   </div>

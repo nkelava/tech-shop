@@ -3,6 +3,7 @@ import { RouterLink } from "vue-router";
 import CartIcon from "@/assets/icons/header/cart.png";
 import FavoriteIcon from "@/assets/icons/header/favorite.png";
 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps(["product"]);
 const category = "laptops";
 const subcategory = "notebooks";
@@ -68,7 +69,6 @@ function addToWishlist(productId) {
   text-align: center;
   min-width: 250px;
   max-width: 300px;
-  margin-inline: auto;
   padding: 10px;
 }
 
