@@ -9,6 +9,10 @@ export const useWishlistStore = defineStore("wishlist", {
   },
   actions: {
     addItem(item) {
+      const itemExists = this.items.find((i) => i.id === item.id);
+
+      if (itemExists) return;
+
       this.items.push(item);
       this.persistData();
     },

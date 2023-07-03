@@ -2,7 +2,7 @@
 import { RouterLink } from "vue-router";
 import TheTopBar from "./TheTopBar.vue";
 import SearchInput from "./SearchInput.vue";
-import WishlistDialog from "./favorites/WishlistDialog.vue";
+import WishlistDialog from "./wishlist/WishlistDialog.vue";
 import CartDialog from "./cart/CartDialog.vue";
 import UserProfileDropdown from "./account/UserProfileDropdown.vue";
 import TheNavbar from "./TheNavbar.vue";
