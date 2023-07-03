@@ -9,6 +9,12 @@ export function getProductById(productId) {
   return productsDb.find((product) => product.id === productId);
 }
 
+export function getProductsByTitle(searchTerm) {
+  return productsDb.filter((product) =>
+    product.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+}
+
 export function getProductsBySubcategoryId(subcategoryId) {
   return productsDb.filter((product) => product.subcategoryId === subcategoryId);
 }
