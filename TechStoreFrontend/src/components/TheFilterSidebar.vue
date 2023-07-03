@@ -2,14 +2,19 @@
 import { ref, defineEmits } from "vue";
 import { getSubcategoryAttributesWithValues } from "@/database/services/subcategoryService.js";
 
-const emit = defineEmits(["filter"]);
-const { subcategoryId } = defineProps(["subcategoryId"]);
-const subcategoryAttributesWithValues = getSubcategoryAttributesWithValues(subcategoryId);
-const sliderValue = ref(0);
+const emit = defineEmits(["filterPrice", "filterRating", "filter"]);
+const props = defineProps(["subcategoryId"]);
+const subcategoryAttributesWithValues = getSubcategoryAttributesWithValues(props.subcategoryId);
+const price = ref({
+  from: 0,
+  to: 0,
+});
+const rating = ref(0);
 const filterMap = ref({});
 
 const updateFilters = (event, attribute, attributeValue) => {
   // Check if attribute does not exist in filter map
+  // eslint-disable-next-line no-prototype-builtins
   if (!filterMap.value.hasOwnProperty(attribute)) {
     filterMap.value[attribute] = new Set([attributeValue]);
     emit("filter", filterMap.value);
@@ -29,9 +34,20 @@ const updateFilters = (event, attribute, attributeValue) => {
   emit("filter", filterMap.value);
 };
 
-const handleFilter = () => {
-  emit("filter", filterMap.value);
-};
+function handleFilterPrice() {
+  if (price.value.from > price.value.to) return;
+  if (price.value.from < 0 || price.value.to < 0) return;
+  if (price.value.from && price.value.to < 1) {
+    emit("filter", filterMap.value);
+    return;
+  }
+
+  emit("filterPrice", price.value, filterMap.value);
+}
+
+function handleFilterRating() {
+  emit("filterRating", rating.value, filterMap.value);
+}
 </script>
 
 <template>
@@ -40,8 +56,14 @@ const handleFilter = () => {
       <h3 class="item__title">Price</h3>
       <hr />
       <div class="price-container">
-        <input type="number" placeholder="From..." value="0" />
-        <input type="number" placeholder="To..." value="0" />
+        <input
+          class="price-input"
+          v-model="price.from"
+          type="number"
+          min="0"
+          @input="handleFilterPrice"
+        />
+        <input class="price-input" v-model="price.to" type="number" @input="handleFilterPrice" />
       </div>
     </div>
     <div class="item">
@@ -49,8 +71,15 @@ const handleFilter = () => {
       <hr />
       <!-- TODO: create slider component in case of keeping this filter -->
       <div class="slider">
-        <input v-model="sliderValue" type="range" min="0" max="5" step="1" />
-        <span>{{ sliderValue }}</span>
+        <input
+          v-model="rating"
+          type="range"
+          min="0"
+          max="5"
+          step="1"
+          @change="handleFilterRating"
+        />
+        <span>{{ rating }}</span>
       </div>
     </div>
     <div v-for="attribute in subcategoryAttributesWithValues" :key="attribute.id" class="item">
@@ -89,6 +118,23 @@ const handleFilter = () => {
 hr {
   margin-bottom: 1rem;
   margin-right: 2rem;
+}
+
+.price-input {
+  border: none;
+  background-color: #fff;
+  border-radius: 5px;
+  font-size: 14px;
+  margin: 5px 0;
+  padding: 5px 10px;
+  width: 90%;
+  outline: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .slider {

@@ -59,6 +59,21 @@ const sortedProducts = computed(() => {
   }
 });
 
+function handleFilterPrice(price, filters) {
+  handleFilter(filters);
+
+  if (!price.from && !price.to) return;
+
+  products.value = products.value.filter(
+    (product) => product.price > price.from && product.price < price.to
+  );
+}
+
+function handleFilterRating(rating, filters) {
+  handleFilter(filters);
+  products.value = products.value.filter((product) => product.rating > rating);
+}
+
 function handleFilter(filters) {
   products.value = getFilteredProductsBySubcategoryId(subcategory.id, filters);
 }
@@ -73,7 +88,13 @@ function handleFilter(filters) {
       </template>
     </v-breadcrumbs>
     <div class="sidebar-layout">
-      <filter-sidebar class="sidebar" :subcategoryId="subcategory.id" @filter="handleFilter" />
+      <filter-sidebar
+        class="sidebar"
+        :subcategoryId="subcategory.id"
+        @filterPrice="handleFilterPrice"
+        @filterRating="handleFilterRating"
+        @filter="handleFilter"
+      />
       <div class="main">
         <div class="heading">
           <h1 class="heading__title">{{ subcategory.name }}</h1>
