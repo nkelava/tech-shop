@@ -14,7 +14,6 @@ const isSignedIn = false;
       <contact-info :imgUrl="EmailIcon" imgAlt="email icon">
         Email: tech-store@gmail.com
       </contact-info>
-      <v-divider class="mx-2" vertical />
       <contact-info :imgUrl="PhoneIcon" imgAlt="phone icon"> Phone: 123-456-7890 </contact-info>
     </div>
     <div v-if="!isSignedIn" class="header-top__auth">
@@ -39,7 +38,6 @@ const isSignedIn = false;
   display: none;
 }
 
-/* Small devices such as large phones (640px and up) */
 @media only screen and (min-width: 40em) {
   .header-top__contact,
   .header-top__auth {
