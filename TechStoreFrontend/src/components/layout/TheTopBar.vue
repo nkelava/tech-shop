@@ -1,48 +1,51 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import ContactInfo from "@/components/common/ContactInfo.vue";
 import EmailIcon from "@/assets/icons/contact/gmail16.png";
 import PhoneIcon from "@/assets/icons/contact/phone16.png";
-import ContactInfo from "@/components/common/ContactInfo.vue";
 
 // TODO: implement user state
 const isSignedIn = false;
 </script>
 
 <template>
-  <div class="top-bar">
-    <div class="top__contacts">
+  <div class="header-top ts-container">
+    <div class="header-top__contact">
       <contact-info :imgUrl="EmailIcon" imgAlt="email icon">
         Email: tech-store@gmail.com
       </contact-info>
       <v-divider class="mx-2" vertical />
       <contact-info :imgUrl="PhoneIcon" imgAlt="phone icon"> Phone: 123-456-7890 </contact-info>
     </div>
-    <div class="top__auth">
+    <div v-if="!isSignedIn" class="header-top__auth">
       <v-icon icon="mdi-login-variant"></v-icon>
-      <router-link v-if="!isSignedIn" to="/auth" class="auth__link">Sign In / Sign Up</router-link>
+      <router-link to="/auth">Sign In / Sign Up</router-link>
     </div>
   </div>
 </template>
 
 <style scoped>
-.top-bar {
+.header-top {
   background-color: var(--ts-c-bg-light);
   color: var(--ts-c-text-dark);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 2rem;
+  font-size: var(--ts-text-size-sm);
 }
 
-.top__contacts,
-.top__auth {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.header-top__contact {
+  display: none;
 }
 
-.auth__link {
-  color: var(--ts-c-text-dark);
+/* Small devices such as large phones (640px and up) */
+@media only screen and (min-width: 40em) {
+  .header-top__contact,
+  .header-top__auth {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
 }
 </style>

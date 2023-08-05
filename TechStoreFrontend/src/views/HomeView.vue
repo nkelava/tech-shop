@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import ImageSlider from "@/components/ImageSlider.vue";
 import TheBenefits from "@/components/TheBenefits.vue";
-import TheBanners from "@/components/TheBanners.vue";
+import TheBanners from "@/components/TheAds.vue";
 import ProductGrid from "@/components/ProductGrid.vue";
 import ProductSlider from "@/components/ProductSlider.vue";
 import { getProducts } from "@/database/services/productService";

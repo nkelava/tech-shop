@@ -1,5 +1,5 @@
 <script setup>
-import BenefitCard from "@/components/BenefitCard.vue";
+import BenefitCard from "@/components/TheBenefitsCard.vue";
 import HomeIcon from "../assets/icons/benefits/house.png";
 import RefundIcon from "../assets/icons/benefits/refund.png";
 import SupportIcon from "../assets/icons/benefits/shield.png";

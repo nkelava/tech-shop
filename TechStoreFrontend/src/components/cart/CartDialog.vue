@@ -1,10 +1,10 @@
 <script setup>
 import { computed, ref } from "vue";
-import { useCartStore } from "@/stores";
+import { useCartStore } from "@/store";
 import CartTable from "./CartTable.vue";
-import OrderDialog from "@/components/OrderDialog.vue";
-import { getPromoCode } from "@/database/services/promoCodeService.js";
+import OrderDialog from "@/components/order/OrderDialog.vue";
 import CartIcon from "@/assets/icons/header/cart.png";
+import { getPromoCode } from "@/database/services/promoCodeService.js";
 
 const cart = useCartStore();
 const cartDialogActive = ref(false);

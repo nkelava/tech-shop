@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-
 import SearchIcon from "@/assets/icons/header/search.png";
 
 const router = useRouter();

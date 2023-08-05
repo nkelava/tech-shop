@@ -2,8 +2,8 @@
 import { reactive, computed } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { alpha, email, required, sameAs } from "@vuelidate/validators";
-import BaseInput from "../components/BaseInput.vue";
-import HiddenInput from "../components/HiddenInput.vue";
+import BaseInput from "@/components/common/BaseInput.vue";
+import HiddenInput from "@/components/common/BaseInputHidden.vue";
 
 const initialState = {
   firstName: "",

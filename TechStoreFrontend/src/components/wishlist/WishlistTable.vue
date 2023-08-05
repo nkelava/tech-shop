@@ -1,5 +1,5 @@
 <script setup>
-import { useCartStore } from "@/stores";
+import { useCartStore } from "@/store";
 
 const cart = useCartStore();
 const props = defineProps(["products"]);

@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref } from "vue";
-import { useWishlistStore } from "@/stores";
+import { useWishlistStore } from "@/store";
 import WishlistTable from "./WishlistTable.vue";
 import WishlistIcon from "@/assets/icons/header/favorite.png";
 

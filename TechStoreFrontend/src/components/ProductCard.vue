@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink } from "vue-router";
-import { useCartStore, useWishlistStore } from "@/stores";
+import { useCartStore, useWishlistStore } from "@/store";
 import CartIcon from "@/assets/icons/header/cart.png";
 import FavoriteIcon from "@/assets/icons/header/favorite.png";
 

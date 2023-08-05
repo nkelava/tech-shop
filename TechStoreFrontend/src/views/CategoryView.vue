@@ -2,7 +2,7 @@
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import ImageSlider from "@/components/ImageSlider.vue";
-import BaseGrid from "@/components/BaseGrid.vue";
+import BaseGrid from "@/components/common/BaseGrid.vue";
 import SubcategoryCard from "@/components/SubcategoryCard.vue";
 import { getCategoryBySlug } from "@/database/services/categoryService.js";
 import { getSubcategoriesByCategoryId } from "@/database/services/subcategoryService.js";

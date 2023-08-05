@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref, reactive } from "vue";
-import BaseInput from "@/components/BaseInput.vue";
+import BaseInput from "@/components/common/BaseInput.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { initialState as initPaymentState, rules as paymentRules } from "@/vuelidate/payment";
 import { initialState as initDeliveryState, rules as deliveryRules } from "@/vuelidate/delivery";

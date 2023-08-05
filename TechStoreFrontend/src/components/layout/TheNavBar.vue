@@ -1,7 +1,7 @@
 <script setup>
+import { onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
 import { getCategories } from "@/database/services/categoryService.js";
-import { onMounted, ref } from "vue";
 
 const categories = ref([]);
 

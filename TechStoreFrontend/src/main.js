@@ -5,7 +5,7 @@ import App from "./App.vue";
 import router from "./router";
 
 // Custom Styles
-import "./assets/main.css";
+import "./assets/styles/main.css";
 
 // Vuetify
 import "vuetify/styles";

@@ -1,5 +1,5 @@
 <script setup>
-import OrderDetails from "@/components/OrderDetails.vue";
+import OrderDetails from "@/components/order/OrderDetails.vue";
 import { getProducts } from "@/database/services/productService";
 
 const orders = [

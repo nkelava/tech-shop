@@ -3,15 +3,15 @@ import { DellImage, LogitechImage, AsusImage } from "@/assets/images/test/banner
 </script>
 
 <template>
-  <div class="banners">
-    <img class="banners__img" :src="DellImage" alt="" />
-    <img class="banners__img" :src="LogitechImage" alt="" />
-    <img class="banners__img" :src="AsusImage" alt="" />
+  <div class="ads">
+    <img class="ads__img" :src="DellImage" alt="" />
+    <img class="ads__img" :src="LogitechImage" alt="" />
+    <img class="ads__img" :src="AsusImage" alt="" />
   </div>
 </template>
 
 <style scoped>
-.banners {
+.ads {
   background-color: var(--ts-c-bg-light);
   display: grid;
   grid-template-areas:
@@ -23,19 +23,19 @@ import { DellImage, LogitechImage, AsusImage } from "@/assets/images/test/banner
   padding: 3rem;
 }
 
-.banners__img:nth-child(1) {
+.ads__img:nth-child(1) {
   grid-area: first;
 }
 
-.banners__img:nth-child(2) {
+.ads__img:nth-child(2) {
   grid-area: second;
 }
 
-.banners__img:nth-child(3) {
+.ads__img:nth-child(3) {
   grid-area: third;
 }
 
-.banners__img {
+.ads__img {
   border-radius: 10px;
   box-shadow: 5px 5px 5px var(--ts-c-primary-darker);
   width: 100%;
@@ -45,7 +45,7 @@ import { DellImage, LogitechImage, AsusImage } from "@/assets/images/test/banner
 }
 
 @media only screen and (max-width: 800px) {
-  .banners {
+  .ads {
     grid-template-areas:
       "first"
       "second"

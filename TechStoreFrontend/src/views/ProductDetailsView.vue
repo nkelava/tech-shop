@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import ProductGallery from "@/components/ProductGallery.vue";
-import ProductDetails from "../components/ProductDetails.vue";
+import ProductDetails from "@/components/ProductDetails.vue";
 import TabsWrapper from "@/components/TabsWrapper.vue";
 
 // import { getProductById } from "@/database/services/productService.js";

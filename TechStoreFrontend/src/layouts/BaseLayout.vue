@@ -1,12 +1,16 @@
 <script setup>
-import TheHeader from "@/components/common/header/TheHeader.vue";
-import TheNewsletters from "@/components/common/newsletters/TheNewsletters.vue";
-import TheFooter from "@/components/common/footer/TheFooter.vue";
+import TheTopBar from "@/components/layout/TheTopBar.vue";
+import TheHeader from "@/components/layout/TheHeader.vue";
+import TheNavBar from "@/components/layout/TheNavBar.vue";
+import TheNewsletters from "@/components/layout/TheNewsletters.vue";
+import TheFooter from "@/components/layout/TheFooter.vue";
 </script>
 
 <template>
   <div class="baselayout">
+    <the-top-bar />
     <the-header class="baselayout__header" />
+    <the-nav-bar />
     <main class="baselayout__main">
       <slot />
     </main>
