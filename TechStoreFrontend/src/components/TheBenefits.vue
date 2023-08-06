@@ -7,7 +7,7 @@ import RocketIcon from "../assets/icons/benefits/rocket.png";
 </script>
 
 <template>
-  <div class="benefits-container">
+  <div class="benefits-container ts-container">
     <benefit-card
       :icon="HomeIcon"
       title="Home Delivery"
@@ -37,7 +37,8 @@ import RocketIcon from "../assets/icons/benefits/rocket.png";
   grid-template-areas: "home refund support delivery";
   justify-content: center;
   align-content: center;
-  margin: 2rem;
+  padding-top: 1rem;
+  font-size: var(--ts-text-size-sm);
 }
 
 .benefits-container:nth-child(1) {
@@ -56,7 +57,7 @@ import RocketIcon from "../assets/icons/benefits/rocket.png";
   grid-area: delivery;
 }
 
-@media only screen and (max-width: 1600px) {
+@media only screen and (max-width: 100em) {
   .benefits-container {
     grid-template-areas:
       "home refund"
@@ -65,7 +66,7 @@ import RocketIcon from "../assets/icons/benefits/rocket.png";
   }
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 48em) {
   .benefits-container {
     grid-template-areas:
       "home"
