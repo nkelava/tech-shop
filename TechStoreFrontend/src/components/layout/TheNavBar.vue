@@ -303,10 +303,15 @@ onUnmounted(() => {
   .main-navigation .menu-primary-container .menu-item {
     border: 3px solid transparent;
     margin: 0;
-    padding: 5px;
+    margin-right: 20px;
+    padding: 5px 0;
     text-decoration: none;
     font-size: var(--ts-text-size);
     transform: none;
+  }
+
+  .main-navigation .menu-primary-container .menu-item:last-child {
+    margin-right: 0;
   }
 
   .main-navigation .menu-primary-container .menu-item:hover {
