@@ -34,9 +34,14 @@ import RocketIcon from "../assets/icons/benefits/rocket.png";
 <style scoped>
 .benefits-container {
   display: grid;
-  grid-template-areas: "home refund support delivery";
+  grid-template-areas:
+    "home"
+    "refund"
+    "support"
+    "delivery";
   justify-content: center;
   align-content: center;
+  gap: 0.5rem;
   padding-top: 1rem;
   margin-bottom: 50px;
   font-size: var(--ts-text-size-sm);
@@ -58,23 +63,18 @@ import RocketIcon from "../assets/icons/benefits/rocket.png";
   grid-area: delivery;
 }
 
-@media only screen and (max-width: 100em) {
+@media only screen and (min-width: 40em) {
   .benefits-container {
     grid-template-areas:
       "home refund"
       "support delivery";
-    gap: 0.5rem;
   }
 }
 
-@media only screen and (max-width: 48em) {
+@media only screen and (min-width: 100em) {
   .benefits-container {
-    grid-template-areas:
-      "home"
-      "refund"
-      "support"
-      "delivery";
-    gap: 0.5rem;
+    grid-template-areas: "home refund support delivery";
+    gap: 0;
   }
 }
 </style>
