@@ -19,7 +19,7 @@ const props = defineProps(["maxHeight"]);
 
 <style scoped>
 .carousel {
-  min-height: calc(100vh - 300px);
+  min-height: calc(100vh - 360px);
   max-height: v-bind("props.maxHeight");
 }
 
@@ -29,7 +29,7 @@ const props = defineProps(["maxHeight"]);
 }
 
 .carousel__item img {
-  min-height: calc(100vh - 300px);
+  height: calc(100vh - 360px);
   width: 100%;
 }
 </style>
