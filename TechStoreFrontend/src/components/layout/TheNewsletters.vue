@@ -46,10 +46,10 @@ function toggleAlert() {
 </script>
 
 <template>
-  <div class="newsletters">
+  <div class="newsletters ts-container">
     <div class="newsletters__heading">
-      <h1>Subscribe to our newsletter!</h1>
-      <h3>Get early access to new tech products and sales.</h3>
+      <h2>Subscribe to our newsletters!</h2>
+      <h4>Get early access to new tech products and sales.</h4>
     </div>
     <div class="newsletters__subscribe">
       <base-input
@@ -75,11 +75,12 @@ function toggleAlert() {
 
 <style scoped>
 .newsletters {
-  background-color: var(--ts-c-bg-highlight);
-  padding: 2rem;
   display: grid;
   gap: 5rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
   grid-template-areas: "heading input";
+  background-color: var(--ts-c-bg-highlight);
 }
 
 .newsletters:nth-child(1) {
@@ -95,7 +96,7 @@ function toggleAlert() {
   text-align: end;
 }
 
-.newsletters__heading h3 {
+.newsletters__heading h4 {
   color: var(--ts-c-primary-soft);
 }
 
@@ -108,12 +109,12 @@ function toggleAlert() {
 }
 
 .subscribe__input {
-  background-color: var(--ts-c-bg-light) !important;
-  border-radius: 5px;
-  color: var(--ts-c-text-dark);
-  font-weight: bold;
   width: 40em;
   margin-bottom: 0 !important;
+  background-color: var(--ts-c-bg-light) !important;
+  color: var(--ts-c-text-dark);
+  border-radius: 5px;
+  font-weight: bold;
 }
 
 input[type="submit"] {
@@ -132,7 +133,7 @@ input[type="submit"]:hover {
   background-color: var(--ts-c-primary-dark);
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1024px) {
   .newsletters {
     grid-template-areas:
       "heading"
