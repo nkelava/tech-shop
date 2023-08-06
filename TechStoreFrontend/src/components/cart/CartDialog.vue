@@ -56,8 +56,8 @@ function removePromoCode() {
 
 <template>
   <v-card variant="text">
-    <v-btn class="pa-1" variant="text" @click="cartDialogActive = !cartDialogActive">
-      <v-badge :content="cart.itemCount" color="var(--ts-c-primary-mute)">
+    <v-btn class="widget__btn" variant="text" @click="cartDialogActive = !cartDialogActive">
+      <v-badge :content="cart.itemCount">
         <img :src="CartIcon" alt="favorites icon" />
       </v-badge>
     </v-btn>

@@ -32,7 +32,7 @@ const toggleDialog = () => {
 
 <template>
   <v-card variant="text">
-    <v-btn class="pa-1" variant="text" @click="toggleDialog">
+    <v-btn class="widget__btn" variant="text" @click="toggleDialog">
       <v-badge :content="wishlist.itemCount" color="var(--ts-c-primary-mute)">
         <img :src="WishlistIcon" alt="wishlist icon" />
       </v-badge>

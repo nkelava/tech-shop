@@ -12,7 +12,7 @@ const items = [
   <div class="text-center">
     <v-menu transition="scale-transition">
       <template v-slot:activator="{ props }">
-        <v-btn v-bind="props" variant="text">
+        <v-btn v-bind="props" class="widget__btn" variant="text">
           <img :src="UserIcon" alt="favorites icon" class="dropdown__icon" />
         </v-btn>
       </template>

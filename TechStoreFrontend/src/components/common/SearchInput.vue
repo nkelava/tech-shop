@@ -24,17 +24,28 @@ function handleSearch() {
 
 <style scoped>
 .search-container {
+  position: relative;
   display: flex;
   flex: 1;
   align-items: center;
-  min-width: 250px;
   max-width: 800px;
-  position: relative;
 }
 
 .search__btn {
-  background-color: var(--ts-c-bg-light);
   position: absolute;
   right: 5px;
+  background-color: var(--ts-c-bg-light);
+}
+
+@media only screen and (max-width: 23em) {
+  .search-container {
+    min-width: 250px;
+  }
+}
+
+@media only screen and (min-width: 23em) {
+  .search-container {
+    min-width: 300px;
+  }
 }
 </style>

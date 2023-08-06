@@ -71,7 +71,7 @@
 body {
   background: var(--ts-c-bg-dark);
   color: var(--ts-c-text-light);
-  font-size: 14px;
+  font-size: 16px;
   font-family: Lato, Roboto, "Open Sans", sans-serif;
   min-height: 100vh;
   text-rendering: optimizeLegibility;
@@ -86,6 +86,7 @@ input[type="submit"] {
 }
 
 a {
+  color: var(--ts-c-text-dark);
   text-decoration: none;
 }
 
@@ -102,3 +103,19 @@ hr {
   border-radius: 5px;
   margin-bottom: 2rem;
 }
+
+/* Small devices such as large phones (640px and up) */
+/* @media only screen and (min-width: 40em) {
+} */
+
+/* Medium devices such as tablets (768px and up) */
+/* @media only screen and (min-width: 48em) {
+} */
+
+/* Large devices such as laptops (1024px and up) */
+/* @media only screen and (min-width: 64em) {
+} */
+
+/* Largest devices such as desktops (1280px and up) */
+/* @media only screen and (min-width: 80em) {
+} */

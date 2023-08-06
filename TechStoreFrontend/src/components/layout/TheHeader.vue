@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import TheNavBar from "@/components/layout/TheNavBar.vue";
 import SearchInput from "@/components/common/SearchInput.vue";
 import WishlistDialog from "@/components/wishlist/WishlistDialog.vue";
 import CartDialog from "@/components/cart/CartDialog.vue";
@@ -11,14 +12,17 @@ const isSignedIn = true;
 </script>
 
 <template>
-  <header>
-    <div class="header__main">
-      <h1>
+  <header class="ts-container header">
+    <div class="header-top">
+      <h1 class="header__brand">
         <router-link to="/">
-          <img class="brand-logo" :src="BrandLogo" alt="tech planet logo" />
+          <img class="header__brand-icon" :src="BrandLogo" alt="tech planet logo" />
         </router-link>
       </h1>
-      <search-input />
+      <search-input class="header__search" />
+    </div>
+    <div class="header__widgets">
+      <the-nav-bar />
       <div class="d-flex">
         <wishlist-dialog />
         <cart-dialog />
@@ -29,17 +33,55 @@ const isSignedIn = true;
 </template>
 
 <style scoped>
-.header__main {
-  color: var(--ts-c-text-light);
+.header {
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 2rem;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+  color: var(--ts-c-text-light);
+  border-bottom: 1px solid var(--ts-c-primary-darker);
 }
 
-.brand-logo {
+.header__brand a {
+  display: block;
+}
+
+.header__brand-icon {
   width: 100%;
   height: 100%;
+  max-height: 50px;
+  vertical-align: middle;
+}
+
+.header__search,
+.header__widgets {
+  width: 100%;
+}
+
+.header__widgets {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-top {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+  width: 100%;
+}
+
+@media only screen and (min-width: 48em) {
+  .header-top {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media only screen and (min-width: 64em) {
+  .header {
+    padding-bottom: 0;
+  }
 }
 </style>

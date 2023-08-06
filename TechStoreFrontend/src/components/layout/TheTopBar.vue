@@ -25,6 +25,8 @@ const isSignedIn = false;
 
 <style scoped>
 .header-top {
+  padding-top: 8px;
+  padding-bottom: 8px;
   background-color: var(--ts-c-bg-light);
   color: var(--ts-c-text-dark);
   display: flex;
