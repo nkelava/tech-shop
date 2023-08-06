@@ -86,7 +86,7 @@ input[type="submit"] {
 }
 
 a {
-  color: var(--ts-c-text-dark);
+  color: var(--ts-c-text-light);
   text-decoration: none;
 }
 

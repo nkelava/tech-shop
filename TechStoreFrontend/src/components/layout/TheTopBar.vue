@@ -40,9 +40,19 @@ const isSignedIn = false;
   display: none;
 }
 
+.header-top__auth {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.header-top__auth a {
+  line-height: 1.3;
+  color: var(--ts-c-text-dark);
+}
+
 @media only screen and (min-width: 40em) {
-  .header-top__contact,
-  .header-top__auth {
+  .header-top__contact {
     display: flex;
     align-items: center;
     gap: 0.5rem;
