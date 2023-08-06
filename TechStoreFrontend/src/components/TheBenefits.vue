@@ -38,6 +38,7 @@ import RocketIcon from "../assets/icons/benefits/rocket.png";
   justify-content: center;
   align-content: center;
   padding-top: 1rem;
+  margin-bottom: 50px;
   font-size: var(--ts-text-size-sm);
 }
 

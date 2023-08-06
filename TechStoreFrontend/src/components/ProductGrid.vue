@@ -10,18 +10,26 @@ const slicedProducts = computed(() => {
 </script>
 
 <template>
-  <v-row justify="center" class="space">
+  <v-row class="grid">
     <v-col
       cols="12"
       xs="12"
       sm="6"
       md="4"
-      lg="4"
+      lg="3"
       xl="2"
       v-for="product in slicedProducts"
       :key="product.id"
+      class="grid-item"
     >
       <product-card :product="product" />
     </v-col>
   </v-row>
 </template>
+
+<style scoped>
+.grid-item {
+  display: flex;
+  justify-content: center;
+}
+</style>

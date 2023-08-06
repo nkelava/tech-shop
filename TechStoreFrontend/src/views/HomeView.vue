@@ -25,7 +25,7 @@ onMounted(() => {
   <div>
     <image-slider maxHeight="800px" />
     <the-benefits />
-    <div class="w-75 my-16 mx-auto">
+    <div class="best-sellers ts-container">
       <h1>Best Sellers</h1>
       <hr />
       <product-grid :products="bestSellers" />
@@ -64,3 +64,9 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.best-sellers {
+  margin-bottom: 36px;
+}
+</style>
