@@ -26,7 +26,7 @@ onMounted(() => {
     <image-slider maxHeight="800px" />
     <the-benefits />
     <div class="best-sellers ts-container">
-      <h1>Best Sellers</h1>
+      <h2>Best Sellers</h2>
       <hr />
       <product-grid :products="bestSellers" />
     </div>

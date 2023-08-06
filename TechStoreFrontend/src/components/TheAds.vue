@@ -3,7 +3,7 @@ import { DellImage, LogitechImage, AsusImage } from "@/assets/images/test/banner
 </script>
 
 <template>
-  <div class="ads">
+  <div class="ads ts-container">
     <img class="ads__img" :src="DellImage" alt="" />
     <img class="ads__img" :src="LogitechImage" alt="" />
     <img class="ads__img" :src="AsusImage" alt="" />
@@ -12,15 +12,16 @@ import { DellImage, LogitechImage, AsusImage } from "@/assets/images/test/banner
 
 <style scoped>
 .ads {
-  background-color: var(--ts-c-bg-light);
   display: grid;
   grid-template-areas:
-    "first second"
-    "first third";
+    "first"
+    "second"
+    "third"
+    "fourth";
   gap: 1rem;
-  justify-content: center;
-  height: 40em;
-  padding: 3rem;
+  padding-top: 36px;
+  padding-bottom: 36px;
+  background-color: var(--ts-c-bg-light);
 }
 
 .ads__img:nth-child(1) {
@@ -39,19 +40,19 @@ import { DellImage, LogitechImage, AsusImage } from "@/assets/images/test/banner
   border-radius: 10px;
   box-shadow: 5px 5px 5px var(--ts-c-primary-darker);
   width: 100%;
-  min-width: 350px;
+  min-width: 250px;
   max-width: 1000px;
   height: 100%;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (min-width: 48em) {
   .ads {
     grid-template-areas:
-      "first"
-      "second"
-      "third"
-      "fourth";
-    padding-inline: 5rem;
+      "first second"
+      "first third";
   }
+}
+
+@media only screen and (min-width: 64em) {
 }
 </style>
