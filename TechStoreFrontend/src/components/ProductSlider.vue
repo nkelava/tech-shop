@@ -52,15 +52,22 @@ const breakpoints = {
 
 .carousel__prev,
 .carousel__next {
-  color: var(--ts-c-primary-darker);
   height: 3rem;
   width: 3rem;
+  margin: 0;
   font-size: 3rem;
-  margin: 0 -50px;
+  color: var(--ts-c-primary-darker);
 }
 
 .carousel__prev:hover,
 .carousel__next:hover {
   color: var(--ts-c-primary-soft);
+}
+
+@media only screen and (min-width: 40em) {
+  .carousel__prev,
+  .carousel__next {
+    margin: 0 -20px;
+  }
 }
 </style>

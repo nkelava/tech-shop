@@ -66,19 +66,20 @@ function addToWishlist(product) {
 
 <style scoped>
 .card {
-  background-color: var(--ts-c-bg-light);
-  border-radius: 10px;
-  color: var(--ts-c-text-dark);
-  text-align: center;
   min-width: 250px;
   max-width: 300px;
   padding: 10px;
+  font-size: 12px;
+  text-align: center;
+  background-color: var(--ts-c-bg-light);
+  border-radius: 10px;
+  color: var(--ts-c-text-dark);
 }
 
 .card__image {
-  max-height: 250px;
+  max-height: 200px;
   width: 100%;
-  max-width: 250px;
+  max-width: 200px;
   object-fit: contain;
 }
 
@@ -87,11 +88,11 @@ function addToWishlist(product) {
 }
 
 .card__btn {
+  width: 100%;
+  font-weight: bold;
   background-color: var(--ts-c-bg-dark);
   border-radius: 5px;
   color: var(--ts-c-text-light);
-  font-weight: bold;
-  width: 100%;
   text-transform: capitalize;
 }
 
@@ -110,6 +111,7 @@ function addToWishlist(product) {
 
 .btn--hide {
   opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .btn--hide:nth-child(2) {
@@ -125,5 +127,16 @@ function addToWishlist(product) {
   overflow: hidden;
   max-height: 3.6em;
   line-height: 1.3em;
+}
+
+@media only screen and (min-width: 60em) {
+  .card {
+    font-size: var(--ts-text-sm);
+  }
+
+  .card__image {
+    max-height: 250px;
+    max-width: 250px;
+  }
 }
 </style>
