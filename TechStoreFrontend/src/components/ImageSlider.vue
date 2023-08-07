@@ -4,7 +4,6 @@ import "vue3-carousel/dist/carousel.css";
 import { Skola, SpiderMan, Visa, HyperX } from "@/assets/images/test/carousel";
 
 const images = [Skola, SpiderMan, Visa, HyperX];
-const props = defineProps(["maxHeight"]);
 </script>
 
 <template>
@@ -19,8 +18,7 @@ const props = defineProps(["maxHeight"]);
 
 <style scoped>
 .carousel {
-  min-height: calc(100vh - 360px);
-  max-height: v-bind("props.maxHeight");
+  min-height: 64vh;
 }
 
 .carousel__item {
@@ -29,7 +27,7 @@ const props = defineProps(["maxHeight"]);
 }
 
 .carousel__item img {
-  height: calc(100vh - 360px);
+  height: 64vh;
   width: 100%;
 }
 </style>

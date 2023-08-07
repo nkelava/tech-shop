@@ -33,7 +33,6 @@
 
 @media only screen and (min-width: 64em) {
   .ts-container {
-    padding-left: 4.5rem;
-    padding-right: 4.5rem;
+    padding: 3rem 4.5rem;
   }
 }

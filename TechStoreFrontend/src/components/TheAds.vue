@@ -19,8 +19,6 @@ import { DellImage, LogitechImage, AsusImage } from "@/assets/images/test/banner
     "third"
     "fourth";
   gap: 1rem;
-  padding-top: 36px;
-  padding-bottom: 36px;
   background-color: var(--ts-c-bg-light);
 }
 

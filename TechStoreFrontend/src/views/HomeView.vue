@@ -23,7 +23,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <image-slider maxHeight="800px" />
+    <image-slider />
     <the-benefits />
     <div class="best-sellers ts-container">
       <h2>Best Sellers</h2>
