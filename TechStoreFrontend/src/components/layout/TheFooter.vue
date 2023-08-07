@@ -8,11 +8,11 @@ import FacebookIcon from "@/assets/icons/socials/facebook.png";
 import InstagramIcon from "@/assets/icons/socials/instagram.png";
 import YoutubeIcon from "@/assets/icons/socials/youtube.png";
 
-const categories = ["laptops", "computers", "components", "peripherals", "software"];
+const categories = ["laptops", "fcomputers", "components", "peripherals", "software"];
 </script>
 
 <template>
-  <footer class="pt-10 pb-2 px-16">
+  <footer class="ts-container">
     <div class="footer-container">
       <div class="contact-container">
         <h3 class="footer__header">CONTACT US</h3>
@@ -55,7 +55,7 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
       </div>
     </div>
     <div class="footer-copyright">
-      <h4>Copyright &copy; 2023 TechShop</h4>
+      <h4>&copy; 2023 TechPlanet</h4>
     </div>
   </footer>
 </template>
@@ -66,7 +66,6 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
   flex-wrap: wrap;
   justify-content: space-around;
   gap: 2rem;
-  font-size: 1rem;
 }
 
 .footer__header {
@@ -86,7 +85,7 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
 .categories-container a {
   color: var(--ts-c-text-light);
   text-transform: capitalize;
-  margin-bottom: 5px;
+  margin-bottom: 1rem;
 }
 
 .info-container {
@@ -103,11 +102,11 @@ const categories = ["laptops", "computers", "components", "peripherals", "softwa
 }
 
 .footer-copyright {
-  border-top: 1px solid var(--ts-c-primary-dark);
-  color: var(--ts-c-primary-mute);
-  text-align: center;
   margin-top: 1rem;
   padding-top: 5px;
+  text-align: center;
+  border-top: 1px solid var(--ts-c-primary-dark);
+  color: var(--ts-c-primary-mute);
 }
 
 @media only screen and (max-width: 500px) {
