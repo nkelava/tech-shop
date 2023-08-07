@@ -77,8 +77,6 @@ function toggleAlert() {
 .newsletters {
   display: grid;
   gap: 5rem;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
   grid-template-areas: "heading input";
   background-color: var(--ts-c-bg-highlight);
 }

@@ -66,10 +66,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.best-sellers {
-  margin-bottom: 36px;
-}
-
 .tabs {
   margin-bottom: 1rem;
 }

@@ -42,8 +42,6 @@ import RocketIcon from "../assets/icons/benefits/rocket.png";
   justify-content: center;
   align-content: center;
   gap: 0.5rem;
-  padding-top: 1rem;
-  margin-bottom: 50px;
   font-size: var(--ts-text-size-sm);
 }
 

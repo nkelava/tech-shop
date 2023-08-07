@@ -43,6 +43,7 @@ import { DellImage, LogitechImage, AsusImage } from "@/assets/images/test/banner
   min-width: 250px;
   max-width: 1000px;
   height: 100%;
+  min-height: 200px;
 }
 
 @media only screen and (min-width: 48em) {

@@ -38,6 +38,7 @@ const isSignedIn = true;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  padding: 1rem 1rem 0;
   align-items: flex-start;
   color: var(--ts-c-text-light);
   border-bottom: 1px solid var(--ts-c-primary-darker);
@@ -81,6 +82,8 @@ const isSignedIn = true;
 
 @media only screen and (min-width: 64em) {
   .header {
+    padding-left: 4.5rem;
+    padding-right: 4.5rem;
     padding-bottom: 0;
   }
 }
