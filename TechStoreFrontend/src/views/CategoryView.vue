@@ -36,13 +36,15 @@ watch(
 
 <template>
   <div>
-    <image-slider maxHeight="400px" />
-    <v-breadcrumbs class="text-capitalize ml-16" :items="breadcrumbsItems">
-      <template v-slot:divider>
-        <v-icon>mdi-chevron-right</v-icon>
-      </template>
-    </v-breadcrumbs>
-    <div class="category-container">
+    <image-slider />
+    <div class="ts-breadcrumbs">
+      <v-breadcrumbs :items="breadcrumbsItems">
+        <template v-slot:divider>
+          <v-icon>mdi-chevron-right</v-icon>
+        </template>
+      </v-breadcrumbs>
+    </div>
+    <div class="ts-container">
       <h1 class="category__title text-capitalize">{{ category.name }}</h1>
       <hr />
       <base-grid>
@@ -58,10 +60,9 @@ watch(
 </template>
 
 <style scoped>
-.category-container {
-  padding: 2rem 5rem;
+.ts-breadcrumbs .v-breadcrumbs {
+  padding: 0;
 }
-
 .category__list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

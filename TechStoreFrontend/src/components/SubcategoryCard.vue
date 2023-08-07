@@ -26,16 +26,16 @@ const props = defineProps(["category", "subcategory"]);
 
 <style scoped>
 .card {
-  background-color: var(--ts-c-bg-light);
-  border-radius: 10px;
-  box-shadow: 7px 5px 5px var(--ts-c-primary-darker);
-  color: var(--ts-c-text-dark);
-  padding: 1rem;
-  text-align: center;
   width: 100%;
   max-width: 300px;
   height: 100%;
   max-height: 300px;
+  padding: 1rem;
+  text-align: center;
+  background-color: var(--ts-c-bg-light);
+  border-radius: 10px;
+  box-shadow: 7px 5px 5px var(--ts-c-primary-darker);
+  color: var(--ts-c-text-dark);
 }
 
 .card__image {
@@ -46,7 +46,11 @@ const props = defineProps(["category", "subcategory"]);
 }
 
 .card__title {
-  font-size: 1rem;
   margin: 0.5rem;
+  font-size: var(--ts-text-size-lg);
+}
+
+.card__title a {
+  color: var(--ts-c-text-dark);
 }
 </style>
