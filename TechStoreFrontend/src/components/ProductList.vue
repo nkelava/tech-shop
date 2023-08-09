@@ -41,7 +41,7 @@ const currentPageItems = computed(() => {
 .product-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1rem;
 }
 </style>

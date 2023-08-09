@@ -26,6 +26,10 @@
   text-transform: capitalize;
 }
 
+.v-breadcrumbs {
+  padding: 0 !important;
+}
+
 .v-btn {
   letter-spacing: none !important;
 }
