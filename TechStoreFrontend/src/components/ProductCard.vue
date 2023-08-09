@@ -50,15 +50,15 @@ function addToWishlist(product) {
           <img :src="FavoriteIcon" alt="favorites icon" />
         </v-btn>
         <!-- <v-btn class="card__btn" @click="goToProductDetails">View More</v-btn> -->
-        <v-btn class="card__btn">
-          <router-link
-            :to="{
-              name: 'product',
-              params: { category: category, subcategory: subcategory, productId: product.id },
-            }"
-            >View More</router-link
-          >
-        </v-btn>
+        <router-link
+          class="card__link"
+          :to="{
+            name: 'product',
+            params: { category: category, subcategory: subcategory, productId: product.id },
+          }"
+        >
+          <v-btn class="card__btn">View More</v-btn>
+        </router-link>
       </v-card-actions>
     </v-card>
   </v-hover>
@@ -85,6 +85,10 @@ function addToWishlist(product) {
 
 .card__price {
   margin-top: 2rem;
+}
+
+.card__link {
+  width: 100%;
 }
 
 .card__btn {
