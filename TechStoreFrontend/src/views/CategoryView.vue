@@ -60,9 +60,6 @@ watch(
 </template>
 
 <style scoped>
-.ts-breadcrumbs .v-breadcrumbs {
-  padding: 0;
-}
 .category__list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

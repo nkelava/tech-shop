@@ -79,13 +79,15 @@ function handleFilter(filters) {
 
 <template>
   <div>
-    <image-slider maxHeight="400px" />
-    <v-breadcrumbs class="text-capitalize ml-16" :items="breadcrumbsItems">
-      <template v-slot:divider>
-        <v-icon>mdi-chevron-right</v-icon>
-      </template>
-    </v-breadcrumbs>
-    <div class="sidebar-layout">
+    <image-slider />
+    <div class="ts-breadcrumbs">
+      <v-breadcrumbs :items="breadcrumbsItems">
+        <template v-slot:divider>
+          <v-icon>mdi-chevron-right</v-icon>
+        </template>
+      </v-breadcrumbs>
+    </div>
+    <div class="sidebar-layout ts-container">
       <filter-sidebar
         class="sidebar"
         :subcategoryId="subcategory.id"
@@ -118,10 +120,8 @@ function handleFilter(filters) {
   display: grid;
   grid-template-areas: "sidebar main";
   grid-template-columns: minmax(300px, 350px) auto;
-  align-items: start;
-  gap: 50px;
-  max-width: 70%;
-  margin: 2rem auto;
+  align-items: flex-start;
+  gap: 100px;
 }
 
 .sidebar {
@@ -144,24 +144,22 @@ function handleFilter(filters) {
 }
 
 .heading__sort {
+  height: 30px;
+  padding: 5px 20px 5px 10px;
+  align-self: end;
   background-color: var(--ts-c-bg-light);
   border: none;
   border-radius: 5px;
   color: var(--ts-c-text-dark);
-  padding-inline: 10px;
-  height: 1.5rem;
-  align-self: end;
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1024px) {
   .sidebar-layout {
     grid-template-areas:
       "sidebar"
       "main";
     grid-template-columns: auto;
     gap: 1rem;
-    max-width: 100%;
-    margin-inline: 1rem;
   }
 
   .sidebar {

@@ -52,26 +52,33 @@ function handleFilterRating() {
 
 <template>
   <div class="sidebar">
-    <div class="item">
-      <h3 class="item__title">Price</h3>
+    <div class="sidebar-item">
+      <h3 class="sidebar-item__title">Price</h3>
       <hr />
-      <div class="price-container">
+      <div class="sidebar-price">
         <input
-          class="price-input"
+          class="sidebar-price__input"
           v-model="price.from"
           type="number"
           min="0"
           @input="handleFilterPrice"
         />
-        <input class="price-input" v-model="price.to" type="number" @input="handleFilterPrice" />
+        <input
+          class="sidebar-price__input"
+          v-model="price.to"
+          type="number"
+          min="0"
+          @input="handleFilterPrice"
+        />
       </div>
     </div>
-    <div class="item">
-      <h3 class="item__title">Rating</h3>
+    <div class="sidebar-item">
+      <h3 class="sidebar-item__title">Rating</h3>
       <hr />
       <!-- TODO: create slider component in case of keeping this filter -->
       <div class="slider">
         <input
+          id="test"
           v-model="rating"
           type="range"
           min="0"
@@ -82,8 +89,12 @@ function handleFilterRating() {
         <span>{{ rating }}</span>
       </div>
     </div>
-    <div v-for="attribute in subcategoryAttributesWithValues" :key="attribute.id" class="item">
-      <h3 class="item__title">{{ attribute.name }}</h3>
+    <div
+      class="sidebar-item"
+      v-for="attribute in subcategoryAttributesWithValues"
+      :key="attribute.id"
+    >
+      <h3 class="sidebar-item__title">{{ attribute.name }}</h3>
       <hr />
       <div v-for="attributeValue in attribute.values" :key="attributeValue.id">
         <input
@@ -98,6 +109,11 @@ function handleFilterRating() {
 </template>
 
 <style scoped>
+input[type="radio"],
+input[type="checkbox"] {
+  accent-color: var(--ts-c-bg-dark);
+}
+
 .sidebar {
   background-color: var(--ts-c-bg-light);
   border-radius: 10px;
@@ -106,12 +122,12 @@ function handleFilterRating() {
   flex-direction: column;
 }
 
-.item {
+.sidebar-item {
   margin-inline: 20px;
   margin: 1rem 2rem;
 }
 
-.item__title {
+.sidebar-item__title {
   margin: 5px;
 }
 
@@ -120,7 +136,7 @@ hr {
   margin-right: 2rem;
 }
 
-.price-input {
+.sidebar-price__input {
   border: none;
   background-color: #fff;
   border-radius: 5px;
