@@ -6,22 +6,22 @@ const props = defineProps(["category", "subcategory"]);
 
 <template>
   <!-- TODO: add favorites and cart icon on hover -->
-  <div class="card">
-    <img :src="props.subcategory.img" alt="" class="card__image" />
-    <h2 class="card__title">
-      <router-link
-        :to="{
-          name: 'subcategory',
-          params: {
-            category: props.category,
-            subcategory: props.subcategory.slug,
-          },
-        }"
-      >
+  <router-link
+    :to="{
+      name: 'subcategory',
+      params: {
+        category: props.category,
+        subcategory: props.subcategory.slug,
+      },
+    }"
+  >
+    <div class="card">
+      <img :src="props.subcategory.img" alt="" class="card__image" />
+      <h2 class="card__title">
         {{ props.subcategory.name }}
-      </router-link>
-    </h2>
-  </div>
+      </h2>
+    </div>
+  </router-link>
 </template>
 
 <style scoped>
