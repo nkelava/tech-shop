@@ -178,20 +178,17 @@ onUnmounted(() => {
   position: absolute;
   top: 100%;
   left: 0;
-  height: 70vh;
+  height: 100vh;
   width: 100%;
   padding: 50px 50px 50px 0;
   background-color: var(--ts-c-bg-light);
-  border: 3px solid var(--ts-c-primary);
-  border-bottom-right-radius: 100vw;
   pointer-events: none;
   transform: translateX(-100%);
-  transition: width 475ms ease-out, transform 450ms ease, border-radius 0.8s 0.1s ease;
+  transition: width 475ms ease-out, transform 450ms ease;
 }
 
 .main-navigation .menu-primary-container.show {
   transform: translateX(0);
-  border-bottom-right-radius: 30px;
 }
 
 .main-navigation .menu-primary-container.show .menu-item {
@@ -261,12 +258,6 @@ onUnmounted(() => {
   text-decoration: none;
 }
 
-@media only screen and (min-width: 48em) {
-  .main-navigation .menu-primary-container {
-    height: 80vh;
-  }
-}
-
 @media only screen and (min-width: 64em) {
   .main-navigation {
     width: 100%;
@@ -312,10 +303,6 @@ onUnmounted(() => {
 
   .main-navigation .menu-primary-container .menu-item:last-child {
     margin-right: 0;
-  }
-
-  .main-navigation .menu-primary-container .menu-item:hover {
-    border-bottom: 3px solid var(--ts-c-bg-light);
   }
 
   .main-navigation .menu-primary-container .menu-item a {
