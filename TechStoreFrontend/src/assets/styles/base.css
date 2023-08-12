@@ -81,7 +81,8 @@ body {
 
 a,
 button,
-input[type="submit"] {
+input[type="submit"],
+select {
   cursor: pointer;
 }
 

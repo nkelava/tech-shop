@@ -1,10 +1,14 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, toRefs } from "vue";
 
 const counter = ref(0);
-const { product } = defineProps(["product"]);
+const props = defineProps(["product"]);
+const { product } = toRefs(props);
 const productRating = computed(() => {
-  return "★★★★★☆☆☆☆☆".slice(Math.trunc(product.rating) - 1, Math.trunc(product.rating) + 4);
+  return "★★★★★☆☆☆☆☆".slice(
+    Math.trunc(product.value.rating) - 1,
+    Math.trunc(product.value.rating) + 4
+  );
 });
 
 const increment = () => {
@@ -43,7 +47,6 @@ const decrement = () => {
   justify-content: flex-start;
   align-items: flex-start;
   gap: 1rem;
-  padding: 3rem;
   min-width: 0;
 }
 
