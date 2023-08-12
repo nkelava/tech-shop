@@ -110,7 +110,8 @@ function handleFilterRating() {
 
 <style scoped>
 input[type="radio"],
-input[type="checkbox"] {
+input[type="checkbox"],
+input[type="range"] {
   accent-color: var(--ts-c-bg-dark);
 }
 
@@ -143,7 +144,8 @@ hr {
   font-size: 14px;
   margin: 5px 0;
   padding: 5px 10px;
-  width: 90%;
+  width: 100%;
+  max-width: 250px;
   outline: none;
 }
 
@@ -159,7 +161,8 @@ input::-webkit-inner-spin-button {
 }
 
 input[type="range"] {
-  width: 185px;
+  width: 100%;
+  max-width: 235px;
   margin-right: 10px;
 }
 
