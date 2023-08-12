@@ -21,24 +21,22 @@ const currentPageItems = computed(() => {
 </script>
 
 <template>
-  <v-infinite-scroll height="300" mode="manual" @load="load">
-    <div class="product-list">
-      <product-card v-for="product in currentPageItems" :key="product" :product="product" />
-      <v-container>
-        <v-row justify="center">
-          <v-col cols="10">
-            <v-container class="max-width">
-              <v-pagination v-model="pageState.currentPage" class="my-4" :length="totalPageCount" />
-            </v-container>
-          </v-col>
-        </v-row>
-      </v-container>
-    </div>
-  </v-infinite-scroll>
+  <div class="products">
+    <product-card v-for="product in currentPageItems" :key="product" :product="product" />
+    <v-container>
+      <v-row justify="center">
+        <v-col cols="10">
+          <v-container class="max-width">
+            <v-pagination v-model="pageState.currentPage" class="my-4" :length="totalPageCount" />
+          </v-container>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <style scoped>
-.product-list {
+.products {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
