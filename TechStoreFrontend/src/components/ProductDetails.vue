@@ -1,15 +1,9 @@
 <script setup>
-import { computed, ref, toRefs } from "vue";
+import { ref, toRefs } from "vue";
 import { useCartStore } from "@/store";
 
 const props = defineProps(["product"]);
 const { product } = toRefs(props);
-const productRating = computed(() => {
-  return "★★★★★☆☆☆☆☆".slice(
-    Math.trunc(product.value.rating) - 1,
-    Math.trunc(product.value.rating) + 4
-  );
-});
 const counter = ref(1);
 const cart = useCartStore();
 
@@ -33,15 +27,19 @@ function addToCart() {
 <template>
   <section class="product__details">
     <h1>{{ product.title }}</h1>
-    <p class="rating">{{ productRating }} {{ product.rating }} ({{ product.ratingCount }})</p>
-    <p class="desc">{{ product.description }}</p>
+    <span class="rating">
+      <v-rating v-model="product.rating" size="small" density="compact" readonly> </v-rating>
+      {{ product.rating }}
+      ({{ product.ratingCount }})
+    </span>
+    <p class="description">{{ product.description }}</p>
     <h1 class="price">{{ product.price }} {{ product.currency }}</h1>
     <div class="quantity-container">
-      <span>Quantity:</span>
+      <span class="quantity__label">Quantity:</span>
       <span class="quantity__input">
-        <button class="quantity__btn left" @click="decrement">-</button>
+        <button class="quantity__btn quantity__btn--left" @click="decrement">-</button>
         <input v-model="counter" type="number" />
-        <button class="quantity__btn right" @click="increment">+</button>
+        <button class="quantity__btn quantity__btn--right" @click="increment">+</button>
       </span>
     </div>
     <button class="cart__btn" @click="addToCart">Add to Cart</button>
@@ -63,16 +61,28 @@ function addToCart() {
   color: var(--ts-c-ternary);
 }
 
-.desc {
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+.price {
+  font-size: 22px;
+}
+
+.description {
   color: var(--ts-c-secondary-dark);
 }
 
 .quantity-container {
   display: flex;
+  justify-content: flex-start;
   align-items: center;
 }
 
-.quantity-container span {
+.quantity__label {
   margin-right: 10px;
 }
 
@@ -96,12 +106,11 @@ function addToCart() {
   border-radius: 5px;
   outline: none;
 }
-
-.left {
+.quantity__btn--left {
   left: 5px;
 }
 
-.right {
+.quantity__btn--right {
   right: 5px;
 }
 
