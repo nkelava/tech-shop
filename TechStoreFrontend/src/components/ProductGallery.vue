@@ -32,7 +32,7 @@ const slideTo = (val) => {
       v-model="currentSlide"
       ref="carousel"
     >
-      <slide v-for="(imageUrl, i) in productImages" :key="i">
+      <slide class="carousel__slide" v-for="(imageUrl, i) in productImages" :key="i">
         <div class="carousel__item" @click="slideTo(i)">
           <img :src="imageUrl" class="tumbnails__img" alt="default product image" />
         </div>
@@ -46,12 +46,13 @@ const slideTo = (val) => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 50px;
   overflow: hidden;
 }
 
 #gallery {
-  margin-bottom: 1rem;
   width: 100%;
+  margin-bottom: 1rem;
 }
 
 #gallery .carousel__item {
@@ -61,13 +62,11 @@ const slideTo = (val) => {
   max-width: 400px;
 }
 
-img {
-  border-radius: 5px;
-}
-
-.gallery__img {
+#gallery img,
+#thumbnails img {
   height: 100%;
   width: 100%;
+  border-radius: 5px;
 }
 
 #thumbnails {
@@ -76,16 +75,21 @@ img {
 }
 
 #thumbnails .carousel__item {
-  margin-inline: 10px;
   height: 100%;
   max-height: 100px;
   width: 100%;
   max-width: 100px;
+  margin-inline: 10px;
 }
 
 .tumbnails__img {
-  height: 100%;
-  width: 100%;
   object-fit: cover;
+}
+
+@media only screen and (min-width: 64em) {
+  .gallery-container {
+    margin-bottom: 0;
+    margin-right: 50px;
+  }
 }
 </style>

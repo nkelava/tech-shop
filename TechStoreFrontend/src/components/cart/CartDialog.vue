@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import { useCartStore } from "@/store";
-import CartTable from "./CartTable.vue";
+import CartTable from "@/components/cart/CartTable.vue";
 import OrderDialog from "@/components/order/OrderDialog.vue";
 import CartIcon from "@/assets/icons/header/cart.png";
 import { getPromoCode } from "@/database/services/promoCodeService.js";

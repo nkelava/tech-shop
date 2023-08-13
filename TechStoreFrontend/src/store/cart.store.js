@@ -16,20 +16,27 @@ export const useCartStore = defineStore("cart", {
     addItem(item) {
       const itemExists = this.items.find((i) => i.id === item.id);
 
-      if (itemExists) return;
+      if (itemExists) {
+        // Add new quantity to existing quantity
+        return;
+      }
 
       this.items.push(item);
       this.persistData();
     },
+
     removeItem(id) {
       this.items = this.items.filter((item) => item.id != id);
       this.persistData();
     },
+
     persistData() {
       localStorage.setItem("cart", JSON.stringify(this.items));
     },
+
     loadData() {
       const data = localStorage.getItem("cart");
+
       if (data) {
         this.items = JSON.parse(data);
       }

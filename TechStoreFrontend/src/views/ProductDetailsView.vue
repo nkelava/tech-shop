@@ -38,13 +38,13 @@ const breadcrumbsItems = [
 </script>
 
 <template>
-  <div>
-    <v-breadcrumbs class="text-capitalize ml-16" :items="breadcrumbsItems">
+  <div class="ts-breadcrumbs">
+    <v-breadcrumbs :items="breadcrumbsItems">
       <template v-slot:divider>
         <v-icon>mdi-chevron-right</v-icon>
       </template>
     </v-breadcrumbs>
-    <div class="product-container">
+    <div class="product-container ts-container">
       <product-gallery class="gallery" />
       <product-details class="info" :product="product" />
       <tabs-wrapper class="tabs" :product="product" />
@@ -59,7 +59,6 @@ const breadcrumbsItems = [
     "gallery info"
     "tabs tabs";
   grid-template-columns: 0.9fr 1fr;
-  padding: 2rem;
   max-width: 100%;
 }
 
