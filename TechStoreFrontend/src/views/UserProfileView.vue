@@ -31,7 +31,7 @@ const breadcrumbsItems = [
       <h1>My Account</h1>
     </v-row>
     <v-row>
-      <v-col cols="3">
+      <v-col cols="12" sm="3">
         <v-tabs v-model="tab" direction="vertical">
           <v-tab class="tab" value="details" color="">
             <v-icon icon="mdi-account" class="mr-2"></v-icon>

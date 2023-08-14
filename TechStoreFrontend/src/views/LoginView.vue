@@ -3,7 +3,7 @@ import { computed, reactive, ref } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, sameAs } from "@vuelidate/validators";
 import BaseInput from "@/components/common/BaseInput.vue";
-import HiddenInput from "@/components/common/BaseHiddenInput.vue";
+import HiddenInput from "@/components/common/BaseInputHidden.vue";
 import { initialState as initialLoginState, rules as loginRules } from "@/vuelidate/auth/login";
 import {
   initialState as initialRegisterState,
@@ -205,6 +205,8 @@ input {
   max-width: 100%;
   min-height: 580px;
   margin: 5rem auto;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .form-container {

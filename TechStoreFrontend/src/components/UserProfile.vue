@@ -75,57 +75,59 @@ const clearForm = (form, initialFormState, formState) => {
 </script>
 
 <template>
-  <v-container class="main pa-10 rounded-lg">
+  <v-container class="account-details pa-10 rounded-lg">
     <v-row>
       <h2>My Details</h2>
     </v-row>
-    <v-row>
-      <h3 class="pt-5 pb-1">Personal Information</h3>
+    <v-row class="details-item">
+      <h3 class="details-item__title">Personal Information</h3>
       <v-divider color="warning"></v-divider>
-      <v-col cols="4">
+      <v-col class="details-item__desc" cols="12">
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laudantium nemo corporis fugiat.
         Quasi, similique ipsum.
       </v-col>
-      <v-col>
-        <form class="pt-4">
+      <v-col cols="12">
+        <form class="details-item__form">
           <v-row>
-            <base-input class="mr-2" v-model="state.firstName" label="First Name" :v$="v$" />
-            <base-input v-model="state.lastName" label="Last Name" :v$="v$" />
-          </v-row>
-          <v-row>
-            <base-input v-model="state.phone" label="Phone Number" :v$="v$" />
-          </v-row>
-          <v-row>
-            <v-btn class="my-4 text-capitalize w-25 btn" @click="v$.$validate"> Save </v-btn>
+            <v-col class="pb-0" cols="12" lg="6">
+              <base-input v-model="state.firstName" label="First Name" :v$="v$" />
+            </v-col>
+            <v-col class="pb-0" cols="12" lg="6">
+              <base-input v-model="state.lastName" label="Last Name" :v$="v$" />
+            </v-col>
+            <v-col class="pt-0" cols="12">
+              <base-input v-model="state.phone" label="Phone Number" :v$="v$" />
+              <v-btn class="details-item__btn" @click="v$.$validate"> Save </v-btn>
+            </v-col>
           </v-row>
         </form>
       </v-col>
     </v-row>
-    <v-row>
-      <h3 class="pt-5 pb-1">E-mail Address</h3>
+    <v-row class="details-item">
+      <h3 class="details-item__title">E-mail Address</h3>
       <v-divider color="warning"></v-divider>
-      <v-col cols="4">
+      <v-col class="details-item__desc" cols="12">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab ipsum beatae inventore, suscipit
         sequi rerum aperiam, dicta commodi velit fugit perferendis delectus odio consequatur et!
         Vitae ipsam adipisci animi iure.
       </v-col>
-      <v-col>
-        <form class="pt-2">
+      <v-col cols="12">
+        <form class="details-item__form">
           <base-input v-model="emailState.email" label="E-mail Address" :v$="ve$.email" />
-          <v-btn class="my-4 text-capitalize w-25 btn" @click="ve$.$validate"> Save </v-btn>
+          <v-btn class="details-item__btn" @click="ve$.$validate"> Save </v-btn>
         </form>
       </v-col>
     </v-row>
-    <v-row>
-      <h3 class="pt-5 pb-1">Password</h3>
+    <v-row class="details-item">
+      <h3 class="details-item__title">Password</h3>
       <v-divider color="warning"></v-divider>
-      <v-col cols="4">
+      <v-col class="details-item__desc" cols="12">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab ipsum beatae inventore, suscipit
         sequi rerum aperiam, dicta commodi velit fugit perferendis delectus odio consequatur et!
         Vitae ipsam adipisci animi iure.
       </v-col>
       <v-col>
-        <form class="pt-2">
+        <form class="details-item__form">
           <hidden-input
             v-model="passwordState.password"
             label="Current Password"
@@ -141,7 +143,7 @@ const clearForm = (form, initialFormState, formState) => {
             label="Confirm Password"
             :v$="vp$.confirmPassword"
           />
-          <v-btn class="my-4 text-capitalize w-25 btn" @click="updatePassword"> Save </v-btn>
+          <v-btn class="details-item__btn" @click="updatePassword"> Save </v-btn>
         </form>
       </v-col>
     </v-row>
@@ -149,13 +151,41 @@ const clearForm = (form, initialFormState, formState) => {
 </template>
 
 <style scoped>
-.main {
+.account-details {
   background-color: var(--ts-c-primary-soft);
+  max-width: 1200px;
 }
 
-.btn {
+.details-item {
+  margin-bottom: 20px;
+}
+
+.details-item__title {
+  padding-bottom: 5px;
+}
+
+.details-item__title:first-child {
+  margin-top: 30px;
+}
+
+.details-item__desc {
+  opacity: 0.8;
+}
+
+.details-item__form {
+  margin-top: 10px;
+}
+
+.details-item__btn {
+  width: 100%;
+  max-width: 250px;
+  font-weight: bold;
+  text-transform: capitalize;
   color: var(--ts-c-text-dark);
   background-color: var(--ts-c-ternary);
-  font-weight: bold;
+}
+
+::v-deep .v-divider {
+  margin-bottom: 1rem;
 }
 </style>
