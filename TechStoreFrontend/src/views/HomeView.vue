@@ -31,7 +31,7 @@ onMounted(() => {
       <product-grid :products="bestSellers" />
     </div>
     <the-banners />
-    <div class="ts-container">
+    <div class="ts-container tabs-container">
       <div class="tabs">
         <!-- TODO: fix tabs on mobile -->
         <v-tabs v-model="tab">
@@ -66,6 +66,11 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.tabs-container {
+  height: 100%;
+  min-height: 550px;
+}
+
 .tabs {
   margin-bottom: 1rem;
 }
