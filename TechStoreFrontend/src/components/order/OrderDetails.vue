@@ -5,23 +5,23 @@ const subcategory = "notebooks";
 </script>
 
 <template>
-  <v-container class="main pa-10 rounded-lg">
-    <v-row class="order-info mb-3">
-      <v-col>
-        <v-row> Date Placed </v-row>
-        <v-row> {{ props.order.datePlaced }} </v-row>
+  <v-container class="account-orders rounded-lg">
+    <v-row class="order__info">
+      <v-col class="pb-0 pb-sm-3" cols="12" sm="4">
+        <h4>Date Placed</h4>
+        <p>{{ props.order.datePlaced }}</p>
       </v-col>
-      <v-col>
-        <v-row> Order number </v-row>
-        <v-row> {{ props.order.orderNumber }} </v-row>
+      <v-col class="pt-0 pt-sm-3">
+        <h4>Order number</h4>
+        <p>{{ props.order.orderNumber }}</p>
       </v-col>
-      <v-col>
-        <v-row> Total Amount </v-row>
-        <v-row> {{ props.order.totalAmount }}$</v-row>
+      <v-col class="pt-0 pt-sm-3">
+        <h4>Total Amount</h4>
+        <p>{{ props.order.totalAmount }}$</p>
       </v-col>
     </v-row>
-    <v-row>
-      <v-table class="w-100 transparent">
+    <v-row class="test">
+      <v-table class="order__table transparent">
         <thead>
           <tr>
             <th class="text-left">Product</th>
@@ -33,8 +33,7 @@ const subcategory = "notebooks";
         <tbody>
           <tr v-for="product in props.order.products" :key="product.id">
             <td class="d-flex align-center py-10">
-              <img :src="product.img" class="mr-4" height="64" width="64" alt="" />
-              {{ product.name }}
+              <img :src="product.img" height="64" width="64" alt="" :title="product.name" />
             </td>
             <td>{{ product.price }}$</td>
             <td>{{ order.status }}</td>
@@ -44,8 +43,10 @@ const subcategory = "notebooks";
                   name: 'product',
                   params: { category: category, subcategory: subcategory, productId: product.id },
                 }"
-                >View Product</router-link
+                class="link"
               >
+                View More
+              </router-link>
             </td>
           </tr>
         </tbody>
@@ -55,14 +56,32 @@ const subcategory = "notebooks";
 </template>
 
 <style scoped>
-.main {
+.account-orders {
   background-color: var(--ts-c-primary-soft);
 }
 
-.order-info {
+.order__info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+  font-size: 14px;
   background: var(--ts-c-bg-dark);
   border-radius: 10px;
-  padding: 10px 20px;
+}
+
+.order__table {
+  width: 100%;
+  font-size: 14px;
+}
+
+::v-deep table {
+  padding-bottom: 20px;
+}
+
+.link {
+  color: var(--ts-c-ternary);
 }
 
 .transparent {
