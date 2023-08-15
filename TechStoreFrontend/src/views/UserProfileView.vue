@@ -31,7 +31,7 @@ const breadcrumbsItems = [
       <h1>My Account</h1>
     </v-row>
     <v-row>
-      <v-col cols="12" sm="3">
+      <v-col cols="12" sm="4">
         <v-tabs v-model="tab" direction="vertical">
           <v-tab class="tab" value="details" color="">
             <v-icon icon="mdi-account" class="mr-2"></v-icon>
@@ -58,10 +58,6 @@ const breadcrumbsItems = [
 </template>
 
 <style scoped>
-.main {
-  background: var(--ts-c-primary-soft);
-}
-
 .tab {
   background: var(--ts-c-primary-soft);
   margin-bottom: 1rem;
@@ -69,11 +65,5 @@ const breadcrumbsItems = [
 
 .v-slide-group-item--active {
   background: var(--ts-c-primary-mute);
-}
-
-.btn {
-  background: var(--ts-c-ternary);
-  color: var(--ts-c-text-dark);
-  font-weight: bold;
 }
 </style>

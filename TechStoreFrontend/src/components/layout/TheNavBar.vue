@@ -295,10 +295,14 @@ onUnmounted(() => {
     border: 3px solid transparent;
     margin: 0;
     margin-right: 20px;
-    padding: 5px 0;
+    padding: 5px 0 0;
     text-decoration: none;
     font-size: var(--ts-text-size);
     transform: none;
+  }
+
+  .main-navigation .menu-primary-container .menu-item:hover {
+    border-bottom: 3px solid var(--ts-c-bg-light);
   }
 
   .main-navigation .menu-primary-container .menu-item:last-child {

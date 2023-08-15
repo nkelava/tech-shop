@@ -17,6 +17,14 @@
   letter-spacing: 0.1rem;
 }
 
+.v-breadcrumbs {
+  padding: 0 !important;
+}
+
+.v-btn {
+  letter-spacing: none !important;
+}
+
 .ts-container {
   padding: 2rem 1rem;
 }
@@ -25,14 +33,6 @@
   padding: 1rem;
   font-size: 12px;
   text-transform: capitalize;
-}
-
-.v-breadcrumbs {
-  padding: 0 !important;
-}
-
-.v-btn {
-  letter-spacing: none !important;
 }
 
 .widget__btn {
