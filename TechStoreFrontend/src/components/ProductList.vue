@@ -39,7 +39,13 @@ const currentPageItems = computed(() => {
 .products {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 1rem;
+}
+
+@media only screen and (min-width: 64em) {
+  .products {
+    justify-content: flex-start;
+  }
 }
 </style>
