@@ -4,6 +4,7 @@ import UserIcon from "@/assets/icons/header/user.png";
 
 const items = [
   { title: "My Account", to: "/user" },
+  { title: "Admin", to: "/admin" },
   { title: "Logout", to: "/logout" },
 ];
 </script>

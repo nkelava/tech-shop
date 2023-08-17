@@ -33,7 +33,6 @@ onMounted(() => {
     <the-banners />
     <div class="ts-container tabs-container">
       <div class="tabs">
-        <!-- TODO: fix tabs on mobile -->
         <v-tabs v-model="tab">
           <v-tab value="new">
             <h2 class="text-capitalize">New Arrivals</h2>
@@ -68,7 +67,7 @@ onMounted(() => {
 <style scoped>
 .tabs-container {
   height: 100%;
-  min-height: 550px;
+  min-height: 660px;
 }
 
 .tabs {

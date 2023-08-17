@@ -33,7 +33,7 @@ const breadcrumbsItems = [
     <v-row>
       <v-col cols="12" sm="4">
         <v-tabs v-model="tab" direction="vertical">
-          <v-tab class="tab" value="details" color="">
+          <v-tab class="tab" value="details">
             <v-icon icon="mdi-account" class="mr-2"></v-icon>
             My Details
           </v-tab>
