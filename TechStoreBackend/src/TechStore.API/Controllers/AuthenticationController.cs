@@ -41,13 +41,13 @@ namespace TechStore.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
+            Console.WriteLine("Trying to login...");
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(loginModel.Email);
 
                 if (user != null)
                 {
-                    //User is found, try to sign in
                     var result = await _signInManager.PasswordSignInAsync(user, loginModel.Password, false, false);
 
                     if (result.Succeeded) {
@@ -55,10 +55,9 @@ namespace TechStore.API.Controllers
                         
                         return Ok(jwtToken);
                     }                        
-                    return BadRequest("Wrong credentials. Please try again");
+                    return BadRequest("Wrong credentials. Please try again.");
                 }
-                //User not found
-                return NotFound("Wrong credentials. Please try again");
+                return NotFound("Wrong credentials. Please try again.");
             }
             return BadRequest(loginModel);
         }

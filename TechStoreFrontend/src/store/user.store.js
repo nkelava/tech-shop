@@ -1,3 +1,4 @@
+import axios, { axiosPrivate } from "@/api/axios";
 import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("user", {
@@ -16,16 +17,19 @@ export const useUserStore = defineStore("user", {
     },
 
     async loginUser(email, password) {
-      console.log(email, password);
-      // const response = await axiosPrivate.post("api/v1/auth/login", {
-      //   email,
-      //   password,
-      // });
-      // this.user = response.data.user;
+      console.log(`Login: ${email}, ${password}`);
+
+      const response = await axiosPrivate.post("api/v1/auth/login", {
+        email,
+        password,
+      });
+
+      this.user = response.data.user;
     },
 
     async logoutUser() {
       this.clearStore();
+      // await axiosPrivate.post("api/v1/auth/logout");
     },
 
     async deleteUser() {

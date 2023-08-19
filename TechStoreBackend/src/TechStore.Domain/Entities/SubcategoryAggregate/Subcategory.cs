@@ -8,8 +8,7 @@ namespace TechStore.Domain.Entities.SubcategoryAggregate
     public class Subcategory : Entity
     {
         public string Name { get; set; }
-        //public int Sort { get; set; }
-
+        public string Slug { get; set; }
 
         // n - 1
         [ForeignKey("Category")]

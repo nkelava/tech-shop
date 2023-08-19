@@ -25,9 +25,6 @@ namespace TechStore.Infrastructure.Data.Seed
         {
             try
             {
-                if (!_techStoreContext.Brands.Any())
-                    await SeedBrands();
-
                 if (!_techStoreContext.Categories.Any())
                     await SeedCategories();
 
@@ -84,60 +81,6 @@ namespace TechStore.Infrastructure.Data.Seed
             }
         }
 
-        private async Task SeedBrands()
-        {
-            var brands = new List<Brand>()
-            {
-                new Brand()
-                {
-                    Name = "Acer",
-
-                },
-                new Brand()
-                {
-                    Name = "Asus",
-
-                },
-                new Brand()
-                {
-                    Name = "Dell",
-
-                },
-                new Brand()
-                {
-                    Name = "Lenovo",
-
-                },
-                new Brand()
-                {
-                    Name = "MSI",
-
-                },
-                new Brand()
-                {
-                    Name = "Apple",
-
-                },
-                new Brand()
-                {
-                    Name = "HP",
-
-                },
-                new Brand()
-                {
-                    Name = "Samsung",
-
-                },
-                new Brand()
-                {
-                    Name = "Kingston",
-                }
-            };
-
-            _techStoreContext.Brands.AddRange(brands);
-            await _techStoreContext.SaveChangesAsync();
-        }
-
         private async Task SeedCategories()
         {
             var categories = new List<Category>()
@@ -145,26 +88,33 @@ namespace TechStore.Infrastructure.Data.Seed
                 new Category()
                 {
                     Name = "Computers",
+                    Slug = "computers",
                 },
                 new Category()
                 {
                     Name = "Components",
+                    Slug = "components",
                 },
                 new Category()
                 {
                     Name = "Monitors",
+                    Slug = "monitors",
                 },
                 new Category()
                 {
                     Name = "Peripherals",
+                    Slug = "peripherals",
                 },
                 new Category()
                 {
                     Name = "Storage",
+                    Slug = "storage",
+
                 },
                 new Category()
                 {
                     Name = "Software",
+                    Slug = "software"
                 },
             };
 
