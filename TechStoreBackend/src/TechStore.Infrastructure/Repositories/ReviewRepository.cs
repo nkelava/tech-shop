@@ -1,4 +1,5 @@
-﻿using TechStore.Application.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using TechStore.Application.Interfaces.Repositories;
 using TechStore.Application.Specifications.ReviewSpecification;
 using TechStore.Domain.Entities.ProductAggregate;
 using TechStore.Infrastructure.Data;
@@ -12,20 +13,26 @@ namespace TechStore.Infrastructure.Repositories
         public ReviewRepository(TechStoreContext techStoreContext)
             : base(techStoreContext) { }
 
-        public IList<Review> GetReviewsByProductId(int productId)
+        public async Task<IList<Review>> GetReviewsByProductIdAsync(int productId)
         {
             var spec = new ReviewsWithProductSpecification(productId);
-            var reviews = Find(spec).ToList();
+            var reviews = await Find(spec).ToListAsync();
 
             return reviews;
         }
 
-        public IList<Review> GetReviewsByEmail(string email)
+        public async Task<IList<Review>> GetReviewsByEmailAsync(string email)
         {
             var spec = new ReviewsWithProductSpecification(email);
-            var reviews = Find(spec).ToList();
+            var reviews = await Find(spec).ToListAsync();
 
             return reviews;
+        }
+
+        public async Task<IList<Review>> GetAllReviewsAsync()
+        {
+            return await FindAll().ToListAsync();
         }
     }
 }
+ 

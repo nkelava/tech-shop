@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Category;
@@ -20,6 +21,7 @@ namespace TechStore.API.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CategoryCreateModel category)
         {
@@ -31,6 +33,7 @@ namespace TechStore.API.Controllers
             return Ok(category);
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] CategoryUpdateModel category)
         {
@@ -42,7 +45,7 @@ namespace TechStore.API.Controllers
             return Ok(category);
         }
 
-
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -54,6 +57,7 @@ namespace TechStore.API.Controllers
             return Ok(id);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IList<CategoryReadModel>> GetAllCategories()
         {
@@ -62,6 +66,7 @@ namespace TechStore.API.Controllers
             return categories;
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryReadModel>> GetCategoryById(int id)
         {
@@ -76,6 +81,7 @@ namespace TechStore.API.Controllers
             return Ok(category);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}/subcategories")]
         public async Task<IActionResult> GetCategoryWithSubcategories(int id)
         {

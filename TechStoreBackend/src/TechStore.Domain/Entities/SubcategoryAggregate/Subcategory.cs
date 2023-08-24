@@ -9,14 +9,13 @@ namespace TechStore.Domain.Entities.SubcategoryAggregate
     {
         public string Name { get; set; }
         public string Slug { get; set; }
+        public string? ImageURL { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         // n - 1
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-
-
-        // n - n 
-        public List<SubcategoryProperty> Properties { get; set; }
     }
 }

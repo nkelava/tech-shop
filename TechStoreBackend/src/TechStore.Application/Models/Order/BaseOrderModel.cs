@@ -14,6 +14,5 @@ namespace TechStore.Application.Models.Order
         public string ShippingAddress { get; set; }
         public int PostalCode { get; set; }
         public OrderStatus Status { get; set; }
-        public PaymentMethod PaymentMethod { get; set; }
     }
 }

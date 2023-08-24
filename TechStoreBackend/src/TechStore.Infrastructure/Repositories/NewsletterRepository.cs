@@ -1,4 +1,5 @@
-﻿using TechStore.Application.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using TechStore.Application.Interfaces.Repositories;
 using TechStore.Domain.Entities;
 using TechStore.Infrastructure.Data;
 using TechStore.Infrastructure.Repositories.Base;
@@ -11,9 +12,9 @@ namespace TechStore.Infrastructure.Repositories
         public NewsletterRepository(TechStoreContext techStoreContext)
             : base(techStoreContext) { }
 
-        public IList<Newsletter> GetAllNewsletterSubscribers()
+        public async Task<IList<Newsletter>> GetAllNewsletterSubscribers()
         {
-            return FindAll().ToList();
+            return await FindAll().ToListAsync();
         }
 
     }

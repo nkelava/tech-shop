@@ -115,28 +115,6 @@ namespace TechStore.API.Controllers
             return Ok(topRatedProducts);
         }
 
-        [HttpGet("brand/{id:int}")]
-        public async Task<IActionResult> GetProductsByBrandId(int id)
-        {
-            var products = await _productService.GetProductsByBrandIdAsync(id);
-
-            if (products == null)
-                return NotFound();
-
-            return Ok(products);
-        }
-
-        [HttpGet("brand/{name}")]
-        public async Task<IActionResult> GetProductsByBrandNameAsync(string name)
-        {
-            var products = await _productService.GetProductsByBrandNameAsync(name);
-
-            if (products == null)
-                return NotFound();
-
-            return Ok(products);
-        }
-
         [HttpGet("subcategory/{id:int}")]
         public async Task<IActionResult> GetProductsBySubcategoryIdAsync(int id)
         {

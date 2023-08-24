@@ -8,29 +8,15 @@ namespace TechStore.Infrastructure.Repositories.Base
     public class RepositoryWrapper : IRepositoryWrapper
     {
         private TechStoreContext _repositoryContext;
-        private IBrandRepository _brand;
         private ICartRepository _cart;
         private ICategoryRepository _category;
         private INewsletterRepository _newsletter;
         private IOrderRepository _order;
         private IProductRepository _product;
-        private IPropertyRepository _property;
+        private IAttributeRepository _attribute;
         private IReviewRepository _review;
         private ISubcategoryRepository _subcategory;
         private IWishlistRepository _wishlist;
-
-        public IBrandRepository Brand
-        {
-            get
-            {
-                if (_brand == null)
-                {
-                    _brand = new BrandRepository(_repositoryContext);
-                }
-
-                return _brand;
-            }
-        }
 
         public ICartRepository Cart
         {
@@ -97,16 +83,16 @@ namespace TechStore.Infrastructure.Repositories.Base
             }
         }
 
-        public IPropertyRepository Property
+        public IAttributeRepository Attribute
         {
             get
             {
-                if (_property == null)
+                if (_attribute == null)
                 {
-                    _property = new PropertyRepository(_repositoryContext);
+                    _attribute = new AttributeRepository(_repositoryContext);
                 }
 
-                return _property;
+                return _attribute;
             }
         }
 

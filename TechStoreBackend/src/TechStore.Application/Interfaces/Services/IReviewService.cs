@@ -8,7 +8,8 @@ namespace TechStore.Application.Interfaces.Services
         Task AddReview(ReviewCreateModel review);
         Task DeleteReview(int reviewId);
 
-        IList<ReviewReadModel> GetReviewsByProductId(int productId);
-        IList<ReviewReadModel> GetReviewsByEmail(string email);
+        Task<IList<ReviewReadModel>> GetReviewsByProductIdAsync(int productId);
+        Task<IList<ReviewReadModel>> GetReviewsByEmailAsync(string email);
+        Task<IList<ReviewReadModel>> GetAllReviewsAsync();
     }
 }

@@ -45,17 +45,25 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public IList<ReviewReadModel> GetReviewsByProductId(int productId)
+        public async Task<IList<ReviewReadModel>> GetReviewsByProductIdAsync(int productId)
         {
-            var reviews = _repository.Review.GetReviewsByProductId(productId);
+            var reviews = await _repository.Review.GetReviewsByProductIdAsync(productId);
             var reviewsModel = _mapper.Map<IList<ReviewReadModel>>(reviews);
 
             return reviewsModel;
         }
 
-        public IList<ReviewReadModel> GetReviewsByEmail(string email)
+        public async Task<IList<ReviewReadModel>> GetReviewsByEmailAsync(string email)
         {
-            var reviews = _repository.Review.GetReviewsByEmail(email);
+            var reviews = await _repository.Review.GetReviewsByEmailAsync(email);
+            var reviewsModel = _mapper.Map<IList<ReviewReadModel>>(reviews);
+
+            return reviewsModel;
+        }
+
+        public async Task<IList<ReviewReadModel>> GetAllReviewsAsync()
+        {
+            var reviews = await _repository.Review.GetAllReviewsAsync();
             var reviewsModel = _mapper.Map<IList<ReviewReadModel>>(reviews);
 
             return reviewsModel;

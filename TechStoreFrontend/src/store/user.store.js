@@ -3,33 +3,40 @@ import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    user: {},
+    user: null,
+    error: null,
   }),
   getters: {
-    isLoggedIn: (state) => !!state.user.id,
+    isLoggedIn: (state) => !!state.user,
   },
   actions: {
     async getUser() {
       if (!this.isLoggedIn) return;
 
       // const response = await axios.get(`api/v1/user/${this.user.id}`);
-      // this.user = { ...response.data.user, accessToken: this.user.accessToken };
+      // this.user = { ...response.data.user, accessToken: this.user.token };
     },
 
     async loginUser(email, password) {
-      console.log(`Login: ${email}, ${password}`);
+      await axios
+        .post("/auth/login", { email, password })
+        .then((response) => (this.user = response.data))
+        .catch((error) => (this.error = error.reponse ? error.response.data : error));
+    },
 
-      const response = await axiosPrivate.post("api/v1/auth/login", {
-        email,
-        password,
-      });
-
-      this.user = response.data.user;
+    async registerUser(email, password, confirmPassword) {
+      await axios
+        .post("/auth/register", { email, password, confirmPassword })
+        .then((response) => (this.user = response.data))
+        .catch((error) => (this.error = error.reponse ? error.response.data : error));
     },
 
     async logoutUser() {
+      await axiosPrivate
+        .get("/auth/logout")
+        .catch((error) => (this.error = error.reponse ? error.response.data : error));
+
       this.clearStore();
-      // await axiosPrivate.post("api/v1/auth/logout");
     },
 
     async deleteUser() {

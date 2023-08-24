@@ -2,7 +2,7 @@
 using TechStore.Application.Interfaces.Repositories.Base;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Order;
-using TechStore.Domain.Entities.Order;
+using TechStore.Domain.Entities.OrderAggregate;
 
 
 namespace TechStore.Application.Services

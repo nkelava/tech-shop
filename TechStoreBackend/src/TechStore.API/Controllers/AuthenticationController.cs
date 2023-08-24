@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -38,10 +39,10 @@ namespace TechStore.API.Controllers
             _mapper = mapper;
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
-            Console.WriteLine("Trying to login...");
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(loginModel.Email);
@@ -62,14 +63,7 @@ namespace TechStore.API.Controllers
             return BadRequest(loginModel);
         }
 
-
-        [HttpGet("logout")]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return Ok();
-        }
-
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterModel registerModel)
         {
@@ -79,7 +73,7 @@ namespace TechStore.API.Controllers
 
                 if (user != null)
                 {
-                    return BadRequest("This email address is already in use");
+                    return BadRequest("The email address is already in use.");
                 }
 
                 var newUser = new IdentityUser()
@@ -87,20 +81,29 @@ namespace TechStore.API.Controllers
                     Email = registerModel.Email,
                     UserName = registerModel.Email
                 };
+
                 var isCreatedResponse = await _userManager.CreateAsync(newUser, registerModel.Password);
 
                 if (isCreatedResponse.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(newUser, UserRoles.User);
 
-                    //var jwtToken = await GenerateJwtToken(newUser);
+                    var jwtToken = await GenerateJwtToken(newUser);
 
-                    //return Ok(jwtToken);
-                    return Ok("Success");
+                    return Ok(jwtToken);
                 }
-                return BadRequest("Server error");
+                return BadRequest("Internal Server Error");
             }
             return BadRequest(registerModel);
+        }
+
+        [Authorize]
+        [HttpGet("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            Console.WriteLine("Logging out...");
+            await _signInManager.SignOutAsync();
+            return Ok("Logged out successfully.");
         }
 
         [HttpPost("reset-password")]
@@ -117,12 +120,13 @@ namespace TechStore.API.Controllers
                     return (result.Succeeded) ? Ok(result) : BadRequest(result);
                 }
 
-                return NotFound("User not found");
+                return NotFound("Not found.");
             }
 
-            return BadRequest("Invalid properties");
+            return BadRequest("Bad request.");
         }
 
+        [AllowAnonymous]
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody] TokenRequrest tokenRequest)
         {
@@ -169,7 +173,7 @@ namespace TechStore.API.Controllers
                 {
                     var result = jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
 
-                    if (result == false)return null;
+                    if (result == false) return null;
                 }
 
                 var utcExpiryDate = long.Parse(tokenInVerification.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp).Value);
@@ -188,7 +192,7 @@ namespace TechStore.API.Controllers
                 }
 
                 var storedToken = _context.RefreshTokens.FirstOrDefault(rt => rt.Token == tokenRequest.RefreshToken);
-                var jti = tokenInVerification.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti).Value;
+                var jti = tokenInVerification.Claims?.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti)?.Value;
 
                 if (storedToken == null || storedToken.isUsed || storedToken.isRevoked || storedToken.JwtId != jti)
                 {
@@ -235,7 +239,7 @@ namespace TechStore.API.Controllers
             }
         }
 
-        private DateTime UnixTimeStampToDateTime(long unixTimeStamp)
+        private static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
         {
             var dateTimeValue = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dateTimeValue = dateTimeValue.AddSeconds(unixTimeStamp).ToUniversalTime();
@@ -289,7 +293,7 @@ namespace TechStore.API.Controllers
             };
         }
 
-        private string RandomStringGenerator(int length)
+        private static string RandomStringGenerator(int length)
         {
             var random = new Random();
             var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";

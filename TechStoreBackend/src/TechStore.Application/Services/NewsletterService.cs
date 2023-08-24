@@ -41,9 +41,9 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public IList<NewsletterReadModel> GetAllNewsletterSubsribers()
+        public async Task<IList<NewsletterReadModel>> GetAllNewsletterSubsribers()
         {
-            var subscibers = _repository.Newsletter.GetAllNewsletterSubscribers();
+            var subscibers = await _repository.Newsletter.GetAllNewsletterSubscribers();
             var subscribersModel = _mapper.Map<IList<NewsletterReadModel>>(subscibers);
 
             return subscribersModel;

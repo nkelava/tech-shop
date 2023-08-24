@@ -28,11 +28,12 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // CORS
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddDefaultPolicy(builder =>
     {
-        policy.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
+        builder.WithOrigins("http://localhost:5173")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials(); ;
     });
 });
 
@@ -53,9 +54,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//app.UseCors(options => options.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials());
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.MapControllers();
 
 app.Run();
@@ -63,9 +65,9 @@ app.Run();
 
 void ConfigureServices(IServiceCollection services)
 {
+    ConfigureIdentity(services);
     ConfigureAuthentication(services);
     ConfigureDatabase(services);
-    ConfigureIdentity(services);
     ConfigureSeeder(services);
     ConfigureApplicationLayer(services);
     ConfigureInfrastructureLayer(services);
@@ -139,13 +141,12 @@ void ConfigureAuthentication(IServiceCollection services)
 
 void ConfigureApplicationLayer(IServiceCollection services)
 {
-    services.AddScoped<IBrandService, BrandService>();
     services.AddScoped<ICartService, CartService>();
     services.AddScoped<ICategoryService, CategoryService>();
     services.AddScoped<INewsletterService, NewsletterService>();
     services.AddScoped<IOrderService, OrderService>();
     services.AddScoped<IProductService, ProductService>();
-    services.AddScoped<IPropertyService, PropertyService>();
+    services.AddScoped<IAttributeService, AttributeService>();
     services.AddScoped<IReviewService, ReviewService>();
     services.AddScoped<ISubcategoryService, SubcategoryService>();
     services.AddScoped<IWishlistService, WishlistService>();
@@ -155,13 +156,12 @@ void ConfigureInfrastructureLayer(IServiceCollection services)
 {
     services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
     services.AddScoped(typeof(IRepositoryWrapper), typeof(RepositoryWrapper));
-    services.AddScoped<IBrandRepository, BrandRepository>();
     services.AddScoped<ICartRepository, CartRepository>();
     services.AddScoped<ICategoryRepository, CategoryRepository>();
     services.AddScoped<INewsletterRepository, NewsletterRepository>();
     services.AddScoped<IOrderRepository, OrderRepository>();
     services.AddScoped<IProductRepository, ProductRepository>();
-    services.AddScoped<IPropertyRepository, PropertyRepository>();
+    services.AddScoped<IAttributeRepository, AttributeRepository>();
     services.AddScoped<IReviewRepository, ReviewRepository>();
     services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
     services.AddScoped<IWishlistRepository, WishlistRepository>();
@@ -173,12 +173,10 @@ async void SeedData(IHost app)
     {
         var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
 
-        using (var scope = scopedFactory?.CreateScope())
-        {
-            var service = scope?.ServiceProvider.GetService<DataSeeder>();
+        using var scope = scopedFactory?.CreateScope();
+        var service = scope?.ServiceProvider.GetService<DataSeeder>();
 
-            if (service != null)
-                await service.Seed();
-        }
+        if (service != null)
+            await service.Seed();
     }
 }

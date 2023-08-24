@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
-import axios from "@/api/axios";
+import axios from "axios";
 
 const categories = ref([]);
 let isMenuOpened = ref(false);

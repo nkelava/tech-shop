@@ -10,6 +10,7 @@ specifiers:
   eslint: ^8.34.0
   eslint-plugin-vue: ^9.9.0
   pinia: ^2.0.32
+  pinia-plugin-persistedstate: ^3.2.0
   prettier: ^2.8.4
   vite: ^4.1.4
   vue: ^3.2.47
@@ -21,6 +22,7 @@ dependencies:
   '@vuelidate/core': 2.0.3_vue@3.2.47
   '@vuelidate/validators': 2.0.3_vue@3.2.47
   pinia: 2.0.33_vue@3.2.47
+  pinia-plugin-persistedstate: 3.2.0_pinia@2.0.33
   vue: 3.2.47
   vue-router: 4.1.6_vue@3.2.47
   vue3-carousel: 0.3.1_vue@3.2.47
@@ -1530,6 +1532,14 @@ packages:
 
   /picocolors/1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
+
+  /pinia-plugin-persistedstate/3.2.0_pinia@2.0.33:
+    resolution: {integrity: sha512-tZbNGf2vjAQcIm7alK40sE51Qu/m9oWr+rEgNm/2AWr1huFxj72CjvpQcIQzMknDBJEkQznCLAGtJTIcLKrKdw==}
+    peerDependencies:
+      pinia: ^2.0.0
+    dependencies:
+      pinia: 2.0.33_vue@3.2.47
+    dev: false
 
   /pinia/2.0.33_vue@3.2.47:
     resolution: {integrity: sha512-HOj1yVV2itw6rNIrR2f7+MirGNxhORjrULL8GWgRwXsGSvEqIQ+SE0MYt6cwtpegzCda3i+rVTZM+AM7CG+kRg==}

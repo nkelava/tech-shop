@@ -1,5 +1,5 @@
 ﻿using TechStore.Application.Interfaces.Repositories.Base;
-using TechStore.Domain.Entities.Order;
+using TechStore.Domain.Entities.OrderAggregate;
 
 
 namespace TechStore.Application.Interfaces.Repositories

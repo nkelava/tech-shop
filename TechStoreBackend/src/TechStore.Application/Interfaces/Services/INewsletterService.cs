@@ -8,6 +8,6 @@ namespace TechStore.Application.Interfaces.Services
         Task Subscribe(string email);
         Task Unsubscribe(string email);
 
-        IList<NewsletterReadModel> GetAllNewsletterSubsribers();
+        Task<IList<NewsletterReadModel>> GetAllNewsletterSubsribers();
     }
 }

@@ -1,9 +1,9 @@
 ﻿using TechStore.Application.Models.Base;
 
 
-namespace TechStore.Application.Models.Brand
+namespace TechStore.Application.Models.Attribute
 {
-    public class BrandUpdateModel : BaseModel
+    public class AttributeUpdateModel : BaseModel
     {
         public string Name { get; set; }
     }

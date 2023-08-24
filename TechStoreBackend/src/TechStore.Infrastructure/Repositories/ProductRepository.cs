@@ -60,22 +60,6 @@ namespace TechStore.Infrastructure.Repositories
             return products;
         }
 
-        public async Task<IList<Product>> GetProductsByBrandIdAsync(int brandId)
-        {
-            var spec = new ProductsWithBrandSpecification(brandId);
-            var products = await Find(spec).ToListAsync();
-
-            return products;
-        }
-
-        public async Task<IList<Product>> GetProductsByBrandNameAsync(string brandName)
-        {
-            var spec = new ProductsWithBrandSpecification(brandName);
-            var products = await Find(spec).ToListAsync();
-
-            return products;
-        }
-
         public async Task<IList<Product>> GetProductsBySubcategoryIdAsync(int subcategoryId)
         {
             var spec = new ProductsWithSubcategorySpecification(subcategoryId);
@@ -92,9 +76,9 @@ namespace TechStore.Infrastructure.Repositories
             return products;
         }
 
-        //public async Task<IEnumerable<Product>> GetProductsByPropertyIdAsync(int propertyId)
+        //public async Task<IEnumerable<Product>> GetProductsByAttributeIdAsync(int propertyId)
         //{
-        //    var spec = new ProductsWithPropertySpecification(propertyId);
+        //    var spec = new ProductsWithAttributeSpecification(propertyId);
         //    var products = await Find(spec).ToListAsync();
 
         //    return products;

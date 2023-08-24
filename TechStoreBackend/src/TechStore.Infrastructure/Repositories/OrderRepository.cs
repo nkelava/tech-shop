@@ -1,6 +1,6 @@
 ﻿using TechStore.Application.Interfaces.Repositories;
 using TechStore.Application.Specifications.OrderSpecification;
-using TechStore.Domain.Entities.Order;
+using TechStore.Domain.Entities.OrderAggregate;
 using TechStore.Infrastructure.Data;
 using TechStore.Infrastructure.Repositories.Base;
 

@@ -29,7 +29,6 @@ namespace TechStore.Application.Models.Product
 
         public decimal Rating { get; set; } = 0;
 
-        public int BrandId { get; set; }
         public int SubcategoryId { get; set; }
 
         public IList<int> PropertyIds { get; set; }

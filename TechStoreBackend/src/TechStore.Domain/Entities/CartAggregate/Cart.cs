@@ -5,7 +5,7 @@ namespace TechStore.Domain.Entities.Cart
 {
     public class Cart : Entity
     {
-        public string Username { get; set; }
+        public string Email { get; set; }
         public decimal TotalPrice { get; set; } = 0;
 
         // n - n
@@ -15,11 +15,10 @@ namespace TechStore.Domain.Entities.Cart
         {
             var product = Products.FirstOrDefault(p => p.ProductId == productId);
 
-            if(product != null)
+            if (product != null)
             {
                 ++product.Quantity;
                 product.TotalPrice = product.Quantity * product.UnitPrice;
-                //product.TotalPrice += product.UnitPrice;
                 return;
             }
 

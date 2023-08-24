@@ -28,7 +28,6 @@ namespace TechStore.Application.Models.Product
 
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-        public int BrandId { get; set; }
         public int SubcategoryId { get; set; }
 
         public IList<ProductPropertyModel> Properties { get; set; }

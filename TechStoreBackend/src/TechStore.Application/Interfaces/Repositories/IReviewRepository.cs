@@ -6,7 +6,8 @@ namespace TechStore.Application.Interfaces.Repositories
 {
     public interface IReviewRepository : IRepository<Review>
     {
-        IList<Review> GetReviewsByProductId(int productId);
-        IList<Review> GetReviewsByEmail(string email);
+        Task<IList<Review>> GetReviewsByProductIdAsync(int productId);
+        Task<IList<Review>> GetReviewsByEmailAsync(string email);
+        Task<IList<Review>> GetAllReviewsAsync();
     }
 }

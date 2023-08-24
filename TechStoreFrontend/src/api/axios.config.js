@@ -1,5 +1,5 @@
 const user = JSON.parse(localStorage.getItem("user"));
-const accessToken = user?.accessToken ? user.accessToken : null;
+const accessToken = user?.token ? user.token : null;
 
 const defaultOptions = {
   baseURL: import.meta.env.API_BASE_URL,
@@ -11,6 +11,7 @@ const privateOptions = {
     Authorization: `Bearer ${accessToken}`,
   },
   withCredentials: true,
+  credentials: "include",
 };
 
 export { defaultOptions, privateOptions };

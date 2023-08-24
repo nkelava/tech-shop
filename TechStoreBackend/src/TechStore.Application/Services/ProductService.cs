@@ -98,22 +98,6 @@ namespace TechStore.Application.Services
             return productsMapped;
         }
 
-        public async Task<IList<ProductReadModel>> GetProductsByBrandIdAsync(int brandId)
-        {
-            var products = await _repository.Product.GetProductsByBrandIdAsync(brandId);
-            var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
-
-            return productsMapped;
-        }
-
-        public async Task<IList<ProductReadModel>> GetProductsByBrandNameAsync(string brandName)
-        {
-            var products = await _repository.Product.GetProductsByBrandNameAsync(brandName);
-            var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
-
-            return productsMapped;
-        }
-
         public async Task<IList<ProductReadModel>> GetProductsBySubcategoryIdAsync(int subcategoryId)
         {
             var products = await _repository.Product.GetProductsBySubcategoryIdAsync(subcategoryId);

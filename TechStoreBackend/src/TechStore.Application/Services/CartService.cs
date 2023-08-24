@@ -20,9 +20,9 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task AddProductAsync(string username, int productId)
+        public async Task AddProductAsync(string email, int productId)
         {
-            var cart = await GetExistingOrCreateNewCart(username);
+            var cart = await GetExistingOrCreateNewCart(email);
             var product = await _repository.Product.GetProductByIdAsync(productId);
 
             cart.AddProduct(productId, unitPrice: product.Price);
@@ -47,9 +47,9 @@ namespace TechStore.Application.Services
         }
 
 
-        public async Task ClearCart(string username)
+        public async Task ClearCart(string email)
         {
-            var cart = await _repository.Cart.GetByUsernameAsync(username);
+            var cart = await _repository.Cart.GetByEmailAsync(email);
 
             if (cart == null)
                 return;
@@ -61,9 +61,9 @@ namespace TechStore.Application.Services
         }
 
 
-        public async Task<CartReadModel> GetByUsername(string username)
+        public async Task<CartReadModel> GetByEmail(string email)
         {
-            var cart = await GetExistingOrCreateNewCart(username);
+            var cart = await GetExistingOrCreateNewCart(email);
             var cartModel = _mapper.Map<CartReadModel>(cart);
 
             // If movie can't be loaded from page we than manual map it
@@ -85,9 +85,9 @@ namespace TechStore.Application.Services
         }
 
 
-        private async Task<Cart> GetExistingOrCreateNewCart(string username)
+        private async Task<Cart> GetExistingOrCreateNewCart(string email)
         {
-            var cart = await _repository.Cart.GetByUsernameAsync(username);
+            var cart = await _repository.Cart.GetByEmailAsync(email);
 
             if (cart != null)
                 return cart;
@@ -95,7 +95,7 @@ namespace TechStore.Application.Services
             // If it's first time create new cart
             var newCart = new Cart
             {
-                Username = username
+                Email = email
             };
 
             _repository.Cart.Add(newCart);

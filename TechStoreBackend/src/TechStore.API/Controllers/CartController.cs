@@ -52,15 +52,15 @@ namespace TechStore.API.Controllers
         //}
 
         [HttpGet]
-        public async Task<IActionResult> GetByUsername(string username)
+        public async Task<IActionResult> GetByEmail(string email)
         {
-            if (username == null)
+            if (email == null)
                 return BadRequest();
 
-            if (username.Length == 0)
+            if (email.Length == 0)
                 return BadRequest();
 
-            var cart = await _cartService.GetByUsername(username);
+            var cart = await _cartService.GetByEmail(email);
 
             if (cart == null)
                 return NotFound();

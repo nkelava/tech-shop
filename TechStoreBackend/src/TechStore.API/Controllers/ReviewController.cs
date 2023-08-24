@@ -41,13 +41,21 @@ namespace TechStore.API.Controllers
             return Ok(reviewId);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllReviews()
+        {
+            var reviews = await _reviewService.GetAllReviewsAsync();
+
+            return Ok(reviews);
+        }
+
         [HttpGet("{productId:int}")]
         public async Task<IActionResult> GetReviewsByProductId(int productId)
         {
             if (productId < 1)
                 return BadRequest();
 
-            var reviews = _reviewService.GetReviewsByProductId(productId);
+            var reviews = _reviewService.GetReviewsByProductIdAsync(productId);
 
             if (reviews == null)
                 return NotFound();
@@ -61,7 +69,7 @@ namespace TechStore.API.Controllers
             if (email == null || email.Length == 0)
                 return BadRequest();
 
-            var reviews = _reviewService.GetReviewsByEmail(email);
+            var reviews = _reviewService.GetReviewsByEmailAsync(email);
 
             if (reviews == null)
                 return NotFound();

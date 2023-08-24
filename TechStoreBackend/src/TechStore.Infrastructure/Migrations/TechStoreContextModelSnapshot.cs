@@ -265,12 +265,12 @@ namespace TechStore.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Username")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -321,7 +321,53 @@ namespace TechStore.Infrastructure.Migrations
                     b.ToTable("Newsletter", (string)null);
                 });
 
-            modelBuilder.Entity("TechStore.Domain.Entities.Order.Order", b =>
+            modelBuilder.Entity("TechStore.Domain.Entities.OrderAggregate.DeliveryAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShippingAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ZipCode")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.ToTable("DeliveryAddress", (string)null);
+                });
+
+            modelBuilder.Entity("TechStore.Domain.Entities.OrderAggregate.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -356,12 +402,6 @@ namespace TechStore.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PaymentMethod")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PostalCode")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("ShippedAt")
                         .HasColumnType("datetime2");
 
@@ -378,12 +418,15 @@ namespace TechStore.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ZipCode")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Order", (string)null);
                 });
 
-            modelBuilder.Entity("TechStore.Domain.Entities.Order.OrderProduct", b =>
+            modelBuilder.Entity("TechStore.Domain.Entities.OrderAggregate.OrderProduct", b =>
                 {
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -407,21 +450,19 @@ namespace TechStore.Infrastructure.Migrations
                     b.ToTable("OrderProduct", (string)null);
                 });
 
-            modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.Brand", b =>
+            modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.AttributeValueSet", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("AttributeId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<int>("AttributeValueId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("AttributeId", "AttributeValueId");
 
-                    b.HasKey("Id");
+                    b.HasIndex("AttributeValueId");
 
-                    b.ToTable("Brand", (string)null);
+                    b.ToTable("AttributeValueSet", (string)null);
                 });
 
             modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.Product", b =>
@@ -431,9 +472,6 @@ namespace TechStore.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -465,9 +503,6 @@ namespace TechStore.Infrastructure.Migrations
                     b.Property<int>("ReviewCount")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("SalePrice")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -490,30 +525,75 @@ namespace TechStore.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
-
                     b.HasIndex("SubcategoryId");
 
                     b.ToTable("Product", (string)null);
                 });
 
-            modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.ProductProperty", b =>
+            modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.ProductAttribute", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductAttribute", (string)null);
+                });
+
+            modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.ProductAttributeSet", b =>
                 {
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PropertyId")
+                    b.Property<int>("AttributeId")
                         .HasColumnType("int");
+
+                    b.Property<int>("AttributeValueId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "AttributeId", "AttributeValueId");
+
+                    b.HasIndex("AttributeId");
+
+                    b.HasIndex("AttributeValueId");
+
+                    b.ToTable("ProductAttributeSet", (string)null);
+                });
+
+            modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.ProductAttributeValue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProductId", "PropertyId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("PropertyId");
-
-                    b.ToTable("ProductProperty", (string)null);
+                    b.ToTable("ProductAttributeValue", (string)null);
                 });
 
             modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.Review", b =>
@@ -538,35 +618,14 @@ namespace TechStore.Infrastructure.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Rate")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
                     b.ToTable("Review", (string)null);
-                });
-
-            modelBuilder.Entity("TechStore.Domain.Entities.Property", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ValueType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Property", (string)null);
                 });
 
             modelBuilder.Entity("TechStore.Domain.Entities.SubcategoryAggregate.Category", b =>
@@ -577,9 +636,19 @@ namespace TechStore.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -597,30 +666,28 @@ namespace TechStore.Infrastructure.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Subcategory", (string)null);
-                });
-
-            modelBuilder.Entity("TechStore.Domain.Entities.SubcategoryAggregate.SubcategoryProperty", b =>
-                {
-                    b.Property<int>("SubcategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PropertyId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SubcategoryId", "PropertyId");
-
-                    b.HasIndex("PropertyId");
-
-                    b.ToTable("SubcategoryProperty", (string)null);
                 });
 
             modelBuilder.Entity("TechStore.Domain.Entities.Wishlist.Wishlist", b =>
@@ -725,9 +792,20 @@ namespace TechStore.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("TechStore.Domain.Entities.Order.OrderProduct", b =>
+            modelBuilder.Entity("TechStore.Domain.Entities.OrderAggregate.DeliveryAddress", b =>
                 {
-                    b.HasOne("TechStore.Domain.Entities.Order.Order", "Order")
+                    b.HasOne("TechStore.Domain.Entities.OrderAggregate.Order", "Order")
+                        .WithOne("DeliveryAddress")
+                        .HasForeignKey("TechStore.Domain.Entities.OrderAggregate.DeliveryAddress", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("TechStore.Domain.Entities.OrderAggregate.OrderProduct", b =>
+                {
+                    b.HasOne("TechStore.Domain.Entities.OrderAggregate.Order", "Order")
                         .WithMany("Products")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -744,42 +822,61 @@ namespace TechStore.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.Product", b =>
+            modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.AttributeValueSet", b =>
                 {
-                    b.HasOne("TechStore.Domain.Entities.ProductAggregate.Brand", "Brand")
-                        .WithMany()
-                        .HasForeignKey("BrandId")
+                    b.HasOne("TechStore.Domain.Entities.ProductAggregate.ProductAttribute", "Attribute")
+                        .WithMany("AttributeValues")
+                        .HasForeignKey("AttributeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TechStore.Domain.Entities.ProductAggregate.ProductAttributeValue", "AttributeValue")
+                        .WithMany("Attributes")
+                        .HasForeignKey("AttributeValueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attribute");
+
+                    b.Navigation("AttributeValue");
+                });
+
+            modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.Product", b =>
+                {
                     b.HasOne("TechStore.Domain.Entities.SubcategoryAggregate.Subcategory", "Subcategory")
                         .WithMany()
                         .HasForeignKey("SubcategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Brand");
-
                     b.Navigation("Subcategory");
                 });
 
-            modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.ProductProperty", b =>
+            modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.ProductAttributeSet", b =>
                 {
+                    b.HasOne("TechStore.Domain.Entities.ProductAggregate.ProductAttribute", "Attribute")
+                        .WithMany("ProductAttributes")
+                        .HasForeignKey("AttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TechStore.Domain.Entities.ProductAggregate.ProductAttributeValue", "AttributeValue")
+                        .WithMany("ProductAttributes")
+                        .HasForeignKey("AttributeValueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TechStore.Domain.Entities.ProductAggregate.Product", "Product")
-                        .WithMany("Properties")
+                        .WithMany("ProductAttributes")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TechStore.Domain.Entities.Property", "Property")
-                        .WithMany("Products")
-                        .HasForeignKey("PropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Attribute");
+
+                    b.Navigation("AttributeValue");
 
                     b.Navigation("Product");
-
-                    b.Navigation("Property");
                 });
 
             modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.Review", b =>
@@ -802,25 +899,6 @@ namespace TechStore.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("TechStore.Domain.Entities.SubcategoryAggregate.SubcategoryProperty", b =>
-                {
-                    b.HasOne("TechStore.Domain.Entities.Property", "Property")
-                        .WithMany("Subcategories")
-                        .HasForeignKey("PropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TechStore.Domain.Entities.SubcategoryAggregate.Subcategory", "Subcategory")
-                        .WithMany("Properties")
-                        .HasForeignKey("SubcategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Property");
-
-                    b.Navigation("Subcategory");
                 });
 
             modelBuilder.Entity("TechStore.Domain.Entities.Wishlist.WishListProduct", b =>
@@ -847,8 +925,10 @@ namespace TechStore.Infrastructure.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("TechStore.Domain.Entities.Order.Order", b =>
+            modelBuilder.Entity("TechStore.Domain.Entities.OrderAggregate.Order", b =>
                 {
+                    b.Navigation("DeliveryAddress");
+
                     b.Navigation("Products");
                 });
 
@@ -858,28 +938,30 @@ namespace TechStore.Infrastructure.Migrations
 
                     b.Navigation("Orders");
 
-                    b.Navigation("Properties");
+                    b.Navigation("ProductAttributes");
 
                     b.Navigation("Reviews");
 
                     b.Navigation("WishLists");
                 });
 
-            modelBuilder.Entity("TechStore.Domain.Entities.Property", b =>
+            modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.ProductAttribute", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("AttributeValues");
 
-                    b.Navigation("Subcategories");
+                    b.Navigation("ProductAttributes");
+                });
+
+            modelBuilder.Entity("TechStore.Domain.Entities.ProductAggregate.ProductAttributeValue", b =>
+                {
+                    b.Navigation("Attributes");
+
+                    b.Navigation("ProductAttributes");
                 });
 
             modelBuilder.Entity("TechStore.Domain.Entities.SubcategoryAggregate.Category", b =>
                 {
                     b.Navigation("Subcategories");
-                });
-
-            modelBuilder.Entity("TechStore.Domain.Entities.SubcategoryAggregate.Subcategory", b =>
-                {
-                    b.Navigation("Properties");
                 });
 
             modelBuilder.Entity("TechStore.Domain.Entities.Wishlist.Wishlist", b =>

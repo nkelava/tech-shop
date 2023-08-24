@@ -6,6 +6,6 @@ namespace TechStore.Application.Interfaces.Repositories
 {
     public interface ICartRepository : IRepository<Cart>
     {
-        Task<Cart> GetByUsernameAsync(string username);
+        Task<Cart> GetByEmailAsync(string email);
     }
 }
