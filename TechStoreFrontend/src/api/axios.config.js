@@ -1,8 +1,8 @@
 const user = JSON.parse(localStorage.getItem("user"));
-const accessToken = user?.token ? user.token : null;
+const accessToken = user.user ? user.user.token : null;
 
 const defaultOptions = {
-  baseURL: import.meta.env.API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 };
 
 const privateOptions = {

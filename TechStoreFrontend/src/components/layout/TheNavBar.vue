@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
-import axios from "axios";
+import axios from "@/api/axios";
 
 const categories = ref([]);
 let isMenuOpened = ref(false);
@@ -10,9 +10,7 @@ onMounted(async () => {
   await axios
     .get("/categories")
     .then((response) => (categories.value = response.data))
-    .catch((error) => {
-      console.log(error);
-    });
+    .catch((error) => console.log(error));
 
   window.addEventListener("resize", handleResize);
 });
