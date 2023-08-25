@@ -4,12 +4,13 @@ import axios from "@/api/axios";
 async function checkIfCategoryExists(categorySlug) {
   try {
     const category = await axios
-      .get("/category", { slug: categorySlug })
+      .get(`/categories/${categorySlug}`)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error);
         return null;
       });
+    console.log(category);
     return category ? true : false;
   } catch {
     return false;
