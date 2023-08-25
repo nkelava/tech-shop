@@ -1,8 +1,19 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { getCategoryBySlug } from "@/database/services/categoryService.js";
+import axios from "@/api/axios";
 
-function checkIfCategoryExists(category) {
-  return getCategoryBySlug(category) ? true : false;
+async function checkIfCategoryExists(categorySlug) {
+  try {
+    const category = await axios
+      .get("/category", { slug: categorySlug })
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+    return category ? true : false;
+  } catch {
+    return false;
+  }
 }
 
 const router = createRouter({
@@ -37,8 +48,8 @@ const router = createRouter({
       path: "/:category",
       name: "category",
       component: () => import("../views/CategoryView.vue"),
-      beforeEnter: (to, from, next) => {
-        const categoryExists = checkIfCategoryExists(to.params.category);
+      beforeEnter: async (to, from, next) => {
+        const categoryExists = await checkIfCategoryExists(to.params.category);
         categoryExists ? next() : next({ name: "not-found" });
       },
     },
