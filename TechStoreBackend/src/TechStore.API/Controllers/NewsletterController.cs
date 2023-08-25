@@ -20,7 +20,7 @@ namespace TechStore.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Subscribe([FromBody]NewsletterReadModel subscription)
+        public async Task<IActionResult> Subscribe([FromBody]NewsletterCreateModel subscription)
         {
             var email = subscription.Email;
 
@@ -44,9 +44,9 @@ namespace TechStore.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSubscribers()
+        public async Task<IActionResult> GetSubscribers()
         {
-            var subscribers = _newsletterService.GetAllNewsletterSubsribers();
+            var subscribers = await _newsletterService.GetAllNewsletterSubsribersAsync();
 
             return Ok(subscribers);
         }

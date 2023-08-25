@@ -9,8 +9,8 @@ namespace TechStore.Application.Interfaces.Services
         Task UpdateAsync(CategoryUpdateModel category);
         Task DeleteAsync(int categoryId);
 
-        Task<CategoryReadModel> GetCategoryByIdAsync(int categoryId);
-        Task<CategoryWithSubcategoriesModel> GetCategoryWithSubcategoriesAsync(int categoryId);
+        Task<CategoryReadModel> GetCategoryBySlugAsync(string categorySlug);
+        Task<CategoryWithSubcategoriesModel> GetCategoryWithSubcategoriesAsync(string categorySlug);
 
         Task<IList<CategoryReadModel>> GetAllCategoriesAsync();
     }

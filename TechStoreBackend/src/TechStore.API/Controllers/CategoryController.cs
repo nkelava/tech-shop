@@ -57,7 +57,6 @@ namespace TechStore.API.Controllers
             return Ok(id);
         }
 
-        [AllowAnonymous]
         [HttpGet]
         public async Task<IList<CategoryReadModel>> GetAllCategories()
         {
@@ -66,28 +65,44 @@ namespace TechStore.API.Controllers
             return categories;
         }
 
-        [AllowAnonymous]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryReadModel>> GetCategoryById(int id)
+        [HttpGet("{slug}")]
+        public async Task<ActionResult<CategoryReadModel>> GetCategoryBySlug(string slug)
         {
-            if (id < 1)
+            if (string.IsNullOrWhiteSpace(slug))
                 return BadRequest();
 
-            var category = await _categoryService.GetCategoryByIdAsync(id);
+            try
+            {
+                var category = await _categoryService.GetCategoryBySlugAsync(slug);
 
-            if (category == null)
-                return NotFound();
+                if (category == null)
+                    return NotFound();
 
-            return Ok(category);
+                return Ok(category);
+            } catch
+            {
+                return BadRequest();
+            }
         }
 
-        [AllowAnonymous]
-        [HttpGet("{id}/subcategories")]
-        public async Task<IActionResult> GetCategoryWithSubcategories(int id)
+        [HttpGet("{slug}/subcategories")]
+        public async Task<IActionResult> GetCategoryWithSubcategories(string slug)
         {
-            var category = await _categoryService.GetCategoryWithSubcategoriesAsync(id);
+            if (string.IsNullOrWhiteSpace(slug))
+                return BadRequest();
 
-            return Ok(category);
+            try
+            {
+                var category = await _categoryService.GetCategoryWithSubcategoriesAsync(slug);
+
+                if (category == null)
+                    return NotFound();
+
+                return Ok(category);
+            } catch
+            {
+                return BadRequest();
+            }
         }
     }
 }

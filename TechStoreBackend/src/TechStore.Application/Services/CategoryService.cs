@@ -34,26 +34,27 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task DeleteAsync(int brandId)
+        public async Task DeleteAsync(int categoryId)
         {
-            var category = await _repository.Category.GetCategoryByIdAsync(brandId);
+            var category = await _repository.Category.GetCategoryByIdAsync(categoryId);
 
             _repository.Category.Delete(category);
             await _repository.SaveAsync();
         }
 
-        public async Task<CategoryReadModel> GetCategoryByIdAsync(int brandId)
+        public async Task<CategoryReadModel> GetCategoryBySlugAsync(string categorySlug)
         {
-            var category = await _repository.Category.GetCategoryByIdAsync(brandId);
+            var category = await _repository.Category.GetCategoryBySlugAsync(categorySlug);
             var categoryModel = _mapper.Map<CategoryReadModel>(category);
 
             return categoryModel;
         }
 
-        public async Task<CategoryWithSubcategoriesModel> GetCategoryWithSubcategoriesAsync(int categoryid)
+        public async Task<CategoryWithSubcategoriesModel> GetCategoryWithSubcategoriesAsync(string categorySlug)
         {
-            var category = await _repository.Category.GetCategoryWithSubcategoriesAsync(categoryid);
-            var categoryModel = _mapper.Map<CategoryWithSubcategoriesModel>(category);
+            var category = await _repository.Category.GetCategoryBySlugAsync(categorySlug);
+            var categoryWithSubcategories = await _repository.Category.GetCategoryWithSubcategoriesAsync(category.Id);
+            var categoryModel = _mapper.Map<CategoryWithSubcategoriesModel>(categoryWithSubcategories);
 
             return categoryModel;
         }

@@ -30,7 +30,6 @@ namespace TechStore.Application.Services
 
         public async Task Unsubscribe(string email)
         {
-            var test = email;
             var subscription = _repository.Newsletter.FindByCondition(n => n.Email.ToLower().Equals(email.ToLower())).FirstOrDefault();
 
             if (subscription == null)
@@ -41,9 +40,9 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task<IList<NewsletterReadModel>> GetAllNewsletterSubsribers()
+        public async Task<IList<NewsletterReadModel>> GetAllNewsletterSubsribersAsync()
         {
-            var subscibers = await _repository.Newsletter.GetAllNewsletterSubscribers();
+            var subscibers = await _repository.Newsletter.GetAllNewsletterSubscribersAsync();
             var subscribersModel = _mapper.Map<IList<NewsletterReadModel>>(subscibers);
 
             return subscribersModel;

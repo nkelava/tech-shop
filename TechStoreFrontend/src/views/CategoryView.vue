@@ -1,35 +1,41 @@
 <script setup>
-import { ref, watch } from "vue";
+import { computed, onBeforeMount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import axios from "@/api/axios";
 import ImageSlider from "@/components/ImageSlider.vue";
 import BaseGrid from "@/components/common/BaseGrid.vue";
 import SubcategoryCard from "@/components/SubcategoryCard.vue";
-import { getCategoryBySlug } from "@/database/services/categoryService.js";
-import { getSubcategoriesByCategoryId } from "@/database/services/subcategoryService.js";
 
 const route = useRoute();
 const categorySlug = ref(route.params.category);
-let category = getCategoryBySlug(categorySlug.value);
-const subcategories = ref(getSubcategoriesByCategoryId(category.id));
+const category = ref({});
 const breadcrumbsItems = [
   {
-    text: "Home",
+    title: "Home",
     disabled: false,
     href: "/",
   },
   {
-    text: `${categorySlug.value}`,
+    title: `${categorySlug.value}`,
     disabled: true,
-    href: `/${categorySlug.value}`,
   },
 ];
 
+onMounted(async () => {
+  await axios
+    .get(`/categories/${categorySlug.value}/subcategories`)
+    .then((response) => (category.value = response.data))
+    .catch((error) => console.log(error));
+});
+
 watch(
   () => route.params.category,
-  (newCategory) => {
+  async (newCategory) => {
     categorySlug.value = newCategory;
-    category = getCategoryBySlug(categorySlug.value);
-    subcategories.value = getSubcategoriesByCategoryId(category.id);
+    await axios
+      .get(`/categories/${categorySlug.value}/subcategories`)
+      .then((response) => (category = response.data))
+      .catch((error) => console.log(error));
   }
 );
 </script>
@@ -45,12 +51,12 @@ watch(
       </v-breadcrumbs>
     </div>
     <div class="ts-container">
-      <h1 class="category__title text-capitalize">{{ category.name }}</h1>
+      <h1 v-if="category.name" class="category__title text-capitalize">{{ category.name }}</h1>
       <hr />
       <base-grid>
         <subcategory-card
-          v-for="subcategory in subcategories"
-          :key="subcategory.id"
+          v-for="subcategory in category.subcategories"
+          :key="subcategory.categoryId"
           :category="category.name"
           :subcategory="subcategory"
         />

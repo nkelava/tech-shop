@@ -12,8 +12,8 @@ using TechStore.Infrastructure.Data;
 namespace TechStore.Infrastructure.Migrations
 {
     [DbContext(typeof(TechStoreContext))]
-    [Migration("20230820114001_OrderDeliveryAddress")]
-    partial class OrderDeliveryAddress
+    [Migration("20230824212708_initMigration")]
+    partial class initMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -305,20 +305,13 @@ namespace TechStore.Infrastructure.Migrations
 
             modelBuilder.Entity("TechStore.Domain.Entities.Newsletter", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
+                    b.HasKey("Email");
 
                     b.ToTable("Newsletter", (string)null);
                 });

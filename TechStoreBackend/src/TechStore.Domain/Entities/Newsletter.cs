@@ -1,10 +1,11 @@
-﻿using TechStore.Domain.Entities.Base;
+﻿using System.ComponentModel.DataAnnotations;
 
 
 namespace TechStore.Domain.Entities
 {
-    public class Newsletter : Entity
+    public class Newsletter
     {
+        [Key]
         public string Email { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }

@@ -57,7 +57,7 @@ onUnmounted(() => {
         <li class="menu-item">
           <a href="/"> Home </a>
         </li>
-        <li v-for="(category, i) in categories" :key="i" class="menu-item">
+        <li v-for="category in categories" :key="category.slug" class="menu-item">
           <a :href="`/${category.slug}`"> {{ category.name }} </a>
         </li>
         <li class="menu-item">
