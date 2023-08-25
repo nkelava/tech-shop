@@ -12,7 +12,7 @@ const userStore = useUserStore();
   <div class="header-top ts-container">
     <div class="header-top__contact">
       <contact-info :imgUrl="EmailIcon" imgAlt="email icon">
-        Email: tech-store@gmail.com
+        Email: info.techplanet@gmail.com
       </contact-info>
       <contact-info :imgUrl="PhoneIcon" imgAlt="phone icon"> Phone: 123-456-7890 </contact-info>
     </div>
