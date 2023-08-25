@@ -8,6 +8,7 @@ const defaultOptions = {
 const privateOptions = {
   ...defaultOptions,
   headers: {
+    "Content-type": "application/json",
     Authorization: `Bearer ${accessToken}`,
   },
   withCredentials: true,
