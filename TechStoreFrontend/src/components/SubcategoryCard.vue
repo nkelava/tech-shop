@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import DefaultImage from "@/assets/images/test/products/defaultProductImage.png";
 
 const props = defineProps(["category", "subcategory"]);
 </script>
@@ -16,7 +17,7 @@ const props = defineProps(["category", "subcategory"]);
     }"
   >
     <div class="card">
-      <img :src="props.subcategory.img" alt="" class="card__image" />
+      <img :src="DefaultImage" alt="" class="card__image" />
       <h2 class="card__title">
         {{ props.subcategory.name }}
       </h2>
@@ -43,6 +44,7 @@ const props = defineProps(["category", "subcategory"]);
   max-width: 250px;
   height: 100%;
   max-height: 200px;
+  border-radius: 10px;
 }
 
 .card__title {
