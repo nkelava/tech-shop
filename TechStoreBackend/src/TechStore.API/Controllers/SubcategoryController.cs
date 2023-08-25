@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Subcategory;
+using TechStore.Domain.Entities.SubcategoryAggregate;
 
 
 namespace TechStore.API.Controllers
@@ -41,14 +42,6 @@ namespace TechStore.API.Controllers
             return Ok(subcategory);
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<SubcategoryReadModel>> GetAllSubcategories()
-        {
-            var subcategories = await _subcategoryService.GetAllSubcategoriesAsync();
-
-            return subcategories;
-        }
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -60,7 +53,7 @@ namespace TechStore.API.Controllers
             return Ok(id);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetSubcategoryById(int id)
         {
             if (id < 1)
@@ -72,6 +65,29 @@ namespace TechStore.API.Controllers
                 return NotFound();
 
             return Ok(subcategory);
+        }
+
+
+        [HttpGet("{slug}")]
+        public async Task<IActionResult> GetSubcategoryBySlug(string slug)
+        {
+            if (string.IsNullOrWhiteSpace(slug))
+                return BadRequest();
+
+            var subcategory = await _subcategoryService.GetSubcategoryBySlugAsync(slug);
+
+            if (subcategory == null)
+                return NotFound();
+
+            return Ok(subcategory);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllSubcategories()
+        {
+            var subcategories = await _subcategoryService.GetAllSubcategoriesAsync();
+
+            return Ok(subcategories);
         }
     }
 }

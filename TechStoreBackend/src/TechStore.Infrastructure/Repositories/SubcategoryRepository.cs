@@ -17,6 +17,11 @@ namespace TechStore.Infrastructure.Repositories
             return await FindByCondition(subcategory => subcategory.Id.Equals(subcategoryId)).FirstOrDefaultAsync();
         }
 
+        public async Task<Subcategory> GetSubcategoryBySlugAsync(string subcategorySlug)
+        {
+            return await FindByCondition(subcategory => subcategory.Slug.Equals(subcategorySlug)).FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<Subcategory>> GetAllSubcategoriesAsync()
         {
             return await FindAll().ToListAsync();

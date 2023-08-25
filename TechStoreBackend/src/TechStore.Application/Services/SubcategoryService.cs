@@ -48,6 +48,14 @@ namespace TechStore.Application.Services
             var subcategoryReadModel = _mapper.Map<SubcategoryReadModel>(subcategory);
 
             return subcategoryReadModel;
+        } 
+        
+        public async Task<SubcategoryReadModel> GetSubcategoryBySlugAsync(string subcategorySlug)
+        {
+            var subcategory = await _repository.Subcategory.GetSubcategoryBySlugAsync(subcategorySlug);
+            var subcategoryReadModel = _mapper.Map<SubcategoryReadModel>(subcategory);
+
+            return subcategoryReadModel;
         }
 
         public async Task<IList<SubcategoryReadModel>> GetAllSubcategoriesAsync()

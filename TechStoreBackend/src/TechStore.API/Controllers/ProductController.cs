@@ -126,10 +126,10 @@ namespace TechStore.API.Controllers
             return Ok(products);
         }
 
-        [HttpGet("subcategory/{name}")]
-        public async Task<IActionResult> GetProductsBySubcategoryName(string name)
+        [HttpGet("subcategory/{slug}")]
+        public async Task<IActionResult> GetProductsBySubcategorySlug(string slug)
         {
-            var products = await _productService.GetProductsBySubcategoryNameAsync(name);
+            var products = await _productService.GetProductsBySubcategoryNameAsync(slug);
 
             if (products == null)
                 return NotFound();

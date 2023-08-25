@@ -10,6 +10,7 @@ namespace TechStore.Application.Interfaces.Services
         Task UpdateAsync(SubcategoryUpdateModel subcategory);
 
         Task<SubcategoryReadModel> GetSubcategoryByIdAsync(int subcategoryId);
+        Task<SubcategoryReadModel> GetSubcategoryBySlugAsync(string subcategorySlug);
         
         Task<IList<SubcategoryReadModel>> GetAllSubcategoriesAsync();
     }

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import axios from "@/api/axios";
 import ImageSlider from "@/components/ImageSlider.vue";
 import ProductList from "@/components/ProductList.vue";
 import FilterSidebar from "@/components/TheFilterSidebar.vue";
@@ -15,34 +16,51 @@ const categorySlug = ref(route.params.category);
 const subcategorySlug = ref(route.params.subcategory);
 const subcategory = getSubcategoryBySlug(subcategorySlug.value);
 const products = ref([]);
+const testSubcategory = ref();
+const testProduct = ref();
 const sortType = ref("");
 const breadcrumbsItems = [
   {
-    text: "Home",
+    title: "Home",
     disabled: false,
     href: "/",
   },
   {
-    text: `${categorySlug.value}`,
+    title: `${categorySlug.value}`,
     disabled: false,
     href: `/${categorySlug.value}`,
   },
   {
-    text: `${subcategorySlug.value}`,
+    title: `${subcategorySlug.value}`,
     disabled: true,
-    href: `/${categorySlug.value}/${subcategorySlug.value}`,
   },
 ];
 
-onMounted(() => {
+onMounted(async () => {
   products.value = getProductsBySubcategoryId(subcategory.id);
+  testSubcategory.value = await axios
+    .get(`/subcategories/${subcategorySlug.value}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.log(error);
+      return null;
+    });
+
+  testProduct.value = await axios
+    .get(`/products/subcategory/${subcategorySlug}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.log(error);
+      return null;
+    });
+
+  console.log(testProduct.value);
 });
 
 const updateSort = (event) => {
   sortType.value = event.target.value;
 };
 const sortedProducts = computed(() => {
-  // TODO: maybe add sort type enum
   const sortedProducts = products.value;
 
   switch (sortType.value) {
