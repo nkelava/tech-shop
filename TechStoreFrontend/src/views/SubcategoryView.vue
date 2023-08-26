@@ -5,19 +5,16 @@ import axios from "@/api/axios";
 import ImageSlider from "@/components/ImageSlider.vue";
 import ProductList from "@/components/ProductList.vue";
 import FilterSidebar from "@/components/TheFilterSidebar.vue";
-import { getSubcategoryBySlug } from "@/database/services/subcategoryService.js";
-import {
-  getProductsBySubcategoryId,
-  getFilteredProductsBySubcategoryId,
-} from "@/database/services/productService.js";
+import { parseProductAttributes } from "@/helpers/product";
+import { filterProducts } from "@/helpers/filter";
 
 const route = useRoute();
 const categorySlug = ref(route.params.category);
 const subcategorySlug = ref(route.params.subcategory);
-const subcategory = getSubcategoryBySlug(subcategorySlug.value);
+const subcategory = ref({});
 const products = ref([]);
-const testSubcategory = ref();
-const testProduct = ref();
+const filteredProducts = ref([]);
+const attributeValuesMap = ref();
 const sortType = ref("");
 const breadcrumbsItems = [
   {
@@ -37,8 +34,7 @@ const breadcrumbsItems = [
 ];
 
 onMounted(async () => {
-  products.value = getProductsBySubcategoryId(subcategory.id);
-  testSubcategory.value = await axios
+  subcategory.value = await axios
     .get(`/subcategories/${subcategorySlug.value}`)
     .then((response) => response.data)
     .catch((error) => {
@@ -46,22 +42,24 @@ onMounted(async () => {
       return null;
     });
 
-  testProduct.value = await axios
-    .get(`/products/subcategory/${subcategorySlug}`)
+  products.value = await axios
+    .get(`/products/subcategory/${subcategorySlug.value}`)
     .then((response) => response.data)
     .catch((error) => {
       console.log(error);
       return null;
     });
 
-  console.log(testProduct.value);
+  filteredProducts.value = products.value;
+  attributeValuesMap.value = parseProductAttributes(products.value);
 });
 
 const updateSort = (event) => {
   sortType.value = event.target.value;
 };
+
 const sortedProducts = computed(() => {
-  const sortedProducts = products.value;
+  const sortedProducts = filteredProducts.value;
 
   switch (sortType.value) {
     case "low":
@@ -77,21 +75,8 @@ const sortedProducts = computed(() => {
   }
 });
 
-function handleFilterPrice(price, filters) {
-  handleFilter(filters);
-
-  products.value = products.value.filter(
-    (product) => product.price > price.from && product.price < price.to
-  );
-}
-
-function handleFilterRating(rating, filters) {
-  handleFilter(filters);
-  products.value = products.value.filter((product) => product.rating > rating);
-}
-
-function handleFilter(filters) {
-  products.value = getFilteredProductsBySubcategoryId(subcategory.id, filters);
+function handleFilter(price, rating, filters) {
+  filteredProducts.value = filterProducts(products.value, price, rating, filters);
 }
 </script>
 
@@ -108,14 +93,14 @@ function handleFilter(filters) {
     <div class="sidebar-layout ts-container">
       <filter-sidebar
         class="sidebar"
-        :subcategoryId="subcategory.id"
+        :attributeValuesMap="attributeValuesMap"
         @filterPrice="handleFilterPrice"
         @filterRating="handleFilterRating"
         @filter="handleFilter"
       />
       <div class="main">
         <div class="heading">
-          <h1 class="heading__title">{{ subcategory.name }}</h1>
+          <h1 class="heading__title">{{ subcategory.name || subcategorySlug }}</h1>
           <!-- TODO: create sort select component -->
           <select class="heading__sort" name="sort" @change="updateSort">
             <option value="" hidden>Sort...</option>
@@ -126,8 +111,8 @@ function handleFilter(filters) {
           </select>
         </div>
         <hr />
-        <!-- TODO: paginated list, this is temp -->
-        <product-list :products="sortedProducts" />
+        <product-list v-if="products.length" :products="sortedProducts" />
+        <h3 v-else>No products.</h3>
       </div>
     </div>
   </div>

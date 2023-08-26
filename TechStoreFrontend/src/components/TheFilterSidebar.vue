@@ -1,52 +1,47 @@
 <script setup>
 import { ref, defineEmits } from "vue";
-import { getSubcategoryAttributesWithValues } from "@/database/services/subcategoryService.js";
 
 const emit = defineEmits(["filterPrice", "filterRating", "filter"]);
-const props = defineProps(["subcategoryId"]);
-const subcategoryAttributesWithValues = getSubcategoryAttributesWithValues(props.subcategoryId);
-const price = ref({
-  from: 0,
-  to: 0,
-});
+const props = defineProps(["attributeValuesMap"]);
+const price = ref({ from: 0, to: 0 });
 const rating = ref(0);
-const filterMap = ref({});
+const filterMap = ref(new Map());
 
-const updateFilters = (event, attribute, attributeValue) => {
-  // Check if attribute does not exist in filter map
-  // eslint-disable-next-line no-prototype-builtins
-  if (!filterMap.value.hasOwnProperty(attribute)) {
-    filterMap.value[attribute] = new Set([attributeValue]);
-    emit("filter", filterMap.value);
+const updateFilters = (event, attributeId, attributeValueId) => {
+  if (!filterMap.value.has(attributeId)) {
+    filterMap.value.set(attributeId, new Set([attributeValueId]));
+    handleFilter();
     return;
   }
 
-  // Attribute already exists in filter map - check if option is already checked or is it a new option
-  if (filterMap.value[attribute].has(attributeValue)) {
-    filterMap.value[attribute].delete(attributeValue);
-    if (!filterMap.value[attribute].size) delete filterMap.value[attribute];
+  if (filterMap.value.get(attributeId).has(attributeValueId)) {
+    filterMap.value.get(attributeId).delete(attributeValueId);
+
+    if (!filterMap.value.get(attributeId).size) {
+      filterMap.value.delete(attributeId);
+    }
+
     event.target.checked = false;
-    emit("filter", filterMap.value);
+    handleFilter();
     return;
   }
 
-  filterMap.value[attribute].add(attributeValue);
-  emit("filter", filterMap.value);
+  filterMap.value.get(attributeId).add(attributeValueId);
+  handleFilter();
 };
 
-function handleFilterPrice() {
-  if (price.value.from > price.value.to) return;
-  if (price.value.from < 0 || price.value.to < 0) return;
-  if (price.value.from && price.value.to < 1) {
-    emit("filter", filterMap.value);
+function handlepPriceFilter() {
+  const { from, to } = price.value;
+
+  if (from > to || from < 0 || to < 0) {
     return;
   }
 
-  emit("filterPrice", price.value, filterMap.value);
+  handleFilter();
 }
 
-function handleFilterRating() {
-  emit("filterRating", rating.value, filterMap.value);
+function handleFilter() {
+  emit("filter", price.value, rating.value, filterMap.value);
 }
 </script>
 
@@ -56,19 +51,13 @@ function handleFilterRating() {
       <h3 class="sidebar-item__title">Price</h3>
       <hr />
       <div class="sidebar-price">
-        <input
-          class="sidebar-price__input"
-          v-model="price.from"
-          type="number"
-          min="0"
-          @input="handleFilterPrice"
-        />
+        <input class="sidebar-price__input" v-model="price.from" type="number" min="0" />
         <input
           class="sidebar-price__input"
           v-model="price.to"
           type="number"
           min="0"
-          @input="handleFilterPrice"
+          @input="handlepPriceFilter"
         />
       </div>
     </div>
@@ -77,32 +66,24 @@ function handleFilterRating() {
       <hr />
       <!-- TODO: create slider component in case of keeping this filter -->
       <div class="slider">
-        <input
-          id="test"
-          v-model="rating"
-          type="range"
-          min="0"
-          max="5"
-          step="1"
-          @change="handleFilterRating"
-        />
+        <input v-model="rating" type="range" min="0" max="5" step="1" @change="handleFilter" />
         <span>{{ rating }}</span>
       </div>
     </div>
     <div
       class="sidebar-item"
-      v-for="attribute in subcategoryAttributesWithValues"
-      :key="attribute.id"
+      v-for="[attributeId, attribute] in attributeValuesMap"
+      :key="attributeId"
     >
       <h3 class="sidebar-item__title">{{ attribute.name }}</h3>
       <hr />
-      <div v-for="attributeValue in attribute.values" :key="attributeValue.id">
+      <div v-for="[attributeValueId, attributeValue] in attribute.values" :key="attributeValueId">
         <input
           type="checkbox"
-          id="lorem"
-          @click="updateFilters($event, attribute.name, attributeValue.value)"
+          id="checkbox"
+          @click="updateFilters($event, attributeId, attributeValueId)"
         />
-        <label for="lorem">{{ attributeValue.value }} {{ attributeValue.unit || "" }}</label>
+        <label for="checkbox"> {{ attributeValue }} </label>
       </div>
     </div>
   </div>

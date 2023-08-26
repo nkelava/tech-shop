@@ -19,8 +19,8 @@ namespace TechStore.Application.Specifications.ProductSpecification
             AddInclude(p => p.Subcategory);
         }
 
-        public ProductsWithSubcategorySpecification(string subcategoryName)
-            : base(p => p.Subcategory.Name.ToLower().Equals(subcategoryName.ToLower()))
+        public ProductsWithSubcategorySpecification(string subcategorySlug)
+            : base(p => p.Subcategory.Slug.ToLower().Equals(subcategorySlug.ToLower()))
         {
             AddInclude(p => p.Subcategory);
         }

@@ -104,7 +104,7 @@ function toggleAlert() {
 .subscribe__input {
   width: 40em;
   margin-bottom: 0 !important;
-  background-color: var(--ts-c-bg-light) !important;
+  background-color: var(--ts-c-white) !important;
   color: var(--ts-c-text-dark);
   border-radius: 5px;
   font-weight: bold;
@@ -115,11 +115,11 @@ input[type="submit"] {
   border-radius: 5px;
   color: var(--ts-c-text-light);
   font-weight: bold;
-  height: 2rem;
+  height: 2.5rem;
   width: 7rem;
   position: absolute;
-  right: 5px;
-  top: 7px;
+  right: 3px;
+  top: 3px;
 }
 
 input[type="submit"]:hover {

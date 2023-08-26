@@ -13,7 +13,10 @@ namespace TechStore.Application.Models.Product
 
         public decimal Price { get; set; } = 0;
 
+        public string ImageURL { get; set; }
+
         public decimal Rating { get; set; } = 0;
 
+        public List<ProductAttributeSetModel> ProductAttributes { get; set; }
     }
 }

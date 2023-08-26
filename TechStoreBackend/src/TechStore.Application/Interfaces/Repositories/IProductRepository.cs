@@ -15,7 +15,7 @@ namespace TechStore.Application.Interfaces.Repositories
         Task<IList<Product>> GetTopSellingProductsAsync();
         Task<IList<Product>> GetTopRatedProductsAsync();
         Task<IList<Product>> GetProductsBySubcategoryIdAsync(int subcategoryId);
-        Task<IList<Product>> GetProductsBySubcategoryNameAsync(string subcategoryName);
+        Task<IList<Product>> GetProductsBySubcategorySlugAsync(string subcategorySlug);
         //Task<IEnumerable<Product>> GetProductsByPropertyIdAsync(int propertyId);
         //Task<IEnumerable<Product>> GetProductsByPropertyNameAsync(string propertyName);
         Task<IList<Product>> GetProductsByNameAsync(string productName);

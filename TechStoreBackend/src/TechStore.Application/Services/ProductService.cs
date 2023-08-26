@@ -106,9 +106,9 @@ namespace TechStore.Application.Services
             return productsMapped;
         }
 
-        public async Task<IList<ProductReadModel>> GetProductsBySubcategoryNameAsync(string subcategoryName)
+        public async Task<IList<ProductReadModel>> GetProductsBySubcategorySlugAsync(string subcategorySlug)
         {
-            var products = await _repository.Product.GetProductsBySubcategoryNameAsync(subcategoryName);
+            var products = await _repository.Product.GetProductsBySubcategorySlugAsync(subcategorySlug);
             var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
 
             return productsMapped;

@@ -3,6 +3,7 @@ import { RouterLink } from "vue-router";
 import { useCartStore, useWishlistStore } from "@/store";
 import CartIcon from "@/assets/icons/header/cart.png";
 import FavoriteIcon from "@/assets/icons/header/favorite.png";
+import DefaultImage from "@/assets/images/test/products/defaultProductImage.png";
 
 // eslint-disable-next-line no-unused-vars
 const props = defineProps(["product"]);
@@ -24,14 +25,12 @@ function addToWishlist(product) {
   <v-hover v-slot="{ isHovering, props }">
     <v-card class="card" :class="{ 'on-hover': isHovering }" v-bind="props">
       <div class="my-4" align="center" justify="center">
-        <v-img class="card__image" :src="product.img" />
+        <v-img class="card__image" :src="product.imageURL || DefaultImage" />
       </div>
-      <h4 class="truncate" :title="product.title">
-        {{ product.title }}
+      <h4 class="truncate" :title="product.summary">
+        {{ product.summary }}
       </h4>
-      <h2 class="card__price">
-        {{ product.currency + product.price }}
-      </h2>
+      <h2 class="card__price">$ {{ product.price }}</h2>
       <v-card-actions class="actions">
         <v-btn
           class="btn--absolute btn--hide"
@@ -81,6 +80,7 @@ function addToWishlist(product) {
   width: 100%;
   max-width: 200px;
   object-fit: contain;
+  border-radius: 10px;
 }
 
 .card__price {

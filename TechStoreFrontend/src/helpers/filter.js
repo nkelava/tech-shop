@@ -1,0 +1,36 @@
+export function filterProducts(products, price, rating, filters) {
+  const filterAttributes = Array.from(filters.keys());
+  let checkAttributeValue = true;
+  let checkRating = true;
+  let checkPrice = true;
+
+  console.log(price.from, price.to);
+
+  const filteredProducts = products.filter((product) => {
+    if (filterAttributes.length) {
+      checkAttributeValue = filterAttributes.some((attrId) =>
+        Array.from(filters.get(attrId)).some((attrValue) =>
+          product.productAttributes.map((attr) => attr.attributeValueId).includes(attrValue)
+        )
+      );
+    }
+
+    if (rating != 0) {
+      checkRating = product.rating >= rating;
+    }
+
+    checkPrice = product.price >= price.from;
+
+    if (price.to > 0) {
+      checkPrice = product.price <= price.to;
+    }
+
+    return checkAttributeValue && checkRating && checkPrice;
+  });
+
+  return filteredProducts;
+}
+
+export default {
+  filterProducts,
+};

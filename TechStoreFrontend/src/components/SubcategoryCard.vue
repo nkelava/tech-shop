@@ -11,7 +11,7 @@ const props = defineProps(["category", "subcategory"]);
     :to="{
       name: 'subcategory',
       params: {
-        category: props.category,
+        category: props.category.slug,
         subcategory: props.subcategory.slug,
       },
     }"

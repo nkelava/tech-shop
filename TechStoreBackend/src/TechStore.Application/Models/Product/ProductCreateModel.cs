@@ -30,6 +30,6 @@ namespace TechStore.Application.Models.Product
 
         public int SubcategoryId { get; set; }
 
-        public IList<ProductPropertyModel> Properties { get; set; }
+        public List<ProductAttributeSetModel> ProductAttributes { get; set; }
     }
 }

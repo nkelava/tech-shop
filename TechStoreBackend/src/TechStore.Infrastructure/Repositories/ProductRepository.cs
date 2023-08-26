@@ -63,34 +63,29 @@ namespace TechStore.Infrastructure.Repositories
         public async Task<IList<Product>> GetProductsBySubcategoryIdAsync(int subcategoryId)
         {
             var spec = new ProductsWithSubcategorySpecification(subcategoryId);
-            var products = await Find(spec).ToListAsync();
+            var products = await Find(spec)
+              .Include(p => p.ProductAttributes)
+                  .ThenInclude(pas => pas.Attribute)
+              .Include(p => p.ProductAttributes)
+                  .ThenInclude(pas => pas.AttributeValue)
+              .ToListAsync();
 
             return products;
         }
 
-        public async Task<IList<Product>> GetProductsBySubcategoryNameAsync(string subcategoryName)
+        public async Task<IList<Product>> GetProductsBySubcategorySlugAsync(string subcategorySlug)
         {
-            var spec = new ProductsWithSubcategorySpecification(subcategoryName);
-            var products = await Find(spec).ToListAsync();
+            var spec = new ProductsWithSubcategorySpecification(subcategorySlug);
+            //var products = await Find(spec).ToListAsync();
+            var products = await Find(spec)
+                .Include(p => p.ProductAttributes)
+                    .ThenInclude(pas => pas.Attribute)
+                .Include(p => p.ProductAttributes)
+                    .ThenInclude(pas => pas.AttributeValue)
+                .ToListAsync();
 
             return products;
         }
-
-        //public async Task<IEnumerable<Product>> GetProductsByAttributeIdAsync(int propertyId)
-        //{
-        //    var spec = new ProductsWithAttributeSpecification(propertyId);
-        //    var products = await Find(spec).ToListAsync();
-
-        //    return products;
-        //}
-
-        //public async Task<IEnumerable<Product>> GetProductsByPropertyNameAsync(string propertyName)
-        //{
-        //    var spec = new ProductsWithPropertySpecification(propertyName);
-        //    var products = await Find(spec).ToListAsync();
-
-        //    return products;
-        //}
 
         public async Task<IList<Product>> GetProductsByNameAsync(string productName)
         {

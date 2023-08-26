@@ -51,16 +51,17 @@ watch(
       </v-breadcrumbs>
     </div>
     <div class="ts-container">
-      <h1 v-if="category.name" class="category__title text-capitalize">{{ category.name }}</h1>
+      <h1 class="category__title text-capitalize">{{ category.name || categorySlug }}</h1>
       <hr />
-      <base-grid>
+      <base-grid v-if="category.subcategories">
         <subcategory-card
           v-for="subcategory in category.subcategories"
           :key="subcategory.categoryId"
-          :category="category.name"
+          :category="category"
           :subcategory="subcategory"
         />
       </base-grid>
+      <h3 v-else>No subcategories.</h3>
     </div>
   </div>
 </template>
