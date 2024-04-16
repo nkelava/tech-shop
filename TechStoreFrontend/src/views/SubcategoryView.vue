@@ -94,8 +94,6 @@ function handleFilter(price, rating, filters) {
       <filter-sidebar
         class="sidebar"
         :attributeValuesMap="attributeValuesMap"
-        @filterPrice="handleFilterPrice"
-        @filterRating="handleFilterRating"
         @filter="handleFilter"
       />
       <div class="main">

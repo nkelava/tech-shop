@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using TechStore.Domain.Entities.Base;
-using TechStore.Domain.Entities.ProductAggregate;
 
 
 namespace TechStore.Domain.Entities.SubcategoryAggregate

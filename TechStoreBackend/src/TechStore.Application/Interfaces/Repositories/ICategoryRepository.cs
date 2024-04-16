@@ -10,6 +10,6 @@ namespace TechStore.Application.Interfaces.Repositories
         Task<Category> GetCategoryBySlugAsync(string categorySlug);
         Task<Category> GetCategoryWithSubcategoriesAsync(int categoryId);
 
-        Task<IList<Category>> GetAllCategoriesAsync();
+        Task<IEnumerable<Category>> GetAllCategoriesAsync();
     }
 }

@@ -1,24 +1,28 @@
 <script setup>
-import { ref } from "vue";
-import ProductSpecification from "./ProductSpecification.vue";
-import ProductReviews from "./ProductReviews.vue";
+import { onMounted, ref, toRefs } from "vue";
+import ProductSpecification from "@/components/ProductSpecification.vue";
+import ProductReviews from "@/components/ProductReviews.vue";
 
 const tab = ref();
 const props = defineProps(["product"]);
-const reviewCount = 3;
+const { product } = toRefs(props);
+
+onMounted(() => {
+  console.log(product.value);
+});
 </script>
 
 <template>
   <v-card>
     <v-tabs class="tabs" v-model="tab" fixed-tabs>
       <v-tab value="specs"> Specification </v-tab>
-      <v-tab value="reviews"> Reviews ({{ reviewCount }}) </v-tab>
+      <v-tab value="reviews"> Reviews ({{ product.reviewCount }}) </v-tab>
     </v-tabs>
 
     <v-card-text class="text">
       <v-window v-model="tab">
         <v-window-item value="specs">
-          <product-specification :product="props.product" />
+          <product-specification :product="product" />
         </v-window-item>
 
         <v-window-item value="reviews">

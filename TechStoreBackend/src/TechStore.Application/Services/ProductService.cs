@@ -18,7 +18,7 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task AddAsync(ProductCreateModel productModel)
+        public async Task CreateAsync(ProductCreateModel productModel)
         {
             var product = _mapper.Map<Product>(productModel);
 
@@ -58,7 +58,7 @@ namespace TechStore.Application.Services
             return productMapped;
         }
 
-        public async Task<IList<ProductReadModel>> GetAllProductsAsync()
+        public async Task<IEnumerable<ProductReadModel>> GetAllProductsAsync()
         {
             var products = await _repository.Product.GetAllProductsAsync();
             var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
@@ -66,7 +66,7 @@ namespace TechStore.Application.Services
             return productsMapped;
         }
 
-        public async Task<IList<ProductReadModel>> GetProductsOnSaleAsync()
+        public async Task<IEnumerable<ProductReadModel>> GetProductsOnSaleAsync()
         {
             var products = await _repository.Product.GetProductsOnSaleAsync();
             var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
@@ -74,7 +74,7 @@ namespace TechStore.Application.Services
             return productsMapped;
         }
 
-        public async Task<IList<ProductReadModel>> GetNewProductsAsync()
+        public async Task<IEnumerable<ProductReadModel>> GetNewProductsAsync()
         {
             var products = await _repository.Product.GetNewProductsAsync();
             var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
@@ -82,7 +82,7 @@ namespace TechStore.Application.Services
             return productsMapped;
         }
 
-        public async Task<IList<ProductReadModel>> GetTopSellingProductsAsync()
+        public async Task<IEnumerable<ProductReadModel>> GetTopSellingProductsAsync()
         {
             var products = await _repository.Product.GetTopSellingProductsAsync();
             var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
@@ -90,7 +90,7 @@ namespace TechStore.Application.Services
             return productsMapped;
         }
 
-        public async Task<IList<ProductReadModel>> GetTopRatedProductsAsync()
+        public async Task<IEnumerable<ProductReadModel>> GetTopRatedProductsAsync()
         {
             var products = await _repository.Product.GetTopRatedProductsAsync();
             var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
@@ -98,7 +98,7 @@ namespace TechStore.Application.Services
             return productsMapped;
         }
 
-        public async Task<IList<ProductReadModel>> GetProductsBySubcategoryIdAsync(int subcategoryId)
+        public async Task<IEnumerable<ProductReadModel>> GetProductsBySubcategoryIdAsync(int subcategoryId)
         {
             var products = await _repository.Product.GetProductsBySubcategoryIdAsync(subcategoryId);
             var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
@@ -106,7 +106,7 @@ namespace TechStore.Application.Services
             return productsMapped;
         }
 
-        public async Task<IList<ProductReadModel>> GetProductsBySubcategorySlugAsync(string subcategorySlug)
+        public async Task<IEnumerable<ProductReadModel>> GetProductsBySubcategorySlugAsync(string subcategorySlug)
         {
             var products = await _repository.Product.GetProductsBySubcategorySlugAsync(subcategorySlug);
             var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
@@ -114,7 +114,7 @@ namespace TechStore.Application.Services
             return productsMapped;
         }
 
-        public async Task<IList<ProductReadModel>> GetProductsByNameAsync(string productsName)
+        public async Task<IEnumerable<ProductReadModel>> GetProductsByNameAsync(string productsName)
         {
             var products = await _repository.Product.GetProductsByNameAsync(productsName);
             var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
@@ -122,7 +122,7 @@ namespace TechStore.Application.Services
             return productsMapped;
         }
 
-        public async Task<IList<ProductReadModel>> GetProductsByPriceAsync(decimal priceFrom, decimal priceTo)
+        public async Task<IEnumerable<ProductReadModel>> GetProductsByPriceAsync(decimal priceFrom, decimal priceTo)
         {
             var products = await _repository.Product.GetProductsByPriceAsync(priceFrom, priceTo);
             var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
@@ -130,7 +130,7 @@ namespace TechStore.Application.Services
             return productsMapped;
         }
 
-        public async Task<IList<ProductReadModel>> GetProductsByRatingAsync(decimal rating)
+        public async Task<IEnumerable<ProductReadModel>> GetProductsByRatingAsync(decimal rating)
         {
             var products = await _repository.Product.GetProductsByRatingAsync(rating);
             var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);

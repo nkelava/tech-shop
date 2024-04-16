@@ -7,19 +7,19 @@ using TechStore.Domain.Entities.Cart;
 using TechStore.Domain.Entities.OrderAggregate;
 using TechStore.Domain.Entities.ProductAggregate;
 using TechStore.Domain.Entities.SubcategoryAggregate;
+using TechStore.Domain.Entities.User;
 using TechStore.Domain.Entities.Wishlist;
 
 
 namespace TechStore.Infrastructure.Data
 {
-    public  class TechStoreContext : IdentityDbContext
+    public  class TechStoreContext : IdentityDbContext<ApplicationUser>
     {
         public TechStoreContext(DbContextOptions<TechStoreContext> options) : base(options) { }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductAttribute> Attributes { get; set; }
         public DbSet<ProductAttributeValue> AttributeValues { get; set; }
-        public DbSet<AttributeValueSet> AttributeValueSets{ get; set; }
         public DbSet<ProductAttributeSet> ProductAttributes { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Subcategory> Subcategories { get; set; }
@@ -32,6 +32,8 @@ namespace TechStore.Infrastructure.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Newsletter> Newsletters { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<PromoCode> PromoCodes { get; set; }
+
 
 
 
@@ -41,7 +43,6 @@ namespace TechStore.Infrastructure.Data
 
             base.OnModelCreating(builder);
 
-            builder.Entity<AttributeValueSet>(ConfigureAttributeValues);
             builder.Entity<ProductAttributeSet>(ConfigureProductAttributes);
             builder.Entity<CartProduct>(ConfigureCartProducts);
             builder.Entity<WishListProduct>(ConfigureWishListProducts);
@@ -55,11 +56,6 @@ namespace TechStore.Infrastructure.Data
             {
                 builder.Entity(entityType.ClrType).ToTable(entityType.ClrType.Name);
             }
-        }
-
-        private void ConfigureAttributeValues(EntityTypeBuilder<AttributeValueSet> builder)
-        {
-            builder.HasKey(av => new { av.AttributeId, av.AttributeValueId });
         }
 
         private void ConfigureProductAttributes(EntityTypeBuilder<ProductAttributeSet> builder)

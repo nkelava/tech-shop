@@ -3,10 +3,12 @@ import { RouterLink } from "vue-router";
 import { useCartStore, useWishlistStore } from "@/store";
 import CartIcon from "@/assets/icons/header/cart.png";
 import FavoriteIcon from "@/assets/icons/header/favorite.png";
+import SoldOutIcon from "@/assets/icons/card/sold-out-64.png";
 import DefaultImage from "@/assets/images/test/products/defaultProductImage.png";
 
 // eslint-disable-next-line no-unused-vars
 const props = defineProps(["product"]);
+
 const cart = useCartStore();
 const wishlist = useWishlistStore();
 const category = "laptops";
@@ -32,7 +34,11 @@ function addToWishlist(product) {
       </h4>
       <h2 class="card__price">$ {{ product.price }}</h2>
       <v-card-actions class="actions">
+        <div v-if="product.unitsInStock < 1" class="btn--absolute">
+          <img :src="SoldOutIcon" alt="sold out icon" height="40" width="40" />
+        </div>
         <v-btn
+          v-if="product.unitsInStock > 0"
           class="btn--absolute btn--hide"
           :class="{ 'btn--show': isHovering }"
           title="Add to Cart"
@@ -41,6 +47,7 @@ function addToWishlist(product) {
           <img :src="CartIcon" alt="cart icon" />
         </v-btn>
         <v-btn
+          v-if="product.unitsInStock > 0"
           class="btn--absolute btn--hide"
           :class="{ 'btn--show': isHovering }"
           title="Add to Wishlist"
@@ -48,12 +55,11 @@ function addToWishlist(product) {
         >
           <img :src="FavoriteIcon" alt="favorites icon" />
         </v-btn>
-        <!-- <v-btn class="card__btn" @click="goToProductDetails">View More</v-btn> -->
         <router-link
           class="card__link"
           :to="{
             name: 'product',
-            params: { category: category, subcategory: subcategory, productId: product.id },
+            params: { category: category, subcategory: subcategory, productSlug: product.slug },
           }"
         >
           <v-btn class="card__btn">View More</v-btn>
@@ -65,8 +71,10 @@ function addToWishlist(product) {
 
 <style scoped>
 .card {
+  position: relative;
   min-width: 250px;
   max-width: 300px;
+  min-height: 430px;
   padding: 10px;
   font-size: 12px;
   text-align: center;
@@ -129,7 +137,7 @@ function addToWishlist(product) {
 .truncate {
   display: block;
   overflow: hidden;
-  max-height: 3.6em;
+  height: 4em;
   line-height: 1.3em;
 }
 
@@ -139,8 +147,8 @@ function addToWishlist(product) {
   }
 
   .card__image {
-    max-height: 250px;
-    max-width: 250px;
+    height: 250px;
+    width: 250px;
   }
 }
 </style>

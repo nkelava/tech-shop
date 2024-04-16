@@ -20,15 +20,19 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task AddProductAsync(string email, int productId)
+        public async Task AddProductAsync(string email, int quantity, int productId)
         {
             var cart = await GetExistingOrCreateNewCart(email);
             var product = await _repository.Product.GetProductByIdAsync(productId);
 
-            cart.AddProduct(productId, unitPrice: product.Price);
+            if (product is not null) {
+                cart.AddProduct(productId, quantity, unitPrice: product.Price);
 
-            _repository.Cart.Update(cart);
-            await _repository.SaveAsync();
+                _repository.Cart.Update(cart);
+                await _repository.SaveAsync();
+            }
+
+
         }
 
 
@@ -37,8 +41,7 @@ namespace TechStore.Application.Services
             var spec = new CartWithProductsSpecification(cartId);
             var cart = _repository.Cart.Find(spec).FirstOrDefault();
 
-            if (cart == null)
-                return;
+            if (cart is null) return;
 
             cart.RemoveProduct(productId);
 
@@ -51,8 +54,7 @@ namespace TechStore.Application.Services
         {
             var cart = await _repository.Cart.GetByEmailAsync(email);
 
-            if (cart == null)
-                return;
+            if (cart is null) return;
 
             cart.Clear();
 
@@ -66,13 +68,11 @@ namespace TechStore.Application.Services
             var cart = await GetExistingOrCreateNewCart(email);
             var cartModel = _mapper.Map<CartReadModel>(cart);
 
-            // If movie can't be loaded from page we than manual map it
-            if (cart.Products.Any(c => c.Product == null))
-            {
+            // If product can't be loaded from page we than manual map it
+            if (cart.Products.Any(c => c.Product == null)) {
                 cartModel.CartProducts.Clear();
 
-                foreach (var item in cart.Products)
-                {
+                foreach (var item in cart.Products) {
                     var cartProductModel = _mapper.Map<CartProductModel>(item);
                     var product = await _repository.Product.GetProductByIdAsync(item.ProductId);
                     var productModel = _mapper.Map<ProductReadModel>(product);
@@ -89,12 +89,10 @@ namespace TechStore.Application.Services
         {
             var cart = await _repository.Cart.GetByEmailAsync(email);
 
-            if (cart != null)
-                return cart;
+            if (cart is not null) return cart;
 
             // If it's first time create new cart
-            var newCart = new Cart
-            {
+            var newCart = new Cart {
                 Email = email
             };
 

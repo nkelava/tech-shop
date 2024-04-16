@@ -5,11 +5,11 @@ namespace TechStore.Application.Interfaces.Services
 {
     public interface IReviewService
     {
-        Task AddReview(ReviewCreateModel review);
-        Task DeleteReview(int reviewId);
+        Task CreateAsync(ReviewCreateModel review);
+        Task DeleteAsync(int reviewId);
 
-        Task<IList<ReviewReadModel>> GetReviewsByProductIdAsync(int productId);
-        Task<IList<ReviewReadModel>> GetReviewsByEmailAsync(string email);
-        Task<IList<ReviewReadModel>> GetAllReviewsAsync();
+        Task<IEnumerable<ReviewReadModel>> GetReviewsByProductIdAsync(int productId);
+        Task<IEnumerable<ReviewReadModel>> GetReviewsByEmailAsync(string email);
+        Task<IEnumerable<ReviewReadModel>> GetAllReviewsAsync();
     }
 }

@@ -6,6 +6,6 @@ namespace TechStore.Application.Interfaces.Repositories
 {
     public interface INewsletterRepository : IRepository<Newsletter>
     {
-        Task<IList<Newsletter>> GetAllNewsletterSubscribersAsync();
+        Task<IEnumerable<Newsletter>> GetAllNewsletterSubscribersAsync();
     }
 }

@@ -30,7 +30,7 @@ namespace TechStore.Infrastructure.Repositories
             return await Find(spec).FirstOrDefaultAsync();
         }
 
-        public async Task<IList<Category>> GetAllCategoriesAsync()
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
             return await FindAll().ToListAsync();
         }

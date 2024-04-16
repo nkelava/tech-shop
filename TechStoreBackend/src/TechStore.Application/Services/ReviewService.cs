@@ -18,7 +18,7 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task AddReview(ReviewCreateModel reviewModel)
+        public async Task CreateAsync(ReviewCreateModel reviewModel)
         {
             var product = await _repository.Product.GetProductByIdAsync(reviewModel.ProductId);
             var review = _mapper.Map<Review>(reviewModel);
@@ -27,8 +27,7 @@ namespace TechStore.Application.Services
             _repository.Review.Add(review);
             //review =  _repository.Review.GetReviewsByEmail(reviewModel.Email).Where(r => r.ProductId.Equals(reviewModel.ProductId)).FirstOrDefault();
 
-            if (review == null)
-                return;
+            if (review is null) return;
 
             product.AddReview(review);
 
@@ -37,7 +36,7 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task DeleteReview(int reviewId)
+        public async Task DeleteAsync(int reviewId)
         {
             var review = _repository.Review.FindById(reviewId);
 
@@ -45,7 +44,7 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task<IList<ReviewReadModel>> GetReviewsByProductIdAsync(int productId)
+        public async Task<IEnumerable<ReviewReadModel>> GetReviewsByProductIdAsync(int productId)
         {
             var reviews = await _repository.Review.GetReviewsByProductIdAsync(productId);
             var reviewsModel = _mapper.Map<IList<ReviewReadModel>>(reviews);
@@ -53,7 +52,7 @@ namespace TechStore.Application.Services
             return reviewsModel;
         }
 
-        public async Task<IList<ReviewReadModel>> GetReviewsByEmailAsync(string email)
+        public async Task<IEnumerable<ReviewReadModel>> GetReviewsByEmailAsync(string email)
         {
             var reviews = await _repository.Review.GetReviewsByEmailAsync(email);
             var reviewsModel = _mapper.Map<IList<ReviewReadModel>>(reviews);
@@ -61,7 +60,7 @@ namespace TechStore.Application.Services
             return reviewsModel;
         }
 
-        public async Task<IList<ReviewReadModel>> GetAllReviewsAsync()
+        public async Task<IEnumerable<ReviewReadModel>> GetAllReviewsAsync()
         {
             var reviews = await _repository.Review.GetAllReviewsAsync();
             var reviewsModel = _mapper.Map<IList<ReviewReadModel>>(reviews);

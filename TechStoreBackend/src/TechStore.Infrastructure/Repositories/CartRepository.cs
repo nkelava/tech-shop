@@ -1,4 +1,5 @@
-﻿using TechStore.Application.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using TechStore.Application.Interfaces.Repositories;
 using TechStore.Application.Specifications.CartSpecification;
 using TechStore.Domain.Entities.Cart;
 using TechStore.Infrastructure.Data;
@@ -17,7 +18,7 @@ namespace TechStore.Infrastructure.Repositories
         {
             var spec = new CartWithProductsSpecification(email);
 
-            return Find(spec).FirstOrDefault();
+            return await Find(spec).FirstOrDefaultAsync();
         }
     }
 }

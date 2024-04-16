@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TechStore.Infrastructure.Migrations
 {
-    public partial class initMigration : Migration
+    public partial class InitTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,6 +28,8 @@ namespace TechStore.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -143,6 +145,22 @@ namespace TechStore.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductAttributeValue", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PromoCode",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Discount = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PromoCode", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -334,30 +352,6 @@ namespace TechStore.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AttributeValueSet",
-                columns: table => new
-                {
-                    AttributeId = table.Column<int>(type: "int", nullable: false),
-                    AttributeValueId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AttributeValueSet", x => new { x.AttributeId, x.AttributeValueId });
-                    table.ForeignKey(
-                        name: "FK_AttributeValueSet_ProductAttribute_AttributeId",
-                        column: x => x.AttributeId,
-                        principalTable: "ProductAttribute",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AttributeValueSet_ProductAttributeValue_AttributeValueId",
-                        column: x => x.AttributeValueId,
-                        principalTable: "ProductAttributeValue",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Product",
                 columns: table => new
                 {
@@ -377,11 +371,17 @@ namespace TechStore.Infrastructure.Migrations
                     ReviewCount = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SubcategoryId = table.Column<int>(type: "int", nullable: false)
+                    SubcategoryId = table.Column<int>(type: "int", nullable: false),
+                    PromoCodeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Product", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Product_PromoCode_PromoCodeId",
+                        column: x => x.PromoCodeId,
+                        principalTable: "PromoCode",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Product_Subcategory_SubcategoryId",
                         column: x => x.SubcategoryId,
@@ -562,11 +562,6 @@ namespace TechStore.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AttributeValueSet_AttributeValueId",
-                table: "AttributeValueSet",
-                column: "AttributeValueId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CartProduct_ProductId",
                 table: "CartProduct",
                 column: "ProductId");
@@ -581,6 +576,11 @@ namespace TechStore.Infrastructure.Migrations
                 name: "IX_OrderProduct_ProductId",
                 table: "OrderProduct",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_PromoCodeId",
+                table: "Product",
+                column: "PromoCodeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_SubcategoryId",
@@ -631,9 +631,6 @@ namespace TechStore.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "AttributeValueSet");
-
-            migrationBuilder.DropTable(
                 name: "CartProduct");
 
             migrationBuilder.DropTable(
@@ -680,6 +677,9 @@ namespace TechStore.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Wishlist");
+
+            migrationBuilder.DropTable(
+                name: "PromoCode");
 
             migrationBuilder.DropTable(
                 name: "Subcategory");

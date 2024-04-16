@@ -8,6 +8,7 @@ using TechStore.Application.Interfaces.Repositories;
 using TechStore.Application.Interfaces.Repositories.Base;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Services;
+using TechStore.Domain.Entities.User;
 using TechStore.Infrastructure.Data;
 using TechStore.Infrastructure.Data.Seed;
 using TechStore.Infrastructure.Repositories;
@@ -87,7 +88,7 @@ void ConfigureSeeder(IServiceCollection services)
 
 void ConfigureIdentity(IServiceCollection services)
 {
-    services.AddIdentity<IdentityUser, IdentityRole>()
+    services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<TechStoreContext>()
     .AddDefaultTokenProviders();
 

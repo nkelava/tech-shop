@@ -43,6 +43,9 @@ namespace TechStore.Infrastructure.Data.Seed
                 if (!_techStoreContext.ProductAttributes.Any())
                     await SeedProductAttributes();
 
+                if (!_techStoreContext.PromoCodes.Any())
+                    await SeedPromoCodes();
+
                 if (!_techStoreContext.Newsletters.Any())
                     await SeedNewsletters();
 
@@ -538,11 +541,187 @@ namespace TechStore.Infrastructure.Data.Seed
                     Name = "Acer Predator Helios 300",
                     Slug = "acer-predator-helios-300",
                     ImageURL = "https://www.mikronis.hr/_shop/files/products/Helios300-bk.jpg?id=248",
-                    Summary = "Acer Predator Helios 300 Gaming Laptop, 15.6\" Full HD IPS, Intel i7 CPU, 16GB DDR4 RAM, 256GB SSD, GeForce GTX 1060-6GB, VR Ready, Red Backlit KB, Metal Chassis, Windows 10 64-bit, G3-571-77QK",
+                    Summary = "Acer Predator Helios 300, 15.6\" Full HD IPS, Intel i7 CPU, 16GB DDR4 RAM, 256GB SSD, GeForce GTX 1060, VR Ready, Red Backlit KB, Metal Chassis, Windows 10 64-bit, G3-571-77QK",
                     Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
                     Discount = 0,
                     OnSale = false,
                     Price = 1300,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 4.5m,
+                    ReviewCount = 2,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Acer Aspire 7",
+                    Slug = "acer-aspire-7",
+                    ImageURL = "https://www.nabava.net/slike/products/10/58/21295810/acer-aspire-7-a715-42g-r403_7ed1eb8.jpeg",
+                    Summary = "Acer Aspire 7, 15.6\" FHD IPS, AMD Ryzen 5 5500U up to 4.0GHz, 16GB DDR4, 512GB NVMe SSD, NVIDIA GeForce GTX1650 4GB, no OS",
+                    Description = "Nenametljiv dizajn ovog prijenosnog računala skriva moćan procesor i grafiku, koji pomažu korisnicima da izvuku maksimum iz 15,6-inčnog zaslona s velikim omjerom zaslona i kućišta. Kao što biste i očekivali od prijenosnog računala ovog kalibra, opremljeno je i brzom Wi-Fi vezom te mnoštvom memorije i prostora za pohranu. Aspire 7 skriva mnogo snage u svom kućištu. Najnovija NVIDIA® grafika1 pruža svu potrebnu snagu za rad i igru, a Intel® Core™ procesor 10. generacije1 ili AMD Ryzen™ 5000 omogućuje da se sve odvija optimalnom brzinom. ",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 779,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Acer Aspire 5",
+                    Slug = "acer-aspire-5",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/l/a/laptop-acer-aspire-5-a515-45-r5x9-nxa7yex00a-ryzen-7-5700u-24gb-512gb-ssd-156-ips-noos-433xqryen-1155x1155.jpg",
+                    Summary = "Acer Aspire 5, 15.6\" FHD IPS, AMD Ryzen 7 5700U up to 4.3GHz, 16GB DDR4, 512GB NVMe SSD, AMD Radeon Graphics, no OS",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 782,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Asus Vivobook 15",
+                    Slug = "asus-vivobook-15",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/w/8/w800_1_2.png",
+                    Summary = "Asus Vivobook 15, 15,6\", Intel Core i5, 8 GB, 512 GB, Windows 10 Home",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 749,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Asus Vivobook 16",
+                    Slug = "asus-vivobook-16",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/z/t/ztfdrs.png",
+                    Summary = "Acer Predator Helios 300 Gaming Laptop, 15.6\" Full HD IPS, Intel i7 CPU, 16GB DDR4 RAM, 256GB SSD, GeForce GTX 1060-6GB, VR Ready, Red Backlit KB, Metal Chassis, Windows 10 64-bit, G3-571-77QK",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 599,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Asus Vivobook Pro 16X",
+                    Slug = "asus-vivobook-pro-16x",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/1/1/112_2_1.png",
+                    Summary = "Asus Vivobook Pro 16X, 16,1\" 4K OLED, AMD Ryzen 9 6900HX 3.3GHz, 16GB DDR4, 512MB M.2 NVMe PCIe 4.0 SSD, NVIDIA GeForce RTX 3050 Ti, Windows 11 Home",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 1899,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Asus Vivobook X",
+                    Slug = "asus-vivobook-x",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/5/5/550hzhz.png",
+                    Summary = "Asus Vivobook X, 16\" WUXGA 60Hz, AMD Ryzen 5 5600H, 16GB DDR4, 1TB M.2 NVMe PCIe 3.0 SSD, Radeon Graphics, Windows 11 Home",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 1300,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Lenovo Ideapad 3",
+                    Slug = "lenovo-ideapad-3",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/n/o/notebook-lenovo-ideapad-ultraslim-3-82rn-0001271198_1.jpg",
+                    Summary = "Lenovo Ideapad 3, 15.6\" FHD IPS, AMD Ryzen 3 5425U up to 4.1GHz, 8GB DDR4, 512GB NVMe SSD, AMD Radeon Graphics, no OS",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 429,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Lenovo Ideapad 5",
+                    Slug = "lenovo-ideapad-5",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/2/0/2022-11-07_113159.jpg",
+                    Summary = "Lenovo Ideapad 5, 15.6\" FHD IPS, AMD Ryzen 5 5625U, 8GB DDR4, 512GB SSD M.2 2242 PCIe 3.0x4 NVMe, AMD Radeon Graphics, noOS",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 599,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Lenovo Ideapad Slim 3",
+                    Slug = "lenovo-ideapad-slim-3",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/2/4/247315-wqq.png",
+                    Summary = "Lenovo Ideapad Slim 3, 15,6\" FHD,AMD Ryzen 5-7520U 2,8GHz Core4, 16 GB, SSD 512GB M.2 PCIe NVMe, AMD Radeon 610M, FreeDOS",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 505,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Lenovo Yoga 7",
+                    Slug = "Lenovo Yoga 7",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/u/l/ultrabook-aswyoga-7-82yl002f.png",
+                    Summary = "Lenovo Yoga 7, 14\" 2.8 OLED Touch HDR500 90Hz, Intel Core i7 1360P up to 5.0GHz, 16GB DDR5, 1TB NVMe SSD, Intel Iris Xe Graphics, Win 11",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 1699,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Acer Aspire 3",
+                    Slug = "Acer Aspire 3",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/a/s/aspire-3-a317-53-non-sv-01_4.png",
+                    Summary = "17.3\" FHD IPS, Intel Core i5 1135G7 up to 4.2GHz, 16GB DDR4, 512GB NVMe SSD, Intel Iris Xe Graphics, Win 11 Home",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 759,
                     UnitsInStock = 10,
                     UnitsSold = 0,
                     Rating = 0,
@@ -592,9 +771,9 @@ namespace TechStore.Infrastructure.Data.Seed
                     OnSale = false,
                     Price = 150,
                     UnitsInStock = 8,
-                    UnitsSold = 1,
-                    Rating = 4.5m,
-                    ReviewCount = 1,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
                     Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("ssd")).First(),
                 },
                 new Product
@@ -608,9 +787,9 @@ namespace TechStore.Infrastructure.Data.Seed
                     OnSale = false,
                     Price = 129,
                     UnitsInStock = 10,
-                    UnitsSold = 3,
-                    Rating = 1.8m,
-                    ReviewCount = 1,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
                     Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("keyboards")).First(),
                 },
             };
@@ -689,6 +868,31 @@ namespace TechStore.Infrastructure.Data.Seed
             await _techStoreContext.SaveChangesAsync();
         }
 
+        private async Task SeedPromoCodes()
+        {
+            var promoCodes = new List<PromoCode>()
+            {
+                new PromoCode
+                {
+                    Code = "TP20",
+                    Discount = 20,
+                },
+                new PromoCode
+                {
+                    Code = "TP30",
+                    Discount = 30,
+                },
+                new PromoCode
+                {
+                    Code = "TP50",
+                    Discount = 50,
+                }
+            };
+
+            _techStoreContext.PromoCodes.AddRange(promoCodes);
+            await _techStoreContext.SaveChangesAsync();
+        }
+
         private async Task SeedNewsletters()
         {
             var newsletters = new List<Newsletter>()
@@ -716,13 +920,15 @@ namespace TechStore.Infrastructure.Data.Seed
                     Email = "test@gmail.com",
                     Rate = 4,
                     Comment = "Very good!",
+                    IsReported = false,
                     Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
                 },
                 new Review
                 {
                     Email = "admin@gmail.com",
-                    Rate = 1,
+                    Rate = 5,
                     Comment = "Not good! Wouldn't recommend.",
+                    IsReported = false,
                     Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
                 },
             };
@@ -738,10 +944,6 @@ namespace TechStore.Infrastructure.Data.Seed
                 new Wishlist
                 {
                     Email = "test@gmail.com",
-                },
-                new Wishlist
-                {
-                    Email = "admin@gmail.com",
                 },
             };
 
@@ -773,11 +975,6 @@ namespace TechStore.Infrastructure.Data.Seed
                     Email = "test@gmail.com",
                     TotalPrice = 1210,
                 },
-                new Cart
-                {
-                    Email = "admin@gmail.com",
-                    TotalPrice = 1480,
-                },
             };
 
             _techStoreContext.Carts.AddRange(carts);
@@ -790,7 +987,7 @@ namespace TechStore.Infrastructure.Data.Seed
             {
                 new CartProduct
                 {
-                    Cart = _techStoreContext.Carts.Where(c => c.Email.ToLower().Equals("admin@gmail.com")).First(),
+                    Cart = _techStoreContext.Carts.Where(c => c.Email.ToLower().Equals("test@gmail.com")).First(),
                     Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
                     Quantity = 1,
                     UnitPrice = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First().Price,
@@ -812,9 +1009,9 @@ namespace TechStore.Infrastructure.Data.Seed
                     Email = "test@gmail.com",
                     ContactNumber = "0991234885",
                     Country = "Croatia",
-                    City = "Hvar",
+                    City = "Split",
                     ShippingAddress = "Ul. Test 127",
-                    ZipCode = 21450,
+                    ZipCode = 21000,
                     TotalPrice = 1210,
                     Status = OrderStatus.Completed,
                 },
@@ -829,7 +1026,7 @@ namespace TechStore.Infrastructure.Data.Seed
             var orderProducts = new List<OrderProduct>()
             {
                new OrderProduct
-                {
+               {
                     Order = _techStoreContext.Orders.Where(o => o.Email.ToLower().Equals("test@gmail.com")).First(),
                     Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
                     Quantity = 1,

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, defineEmits } from "vue";
 
-const emit = defineEmits(["filterPrice", "filterRating", "filter"]);
+const emit = defineEmits(["filter"]);
 const props = defineProps(["attributeValuesMap"]);
 const price = ref({ from: 0, to: 0 });
 const rating = ref(0);

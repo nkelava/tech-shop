@@ -23,12 +23,12 @@ namespace TechStore.API.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CategoryCreateModel category)
+        public async Task<IActionResult> Create([FromBody] CategoryCreateModel category)
         {
-            if (category == null)
+            if (category is null)
                 return BadRequest();
 
-            await _categoryService.AddAsync(category);
+            await _categoryService.CreateAsync(category);
 
             return Ok(category);
         }
@@ -37,7 +37,7 @@ namespace TechStore.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] CategoryUpdateModel category)
         {
-            if (category == null)
+            if (category is null)
                 return BadRequest();
 
             await _categoryService.UpdateAsync(category);
@@ -57,32 +57,25 @@ namespace TechStore.API.Controllers
             return Ok(id);
         }
 
-        [HttpGet]
-        public async Task<IList<CategoryReadModel>> GetAllCategories()
-        {
-            var categories = await _categoryService.GetAllCategoriesAsync();
-
-            return categories;
-        }
-
         [HttpGet("{slug}")]
         public async Task<ActionResult<CategoryReadModel>> GetCategoryBySlug(string slug)
         {
             if (string.IsNullOrWhiteSpace(slug))
                 return BadRequest();
 
-            try
-            {
+            try {
                 var category = await _categoryService.GetCategoryBySlugAsync(slug);
-
-                if (category == null)
-                    return NotFound();
-
-                return Ok(category);
-            } catch
-            {
+                return (category is null) ? NotFound() : Ok(category);
+            } catch {
                 return BadRequest();
             }
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<CategoryReadModel>> GetAllCategories()
+        {
+            var categories = await _categoryService.GetAllCategoriesAsync();
+            return categories;
         }
 
         [HttpGet("{slug}/subcategories")]
@@ -91,16 +84,10 @@ namespace TechStore.API.Controllers
             if (string.IsNullOrWhiteSpace(slug))
                 return BadRequest();
 
-            try
-            {
+            try {
                 var category = await _categoryService.GetCategoryWithSubcategoriesAsync(slug);
-
-                if (category == null)
-                    return NotFound();
-
-                return Ok(category);
-            } catch
-            {
+                return (category is null) ? NotFound() : Ok(category);
+            } catch {
                 return BadRequest();
             }
         }

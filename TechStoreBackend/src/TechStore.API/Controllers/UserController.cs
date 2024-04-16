@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using TechStore.Application.Models.Authorization;
+using TechStore.Domain.Entities.User;
 
 namespace TechStore.API.Controllers
 {
@@ -8,14 +10,21 @@ namespace TechStore.API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        //public readonly IUserService _userService;
+        public readonly UserManager<ApplicationUser> _userManager;
         public readonly IMapper _mapper;
 
-        //public UserController(IUserService userService, IMapper mapper)
-        public UserController(IMapper mapper)
+        public UserController(UserManager<ApplicationUser> userManager, IMapper mapper)
         {
-            //_userService = userService;
+            _userManager = userManager;
             _mapper = mapper;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUser(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            return (user is null) ? NotFound() : Ok(user);
         }
     }
 }

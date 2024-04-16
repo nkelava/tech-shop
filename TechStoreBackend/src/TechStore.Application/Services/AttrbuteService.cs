@@ -2,8 +2,6 @@
 using TechStore.Application.Interfaces.Repositories.Base;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Attribute;
-using TechStore.Application.Models.Newsletter;
-using TechStore.Application.Models.Subcategory;
 using TechStore.Domain.Entities.ProductAggregate;
 
 namespace TechStore.Application.Services
@@ -19,7 +17,7 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task AddAsync(AttributeCreateModel attributeModel)
+        public async Task CreateAsync(AttributeCreateModel attributeModel)
         {
             var attribute = _mapper.Map<ProductAttribute>(attributeModel);
 
@@ -31,8 +29,7 @@ namespace TechStore.Application.Services
         {
             var attribute = await _repository.Attribute.GetAttributeByIdAsync(id);
 
-            if (attribute == null)
-                return;
+            if (attribute is null) return;
 
             _repository.Attribute.Delete(attribute);
             await _repository.SaveAsync();
@@ -63,7 +60,7 @@ namespace TechStore.Application.Services
             return attributeModel;
         }
 
-        public async Task<IList<AttributeReadModel>> GetAllAttributesAsync()
+        public async Task<IEnumerable<AttributeReadModel>> GetAllAttributesAsync()
         {
             var attributes = await _repository.Attribute.GetAllAttributesAsync();
             var attributesReadModel = _mapper.Map<IList<AttributeReadModel>>(attributes);

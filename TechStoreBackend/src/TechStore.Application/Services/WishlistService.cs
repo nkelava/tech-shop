@@ -34,7 +34,7 @@ namespace TechStore.Application.Services
             var spec = new WishlistWithProductsSpecification(wishlistId);
             var wishlist = _repository.Wishlist.Find(spec).FirstOrDefault();
 
-            if (wishlist == null) return;
+            if (wishlist is null) return;
 
             wishlist.RemoveProduct(productId);
 
@@ -47,10 +47,8 @@ namespace TechStore.Application.Services
             var wishlist = await GetExistingOrCreateNewWishlist(username);
             var wishlistReadModel = _mapper.Map<WishlistReadModel>(wishlist);
 
-            if (wishlist.Products != null)
-            {
-                foreach (var item in wishlist.Products)
-                {
+            if (wishlist.Products is not null) {
+                foreach (var item in wishlist.Products) {
                     //var product = await _repository.Product.GetProductByIdAsync(item.ProductId);
                     //var productReadModel = _mapper.Map<ProductReadModel>(product);
                     var productReadModel = new ProductReadModel { Id = 4, Name = "Test" };
@@ -58,7 +56,6 @@ namespace TechStore.Application.Services
 
                 }
             }
-
             return wishlistReadModel;
         }
 
@@ -66,12 +63,11 @@ namespace TechStore.Application.Services
         {
             var wishlist = _repository.Wishlist.GetByEmailAsync(email);
 
-            if (wishlist != null)
+            if (wishlist is not null)
                 return wishlist;
 
             // Create new in case of first attempt
-            var newWishlist = new Wishlist
-            {
+            var newWishlist = new Wishlist {
                 Email = email
             };
 

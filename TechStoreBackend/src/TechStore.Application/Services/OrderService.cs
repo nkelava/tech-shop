@@ -18,7 +18,7 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task AddAsync(OrderCreateModel orderModel)
+        public async Task CreateAsync(OrderCreateModel orderModel)
         {
             ValidateOrder(orderModel);
 
@@ -30,7 +30,7 @@ namespace TechStore.Application.Services
 
         public async Task DeleteAsync(int orderId)
         {
-            var order = _repository.Order.GetOrderById(orderId);
+            var order = await _repository.Order.GetOrderByIdAsync(orderId);
 
             _repository.Order.Delete(order);
             await _repository.SaveAsync();
@@ -44,31 +44,31 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public OrderReadModel GetOrderById(int orderId)
+        public async Task<OrderReadModel> GetOrderByIdAsync(int orderId)
         {
-            var order = _repository.Order.GetOrderById(orderId);
+            var order = await _repository.Order.GetOrderByIdAsync(orderId);
             var orderModel = _mapper.Map<OrderReadModel>(order);
 
             return orderModel;
         }
 
-        public IList<OrderReadModel> GetOrders()
+        public async Task<IEnumerable<OrderReadModel>> GetOrdersAsync()
         {
-            var orders = _repository.Order.GetAllOrders();
+            var orders = await _repository.Order.GetAllOrdersAsync();
             var ordersModel = _mapper.Map<IList<OrderReadModel>>(orders);
 
             return ordersModel;
         }
 
-        public IList<OrderReadModel> GetOrders(string email)
+        public async Task<IEnumerable<OrderReadModel>> GetOrdersAsync(string email)
         {
-            var orders = _repository.Order.GetAllOrders(email);
+            var orders = await _repository.Order.GetAllOrdersAsync(email);
             var ordersModel = _mapper.Map<IList<OrderReadModel>>(orders);
 
             return ordersModel;
         }
 
-        private void ValidateOrder(OrderCreateModel orderModel)
+        private static void ValidateOrder(OrderCreateModel orderModel)
         {
             if (string.IsNullOrWhiteSpace(orderModel.Email))
                 throw new ApplicationException("Order username must be defined. Can not be empty or white space!!!");

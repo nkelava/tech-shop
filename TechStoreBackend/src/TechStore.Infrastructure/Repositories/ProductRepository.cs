@@ -15,52 +15,46 @@ namespace TechStore.Infrastructure.Repositories
 
         public async Task<Product> GetProductByIdAsync(int productId) {
             var product = await FindByCondition(p => p.Id.Equals(productId)).FirstOrDefaultAsync();
-
             return product;
         }
         public async Task<Product> GetProductBySlugAsync(string slug)
         {
-            var product = await FindByCondition(p => p.Slug.ToLower().Equals(slug.ToLower())).FirstOrDefaultAsync();
+            var product = await FindByCondition(p => p.Slug.ToLower().Equals(slug.ToLower()))
+                .Include(p => p.ProductAttributes)
+                    .ThenInclude(pas => pas.Attribute)
+                .Include(p => p.ProductAttributes)
+                    .ThenInclude(pas => pas.AttributeValue)
+                .FirstOrDefaultAsync();
             
             return product;
         }
 
-        public async Task<IList<Product>> GetAllProductsAsync()
+        public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            var products = await FindAll().ToListAsync();
-
-            return products;
+            return await FindAll().ToListAsync();
         }
 
-        public async Task<IList<Product>> GetProductsOnSaleAsync()
+        public async Task<IEnumerable<Product>> GetProductsOnSaleAsync()
         {
-            var products = await FindByCondition(p => p.OnSale.Equals(true)).ToListAsync();
-
-            return products;
+            return await FindByCondition(p => p.OnSale.Equals(true)).ToListAsync();
         }
 
-        public async Task<IList<Product>> GetNewProductsAsync()
+        public async Task<IEnumerable<Product>> GetNewProductsAsync()
         {
-            var products = await FindAll().OrderByDescending(p => p.CreatedAt).Take(20).ToListAsync();
-
-            return products;
+            return await FindAll().OrderByDescending(p => p.CreatedAt).Take(12).ToListAsync();
         }
         
-        public async Task<IList<Product>> GetTopSellingProductsAsync()
+        public async Task<IEnumerable<Product>> GetTopSellingProductsAsync()
         {
-            var products = await FindAll().OrderByDescending(p => p.UnitsSold).Take(20).ToListAsync();
-
-            return products;
+            return await FindAll().OrderByDescending(p => p.UnitsSold).Take(12).ToListAsync();
         }
 
-        public async Task<IList<Product>> GetTopRatedProductsAsync()
+        public async Task<IEnumerable<Product>> GetTopRatedProductsAsync()
         {
-            var products = await FindAll().OrderByDescending(p => p.Rating).Take(20).ToListAsync();
-
-            return products;
+            return await FindAll().OrderByDescending(p => p.Rating).Take(12).ToListAsync();
         }
 
-        public async Task<IList<Product>> GetProductsBySubcategoryIdAsync(int subcategoryId)
+        public async Task<IEnumerable<Product>> GetProductsBySubcategoryIdAsync(int subcategoryId)
         {
             var spec = new ProductsWithSubcategorySpecification(subcategoryId);
             var products = await Find(spec)
@@ -73,7 +67,7 @@ namespace TechStore.Infrastructure.Repositories
             return products;
         }
 
-        public async Task<IList<Product>> GetProductsBySubcategorySlugAsync(string subcategorySlug)
+        public async Task<IEnumerable<Product>> GetProductsBySubcategorySlugAsync(string subcategorySlug)
         {
             var spec = new ProductsWithSubcategorySpecification(subcategorySlug);
             //var products = await Find(spec).ToListAsync();
@@ -87,26 +81,20 @@ namespace TechStore.Infrastructure.Repositories
             return products;
         }
 
-        public async Task<IList<Product>> GetProductsByNameAsync(string productName)
+        public async Task<IEnumerable<Product>> GetProductsByNameAsync(string productName)
         {
-            var products = await FindByCondition(p => p.Name.ToLower().Contains(productName.ToLower())).ToListAsync();
-
-            return products;
+            return await FindByCondition(p => p.Name.ToLower().Contains(productName.ToLower())).ToListAsync();
         }
 
 
-        public async Task<IList<Product>> GetProductsByPriceAsync(decimal priceFrom, decimal priceTo)
+        public async Task<IEnumerable<Product>> GetProductsByPriceAsync(decimal priceFrom, decimal priceTo)
         {   
-            var products = await FindByCondition(p => p.Price >= priceFrom && p.Price <= priceTo).ToListAsync();
-
-            return products;
+            return await FindByCondition(p => p.Price >= priceFrom && p.Price <= priceTo).ToListAsync();
         }
 
-        public async Task<IList<Product>> GetProductsByRatingAsync(decimal rating)
+        public async Task<IEnumerable<Product>> GetProductsByRatingAsync(decimal rating)
         {
-            var products = await FindByCondition(p => p.Rating.Equals(rating)).ToListAsync();
-
-            return products;
+            return await FindByCondition(p => p.Rating.Equals(rating)).ToListAsync();
         }
     }
 }

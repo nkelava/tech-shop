@@ -9,7 +9,6 @@ namespace TechStore.Domain.Entities.ProductAggregate
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         // n - n
-        public List<AttributeValueSet> Attributes { get; set; }
         public List<ProductAttributeSet> ProductAttributes { get; set; }
     }
 }

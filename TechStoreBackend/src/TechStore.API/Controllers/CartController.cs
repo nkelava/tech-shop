@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechStore.Application.Interfaces.Services;
 
@@ -19,12 +20,12 @@ namespace TechStore.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(string username, int productId)
+        public async Task<IActionResult> Add(string username, int quantity, int productId)
         {
-            if (username == null || productId < 1)
+            if (username is null || productId < 1)
                 return BadRequest();
 
-            await _cartService.AddProductAsync(username, productId);
+            await _cartService.AddProductAsync(username, quantity, productId);
 
             return Ok(productId);
         }
@@ -51,21 +52,16 @@ namespace TechStore.API.Controllers
         //    return Ok();
         //}
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetByEmail(string email)
         {
-            if (email == null)
-                return BadRequest();
-
-            if (email.Length == 0)
+            if (email is null)
                 return BadRequest();
 
             var cart = await _cartService.GetByEmail(email);
 
-            if (cart == null)
-                return NotFound();
-
-            return Ok(cart);
+            return (cart is null) ? NotFound() : Ok(cart);
         }
     }
 }

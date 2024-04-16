@@ -39,8 +39,8 @@ const toggleDialog = () => {
     </v-btn>
     <v-dialog v-model="dialog" persistent width="auto">
       <v-card class="dialog">
-        <v-card-title> Your Shopping Cart</v-card-title>
-        <v-card-text>
+        <v-card-title class="font-weight-bold"> Your Wishlist </v-card-title>
+        <v-card-text v-if="currentPageItems.length">
           <wishlist-table :products="currentPageItems" @deleteItem="deleteItem" />
           <v-container>
             <v-row justify="center">
@@ -56,6 +56,7 @@ const toggleDialog = () => {
             </v-row>
           </v-container>
         </v-card-text>
+        <v-card-text v-else> Your Wishlist is currently empty! </v-card-text>
         <v-card-actions>
           <v-btn color="red-darken-1" variant="text" @click="toggleDialog"> Close </v-btn>
         </v-card-actions>

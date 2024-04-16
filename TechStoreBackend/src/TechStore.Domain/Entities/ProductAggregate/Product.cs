@@ -27,6 +27,8 @@ namespace TechStore.Domain.Entities.ProductAggregate
         // n - 1
         public int SubcategoryId { get; set; }
         public Subcategory Subcategory { get; set; }
+        public int? PromoCodeId { get; set; }
+        public PromoCode PromoCode {  get; set; }
 
         //// 1 - n
         public List<Review> Reviews { get; set; }
@@ -40,7 +42,7 @@ namespace TechStore.Domain.Entities.ProductAggregate
 
         public void AddReview(Review review)
         {
-            if (review != null)
+            if (review is not null)
                 Reviews.Add(review);
         }
 

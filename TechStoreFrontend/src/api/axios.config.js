@@ -1,5 +1,5 @@
-const user = JSON.parse(localStorage.getItem("user"));
-const accessToken = user.user ? user.user.token : null;
+const userLocalStorage = JSON.parse(localStorage.getItem("user"));
+const accessToken = userLocalStorage && userLocalStorage.user ? userLocalStorage.user.token : null;
 
 const defaultOptions = {
   baseURL: import.meta.env.VITE_API_BASE_URL,

@@ -1,5 +1,4 @@
-﻿using TechStore.Domain.Entities.Base;
-using TechStore.Domain.Entities.ProductAggregate;
+﻿using TechStore.Domain.Entities.ProductAggregate;
 
 
 namespace TechStore.Domain.Entities.Cart

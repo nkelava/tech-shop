@@ -63,8 +63,8 @@ function removePromoCode() {
     </v-btn>
     <v-dialog v-model="cartDialogActive" persistent width="auto">
       <v-card class="dialog">
-        <v-card-title> Your Shopping Cart</v-card-title>
-        <v-card-text>
+        <v-card-title class="font-weight-bold"> Your Shopping Cart</v-card-title>
+        <v-card-text v-if="currentPageItems.length">
           <cart-table :products="currentPageItems" @deleteItem="deleteItem" />
           <v-container>
             <v-row justify="center">
@@ -80,7 +80,7 @@ function removePromoCode() {
             </v-row>
           </v-container>
         </v-card-text>
-        <div class="price">
+        <div v-if="currentPageItems.length" class="price">
           <form @submit.prevent>
             <input
               v-model="promoCodeState.input"
@@ -103,11 +103,13 @@ function removePromoCode() {
           </form>
           <h2 class="text-end pr-4">Total: {{ cart.totalPrice(promoCodeState.discount) }}$</h2>
         </div>
+        <v-card-text v-else> Your Cart is currently empty! </v-card-text>
         <v-card-actions class="justify-space-between">
           <v-btn color="red-darken-1" variant="text" @click="cartDialogActive = !cartDialogActive">
             Close
           </v-btn>
           <v-btn
+            v-if="currentPageItems.length"
             color="green-darken-1"
             variant="text"
             @click="orderDialogActive = !orderDialogActive"
@@ -147,7 +149,7 @@ function removePromoCode() {
 }
 
 .btn-submit {
-  height: 33px !important;
+  height: 100% !important;
   border: 1px solid transparent;
   border-radius: 0 5px 5px 0;
   background-color: var(--ts-c-bg-dark);

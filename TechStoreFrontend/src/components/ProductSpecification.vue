@@ -1,18 +1,16 @@
 <script setup>
-const props = defineProps(["product"]);
+import { toRefs } from "vue";
 
-const attributes = Object.keys(props.product.specification);
+const props = defineProps(["product"]);
+const { product } = toRefs(props);
 </script>
 
 <template>
   <v-table class="table">
     <tbody>
-      <tr v-for="(attribute, index) in attributes" :key="index">
-        <td class="f">{{ attribute }}</td>
-        <td>
-          {{ props.product.specification[attribute].value }}
-          {{ props.product.specification[attribute].unit || "" }}
-        </td>
+      <tr v-for="(productAttribute, index) in product.productAttributes" :key="index">
+        <td>{{ productAttribute.attribute.name }}</td>
+        <td>{{ productAttribute.attributeValue.value }}</td>
       </tr>
     </tbody>
   </v-table>

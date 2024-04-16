@@ -20,12 +20,12 @@ namespace TechStore.API.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add(ReviewCreateModel review)
+        public async Task<IActionResult> Create(ReviewCreateModel review)
         {
-            if (review == null)
+            if (review is null)
                 return BadRequest();
 
-            await _reviewService.AddReview(review);
+            await _reviewService.CreateAsync(review);
 
             return Ok(review);
         }
@@ -36,17 +36,9 @@ namespace TechStore.API.Controllers
             if (reviewId < 1)
                 return BadRequest();
 
-            await _reviewService.DeleteReview(reviewId);
+            await _reviewService.DeleteAsync(reviewId);
 
             return Ok(reviewId);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAllReviews()
-        {
-            var reviews = await _reviewService.GetAllReviewsAsync();
-
-            return Ok(reviews);
         }
 
         [HttpGet("{productId:int}")]
@@ -55,24 +47,26 @@ namespace TechStore.API.Controllers
             if (productId < 1)
                 return BadRequest();
 
-            var reviews = _reviewService.GetReviewsByProductIdAsync(productId);
+            var reviews = await _reviewService.GetReviewsByProductIdAsync(productId);
 
-            if (reviews == null)
-                return NotFound();
-
-            return Ok(reviews);
+            return (reviews is null) ? NotFound() : Ok(reviews);
         }
 
         [HttpGet("{email}")]
         public async Task<IActionResult> GetReviewsByEmail(string email)
         {
-            if (email == null || email.Length == 0)
+            if (email is null)
                 return BadRequest();
 
-            var reviews = _reviewService.GetReviewsByEmailAsync(email);
+            var reviews = await _reviewService.GetReviewsByEmailAsync(email);
 
-            if (reviews == null)
-                return NotFound();
+            return (reviews is null) ? NotFound() : Ok(reviews);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllReviews()
+        {
+            var reviews = await _reviewService.GetAllReviewsAsync();
 
             return Ok(reviews);
         }

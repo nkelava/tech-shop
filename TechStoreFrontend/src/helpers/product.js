@@ -1,6 +1,8 @@
 export function parseProductAttributes(products) {
   let attributeValuesMap = new Map();
 
+  console.log("attr: ", products);
+
   products.forEach((product) => {
     product.productAttributes.forEach((pa) => {
       if (attributeValuesMap.has(pa.attributeId)) {

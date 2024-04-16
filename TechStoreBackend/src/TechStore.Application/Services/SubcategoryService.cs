@@ -18,7 +18,7 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task AddAsync(SubcategoryCreateModel subcategoryModel)
+        public async Task CreateAsync(SubcategoryCreateModel subcategoryModel)
         {
             var subcategory = _mapper.Map<Subcategory>(subcategoryModel);
 
@@ -58,7 +58,7 @@ namespace TechStore.Application.Services
             return subcategoryReadModel;
         }
 
-        public async Task<IList<SubcategoryReadModel>> GetAllSubcategoriesAsync()
+        public async Task<IEnumerable<SubcategoryReadModel>> GetAllSubcategoriesAsync()
         {
             var subcategories = await _repository.Subcategory.GetAllSubcategoriesAsync();
             var subcategoriesReadModel = _mapper.Map<IList<SubcategoryReadModel>>(subcategories);

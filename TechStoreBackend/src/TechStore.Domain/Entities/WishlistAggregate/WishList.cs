@@ -15,7 +15,7 @@ namespace TechStore.Domain.Entities.Wishlist
         {
             var product = Products.FirstOrDefault(p => p.ProductId == productId);
 
-            if (product != null)
+            if (product is not null)
                 return;
 
             Products.Add(new WishListProduct
@@ -29,7 +29,7 @@ namespace TechStore.Domain.Entities.Wishlist
         {
             var product = Products.FirstOrDefault(p => p.ProductId == productId);
 
-            if(product != null)
+            if(product is not null)
             {
                 Products.Remove(product);
             }

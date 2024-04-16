@@ -21,12 +21,12 @@ namespace TechStore.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] SubcategoryCreateModel subcategory)
+        public async Task<IActionResult> Create([FromBody] SubcategoryCreateModel subcategory)
         {
-            if (subcategory == null)
+            if (subcategory is null)
                 return BadRequest();
 
-            await _subcategoryService.AddAsync(subcategory);
+            await _subcategoryService.CreateAsync(subcategory);
 
             return Ok(subcategory);
         }
@@ -34,7 +34,7 @@ namespace TechStore.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] SubcategoryUpdateModel subcategory)
         {
-            if (subcategory == null)
+            if (subcategory is null)
                 return BadRequest();
 
             await _subcategoryService.UpdateAsync(subcategory);
@@ -61,10 +61,7 @@ namespace TechStore.API.Controllers
 
             var subcategory = await _subcategoryService.GetSubcategoryByIdAsync(id);
 
-            if (subcategory == null)
-                return NotFound();
-
-            return Ok(subcategory);
+            return (subcategory is null) ? NotFound() : Ok(subcategory);
         }
 
 
@@ -76,10 +73,7 @@ namespace TechStore.API.Controllers
 
             var subcategory = await _subcategoryService.GetSubcategoryBySlugAsync(slug);
 
-            if (subcategory == null)
-                return NotFound();
-
-            return Ok(subcategory);
+            return (subcategory is null) ? NotFound() : Ok(subcategory);
         }
 
         [HttpGet]

@@ -26,7 +26,13 @@ export const useUserStore = defineStore("user", {
 
     async registerUser(email, password, confirmPassword) {
       await axios
-        .post("/auth/register", { email, password, confirmPassword })
+        .post("/auth/register", {
+          email,
+          password,
+          confirmPassword,
+          FirstName: "Test",
+          LastName: "Test",
+        })
         .then((response) => (this.user = response.data))
         .catch((error) => (this.error = error.reponse ? error.response.data : error));
     },

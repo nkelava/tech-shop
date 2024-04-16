@@ -15,9 +15,11 @@ namespace TechStore.Domain.Entities.Cart
         {
             var product = Products.FirstOrDefault(p => p.ProductId == productId);
 
-            if (product != null)
-            {
-                ++product.Quantity;
+            if (product is not null) {
+                if (product.Product.UnitsInStock > 0) {
+                    ++product.Quantity;
+                }
+
                 product.TotalPrice = product.Quantity * product.UnitPrice;
                 return;
             }
@@ -36,7 +38,7 @@ namespace TechStore.Domain.Entities.Cart
         {
             var product = Products.FirstOrDefault(p => p.ProductId == productId);
 
-            if(product != null)
+            if (product is not null)
             {
                 Products.Remove(product);
             }

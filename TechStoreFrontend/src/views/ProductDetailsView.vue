@@ -1,40 +1,45 @@
 <script setup>
-import { ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
+import axios from "@/api/axios";
 import ProductGallery from "@/components/ProductGallery.vue";
 import ProductDetails from "@/components/ProductDetails.vue";
 import TabsWrapper from "@/components/TabsWrapper.vue";
 
-// import { getProductById } from "@/database/services/productService.js";
-import { getProductWithSpecification } from "../database/services/productService";
-
 const route = useRoute();
 const categorySlug = ref(route.params.category);
 const subcategorySlug = ref(route.params.subcategory);
-const productId = ref(route.params.productId);
-const product = getProductWithSpecification(Number(productId.value));
+const productSlug = ref(route.params.productSlug);
+const product = ref({});
 const breadcrumbsItems = [
   {
-    text: "Home",
+    title: "Home",
     disabled: false,
     href: "/",
   },
   {
-    text: `${categorySlug.value}`,
+    title: `${categorySlug.value}`,
     disabled: false,
     href: `/${categorySlug.value}`,
   },
   {
-    text: `${subcategorySlug.value}`,
+    title: `${subcategorySlug.value}`,
     disabled: false,
     href: `/${categorySlug.value}/${subcategorySlug.value}`,
   },
   {
-    text: `${product.name}`,
+    title: `${productSlug.value}`,
     disabled: true,
-    href: `/${categorySlug.value}/${subcategorySlug.value}/${product.id}`,
+    href: `/${categorySlug.value}/${subcategorySlug.value}/${productSlug.value}`,
   },
 ];
+
+onMounted(async () => {
+  await axios
+    .get(`/products/${productSlug.value}`)
+    .then((response) => (product.value = response.data))
+    .catch((error) => console.log(error));
+});
 </script>
 
 <template>

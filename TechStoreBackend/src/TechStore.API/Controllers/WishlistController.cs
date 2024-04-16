@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechStore.Application.Interfaces.Services;
 
@@ -18,10 +19,11 @@ namespace TechStore.API.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Add(string username, int productId)
+        public async Task<IActionResult> Create(string username, int productId)
         {
-            if (username == null || productId < 1)
+            if (username is null || productId < 1)
                 return BadRequest();
 
             await _wishlistService.AddProductAsync(username, productId);
@@ -29,6 +31,7 @@ namespace TechStore.API.Controllers
             return Ok(productId);
         }
 
+        [Authorize]
         [HttpDelete]
         public async Task<IActionResult> Delete(int wishlistId, int productId)
         {
@@ -40,21 +43,16 @@ namespace TechStore.API.Controllers
             return Ok(productId);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetWishlistByUsername(string username)
         {
-            if (username == null)
-                return BadRequest();
-
-            if (username.Length == 0)
+            if (string.IsNullOrWhiteSpace(username))
                 return BadRequest();
 
             var wishlist = await _wishlistService.GetByUsernameAsync(username);
 
-            if (wishlist == null)
-                return NotFound();
-
-            return Ok(wishlist);
+            return (wishlist is null) ? NotFound() : Ok(wishlist);
         }
     }
 }

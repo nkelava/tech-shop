@@ -26,14 +26,14 @@ function addToCart() {
 
 <template>
   <section class="product__details">
-    <h1>{{ product.title }}</h1>
+    <h1>{{ product.summary }}</h1>
     <span class="rating">
       <v-rating v-model="product.rating" size="small" density="compact" readonly> </v-rating>
       {{ product.rating }}
-      ({{ product.ratingCount }})
+      ({{ product.reviewCount }})
     </span>
     <p class="description">{{ product.description }}</p>
-    <h1 class="price">{{ product.price }} {{ product.currency }}</h1>
+    <h1 class="price">$ {{ product.price }}</h1>
     <div class="quantity-container">
       <span class="quantity__label">Quantity:</span>
       <span class="quantity__input">

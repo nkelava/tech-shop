@@ -17,12 +17,12 @@ namespace TechStore.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody]ProductCreateModel product)
+        public async Task<IActionResult> Create([FromBody]ProductCreateModel product)
         {
-            if (product == null)
+            if (product is null)
                 return BadRequest();
             
-            await _productService.AddAsync(product);
+            await _productService.CreateAsync(product);
             
             return Ok();
         }
@@ -41,20 +41,12 @@ namespace TechStore.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody]ProductUpdateModel product)
         {
-            if (product == null)
+            if (product is null)
                 return BadRequest();
 
             await _productService.UpdateAsync(product);
 
             return Ok(product);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetProducts()
-        {
-            var products = await _productService.GetAllProductsAsync();
-
-            return Ok(products);
         }
 
         [HttpGet("{id:int}")]
@@ -65,21 +57,23 @@ namespace TechStore.API.Controllers
 
             var product = await _productService.GetProductByIdAsync(id);
 
-            if (product == null)
-                return NotFound();
-
-            return Ok(product);
+            return (product is null) ? NotFound() : Ok(product);
         }
 
         [HttpGet("{slug}")]
-        public async Task<IActionResult> GetProductBySlug(string slug)
+        public async Task<ActionResult<ProductReadModel>> GetProductBySlug(string slug)
         {
             var product = await _productService.GetProductBySlugAsync(slug);
 
-            if (product == null)
-                return NotFound();
+            return (product is null) ? NotFound() : Ok(product);
+        }
 
-            return Ok(product);
+        [HttpGet]
+        public async Task<IActionResult> GetProducts()
+        {
+            var products = await _productService.GetAllProductsAsync();
+
+            return Ok(products);
         }
 
         [HttpGet("onsale")]
@@ -120,10 +114,7 @@ namespace TechStore.API.Controllers
         {
             var products = await _productService.GetProductsBySubcategoryIdAsync(id);
 
-            if (products == null)
-                return NotFound();
-
-            return Ok(products);
+            return (products is null) ? NotFound() : Ok(products);
         }
 
         [HttpGet("subcategory/{slug}")]
@@ -131,10 +122,7 @@ namespace TechStore.API.Controllers
         {
             var products = await _productService.GetProductsBySubcategorySlugAsync(slug);
 
-            if (products == null)
-                return NotFound();
-
-            return Ok(products);
+            return (products is null) ? NotFound() : Ok(products);
         }
 
         [HttpGet("name/{name}")]

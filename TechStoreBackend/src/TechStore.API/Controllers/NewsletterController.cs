@@ -24,7 +24,7 @@ namespace TechStore.API.Controllers
         {
             var email = subscription.Email;
 
-            if (email == null || email.Length < 1)
+            if (string.IsNullOrEmpty(email))
                 return BadRequest();
 
             await _newsletterService.Subscribe(email);
@@ -35,7 +35,7 @@ namespace TechStore.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> Unsubscribe(string email)
         {
-            if (email == null || email.Length < 1)
+            if (string.IsNullOrEmpty(email))
                 return BadRequest();
 
             await _newsletterService.Unsubscribe(email);

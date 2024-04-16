@@ -39,7 +39,7 @@ const router = createRouter({
       component: () => import("../views/SubcategoryView.vue"),
     },
     {
-      path: "/:category/:subcategory/:productId",
+      path: "/:category/:subcategory/:productSlug",
       name: "product",
       component: () => import("../views/ProductDetailsView.vue"),
     },

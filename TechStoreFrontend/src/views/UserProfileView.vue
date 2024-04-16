@@ -6,14 +6,13 @@ import UserOrders from "@/components/UserOrders.vue";
 const tab = ref("details");
 const breadcrumbsItems = [
   {
-    text: "Home",
+    title: "Home",
     disabled: false,
     href: "/",
   },
   {
-    text: "My Account",
+    title: "My Account",
     disabled: true,
-    href: "/user",
   },
 ];
 </script>

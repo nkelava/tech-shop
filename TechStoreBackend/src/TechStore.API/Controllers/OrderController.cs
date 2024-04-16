@@ -20,12 +20,12 @@ namespace TechStore.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] OrderCreateModel order)
+        public async Task<IActionResult> Create([FromBody] OrderCreateModel order)
         {
-            if (order == null)
+            if (order is null)
                 return BadRequest();
 
-            await _orderService.AddAsync(order);
+            await _orderService.CreateAsync(order);
 
             return Ok(order);
         }
@@ -44,7 +44,7 @@ namespace TechStore.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] OrderUpdateModel order)
         {
-            if (order == null)
+            if (order is null)
                 return BadRequest();
 
             await _orderService.UpdateAsync(order);
@@ -55,9 +55,9 @@ namespace TechStore.API.Controllers
         [HttpGet]
         public IActionResult GetOrders(string? email)
         {
-            var orders = (email == null) ? _orderService.GetOrders() : _orderService.GetOrders(email);
+            var orders = (email is null) ? _orderService.GetOrdersAsync() : _orderService.GetOrdersAsync(email);
 
-            return Ok(orders);
+            return (email is not null && orders is null) ? NotFound() : Ok(orders);
         }
 
         [HttpGet("{id:int}")]
@@ -66,26 +66,20 @@ namespace TechStore.API.Controllers
             if (id < 0)
                 return BadRequest();
 
-            var order =  _orderService.GetOrderById(id);
+            var order =  _orderService.GetOrderByIdAsync(id);
 
-            if (order == null)
-                return NotFound();
-
-            return Ok(order);
+            return (order is null) ? NotFound() : Ok(order);
         }
 
         //[HttpGet("{email}")]
         //public async Task<IActionResult> GetByEmail(string email)
         //{
-        //    if (email == null || email.Length == 0)
+        //    if (email is null)
         //        return BadRequest();
 
         //    var orders = _orderService.GetOrdersByEmail(email);
 
-        //    if (orders == null)
-        //        return NotFound();
-
-        //    return Ok(orders);
+        //    return (orders is null) ? NotFound() : Ok(orders);
         //}
     }
 }

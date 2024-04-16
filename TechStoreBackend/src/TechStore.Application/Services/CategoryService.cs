@@ -18,7 +18,7 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task AddAsync(CategoryCreateModel categoryModel)
+        public async Task CreateAsync(CategoryCreateModel categoryModel)
         {
             var category = _mapper.Map<Category>(categoryModel);
 
@@ -59,7 +59,7 @@ namespace TechStore.Application.Services
             return categoryModel;
         }
 
-        public async Task<IList<CategoryReadModel>> GetAllCategoriesAsync()
+        public async Task<IEnumerable<CategoryReadModel>> GetAllCategoriesAsync()
         {
             var categories = await _repository.Category.GetAllCategoriesAsync();
             var categoriesModel = _mapper.Map<IList<CategoryReadModel>>(categories);

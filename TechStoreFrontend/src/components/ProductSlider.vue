@@ -46,10 +46,6 @@ const breakpoints = {
 </template>
 
 <style>
-.carousel__pagination {
-  margin-top: 1.5rem;
-}
-
 .carousel__prev,
 .carousel__next {
   height: 3rem;

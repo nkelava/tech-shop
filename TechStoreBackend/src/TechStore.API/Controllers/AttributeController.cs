@@ -17,14 +17,18 @@ namespace TechStore.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] AttributeCreateModel attibute)
+        public async Task<IActionResult> Create([FromBody] AttributeCreateModel attibute)
         {
-            if (attibute == null)
+            if (attibute is null)
                 return BadRequest();
+            
+            try {
+                await _attributeService.CreateAsync(attibute);
+                return Ok(attibute);
+            } catch {
+                return BadRequest();
+            }
 
-            await _attributeService.AddAsync(attibute);
-
-            return Ok(attibute);
         }
 
         [HttpDelete]
@@ -33,31 +37,31 @@ namespace TechStore.API.Controllers
             if (id < 1)
                 return BadRequest();
 
-            await _attributeService.DeleteAsync(id);
+            try {
+                await _attributeService.DeleteAsync(id);
+                return Ok(id);
+            } catch {
+                return BadRequest();
+            }
 
-            return Ok(id);
         }
 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] AttributeUpdateModel attibute)
         {
-            if (attibute == null)
+            if (attibute is null)
                 return BadRequest();
 
-            await _attributeService.UpdateAsync(attibute);
-
-            return Ok(attibute);
+            try {
+                await _attributeService.UpdateAsync(attibute);
+                return Ok(attibute);
+            }
+            catch {
+                return BadRequest();
+            }
         }
 
-        [HttpGet]
-        public async Task<IList<AttributeReadModel>> GetAllAttributes()
-        {
-            var attributes = await _attributeService.GetAllAttributesAsync();
-
-            return attributes;
-        }
-
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAttributeById(int id)
         {
             if (id < 1)
@@ -65,25 +69,26 @@ namespace TechStore.API.Controllers
 
             var attibute = await _attributeService.GetAttributeByIdAsync(id);
 
-            if (attibute == null)
-                return NotFound();
-
-            return Ok(attibute);
+            return (attibute is null) ? NotFound() : Ok(attibute);
         }
 
-        [HttpGet("name/{name}")]
+        [HttpGet("{name}")]
         public async Task<IActionResult> GetAttributeByName(string name)
         {
-            if (name == null || name.Length < 1)
+            if (name is null || name.Length < 1)
                 return BadRequest();
 
             var attibute = await _attributeService.GetAttributeByNameAsync(name);
 
-            if (attibute == null)
-                return NotFound();
-
-            return Ok(attibute);
+            return (attibute is null) ? NotFound() : Ok(attibute);
         }
 
+        [HttpGet]
+        public async Task<IEnumerable<AttributeReadModel>> GetAllAttributes()
+        {
+            var attributes = await _attributeService.GetAllAttributesAsync();
+
+            return attributes;
+        }
     }
 }

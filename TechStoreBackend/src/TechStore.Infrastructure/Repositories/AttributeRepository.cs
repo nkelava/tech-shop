@@ -24,7 +24,7 @@ namespace TechStore.Infrastructure.Repositories
             return await FindByCondition(p => p.Name.Equals(name)).FirstOrDefaultAsync();
         }
 
-        public async Task<IList<ProductAttribute>> GetAllAttributesAsync()
+        public async Task<IEnumerable<ProductAttribute>> GetAllAttributesAsync()
         {
             return await FindAll().ToListAsync();
         }

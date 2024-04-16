@@ -1,5 +1,6 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import axios from "@/api/axios";
+import { onMounted, computed, ref } from "vue";
 import ImageSlider from "@/components/ImageSlider.vue";
 import TheBenefits from "@/components/TheBenefits.vue";
 import TheBanners from "@/components/TheAds.vue";
@@ -13,11 +14,24 @@ const hotOffers = ref([]);
 const topRated = ref([]);
 const tab = ref("new");
 
-onMounted(() => {
-  bestSellers.value = getProducts();
-  newArrivals.value = getProducts();
-  hotOffers.value = getProducts();
-  topRated.value = getProducts();
+onMounted(async () => {
+  bestSellers.value = await axios
+    .get("/products/bestsellers")
+    .then((response) => response.data)
+    .catch(() => null);
+
+  newArrivals.value = await axios
+    .get("/products/new")
+    .then((response) => response.data)
+    .catch(() => null);
+  hotOffers.value = await axios
+    .get("/products/top")
+    .then((response) => response.data)
+    .catch(() => null);
+  topRated.value = await axios
+    .get("/products/top")
+    .then((response) => response.data)
+    .catch(() => null);
 });
 </script>
 
@@ -28,7 +42,7 @@ onMounted(() => {
     <div class="best-sellers ts-container">
       <h2>Best Sellers</h2>
       <hr />
-      <product-grid :products="bestSellers" />
+      <product-grid v-if="bestSellers" :products="bestSellers" />
     </div>
     <the-banners />
     <div class="ts-container tabs-container">
