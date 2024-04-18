@@ -34,7 +34,7 @@ watch(
     categorySlug.value = newCategory;
     await axios
       .get(`/categories/${categorySlug.value}/subcategories`)
-      .then((response) => (category = response.data))
+      .then((response) => (category.value = response.data))
       .catch((error) => console.log(error));
   }
 );
