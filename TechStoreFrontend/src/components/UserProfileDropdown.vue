@@ -43,7 +43,7 @@ onMounted(async () => {
         </v-btn>
       </template>
 
-      <v-list>
+      <v-list class="dropdown-list">
         <v-list-item v-for="(item, i) in dropdownItems" :key="i">
           <router-link :to="item.to" class="link">{{ item.title }}</router-link>
         </v-list-item>
@@ -57,6 +57,10 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.dropdown-list {
+  max-width: 300px;
+}
+
 .link {
   color: var(--ts-c-text-dark);
 }
