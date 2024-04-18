@@ -6,7 +6,6 @@ import TheBenefits from "@/components/TheBenefits.vue";
 import TheBanners from "@/components/TheAds.vue";
 import ProductGrid from "@/components/ProductGrid.vue";
 import ProductSlider from "@/components/ProductSlider.vue";
-import { getProducts } from "@/database/services/productService";
 
 const bestSellers = ref([]);
 const newArrivals = ref([]);
@@ -24,10 +23,12 @@ onMounted(async () => {
     .get("/products/new")
     .then((response) => response.data)
     .catch(() => null);
+
   hotOffers.value = await axios
     .get("/products/top")
     .then((response) => response.data)
     .catch(() => null);
+
   topRated.value = await axios
     .get("/products/top")
     .then((response) => response.data)
