@@ -11,10 +11,10 @@ const userStore = useUserStore();
 <template>
   <div class="header-top ts-container">
     <div class="header-top__contact">
-      <contact-info :imgUrl="EmailIcon" imgAlt="email icon">
+      <contact-info :imgUrl="EmailIcon" imgAlt="email">
         Email: info.techplanet@gmail.com
       </contact-info>
-      <contact-info :imgUrl="PhoneIcon" imgAlt="phone icon"> Phone: 123-456-7890 </contact-info>
+      <contact-info :imgUrl="PhoneIcon" imgAlt="phone"> Phone: 123-456-7890 </contact-info>
     </div>
     <div v-if="!userStore.isLoggedIn" class="header-top__auth">
       <v-icon icon="mdi-login-variant"></v-icon>
@@ -33,7 +33,7 @@ const userStore = useUserStore();
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  font-size: var(--ts-text-size-sm);
+  font-size: var(--ts-text-size-xs);
 }
 
 .header-top__contact {
