@@ -50,13 +50,15 @@ onMounted(async () => {
       <div class="tabs">
         <v-tabs v-model="tab">
           <v-tab value="new">
-            <h2 class="text-capitalize">New Arrivals</h2>
+            <h3 class="text-capitalize">New Arrivals</h3>
           </v-tab>
+          <v-divider class="mx-3" inset vertical></v-divider>
           <v-tab value="hot">
-            <h2 class="text-capitalize">Hot Offers</h2>
+            <h3 class="text-capitalize">Hot Offers</h3>
           </v-tab>
+          <v-divider class="mx-3" inset vertical></v-divider>
           <v-tab value="top">
-            <h2 class="text-capitalize">Top Rated</h2>
+            <h3 class="text-capitalize">Top Rated</h3>
           </v-tab>
         </v-tabs>
       </div>
@@ -93,9 +95,23 @@ onMounted(async () => {
   font-size: 12px;
 }
 
+::v-deep .v-divider--vertical {
+  display: none;
+}
+
+::v-deep .carousel__slide {
+  padding: 10px 0 !important;
+}
+
 @media only screen and (min-width: 48em) {
   .tabs button {
     font-size: 1rem;
+  }
+
+  ::v-deep .v-divider--vertical {
+    display: inline;
+    border: 1px solid var(--ts-c-secondary);
+    border-radius: 5px;
   }
 }
 </style>
