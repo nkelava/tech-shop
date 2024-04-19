@@ -1,8 +1,6 @@
 <script setup>
 import ContactForm from "@/components/ContactForm.vue";
 import { ContactUsImage } from "@/assets/images/test/contact";
-import EmailIcon from "@/assets/icons/contact/gmail32.png";
-import PhoneIcon from "@/assets/icons/contact/phone32.png";
 </script>
 
 <template>
@@ -10,22 +8,6 @@ import PhoneIcon from "@/assets/icons/contact/phone32.png";
     <section id="contact">
       <div class="contact__content">
         <img :src="ContactUsImage" class="contact__image" alt="" />
-        <div class="contact__info">
-          <div class="info__item">
-            <img :src="EmailIcon" class="info__icon" alt="email icon" />
-            <div>
-              <p>Email:</p>
-              <p>techshop@gmail.com</p>
-            </div>
-          </div>
-          <div class="info__item">
-            <img :src="PhoneIcon" class="info__icon" alt="phone icon" />
-            <div>
-              <p>Phone:</p>
-              <p>123-456-7890</p>
-            </div>
-          </div>
-        </div>
       </div>
       <div class="contact__form">
         <h1 class="form__title">Contact Us</h1>
@@ -44,18 +26,19 @@ import PhoneIcon from "@/assets/icons/contact/phone32.png";
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 5rem;
-  margin: 5rem 0;
+  gap: 2rem;
+  margin: 5rem 0 3rem;
 }
 
 .contact__content {
   min-width: 300px;
-  max-width: 600px;
+  max-width: 700px;
 }
 
 .contact__image {
   height: auto;
   width: 100%;
+  margin-top: -60px;
 }
 
 .contact__info {
@@ -86,6 +69,12 @@ import PhoneIcon from "@/assets/icons/contact/phone32.png";
 
   .contact__form {
     min-width: 250px;
+  }
+}
+
+@media only screen and (min-width: 80em) {
+  #contact {
+    gap: 5rem;
   }
 }
 </style>
