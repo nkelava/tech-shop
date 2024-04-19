@@ -8,15 +8,15 @@ const props = defineProps(["products"]);
 <template>
   <v-row class="grid">
     <v-col
+      v-for="product in props.products"
+      :key="product.id"
+      class="grid-item"
       cols="12"
       xs="12"
       sm="6"
       md="4"
       lg="3"
       xl="2"
-      v-for="product in props.products"
-      :key="product.id"
-      class="grid-item"
     >
       <product-card :product="product" />
     </v-col>
