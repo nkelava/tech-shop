@@ -118,6 +118,12 @@ hr {
   margin-right: 2rem;
 }
 
+.sidebar-price {
+  display: flex;
+  flex-direction: column;
+  padding-right: 2rem;
+}
+
 .sidebar-price__input {
   border: none;
   background-color: #fff;
@@ -154,5 +160,12 @@ input[type="checkbox"] {
 button {
   height: 30px;
   width: 100%;
+}
+
+@media only screen and (48em <= width <= 1024px) {
+  .sidebar-price {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
 </style>
