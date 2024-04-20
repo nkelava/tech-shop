@@ -99,7 +99,7 @@ onMounted(async () => {
   display: none;
 }
 
-::v-deep .carousel__slide {
+::v-deep .tabs-container .carousel__slide {
   padding: 10px 0 !important;
 }
 
