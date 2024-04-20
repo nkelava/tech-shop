@@ -49,7 +49,7 @@ const slides = [
 }
 
 .carousel__item img {
-  max-height: 66vh;
+  max-height: 64vh;
   height: 100%;
   width: 100%;
 }
