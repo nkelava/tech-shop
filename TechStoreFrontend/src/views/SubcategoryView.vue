@@ -2,7 +2,6 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import axios from "@/api/axios";
-import ImageSlider from "@/components/ImageSlider.vue";
 import ProductList from "@/components/ProductList.vue";
 import FilterSidebar from "@/components/TheFilterSidebar.vue";
 import { parseProductAttributes } from "@/helpers/product";
@@ -82,7 +81,6 @@ function handleFilter(price, rating, filters) {
 
 <template>
   <div>
-    <image-slider />
     <div class="ts-breadcrumbs">
       <v-breadcrumbs :items="breadcrumbsItems">
         <template v-slot:divider>

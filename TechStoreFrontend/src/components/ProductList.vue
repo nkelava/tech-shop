@@ -6,7 +6,7 @@ const props = defineProps(["products"]);
 
 const pageState = ref({
   currentPage: 1,
-  itemsPerPage: 9,
+  itemsPerPage: 12,
 });
 
 const totalPageCount = computed(() =>
