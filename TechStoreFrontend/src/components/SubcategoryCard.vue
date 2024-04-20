@@ -17,7 +17,7 @@ const props = defineProps(["category", "subcategory"]);
     }"
   >
     <div class="card">
-      <img :src="DefaultImage" alt="" class="card__image" />
+      <img :src="DefaultImage" class="card__image" alt="subcategory" />
       <h2 class="card__title">
         {{ props.subcategory.name }}
       </h2>
@@ -31,7 +31,6 @@ const props = defineProps(["category", "subcategory"]);
   max-width: 300px;
   height: 100%;
   max-height: 300px;
-  padding: 1rem;
   text-align: center;
   background-color: var(--ts-c-bg-light);
   border-radius: 10px;
@@ -41,10 +40,10 @@ const props = defineProps(["category", "subcategory"]);
 
 .card__image {
   width: 100%;
-  max-width: 250px;
   height: 100%;
   max-height: 200px;
-  border-radius: 10px;
+  border-radius: 10px 10px 0 0;
+  object-fit: cover;
 }
 
 .card__title {
