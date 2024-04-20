@@ -4,8 +4,6 @@ export function filterProducts(products, price, rating, filters) {
   let checkRating = true;
   let checkPrice = true;
 
-  console.log(price.from, price.to);
-
   const filteredProducts = products.filter((product) => {
     if (filterAttributes.length) {
       checkAttributeValue = filterAttributes.some((attrId) =>
