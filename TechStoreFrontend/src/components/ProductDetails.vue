@@ -4,21 +4,21 @@ import { useCartStore } from "@/store";
 
 const props = defineProps(["product"]);
 const { product } = toRefs(props);
-const counter = ref(1);
+const quantity = ref(1);
 const cart = useCartStore();
 
 const increment = () => {
-  counter.value += 1;
+  quantity.value += 1;
 };
 
 const decrement = () => {
-  if (counter.value > 1) {
-    counter.value -= 1;
+  if (quantity.value > 1) {
+    quantity.value -= 1;
   }
 };
 
 function addToCart() {
-  if (counter.value) {
+  if (quantity.value > 0) {
     cart.addItem(product.value);
   }
 }
@@ -38,7 +38,7 @@ function addToCart() {
       <span class="quantity__label">Quantity:</span>
       <span class="quantity__input">
         <button class="quantity__btn quantity__btn--left" @click="decrement">-</button>
-        <input v-model="counter" type="number" />
+        <input v-model="quantity" type="number" />
         <button class="quantity__btn quantity__btn--right" @click="increment">+</button>
       </span>
     </div>
@@ -141,10 +141,18 @@ input[type="number"] {
   height: 3rem;
   width: 100%;
   max-width: 300;
+  margin-top: auto;
   font-weight: bold;
   background-color: var(--ts-c-ternary);
   color: var(--ts-c-text-dark);
   border: none;
   border-radius: 5px;
+}
+
+@media only screen and (min-width: 80em) {
+  .price {
+    font-size: 26px;
+    margin: 2rem 0 1rem;
+  }
 }
 </style>
