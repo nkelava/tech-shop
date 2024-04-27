@@ -1,7 +1,7 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
-import axios from "@/api/axios";
+import { axiosPublic } from "@/api/axios";
 import ProductGallery from "@/components/ProductGallery.vue";
 import ProductDetails from "@/components/ProductDetails.vue";
 import TabsWrapper from "@/components/TabsWrapper.vue";
@@ -34,11 +34,18 @@ const breadcrumbsItems = [
   },
 ];
 
-onMounted(async () => {
-  await axios
+const getProduct = async () => {
+  await axiosPublic
     .get(`/products/${productSlug.value}`)
-    .then((response) => (product.value = response.data))
-    .catch((error) => console.log(error));
+    .then((response) => (product.value = response.data));
+};
+
+const updateProduct = () => {
+  getProduct();
+};
+
+onMounted(() => {
+  getProduct();
 });
 </script>
 
@@ -52,7 +59,7 @@ onMounted(async () => {
     <div class="product-container ts-container">
       <product-gallery class="gallery" />
       <product-details class="info" :product="product" />
-      <tabs-wrapper class="tabs" :product="product" />
+      <tabs-wrapper class="tabs" :product="product" :update="updateProduct" />
     </div>
   </div>
 </template>

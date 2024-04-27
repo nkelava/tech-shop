@@ -1,27 +1,46 @@
 <script setup>
-import { computed, ref } from "vue";
-import { reviews } from "@/database/seed/reviews";
+import { computed, onMounted, ref } from "vue";
+import { axiosPublic } from "@/api/axios";
+import ReviewDialog from "@/components/review/ReviewDialog.vue";
+import { formatDate } from "@/helpers/formatDate.js";
 
+const props = defineProps(["product", "update"]);
+const reviews = ref([]);
 const pageState = ref({
   currentPage: 1,
   itemsPerPage: 5,
 });
-const totalPageCount = computed(() => Math.ceil(reviews.length / pageState.value.itemsPerPage));
+
+const totalPageCount = computed(() =>
+  Math.ceil(reviews.value.length / pageState.value.itemsPerPage)
+);
+
+const getReviews = async () => {
+  await axiosPublic
+    .get(`/reviews/${props.product.id}`)
+    .then((response) => {
+      reviews.value = response.data;
+    })
+    .catch((error) => console.log(error));
+};
+
+onMounted(async () => {
+  await getReviews();
+});
 
 const currentPageItems = computed(() => {
-  return reviews.slice(
+  return reviews.value.slice(
     (pageState.value.currentPage - 1) * pageState.value.itemsPerPage,
     pageState.value.currentPage * pageState.value.itemsPerPage
   );
 });
 
-const rating = ref(1);
-const message = ref("");
+const reviewDialogActive = ref(false);
 
-function handleReview() {
-  if (message.value.length > 0) {
-    console.log(`User: user; Rating: ${rating.value}; Message: ${message.value}`);
-  }
+async function toggleDialog() {
+  reviewDialogActive.value = !reviewDialogActive.value;
+  props.update();
+  await getReviews();
 }
 </script>
 
@@ -30,16 +49,14 @@ function handleReview() {
     <v-list lines="10">
       <v-list-item v-for="(review, i) in currentPageItems" :key="i">
         <div class="review">
-          <span class="review__name">{{ review.name }}</span>
-          <div class="review__info">
-            <v-rating v-model="review.rating" size="small" density="compact" readonly />
-            <p>{{ new Date().toJSON().slice(0, 10).replace(/-/g, "/") }}</p>
-          </div>
-          <span class="review__text">{{ review.review }}</span>
+          <span class="review__name">{{ review.email }}</span>
+          <v-rating v-model="review.rate" size="small" density="compact" readonly />
+          <span class="review__text">{{ review.comment }}</span>
+          <div class="review__date">{{ formatDate(review.createdAt) }}</div>
         </div>
-        <v-divider inset></v-divider>
+        <v-divider></v-divider>
       </v-list-item>
-      <v-container>
+      <v-container v-if="currentPageItems.length > 0">
         <v-row justify="center">
           <v-col cols="10">
             <v-container class="max-width">
@@ -48,24 +65,16 @@ function handleReview() {
           </v-col>
         </v-row>
       </v-container>
-      <div class="review-input ts-container">
-        <h2>Leave your review</h2>
-        <span class="review__rating">
-          Rating: <v-rating v-model="rating" density="compact" />
-        </span>
-        <v-textarea
-          v-model="message"
-          class="review__textarea"
-          label="Your review"
-          variant="outlined"
-          prepend-inner-icon="mdi-comment"
-          hide-details="true"
-          no-resize
-          clearable
-          @keydown.enter.prevent
-        ></v-textarea>
-        <v-btn class="review__btn" @click="handleReview">Submit</v-btn>
+      <div class="d-flex justify-end">
+        <v-btn class="review__btn" @click="reviewDialogActive = !reviewDialogActive"
+          >Leave review</v-btn
+        >
       </div>
+      <review-dialog
+        v-model="reviewDialogActive"
+        @toggleDialog="toggleDialog"
+        :product="props.product"
+      />
     </v-list>
   </v-card>
 </template>
@@ -86,20 +95,11 @@ function handleReview() {
 .review {
   display: flex;
   flex-direction: column;
+  gap: 5px;
 }
 
 .review__name {
   font-weight: bold;
-}
-
-.review__info {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.review__text {
-  margin-top: 10px;
 }
 
 .review-input {
@@ -129,5 +129,11 @@ function handleReview() {
   text-transform: capitalize;
   background-color: var(--ts-c-bg-dark);
   color: var(--ts-c-text-light);
+}
+
+.review__date {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 </style>

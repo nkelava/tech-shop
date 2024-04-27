@@ -1,15 +1,11 @@
 <script setup>
-import { onMounted, ref, toRefs } from "vue";
+import { ref, toRefs } from "vue";
 import ProductSpecification from "@/components/ProductSpecification.vue";
 import ProductReviews from "@/components/ProductReviews.vue";
 
-const tab = ref();
-const props = defineProps(["product"]);
+const props = defineProps(["product", "update"]);
 const { product } = toRefs(props);
-
-onMounted(() => {
-  console.log(product.value);
-});
+const tab = ref();
 </script>
 
 <template>
@@ -26,7 +22,7 @@ onMounted(() => {
         </v-window-item>
 
         <v-window-item value="reviews">
-          <product-reviews />
+          <product-reviews :product="product" :update="props.update" />
         </v-window-item>
       </v-window>
     </v-card-text>
