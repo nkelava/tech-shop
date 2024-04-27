@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import axios from "@/api/axios";
+import { axiosPublic } from "@/api/axios";
 import ProductList from "@/components/ProductList.vue";
 import FilterSidebar from "@/components/TheFilterSidebar.vue";
 import { parseProductAttributes } from "@/helpers/product";
@@ -33,7 +33,7 @@ const breadcrumbsItems = [
 ];
 
 onMounted(async () => {
-  subcategory.value = await axios
+  subcategory.value = await axiosPublic
     .get(`/subcategories/${subcategorySlug.value}`)
     .then((response) => response.data)
     .catch((error) => {
@@ -41,7 +41,7 @@ onMounted(async () => {
       return null;
     });
 
-  products.value = await axios
+  products.value = await axiosPublic
     .get(`/products/subcategory/${subcategorySlug.value}`)
     .then((response) => response.data)
     .catch((error) => {

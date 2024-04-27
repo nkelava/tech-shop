@@ -1,6 +1,6 @@
 <script setup>
 import { computed, reactive, ref } from "vue";
-import axios from "@/api/axios";
+import { axiosPublic } from "@/api/axios";
 import { useVuelidate } from "@vuelidate/core";
 import { email } from "@vuelidate/validators";
 import BaseInput from "@/components/common/BaseInput.vue";
@@ -18,7 +18,7 @@ async function onSubscribe() {
 
   if (!isValid) return;
 
-  await axios
+  await axiosPublic
     .post("/newsletters", { email: state.email })
     .then(() => {
       toggleAlert();

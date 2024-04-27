@@ -1,6 +1,6 @@
 <script setup>
-import axios from "@/api/axios";
-import { onMounted, computed, ref } from "vue";
+import { axiosPublic } from "@/api/axios";
+import { onMounted, ref } from "vue";
 import ImageSlider from "@/components/ImageSlider.vue";
 import TheBenefits from "@/components/TheBenefits.vue";
 import TheBanners from "@/components/TheAds.vue";
@@ -14,22 +14,22 @@ const topRated = ref([]);
 const tab = ref("new");
 
 onMounted(async () => {
-  bestSellers.value = await axios
+  bestSellers.value = await axiosPublic
     .get("/products/bestsellers")
     .then((response) => response.data)
     .catch(() => null);
 
-  newArrivals.value = await axios
+  newArrivals.value = await axiosPublic
     .get("/products/new")
     .then((response) => response.data)
     .catch(() => null);
 
-  hotOffers.value = await axios
+  hotOffers.value = await axiosPublic
     .get("/products/top")
     .then((response) => response.data)
     .catch(() => null);
 
-  topRated.value = await axios
+  topRated.value = await axiosPublic
     .get("/products/top")
     .then((response) => response.data)
     .catch(() => null);

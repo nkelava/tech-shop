@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
-import axios from "@/api/axios";
+import { axiosPublic } from "@/api/axios";
 import ContactInfo from "@/components/common/ContactInfo.vue";
 import ContactForm from "@/components/ContactForm.vue";
 import EmailIcon from "@/assets/icons/contact/gmail16.png";
@@ -13,7 +13,7 @@ import YoutubeIcon from "@/assets/icons/socials/youtube.png";
 const categories = ref([]);
 
 onMounted(async () => {
-  await axios
+  await axiosPublic
     .get("/categories")
     .then((response) => (categories.value = response.data))
     .catch((error) => console.log(error));

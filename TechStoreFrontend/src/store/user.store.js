@@ -1,4 +1,4 @@
-import axios, { axiosPrivate } from "@/api/axios";
+import { axiosPublic, axiosPrivate } from "@/api/axios";
 import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("user", {
@@ -13,19 +13,20 @@ export const useUserStore = defineStore("user", {
     async getUser() {
       if (!this.isLoggedIn) return;
 
-      // const response = await axios.get(`api/v1/user/${this.user.id}`);
+      // TODO
+      // const response = await axiosPrivate.get(`api/v1/user/${this.user.id}`);
       // this.user = { ...response.data.user, accessToken: this.user.token };
     },
 
     async loginUser(email, password) {
-      await axios
+      await axiosPublic
         .post("/auth/login", { email, password })
         .then((response) => (this.user = response.data))
         .catch((error) => (this.error = error.reponse ? error.response.data : error));
     },
 
     async registerUser(email, password, confirmPassword) {
-      await axios
+      await axiosPublic
         .post("/auth/register", {
           email,
           password,
@@ -46,7 +47,8 @@ export const useUserStore = defineStore("user", {
     },
 
     async deleteUser() {
-      // await axios.delete(`api/v1/user/${this.user.id}`);
+      // TODO
+      // await axiosPrivate.delete(`api/v1/user/${this.user.id}`);
     },
 
     async clearStore() {

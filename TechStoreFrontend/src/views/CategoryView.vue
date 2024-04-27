@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import axios from "@/api/axios";
+import { axiosPublic } from "@/api/axios";
 import ImageSlider from "@/components/ImageSlider.vue";
 import BaseGrid from "@/components/common/BaseGrid.vue";
 import SubcategoryCard from "@/components/SubcategoryCard.vue";
@@ -22,7 +22,7 @@ const breadcrumbsItems = [
 ];
 
 onMounted(async () => {
-  await axios
+  await axiosPublic
     .get(`/categories/${categorySlug.value}/subcategories`)
     .then((response) => (category.value = response.data))
     .catch((error) => console.log(error));
@@ -32,7 +32,7 @@ watch(
   () => route.params.category,
   async (newCategory) => {
     categorySlug.value = newCategory;
-    await axios
+    await axiosPublic
       .get(`/categories/${categorySlug.value}/subcategories`)
       .then((response) => (category.value = response.data))
       .catch((error) => console.log(error));
