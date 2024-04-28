@@ -46,7 +46,7 @@ async function toggleDialog() {
 
 <template>
   <v-card>
-    <v-list lines="10">
+    <v-list v-if="currentPageItems.length > 0" lines="10">
       <v-list-item v-for="(review, i) in currentPageItems" :key="i">
         <div class="review">
           <span class="review__name">{{ review.email }}</span>
@@ -65,25 +65,27 @@ async function toggleDialog() {
           </v-col>
         </v-row>
       </v-container>
-      <div class="d-flex justify-end">
-        <v-btn class="review__btn" @click="reviewDialogActive = !reviewDialogActive"
-          >Leave review</v-btn
-        >
-      </div>
       <review-dialog
         v-model="reviewDialogActive"
         @toggleDialog="toggleDialog"
         :product="props.product"
       />
     </v-list>
+    <v-card-text v-else> Be the first to leave a review. </v-card-text>
+    <div class="d-flex justify-end">
+      <v-btn class="review__btn" @click="reviewDialogActive = !reviewDialogActive">
+        Add Review
+      </v-btn>
+    </div>
   </v-card>
 </template>
 
 <style scoped>
-.v-list {
+.v-card * {
   background-color: var(--ts-c-bg-light);
   color: var(--ts-c-text-dark);
 }
+
 .v-list-item {
   margin: auto;
 }
