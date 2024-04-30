@@ -1,5 +1,6 @@
 import { axiosPublic, axiosPrivate } from "@/api/axios";
 import { defineStore } from "pinia";
+import { useCartStore } from "@/store";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -19,10 +20,14 @@ export const useUserStore = defineStore("user", {
     },
 
     async loginUser(email, password) {
+      const cart = useCartStore();
+
       await axiosPublic
         .post("/auth/login", { email, password })
         .then((response) => (this.user = response.data))
         .catch((error) => (this.error = error.reponse ? error.response.data : error));
+
+      await cart.loadData();
     },
 
     async registerUser(email, password, confirmPassword) {
@@ -31,18 +36,21 @@ export const useUserStore = defineStore("user", {
           email,
           password,
           confirmPassword,
-          FirstName: "Test",
-          LastName: "Test",
+          FirstName: "Test", // TODO
+          LastName: "Test", // TODO
         })
         .then((response) => (this.user = response.data))
         .catch((error) => (this.error = error.reponse ? error.response.data : error));
     },
 
     async logoutUser() {
+      const cart = useCartStore();
+
       await axiosPrivate
         .get("/auth/logout")
         .catch((error) => (this.error = error.reponse ? error.response.data : error));
 
+      await cart.clearStore();
       this.clearStore();
     },
 
