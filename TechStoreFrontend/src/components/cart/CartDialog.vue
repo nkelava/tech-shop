@@ -31,10 +31,6 @@ function toggleDialog() {
   orderDialogActive.value = !orderDialogActive.value;
 }
 
-function deleteItem(productId) {
-  cart.removeItem(productId);
-}
-
 function addPromoCode() {
   if (promoCodeState.value.input < 1) return;
 
@@ -63,16 +59,16 @@ function removePromoCode() {
     </v-btn>
     <v-dialog v-model="cartDialogActive" persistent width="auto">
       <v-card class="dialog">
-        <v-card-title class="font-weight-bold"> Your Shopping Cart</v-card-title>
+        <v-card-title class="font-weight-bold"> Your Shopping Cart </v-card-title>
         <v-card-text v-if="currentPageItems.length">
-          <cart-table :products="currentPageItems" @deleteItem="deleteItem" />
+          <cart-table :products="currentPageItems" />
           <v-container>
             <v-row justify="center">
               <v-col cols="10">
                 <v-container class="max-width">
                   <v-pagination
                     v-model="pageState.currentPage"
-                    class="my-4"
+                    class="my-1"
                     :length="totalPageCount"
                   />
                 </v-container>
@@ -104,13 +100,13 @@ function removePromoCode() {
           <h2 class="text-end pr-4">Total: {{ cart.totalPrice(promoCodeState.discount) }}$</h2>
         </div>
         <v-card-text v-else> Your Cart is currently empty! </v-card-text>
-        <v-card-actions class="justify-space-between">
+        <v-card-actions class="justify-space-between mt-4">
           <v-btn color="red-darken-1" variant="text" @click="cartDialogActive = !cartDialogActive">
             Close
           </v-btn>
           <v-btn
             v-if="currentPageItems.length"
-            color="green-darken-1"
+            class="checkout"
             variant="text"
             @click="orderDialogActive = !orderDialogActive"
           >
@@ -125,6 +121,7 @@ function removePromoCode() {
 
 <style scoped>
 .dialog {
+  padding: 1rem 0.5rem;
   background: var(--ts-c-bg-light);
 }
 
@@ -134,8 +131,12 @@ function removePromoCode() {
 
 .price {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: end;
+}
+
+.price h2 {
+  margin: 1rem 0 0 auto;
 }
 
 .promo-code {
@@ -155,12 +156,12 @@ function removePromoCode() {
   background-color: var(--ts-c-bg-dark);
   color: var(--ts-c-text-light);
   height: 100%;
-  padding: 5px 10px;
+  padding: 5px 15px;
   text-transform: capitalize;
 }
 
 .checkout {
-  color: green;
   text-decoration: none;
+  color: var(--ts-c-success) !important;
 }
 </style>

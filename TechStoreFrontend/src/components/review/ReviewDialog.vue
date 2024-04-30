@@ -1,14 +1,14 @@
 <script setup>
 import { ref } from "vue";
 import { axiosPrivate } from "@/api/axios";
-import { useToast } from "vue-toast-notification";
+import { useToast } from "vue-toastification";
 import "vue-toast-notification/dist/theme-sugar.css";
 
 const props = defineProps(["product"]);
 const dialog = ref(false);
 const rating = ref(1);
 const message = ref("");
-const $toast = useToast();
+const toast = useToast();
 const emit = defineEmits(["toggleDialog"]);
 
 const handleSubmit = async () => {
@@ -23,14 +23,10 @@ const handleSubmit = async () => {
 
     rating.value = 1;
     message.value = "";
-    $toast.success("Your review has been added successfully.", {
-      position: "top-right",
-    });
+    toast.success("Your review has been added successfully.");
     emit("toggleDialog");
   } catch {
-    $toast.error("Failed to add your review. Please try again later.", {
-      position: "top-right",
-    });
+    toast.error("Failed to add your review. Please try again later.");
   }
 };
 

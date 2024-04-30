@@ -1,19 +1,8 @@
 <script setup>
-import { ref } from "vue";
 import { useCartStore } from "@/store";
 
 const props = defineProps(["products"]);
-const emit = defineEmits(["deleteItem"]);
 const cart = useCartStore();
-
-function getProductItemTotal(quantity, price) {
-  if (quantity < 1) return price;
-  return (quantity * Number(price)).toFixed(2);
-}
-
-function handleDeleteItem(productId) {
-  emit("deleteItem", productId);
-}
 </script>
 
 <template>
