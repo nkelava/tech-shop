@@ -18,8 +18,8 @@ const decrement = () => {
 };
 
 function addToCart() {
-  if (quantity.value > 0) {
-    cart.addItem(product.value);
+  if (product.value && quantity.value > 0) {
+    cart.addItem(product.value, quantity.value);
   }
 }
 </script>

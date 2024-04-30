@@ -9,16 +9,19 @@ import DefaultImage from "@/assets/images/test/products/defaultProductImage.png"
 
 // eslint-disable-next-line no-unused-vars
 const props = defineProps(["product"]);
-
 const cart = useCartStore();
 const wishlist = useWishlistStore();
 
 function addToCart(product) {
-  cart.addItem(product);
+  if (product) {
+    cart.addItem(product);
+  }
 }
 
 function addToWishlist(product) {
-  wishlist.addItem(product);
+  if (product) {
+    wishlist.addItem(product);
+  }
 }
 
 const productPrice = computed(() => {
