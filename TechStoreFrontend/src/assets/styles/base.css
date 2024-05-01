@@ -27,6 +27,7 @@
   --ts-c-black-mute: #282828;
 
   --ts-c-danger: #cf4747;
+  --ts-c-success: #41b06e;
 
   /* Background */
   --ts-c-bg-dark: var(--ts-c-primary);

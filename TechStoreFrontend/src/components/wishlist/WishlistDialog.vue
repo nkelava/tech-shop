@@ -21,10 +21,6 @@ const currentPageItems = computed(() => {
   );
 });
 
-function deleteItem(productId) {
-  wishlist.removeItem(productId);
-}
-
 const toggleDialog = () => {
   dialog.value = !dialog.value;
 };
@@ -41,14 +37,14 @@ const toggleDialog = () => {
       <v-card class="dialog">
         <v-card-title class="font-weight-bold"> Your Wishlist </v-card-title>
         <v-card-text v-if="currentPageItems.length">
-          <wishlist-table :products="currentPageItems" @deleteItem="deleteItem" />
+          <wishlist-table :products="currentPageItems" />
           <v-container>
             <v-row justify="center">
               <v-col cols="10">
                 <v-container class="max-width">
                   <v-pagination
                     v-model="pageState.currentPage"
-                    class="my-4"
+                    class="my-1"
                     :length="totalPageCount"
                   />
                 </v-container>
@@ -67,6 +63,7 @@ const toggleDialog = () => {
 
 <style scoped>
 .dialog {
+  padding: 1rem 0.5rem;
   background: var(--ts-c-bg-light);
 }
 

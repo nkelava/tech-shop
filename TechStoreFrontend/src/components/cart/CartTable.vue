@@ -31,14 +31,14 @@ const cart = useCartStore();
               start
               icon="mdi-minus-box"
               @click="cart.decrementQuantity(product.id)"
-            ></v-icon>
+            />
             {{ cart.productQuantity(product.id) }}
             <v-icon
               class="quantity__btn"
               start
               icon="mdi-plus-box"
               @click="cart.incrementQuantity(product.id)"
-            ></v-icon>
+            />
           </div>
         </td>
         <td>${{ cart.productTotal(product.id) }}</td>
@@ -49,7 +49,7 @@ const cart = useCartStore();
             size="large"
             variant="text"
             @click="cart.removeItem(product.id)"
-          ></v-btn>
+          />
         </td>
       </tr>
     </tbody>

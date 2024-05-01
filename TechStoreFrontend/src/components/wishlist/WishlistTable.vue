@@ -1,19 +1,9 @@
 <script setup>
-import { useCartStore } from "@/store";
+import { useCartStore, useWishlistStore } from "@/store";
 
-const cart = useCartStore();
 const props = defineProps(["products"]);
-const emit = defineEmits(["deleteItem"]);
-// TODO: delete because its just for testing purposes
-const itemQuantity = 1;
-
-function addToCart(product) {
-  cart.addItem(product);
-}
-
-function handleDeleteItem(productId) {
-  emit("deleteItem", productId);
-}
+const cart = useCartStore();
+const wishlist = useWishlistStore();
 </script>
 
 <template>
@@ -39,7 +29,7 @@ function handleDeleteItem(productId) {
             color="green"
             variant="text"
             title="Add to Cart"
-            @click="addToCart(product)"
+            @click="cart.addItem(product)"
           />
           <!-- TODO: implement favorites item deletion -->
           <v-btn
@@ -47,7 +37,7 @@ function handleDeleteItem(productId) {
             color="red"
             variant="text"
             title="Delete item"
-            @click="handleDeleteItem(product.id)"
+            @click="wishlist.removeItem(product.id)"
           />
         </td>
       </tr>

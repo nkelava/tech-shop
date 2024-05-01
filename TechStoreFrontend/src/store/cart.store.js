@@ -74,6 +74,7 @@ export const useCartStore = defineStore("cart", {
         );
       }
     },
+
     async removeItem(productId) {
       try {
         if (this.isUserLoggedIn) {
@@ -100,6 +101,7 @@ export const useCartStore = defineStore("cart", {
         );
       }
     },
+
     async incrementQuantity(productId) {
       const itemIndex = this.isProductAlreadyInCart(productId);
 
@@ -130,6 +132,7 @@ export const useCartStore = defineStore("cart", {
         );
       }
     },
+
     async decrementQuantity(productId) {
       const itemIndex = this.isProductAlreadyInCart(productId);
 
@@ -162,42 +165,18 @@ export const useCartStore = defineStore("cart", {
         }
       }
     },
+
     isProductAlreadyInCart(productId) {
       if (this.items.length < 1) return -1;
 
       return this.items.findIndex((item) => item.id === productId);
     },
+
     persistData() {
       localStorage.setItem("cart", JSON.stringify(this.items));
     },
+
     async loadData() {
-      // try {
-      //   const data = this.isUserLoggedIn
-      //     ? await axiosPrivate
-      //         .get("/carts")
-      //         .then((resp) => {
-      //           let formattedCart = [];
-
-      //           if (resp?.data?.products) {
-      //             formattedCart = resp?.data?.products.map((product) => {
-      //               return { ...product.product, quantity: product?.quantity };
-      //             });
-
-      //             return JSON.stringify(formattedCart);
-      //           }
-
-      //           return [];
-      //         })
-      //         .catch((error) => console.log(error))
-      //     : localStorage.getItem("cart");
-
-      //   if (data) {
-      //     this.items = JSON.parse(data);
-      //     this.persistData();
-      //   }
-      // } catch {
-      //   console.log("There was an error loading cart data...");
-      // }
       try {
         const data =
           this.isUserLoggedIn &&
@@ -226,6 +205,7 @@ export const useCartStore = defineStore("cart", {
         console.log("There was an error loading cart data...");
       }
     },
+
     async clearStore() {
       this.$reset();
     },
