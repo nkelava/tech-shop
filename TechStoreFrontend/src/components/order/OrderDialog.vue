@@ -1,17 +1,19 @@
 <script setup>
 import { computed, ref, reactive } from "vue";
-import BaseInput from "@/components/common/BaseInput.vue";
+import { useToast } from "vue-toastification";
 import { useVuelidate } from "@vuelidate/core";
 import { initialState as initPaymentState, rules as paymentRules } from "@/vuelidate/payment";
 import { initialState as initDeliveryState, rules as deliveryRules } from "@/vuelidate/delivery";
+import BaseInput from "@/components/common/BaseInput.vue";
 
 const dialog = ref(false);
 const emit = defineEmits(["toggleDialog"]);
+const toast = useToast();
 const hasDeliveryAddress = ref(false);
+
 const paymentState = reactive({
   ...initPaymentState,
 });
-
 const deliveryState = reactive({
   ...initDeliveryState,
 });
@@ -26,7 +28,7 @@ const handleSubmit = async () => {
   const isPaymentFormValid = await vp$.value.$validate();
 
   if (!isPaymentFormValid) {
-    alert("Not Submitted!");
+    toast.error("Not Submitted!");
     return;
   }
 
@@ -34,12 +36,12 @@ const handleSubmit = async () => {
     const isDeliveryFormValid = await vd$.value.$validate();
 
     if (!isDeliveryFormValid) {
-      alert("Not Submitted!");
+      toast.error("Not Submitted!");
       return;
     }
   }
 
-  alert("Submitted!");
+  toast.success("Submitted!");
   clearForm(vp$, paymentState, initPaymentState);
   clearForm(vd$, deliveryState, initDeliveryState);
   emit("toggleDialog");
@@ -73,29 +75,33 @@ const closeDialog = () => {
                     <base-input
                       v-model="paymentState.firstName"
                       :v$="vp$.firstName"
-                      label="First Name"
+                      label="First Name*"
                     />
                   </v-col>
                   <v-col>
                     <base-input
                       v-model="paymentState.lastName"
                       :v$="vp$.lastName"
-                      label="Last Name"
+                      label="Last Name*"
                     />
                   </v-col>
                 </v-row>
-                <base-input v-model="paymentState.email" :v$="vp$.email" label="E-mail" />
-                <base-input v-model="paymentState.address" :v$="vp$.address" label="Address" />
+                <base-input v-model="paymentState.email" :v$="vp$.email" label="E-mail*" />
+                <base-input v-model="paymentState.address" :v$="vp$.address" label="Address*" />
                 <v-row>
                   <v-col>
-                    <base-input v-model="paymentState.city" :v$="vp$.city" label="City" />
+                    <base-input v-model="paymentState.city" :v$="vp$.city" label="City*" />
                   </v-col>
                   <v-col>
-                    <base-input v-model="paymentState.zipCode" :v$="vp$.zipCode" label="Zip Code" />
+                    <base-input
+                      v-model="paymentState.zipCode"
+                      :v$="vp$.zipCode"
+                      label="Zip Code*"
+                    />
                   </v-col>
                 </v-row>
-                <base-input v-model="paymentState.country" :v$="vp$.country" label="Country" />
-                <base-input v-model="paymentState.phone" :v$="vp$.phone" label="Phone" />
+                <base-input v-model="paymentState.country" :v$="vp$.country" label="Country*" />
+                <base-input v-model="paymentState.phone" :v$="vp$.phone" label="Phone*" />
 
                 <v-checkbox
                   v-model="hasDeliveryAddress"
@@ -111,31 +117,32 @@ const closeDialog = () => {
                       <base-input
                         v-model="deliveryState.firstName"
                         :v$="vd$.firstName"
-                        label="First Name"
+                        label="First Name*"
                       />
                     </v-col>
                     <v-col>
                       <base-input
                         v-model="deliveryState.lastName"
                         :v$="vd$.lastName"
-                        label="Last Name"
+                        label="Last Name*"
                       />
                     </v-col>
                   </v-row>
-                  <base-input v-model="deliveryState.address" :v$="vd$.address" label="Address" />
+                  <base-input v-model="deliveryState.address" :v$="vd$.address" label="Address*" />
                   <v-row>
                     <v-col>
-                      <base-input v-model="deliveryState.city" :v$="vd$.city" label="City" />
+                      <base-input v-model="deliveryState.city" :v$="vd$.city" label="City*" />
                     </v-col>
                     <v-col>
                       <base-input
                         v-model="deliveryState.zipCode"
                         :v$="vd$.zipCode"
-                        label="Zip Code"
+                        label="Zip Code*"
                       />
                     </v-col>
                   </v-row>
-                  <base-input v-model="deliveryState.country" :v$="vd$.country" label="Country" />
+                  <base-input v-model="deliveryState.country" :v$="vd$.country" label="Country*" />
+                  <base-input v-model="deliveryState.phone" :v$="vd$.phone" label="Phone*" />
                 </div>
                 <div v-else>
                   <v-alert type="info" :value="true">
@@ -148,8 +155,10 @@ const closeDialog = () => {
         </form>
       </v-container>
       <v-card-actions class="justify-space-between">
-        <v-btn color="error" variant="text" @click="closeDialog"> Back To Cart </v-btn>
-        <v-btn color="success" variant="text" @click="handleSubmit"> Complete Order </v-btn>
+        <v-btn class="btn-action--cancel" variant="text" @click="closeDialog"> Back To Cart </v-btn>
+        <v-btn class="btn-action--submit" variant="text" @click="handleSubmit">
+          Complete Order
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -158,13 +167,14 @@ const closeDialog = () => {
 <style scoped>
 .dialog {
   max-width: 740px;
-  max-height: 905px;
+  max-height: 940px;
 }
 
 .dialog__card {
-  background: var(--ts-c-bg-dark);
   height: 100%;
   width: 100%;
+  padding: 1rem 0.5rem;
+  background: var(--ts-c-bg-dark);
 }
 
 .dialog__card > * {
@@ -174,5 +184,13 @@ const closeDialog = () => {
 .card__title {
   color: var(--ts-c-primary-darker);
   font-weight: bold;
+}
+
+.btn-action--cancel {
+  color: var(--ts-c-danger) !important;
+}
+
+.btn-action--submit {
+  color: var(--ts-c-success) !important;
 }
 </style>
