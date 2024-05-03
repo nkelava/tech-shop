@@ -5,6 +5,7 @@ const initialState = {
   city: "",
   zipCode: "",
   country: "",
+  phone: "",
 };
 
 export { initialState };

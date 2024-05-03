@@ -7,6 +7,7 @@ const rules = {
   city: { required },
   zipCode: { required },
   country: { required },
+  phone: { required },
 };
 
 export { rules };
