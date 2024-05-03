@@ -47,6 +47,7 @@ export const useUserStore = defineStore("user", {
 
     async logoutUser() {
       const cart = useCartStore();
+      const wishlist = useWishlistStore();
 
       await axiosPrivate
         .get("/auth/logout")
