@@ -95,7 +95,6 @@ export const useWishlistStore = defineStore("wishlist", {
           (await axiosPrivate
             .get("/wishlist")
             .then((resp) => {
-              console.log(resp);
               let formattedWishlist = [];
 
               if (resp?.data?.products) {
