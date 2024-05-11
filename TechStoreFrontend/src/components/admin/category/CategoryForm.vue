@@ -3,6 +3,8 @@ import { ref } from "vue";
 import { axiosPrivate } from "@/api/axios";
 import FormContainer from "@/components/common/FormContainer.vue";
 
+// TODO: Add valdator and init state
+// TODO: name and slug can be max 48 characters long
 const emit = defineEmits(["reload"]);
 const name = ref("");
 const slug = ref("");
@@ -14,6 +16,8 @@ async function handleSave() {
     slug: slug.value,
   });
 
+  name.value = "";
+  slug.value = "";
   emit("reload");
 }
 </script>

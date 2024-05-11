@@ -32,7 +32,6 @@ async function deleteCategory(categoryId) {
       <v-table class="categories__table">
         <thead>
           <tr>
-            <th class="text-left">Id</th>
             <th class="text-left">Name</th>
             <th class="text-left">Slug</th>
             <th class="text-left">Actions</th>
@@ -40,9 +39,8 @@ async function deleteCategory(categoryId) {
         </thead>
         <tbody>
           <tr v-for="(category, id) in props.categories" :key="id">
-            <td>{{ category?.id }}</td>
-            <td>{{ category?.name }}</td>
-            <td>{{ category?.slug }}</td>
+            <td :title="category.name">{{ category?.name }}</td>
+            <td :title="category.slug">{{ category?.slug }}</td>
             <td class="d-flex align-center">
               <v-btn
                 color="red"
@@ -80,5 +78,11 @@ tr {
 
 th {
   color: var(--ts-c-text-light) !important;
+}
+
+td {
+  max-width: 500px !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
