@@ -4,6 +4,7 @@ import { useCartStore } from "@/store";
 import CartTable from "@/components/cart/CartTable.vue";
 import OrderDialog from "@/components/order/OrderDialog.vue";
 import CartIcon from "@/assets/icons/header/cart.png";
+import EmptyStateImage from "@/assets/images/test/empty_state.png";
 import { getPromoCode } from "@/database/services/promoCodeService.js";
 
 const cart = useCartStore();
@@ -99,7 +100,20 @@ function removePromoCode() {
           </form>
           <h2 class="text-end pr-4">Total: {{ cart.totalPrice(promoCodeState.discount) }}$</h2>
         </div>
-        <v-card-text v-else> Your Cart is currently empty! </v-card-text>
+        <div v-else class="empty__container">
+          <v-img class="empty__image" :src="EmptyStateImage">
+            <template v-slot:placeholder>
+              <div class="d-flex align-center justify-center fill-height">
+                <v-progress-circular
+                  :size="80"
+                  color="teal-darken-2"
+                  indeterminate
+                ></v-progress-circular>
+              </div>
+            </template>
+          </v-img>
+          <p>Your Cart is empty!</p>
+        </div>
         <v-card-actions class="justify-space-between mt-4">
           <v-btn color="red-darken-1" variant="text" @click="cartDialogActive = !cartDialogActive">
             Close
@@ -122,6 +136,7 @@ function removePromoCode() {
 <style scoped>
 .dialog {
   padding: 1rem 0.5rem;
+  min-width: 400px;
   background: var(--ts-c-bg-light);
 }
 
@@ -163,5 +178,21 @@ function removePromoCode() {
 .checkout {
   text-decoration: none;
   color: var(--ts-c-success) !important;
+}
+
+.empty__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.empty__image {
+  height: 200px;
+  width: 200px;
+}
+
+.empty__container p {
+  color: var(--ts-c-text-dark);
 }
 </style>
