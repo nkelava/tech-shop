@@ -1,14 +1,18 @@
 <script setup>
-import { reactive, computed } from "vue";
+import { reactive, computed, onMounted } from "vue";
+import { useToast } from "vue-toastification";
 import { useVuelidate } from "@vuelidate/core";
 import { alpha, email, required, sameAs } from "@vuelidate/validators";
+import { axiosPrivate } from "@/api/axios";
 import BaseInput from "@/components/common/BaseInput.vue";
 import HiddenInput from "@/components/common/BaseInputHidden.vue";
+
+const toast = useToast();
 
 const initialState = {
   firstName: "",
   lastName: "",
-  phone: "",
+  phoneNumber: "",
 };
 
 const initialEmailState = {
@@ -24,7 +28,7 @@ const emailRules = {
 };
 
 const initialPasswordState = {
-  password: "",
+  currentPassword: "",
   newPassword: "",
   confirmPassword: "",
 };
@@ -34,7 +38,7 @@ const passwordState = reactive({
 });
 
 const passwordRules = {
-  password: { required },
+  currentPassword: { required },
   newPassword: { required },
   confirmPassword: { required, sameAs: sameAs(computed(() => passwordState.newPassword)) },
 };
@@ -46,25 +50,66 @@ const state = reactive({
 const rules = {
   firstName: { required, alpha },
   lastName: { required, alpha },
-  phone: { required },
 };
 
 const v$ = useVuelidate(rules, state);
 const ve$ = useVuelidate(emailRules, emailState);
 const vp$ = useVuelidate(passwordRules, passwordState);
 
+onMounted(async () => {
+  const userInfo = await axiosPrivate.get("/users").catch((error) => console.log(error));
+
+  if (userInfo?.data) {
+    state.firstName = userInfo.data.firstName;
+    state.lastName = userInfo.data.lastName;
+    state.phoneNumber = userInfo?.data?.phoneNumber ?? "";
+    emailState.email = userInfo.data.email;
+  }
+});
+
+async function updateProfileInfo() {
+  const isFormValid = await v$.value.$validate();
+
+  if (!isFormValid) return;
+
+  await axiosPrivate
+    .post("/users/edit/profile", { ...state })
+    .then(() => toast.success("Profile updated successfully."))
+    .catch(() => toast.error("Failed to update your profile information. Please try again later."));
+}
+
+async function updateEmail() {
+  const isFormValid = await ve$.value.$validate();
+
+  if (!isFormValid) return;
+
+  await axiosPrivate
+    .post("/users/edit/email", { newEmail: emailState.email })
+    .then(() => toast.success("Email updated successfully."))
+    .catch(() => toast.error("Failed to update your email address. Please try again later."));
+}
+
 async function updatePassword() {
   const isFormValid = await vp$.value.$validate();
 
-  if (!isFormValid) {
-    alert("Not Submitted!");
-    return;
-  }
-  alert("Submitted!");
-  clearForm(vp$, initialPasswordState, passwordState);
+  if (!isFormValid) return;
+
+  await axiosPrivate
+    .post("/users/edit/password", {
+      currentPassword: passwordState.currentPassword,
+      newPassword: passwordState.newPassword,
+    })
+    .then(() => {
+      toast.success("Password updated successfully.");
+      clearForm(vp$, initialPasswordState, passwordState);
+    })
+    .catch(() =>
+      toast.error(
+        "Failed to update your password. Please ensure your new password meets the requirements and try again later."
+      )
+    );
 }
 
-// TODO: make this a utils function
 const clearForm = (form, initialFormState, formState) => {
   form.value.$reset();
 
@@ -96,8 +141,8 @@ const clearForm = (form, initialFormState, formState) => {
               <base-input v-model="state.lastName" label="Last Name" :v$="v$" />
             </v-col>
             <v-col class="pt-0" cols="12">
-              <base-input v-model="state.phone" label="Phone Number" :v$="v$" />
-              <v-btn class="details-item__btn" @click="v$.$validate"> Save </v-btn>
+              <base-input v-model="state.phoneNumber" label="Phone Number" />
+              <v-btn class="details-item__btn" @click="updateProfileInfo"> Save </v-btn>
             </v-col>
           </v-row>
         </form>
@@ -114,7 +159,7 @@ const clearForm = (form, initialFormState, formState) => {
       <v-col cols="12">
         <form class="details-item__form">
           <base-input v-model="emailState.email" label="E-mail Address" :v$="ve$.email" />
-          <v-btn class="details-item__btn" @click="ve$.$validate"> Save </v-btn>
+          <v-btn class="details-item__btn" @click="updateEmail"> Save </v-btn>
         </form>
       </v-col>
     </v-row>
@@ -129,9 +174,9 @@ const clearForm = (form, initialFormState, formState) => {
       <v-col>
         <form class="details-item__form">
           <hidden-input
-            v-model="passwordState.password"
+            v-model="passwordState.currentPassword"
             label="Current Password"
-            :v$="vp$.password"
+            :v$="vp$.currentPassword"
           />
           <hidden-input
             v-model="passwordState.newPassword"
@@ -185,7 +230,7 @@ const clearForm = (form, initialFormState, formState) => {
   background-color: var(--ts-c-ternary);
 }
 
-::v-deep .v-divider {
+:deep(.v-divider) {
   margin-bottom: 1rem;
 }
 </style>
