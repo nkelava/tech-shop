@@ -37,6 +37,16 @@ export const useCartStore = defineStore("cart", {
       const user = useUserStore();
       return user.isLoggedIn;
     },
+    formattedCartItemsForOrder: (state) => {
+      return state.items.map((item) => {
+        return {
+          quantity: item.quantity,
+          unitPrice: item.price,
+          totalPrice: item.quantity * item.price,
+          product: { ...item },
+        };
+      });
+    },
   },
   actions: {
     async addItem(item, quantity = 1) {

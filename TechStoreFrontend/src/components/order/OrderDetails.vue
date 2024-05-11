@@ -1,53 +1,46 @@
 <script setup>
+import { toRefs } from "vue";
+import { getOrderStatus } from "@/helpers/orderStatus.js";
+import { formatDate } from "@/helpers/formatDate.js";
+
 const props = defineProps(["order"]);
-const category = "laptops";
-const subcategory = "notebooks";
+const { order } = toRefs(props);
 </script>
 
 <template>
   <v-container class="account-orders rounded-lg">
     <v-row class="order__info">
-      <v-col class="pb-0 pb-sm-3" cols="12" sm="4">
+      <v-col cols="12" sm="4">
         <h4>Date Placed</h4>
-        <p>{{ props.order.datePlaced }}</p>
+        <p>{{ formatDate(order?.createdAt) }}</p>
       </v-col>
-      <v-col class="pt-0 pt-sm-3">
+      <v-col>
         <h4>Order number</h4>
-        <p>{{ props.order.orderNumber }}</p>
+        <p>{{ order?.id }}</p>
       </v-col>
-      <v-col class="pt-0 pt-sm-3">
-        <h4>Total Amount</h4>
-        <p>{{ props.order.totalAmount }}$</p>
+      <v-col>
+        <h4>Total Price</h4>
+        <p>${{ order?.totalPrice }}</p>
       </v-col>
     </v-row>
-    <v-row class="test">
+    <v-row>
       <v-table class="order__table transparent">
         <thead>
           <tr>
             <th class="text-left">Product</th>
             <th class="text-left">Price</th>
+            <th class="text-left">Quantity</th>
+            <th class="text-left">Total</th>
             <th class="text-left">Status</th>
-            <th class="text-left">Info</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="product in props.order.products" :key="product.id">
-            <td class="d-flex align-center py-10">
-              <img :src="product.img" height="64" width="64" alt="" :title="product.name" />
-            </td>
-            <td>{{ product.price }}$</td>
-            <td>{{ order.status }}</td>
-            <td>
-              <router-link
-                :to="{
-                  name: 'product',
-                  params: { category: category, subcategory: subcategory, productId: product.id },
-                }"
-                class="link"
-              >
-                View More
-              </router-link>
-            </td>
+          <tr v-for="orderProduct in order?.products" :key="orderProduct?.id">
+            <td>{{ orderProduct?.product?.name }}</td>
+            <td>${{ orderProduct?.product?.price }}</td>
+            <td>{{ orderProduct?.quantity }}</td>
+            <td>${{ orderProduct?.totalPrice }}</td>
+            <td>{{ getOrderStatus(order?.status) }}</td>
           </tr>
         </tbody>
       </v-table>
@@ -64,11 +57,10 @@ const subcategory = "notebooks";
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 10px;
   margin-top: 10px;
   font-size: 14px;
   background: var(--ts-c-bg-dark);
-  border-radius: 10px;
+  border-radius: 10px 10px 0 0;
 }
 
 .order__table {
@@ -76,8 +68,10 @@ const subcategory = "notebooks";
   font-size: 14px;
 }
 
-::v-deep table {
+:deep(table) {
   padding-bottom: 20px;
+  border: 1px solid var(--ts-c-primary);
+  border-radius: 0 0 10px 10px;
 }
 
 .link {
