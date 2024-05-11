@@ -27,6 +27,7 @@ const router = createRouter({
       path: "/user",
       name: "/user",
       component: () => import("../views/UserProfileView.vue"),
+      meta: { requiresAuth: true },
     },
     {
       path: "/:category",
@@ -47,6 +48,7 @@ const router = createRouter({
       path: "/admin",
       name: "admin",
       component: () => import("../views/AdminView.vue"),
+      meta: { requiresAuth: true },
     },
     {
       path: "/:pathMatch(.*)*",
