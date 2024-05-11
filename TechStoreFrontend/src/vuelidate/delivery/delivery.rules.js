@@ -3,11 +3,11 @@ import { required, alpha } from "@vuelidate/validators";
 const rules = {
   firstName: { required, alpha },
   lastName: { required, alpha },
-  address: { required },
+  shippingAddress: { required },
   city: { required },
   zipCode: { required },
   country: { required },
-  phone: { required },
+  contactNumber: { required },
 };
 
 export { rules };

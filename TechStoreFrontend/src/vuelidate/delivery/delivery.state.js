@@ -1,11 +1,11 @@
 const initialState = {
   firstName: "",
   lastName: "",
-  address: "",
+  shippingAddress: "",
   city: "",
   zipCode: "",
   country: "",
-  phone: "",
+  contactNumber: "",
 };
 
 export { initialState };
