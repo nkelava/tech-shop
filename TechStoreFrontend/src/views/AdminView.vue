@@ -16,12 +16,13 @@ import OrderList from "@/components/admin/order/OrderList.vue";
 import ReviewList from "@/components/admin/review/ReviewList.vue";
 import PromoCodeForm from "@/components/admin/promo_code/PromoCodeForm.vue";
 import PromoCodeList from "@/components/admin/promo_code/PromoCodeList.vue";
+import CategoryDashboard from "./CategoryDashboard.vue";
 
 const tabs = [
   {
     value: "category",
     label: "Categories",
-    components: [CategoryForm, CategoryList],
+    components: [CategoryDashboard],
   },
   {
     value: "subcategory",

@@ -1,17 +1,20 @@
 <script setup>
 import { ref } from "vue";
+import { axiosPrivate } from "@/api/axios";
 import FormContainer from "@/components/common/FormContainer.vue";
 
+const emit = defineEmits(["reload"]);
 const name = ref("");
 const slug = ref("");
 const loading = ref(false);
 
-function handleSave() {
-  const formData = new FormData();
-  formData.append("name", name.value);
-  formData.append("slug", slug.value);
+async function handleSave() {
+  await axiosPrivate.post("/categories", {
+    name: name.value,
+    slug: slug.value,
+  });
 
-  console.log(formData);
+  emit("reload");
 }
 </script>
 
