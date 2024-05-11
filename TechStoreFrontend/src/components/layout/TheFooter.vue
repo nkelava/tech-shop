@@ -106,7 +106,7 @@ onMounted(async () => {
   flex-direction: column;
 }
 
-::v-deep .v-card-item__content {
+:deep(.v-card-item__content) {
   font-size: 12px !important;
 }
 
@@ -141,7 +141,7 @@ onMounted(async () => {
 }
 
 @media only screen and (min-width: 64em) {
-  ::v-deep .v-card-item__content {
+  :deep(.v-card-item__content) {
     font-size: 14px !important;
   }
 }

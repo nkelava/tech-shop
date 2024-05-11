@@ -95,11 +95,11 @@ onMounted(async () => {
   font-size: 12px;
 }
 
-::v-deep .v-divider--vertical {
+:deep(.v-divider--vertical) {
   display: none;
 }
 
-::v-deep .tabs-container .carousel__slide {
+:deep(.tabs-container .carousel__slide) {
   padding: 10px 0 !important;
 }
 
@@ -108,7 +108,7 @@ onMounted(async () => {
     font-size: 1rem;
   }
 
-  ::v-deep .v-divider--vertical {
+  :deep(.v-divider--vertical) {
     display: inline;
     border: 1px solid var(--ts-c-secondary);
     border-radius: 5px;

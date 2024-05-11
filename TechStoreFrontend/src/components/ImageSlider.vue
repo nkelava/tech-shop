@@ -54,29 +54,29 @@ const slides = [
   width: 100%;
 }
 
-::v-deep .carousel__prev,
-::v-deep .carousel__next {
+:deep(.carousel__prev),
+:deep(.carousel__next) {
   display: none !important;
 }
 
 @media only screen and (min-width: 48em) {
-  ::v-deep .carousel__prev,
-  ::v-deep .carousel__next {
+  :deep(.carousel__prev),
+  :deep(.carousel__next) {
     display: flex !important;
     color: var(--ts-c-bg-dark) !important;
     border-radius: 5px;
   }
 
-  ::v-deep .carousel__prev {
+  :deep(.carousel__prev) {
     left: 10px !important;
   }
 
-  ::v-deep .carousel__next {
+  :deep(.carousel__next) {
     right: 15px !important;
   }
 
-  ::v-deep .carousel__prev:hover,
-  ::v-deep .carousel__next:hover {
+  :deep(.carousel__prev:hover),
+  :deep(.carousel__next:hover) {
     background-color: rgba(0, 0, 0, 0.2);
   }
 }

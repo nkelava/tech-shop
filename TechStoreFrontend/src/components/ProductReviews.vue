@@ -123,7 +123,7 @@ async function toggleDialog() {
   font-weight: 14px;
 }
 
-::v-deep .v-label {
+:deep(.v-label) {
   font-size: 12px;
 }
 
