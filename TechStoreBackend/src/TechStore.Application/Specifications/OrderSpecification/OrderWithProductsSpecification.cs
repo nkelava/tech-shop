@@ -1,5 +1,5 @@
 ﻿using TechStore.Application.Specifications.Base;
-using TechStore.Domain.Entities.Order;
+using TechStore.Domain.Entities.OrderAggregate;
 
 
 namespace TechStore.Application.Specifications.OrderSpecification

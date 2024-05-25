@@ -1,22 +1,22 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import { useUserStore } from "@/store";
 import ContactInfo from "@/components/common/ContactInfo.vue";
 import EmailIcon from "@/assets/icons/contact/gmail16.png";
 import PhoneIcon from "@/assets/icons/contact/phone16.png";
 
-// TODO: implement user state
-const isSignedIn = false;
+const userStore = useUserStore();
 </script>
 
 <template>
   <div class="header-top ts-container">
     <div class="header-top__contact">
-      <contact-info :imgUrl="EmailIcon" imgAlt="email icon">
-        Email: tech-store@gmail.com
+      <contact-info :imgUrl="EmailIcon" imgAlt="email">
+        Email: info.techplanet@gmail.com
       </contact-info>
-      <contact-info :imgUrl="PhoneIcon" imgAlt="phone icon"> Phone: 123-456-7890 </contact-info>
+      <contact-info :imgUrl="PhoneIcon" imgAlt="phone"> Phone: 123-456-7890 </contact-info>
     </div>
-    <div v-if="!isSignedIn" class="header-top__auth">
+    <div v-if="!userStore.isLoggedIn" class="header-top__auth">
       <v-icon icon="mdi-login-variant"></v-icon>
       <router-link to="/auth">Sign In / Sign Up</router-link>
     </div>
@@ -33,7 +33,7 @@ const isSignedIn = false;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  font-size: var(--ts-text-size-sm);
+  font-size: var(--ts-text-size-xs);
 }
 
 .header-top__contact {

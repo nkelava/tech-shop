@@ -3,6 +3,7 @@ import { computed, ref } from "vue";
 import { useWishlistStore } from "@/store";
 import WishlistTable from "./WishlistTable.vue";
 import WishlistIcon from "@/assets/icons/header/favorite.png";
+import EmptyStateImage from "@/assets/images/test/empty_state.png";
 
 const wishlist = useWishlistStore();
 const dialog = ref(false);
@@ -21,10 +22,6 @@ const currentPageItems = computed(() => {
   );
 });
 
-function deleteItem(productId) {
-  wishlist.removeItem(productId);
-}
-
 const toggleDialog = () => {
   dialog.value = !dialog.value;
 };
@@ -39,16 +36,16 @@ const toggleDialog = () => {
     </v-btn>
     <v-dialog v-model="dialog" persistent width="auto">
       <v-card class="dialog">
-        <v-card-title> Your Shopping Cart</v-card-title>
-        <v-card-text>
-          <wishlist-table :products="currentPageItems" @deleteItem="deleteItem" />
+        <v-card-title class="font-weight-bold"> Your Wishlist </v-card-title>
+        <v-card-text v-if="currentPageItems.length">
+          <wishlist-table :products="currentPageItems" />
           <v-container>
             <v-row justify="center">
               <v-col cols="10">
                 <v-container class="max-width">
                   <v-pagination
                     v-model="pageState.currentPage"
-                    class="my-4"
+                    class="my-1"
                     :length="totalPageCount"
                   />
                 </v-container>
@@ -56,6 +53,21 @@ const toggleDialog = () => {
             </v-row>
           </v-container>
         </v-card-text>
+        <div v-else class="empty__container">
+          <v-img class="empty__image" :src="EmptyStateImage">
+            <template v-slot:placeholder>
+              <div class="d-flex align-center justify-center fill-height">
+                <v-progress-circular
+                  :size="80"
+                  :width="7"
+                  color="teal-darken-2"
+                  indeterminate
+                ></v-progress-circular>
+              </div>
+            </template>
+          </v-img>
+          <p>Your Wishlist is empty!</p>
+        </div>
         <v-card-actions>
           <v-btn color="red-darken-1" variant="text" @click="toggleDialog"> Close </v-btn>
         </v-card-actions>
@@ -66,10 +78,28 @@ const toggleDialog = () => {
 
 <style scoped>
 .dialog {
+  padding: 1rem 0.5rem;
+  min-width: 400px;
   background: var(--ts-c-bg-light);
 }
 
 .dialog * {
+  color: var(--ts-c-text-dark);
+}
+
+.empty__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.empty__image {
+  height: 200px;
+  width: 200px;
+}
+
+.empty__container p {
   color: var(--ts-c-text-dark);
 }
 </style>

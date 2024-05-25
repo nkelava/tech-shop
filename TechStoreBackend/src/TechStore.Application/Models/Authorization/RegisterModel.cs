@@ -18,5 +18,8 @@ namespace TechStore.Application.Models.Authorization
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Password and confirm password do not match")]
         public string ConfirmPassword { get; set; }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

@@ -1,35 +1,30 @@
 <script setup>
 import { computed, reactive, ref } from "vue";
+import { axiosPublic } from "@/api/axios";
 import { useVuelidate } from "@vuelidate/core";
 import { email } from "@vuelidate/validators";
 import BaseInput from "@/components/common/BaseInput.vue";
 import BaseAlert from "@/components/common/BaseAlert.vue";
 
 const showAlert = ref(false);
-const initialState = {
-  email: "",
-};
-
-const rules = {
-  email: { email },
-};
-
-const state = reactive({
-  ...initialState,
-});
-
+const initialState = { email: "" };
+const rules = { email: { email } };
+const state = reactive({ ...initialState });
 const v$ = useVuelidate(rules, state);
-const isFieldEmpty = computed(() => state.email.length < 1);
+const isFieldShort = computed(() => state.email.length < 4);
 
 async function onSubscribe() {
   const isValid = await v$.value.$validate();
 
-  if (!isValid) {
-    return;
-  }
+  if (!isValid) return;
 
-  toggleAlert();
-  clearForm();
+  await axiosPublic
+    .post("/newsletters", { email: state.email })
+    .then(() => {
+      toggleAlert();
+      clearForm();
+    })
+    .catch((error) => console.log(error));
 }
 
 function clearForm() {
@@ -61,7 +56,7 @@ function toggleAlert() {
         density="compact"
       />
 
-      <input type="submit" value="Subscribe" @click="onSubscribe" :disabled="isFieldEmpty" />
+      <input type="submit" value="Subscribe" @click="onSubscribe" :disabled="isFieldShort" />
       <base-alert
         v-if="showAlert"
         type="success"
@@ -109,7 +104,7 @@ function toggleAlert() {
 .subscribe__input {
   width: 40em;
   margin-bottom: 0 !important;
-  background-color: var(--ts-c-bg-light) !important;
+  background-color: var(--ts-c-white) !important;
   color: var(--ts-c-text-dark);
   border-radius: 5px;
   font-weight: bold;
@@ -120,11 +115,11 @@ input[type="submit"] {
   border-radius: 5px;
   color: var(--ts-c-text-light);
   font-weight: bold;
-  height: 2rem;
+  height: 2.5rem;
   width: 7rem;
   position: absolute;
-  right: 5px;
-  margin-top: 5px;
+  right: 3px;
+  top: 3px;
 }
 
 input[type="submit"]:hover {

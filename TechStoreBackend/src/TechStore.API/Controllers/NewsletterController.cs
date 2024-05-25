@@ -20,11 +20,11 @@ namespace TechStore.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Subscribe([FromBody]NewsletterReadModel subscription)
+        public async Task<IActionResult> Subscribe([FromBody]NewsletterCreateModel subscription)
         {
             var email = subscription.Email;
 
-            if (email == null || email.Length < 1)
+            if (string.IsNullOrEmpty(email))
                 return BadRequest();
 
             await _newsletterService.Subscribe(email);
@@ -35,7 +35,7 @@ namespace TechStore.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> Unsubscribe(string email)
         {
-            if (email == null || email.Length < 1)
+            if (string.IsNullOrEmpty(email))
                 return BadRequest();
 
             await _newsletterService.Unsubscribe(email);
@@ -44,9 +44,9 @@ namespace TechStore.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSubscribers()
+        public async Task<IActionResult> GetSubscribers()
         {
-            var subscribers = _newsletterService.GetAllNewsletterSubsribers();
+            var subscribers = await _newsletterService.GetAllNewsletterSubsribersAsync();
 
             return Ok(subscribers);
         }

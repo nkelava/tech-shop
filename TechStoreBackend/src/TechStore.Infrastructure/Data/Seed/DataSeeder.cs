@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using TechStore.Domain.Entities;
 using TechStore.Domain.Entities.Cart;
-using TechStore.Domain.Entities.Order;
+using TechStore.Domain.Entities.OrderAggregate;
 using TechStore.Domain.Entities.ProductAggregate;
 using TechStore.Domain.Entities.SubcategoryAggregate;
 using TechStore.Domain.Entities.User;
 using TechStore.Domain.Entities.Wishlist;
 using TechStore.Domain.Enums.Order;
+
 
 namespace TechStore.Infrastructure.Data.Seed
 {
@@ -28,20 +29,23 @@ namespace TechStore.Infrastructure.Data.Seed
                 if (!_techStoreContext.Categories.Any())
                     await SeedCategories();
 
-                if (!_techStoreContext.Properties.Any())
-                    await SeedProperties();
-
                 if (!_techStoreContext.Subcategories.Any())
                     await SeedSubcategories();
 
-                if (!_techStoreContext.SubcategoryProperties.Any())
-                    await SeedSubcategoryProperties();
+                if (!_techStoreContext.Attributes.Any())
+                    await SeedAttributes();
+
+                if (!_techStoreContext.AttributeValues.Any())
+                    await SeedAttributeValues();
 
                 if (!_techStoreContext.Products.Any())
                     await SeedProducts();
 
-                if (!_techStoreContext.ProductProperties.Any())
-                    await SeedProductProperties();
+                if (!_techStoreContext.ProductAttributes.Any())
+                    await SeedProductAttributes();
+
+                if (!_techStoreContext.PromoCodes.Any())
+                    await SeedPromoCodes();
 
                 if (!_techStoreContext.Newsletters.Any())
                     await SeedNewsletters();
@@ -87,8 +91,13 @@ namespace TechStore.Infrastructure.Data.Seed
             {
                 new Category()
                 {
-                    Name = "Computers",
-                    Slug = "computers",
+                    Name = "Laptops",
+                    Slug = "laptops",
+                },
+                new Category()
+                {
+                    Name = "Desktops",
+                    Slug = "desktops",
                 },
                 new Category()
                 {
@@ -97,98 +106,27 @@ namespace TechStore.Infrastructure.Data.Seed
                 },
                 new Category()
                 {
-                    Name = "Monitors",
-                    Slug = "monitors",
-                },
-                new Category()
-                {
                     Name = "Peripherals",
                     Slug = "peripherals",
                 },
                 new Category()
                 {
+                    Name = "Monitors",
+                    Slug = "monitors",
+                },
+                new Category()
+                {
                     Name = "Storage",
                     Slug = "storage",
-
                 },
                 new Category()
                 {
                     Name = "Software",
-                    Slug = "software"
+                    Slug = "software",
                 },
             };
 
             _techStoreContext.Categories.AddRange(categories);
-            await _techStoreContext.SaveChangesAsync();
-        }
-
-        private async Task SeedProperties()
-        {
-            var properties = new List<Property>()
-            {
-                new Property()
-                {
-                    Name = "Capacity",
-                    ValueType = "number",
-                },
-                new Property()
-                {
-                    Name = "Frequency",
-                    ValueType = "number",
-                },
-                 new Property()
-                {
-                    Name = "Type",
-                    ValueType = "text",
-                },
-                new Property()
-                {
-                    Name = "Latency",
-                    ValueType = "text",
-                },
-                new Property()
-                {
-                    Name = "Module count",
-                    ValueType = "number",
-                },
-                new Property()
-                {
-                    Name = "Processor",
-                    ValueType = "text",
-                },
-                new Property()
-                {
-                    Name = "Cores",
-                    ValueType = "number",
-                },
-                new Property()
-                {
-                    Name = "Display Size",
-                    ValueType = "text",
-                },
-                new Property()
-                {
-                    Name = "Resolution",
-                    ValueType = "text",
-                },
-                new Property()
-                {
-                    Name = "Operating system",
-                    ValueType = "text",
-                },
-                new Property()
-                {
-                    Name = "Language",
-                    ValueType = "text",
-                },
-                new Property()
-                {
-                    Name = "Color",
-                    ValueType = "text",
-                },
-            };
-
-            _techStoreContext.Properties.AddRange(properties);
             await _techStoreContext.SaveChangesAsync();
         }
 
@@ -198,157 +136,206 @@ namespace TechStore.Infrastructure.Data.Seed
             {
                 new Subcategory()
                 {
-                    Name = "Laptops",
-                    Category = _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("computers")).First(),
+                    Name = "Notebooks",
+                    Slug = "notebooks",
+                    Category = _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("laptops")).First(),
                 },
                 new Subcategory()
                 {
-                    Name = "PCs",
-                    Category = _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("computers")).First(),
+                    Name = "Ultrabooks",
+                    Slug = "ultrabooks",
+                    Category = _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("laptops")).First(),
                 },
                 new Subcategory()
                 {
-                    Name = "Gaming laptops",
-                    Category = _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("computers")).First(),
+                    Name = "MacBook",
+                    Slug = "macbook",
+                    Category = _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("laptops")).First(),
                 },
                 new Subcategory()
                 {
-                    Name = "Gaming PCs",
-                    Category = _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("computers")).First(),
+                    Name = "Gaming Laptops",
+                    Slug = "gaming-laptops",
+                    Category = _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("laptops")).First(),
+                },
+                new Subcategory()
+                {
+                    Name = "Tower",
+                    Slug = "tower",
+                    Category = _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("desktops")).First(),
+                },
+                new Subcategory()
+                {
+                    Name = "Compact",
+                    Slug = "compact",
+                    Category = _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("desktops")).First(),
+                },
+                new Subcategory()
+                {
+                    Name = "All-in-one",
+                    Slug = "all-in-one",
+                    Category = _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("desktops")).First(),
+                },
+                new Subcategory()
+                {
+                    Name = "Gaming Desktops",
+                    Slug = "gaming-desktops",
+                    Category = _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("desktops")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "CPU",
+                    Slug = "cpu",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("components")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "GPU",
+                    Slug = "gpu",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("components")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "RAM",
+                    Slug = "ram",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("components")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "SSD",
+                    Slug = "ssd",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("components")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "HDD",
+                    Slug = "hdd",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("components")).First(),
                 },
                 new Subcategory()
                 {
-                    Name = "Motherboard",
+                    Name = "Motherboards",
+                    Slug = "motherboards",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("components")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "Power Supply",
+                    Slug = "power-supply",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("components")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "Coolers",
+                    Slug = "coolers",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("components")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "Cases",
+                    Slug = "cases",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("components")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "Thermal paste",
+                    Slug = "thermal-paste",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("components")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "LED monitors",
+                    Slug = "led",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("monitors")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "LCD monitors",
+                    Slug = "lcd",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("monitors")).First(),
                 },
                 new Subcategory()
                 {
-                    Name = "Gaming monitors",
-                   Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("monitors")).First(),
+                    Name = "Gaming Monitors",
+                    Slug = "gaming-monitors",
+                    Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("monitors")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "Keyboards",
+                    Slug = "keyboards",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("peripherals")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "Mouses",
+                    Slug = "mouses",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("peripherals")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "Mousepads",
+                    Slug = "mousepads",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("peripherals")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "Headphones",
+                    Slug = "headphones",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("peripherals")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "Speakers",
+                    Slug = "speakers",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("peripherals")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "Microphones",
+                    Slug = "microphones",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("peripherals")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "Web cameras",
+                    Slug = "web-cameras",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("peripherals")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "External SSD",
+                    Slug = "external-ssd",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("storage")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "External HDD",
+                    Slug = "external-hdd",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("storage")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "USB sticks",
+                    Slug = "usb-sticks",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("storage")).First(),
                 },
                 new Subcategory()
                 {
                     Name = "Memory cards",
-                   Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("storage")).First(),
+                    Slug = "memory-cards",
+                    Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("storage")).First(),
                 },
                 new Subcategory()
                 {
-                    Name = "Operating system",
+                    Name = "Operating systems",
+                    Slug = "operating-systems",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("software")).First(),
                 },
                 new Subcategory()
                 {
-                    Name = "Applications",
-                   Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("software")).First(),
-                },
-                new Subcategory()
-                {
                     Name = "Antivirus",
+                    Slug = "antivirus",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("software")).First(),
                 },
             };
@@ -357,68 +344,192 @@ namespace TechStore.Infrastructure.Data.Seed
             await _techStoreContext.SaveChangesAsync();
         }
 
-        private async Task SeedSubcategoryProperties()
+        private async Task SeedAttributes()
         {
-            var subcategoryProperties = new List<SubcategoryProperty>()
+            var attributes = new List<ProductAttribute>()
             {
-                new SubcategoryProperty
+                new ProductAttribute()
                 {
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Equals("laptops")).First(),
-                    Property = _techStoreContext.Properties.Where(p => p.Name.ToLower().Equals("processor")).First(),
+                    Name = "Manufacturer",
                 },
-                new SubcategoryProperty
+                new ProductAttribute()
                 {
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Equals("laptops")).First(),
-                    Property = _techStoreContext.Properties.Where(p => p.Name.ToLower().Equals("resolution")).First(),
+                    Name = "Processor",
                 },
-                new SubcategoryProperty
+                new ProductAttribute()
                 {
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Equals("pcs")).First(),
-                    Property = _techStoreContext.Properties.Where(p => p.Name.ToLower().Equals("color")).First(),
+                    Name = "Graphics Card",
                 },
-                new SubcategoryProperty
+                new ProductAttribute()
                 {
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Equals("pcs")).First(),
-                    Property = _techStoreContext.Properties.Where(p => p.Name.ToLower().Equals("operating system")).First(),
+                    Name = "RAM",
                 },
-                new SubcategoryProperty
+                new ProductAttribute()
                 {
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Equals("gaming laptops")).First(),
-                    Property = _techStoreContext.Properties.Where(p => p.Name.ToLower().Equals("resolution")).First(),
+                    Name = "RAM Frequency",
                 },
-                new SubcategoryProperty
+                new ProductAttribute()
                 {
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Equals("gaming pcs")).First(),
-                    Property = _techStoreContext.Properties.Where(p => p.Name.ToLower().Equals("operating system")).First(),
+                    Name = "RAM Type",
                 },
-                new SubcategoryProperty
+                new ProductAttribute()
                 {
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Contains("cpu")).First(),
-                    Property = _techStoreContext.Properties.Where(p => p.Name.ToLower().Equals("frequency")).First(),
+                    Name = "Display Size",
                 },
-                new SubcategoryProperty
+                new ProductAttribute()
                 {
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Contains("gpu")).First(),
-                    Property = _techStoreContext.Properties.Where(p => p.Name.ToLower().Equals("capacity")).First(),
+                    Name = "Operating system",
                 },
-                new SubcategoryProperty
+                new ProductAttribute()
                 {
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Contains("ram")).First(),
-                    Property = _techStoreContext.Properties.Where(p => p.Name.ToLower().Equals("frequency")).First(),
+                    Name = "Language",
                 },
-                new SubcategoryProperty
+                new ProductAttribute()
                 {
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Contains("ssd")).First(),
-                    Property = _techStoreContext.Properties.Where(p => p.Name.ToLower().Equals("capacity")).First(),
+                    Name = "Storage Type",
                 },
-                new SubcategoryProperty
+                 new ProductAttribute()
                 {
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Contains("hdd")).First(),
-                    Property = _techStoreContext.Properties.Where(p => p.Name.ToLower().Equals("capacity")).First(),
+                    Name = "Cooling System",
                 },
             };
 
-            _techStoreContext.SubcategoryProperties.AddRange(subcategoryProperties);
+            _techStoreContext.Attributes.AddRange(attributes);
+            await _techStoreContext.SaveChangesAsync();
+        }
+
+        private async Task SeedAttributeValues()
+        {
+            var attributeValues = new List<ProductAttributeValue>()
+            {
+                new ProductAttributeValue()
+                {
+                    Value = "4 GB",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "8 GB",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "16 GB",
+                },
+                 new ProductAttributeValue()
+                {
+                    Value = "32 GB",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "128 GB",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "256 GB",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "512 GB",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "1 TB",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "HDD",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "SSD",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "2400 MMz",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "2666 MMz",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "3200 MMz",
+                },
+                 new ProductAttributeValue()
+                {
+                    Value = "DDR3",
+                },
+                  new ProductAttributeValue()
+                {
+                    Value = "DDR4",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "Windows",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "Linux",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "Mac OS",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "Apple",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "Lenovo",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "Acer",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "Asus",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "AMD",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "NVidia",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "MSI",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "Intel",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "M1",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "Fan",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "14 inch",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "15,6 inch",
+                },
+                new ProductAttributeValue()
+                {
+                    Value = "17,3 inch",
+                },
+
+            };
+
+            _techStoreContext.AttributeValues.AddRange(attributeValues);
             await _techStoreContext.SaveChangesAsync();
         }
 
@@ -430,21 +541,193 @@ namespace TechStore.Infrastructure.Data.Seed
                 {
                     Name = "Acer Predator Helios 300",
                     Slug = "acer-predator-helios-300",
-                    ImageURL = "https://www.links.hr/content/images/thumbs/013/0132409_prijenosno-racunalo-acer-predator-helios-300-nh-qb7ex-00b-core-i7-11800h-16gb-512gb-ssd-geforce-rtx.png",
+                    ImageURL = "https://www.mikronis.hr/_shop/files/products/Helios300-bk.jpg?id=248",
+                    Summary = "Acer Predator Helios 300, 15.6\" Full HD IPS, Intel i7 CPU, 16GB DDR4 RAM, 256GB SSD, GeForce GTX 1060, VR Ready, Red Backlit KB, Metal Chassis, Windows 10 64-bit, G3-571-77QK",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 1300,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 4.5m,
+                    ReviewCount = 2,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Acer Aspire 7",
+                    Slug = "acer-aspire-7",
+                    ImageURL = "https://www.nabava.net/slike/products/10/58/21295810/acer-aspire-7-a715-42g-r403_7ed1eb8.jpeg",
+                    Summary = "Acer Aspire 7, 15.6\" FHD IPS, AMD Ryzen 5 5500U up to 4.0GHz, 16GB DDR4, 512GB NVMe SSD, NVIDIA GeForce GTX1650 4GB, no OS",
+                    Description = "Nenametljiv dizajn ovog prijenosnog računala skriva moćan procesor i grafiku, koji pomažu korisnicima da izvuku maksimum iz 15,6-inčnog zaslona s velikim omjerom zaslona i kućišta. Kao što biste i očekivali od prijenosnog računala ovog kalibra, opremljeno je i brzom Wi-Fi vezom te mnoštvom memorije i prostora za pohranu. Aspire 7 skriva mnogo snage u svom kućištu. Najnovija NVIDIA® grafika1 pruža svu potrebnu snagu za rad i igru, a Intel® Core™ procesor 10. generacije1 ili AMD Ryzen™ 5000 omogućuje da se sve odvija optimalnom brzinom. ",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 779,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Acer Aspire 5",
+                    Slug = "acer-aspire-5",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/l/a/laptop-acer-aspire-5-a515-45-r5x9-nxa7yex00a-ryzen-7-5700u-24gb-512gb-ssd-156-ips-noos-433xqryen-1155x1155.jpg",
+                    Summary = "Acer Aspire 5, 15.6\" FHD IPS, AMD Ryzen 7 5700U up to 4.3GHz, 16GB DDR4, 512GB NVMe SSD, AMD Radeon Graphics, no OS",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 782,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Asus Vivobook 15",
+                    Slug = "asus-vivobook-15",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/w/8/w800_1_2.png",
+                    Summary = "Asus Vivobook 15, 15,6\", Intel Core i5, 8 GB, 512 GB, Windows 10 Home",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 749,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Asus Vivobook 16",
+                    Slug = "asus-vivobook-16",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/z/t/ztfdrs.png",
                     Summary = "Acer Predator Helios 300 Gaming Laptop, 15.6\" Full HD IPS, Intel i7 CPU, 16GB DDR4 RAM, 256GB SSD, GeForce GTX 1060-6GB, VR Ready, Red Backlit KB, Metal Chassis, Windows 10 64-bit, G3-571-77QK",
                     Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
                     Discount = 0,
                     OnSale = false,
-                    SalePrice = 0,
+                    Price = 599,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Asus Vivobook Pro 16X",
+                    Slug = "asus-vivobook-pro-16x",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/1/1/112_2_1.png",
+                    Summary = "Asus Vivobook Pro 16X, 16,1\" 4K OLED, AMD Ryzen 9 6900HX 3.3GHz, 16GB DDR4, 512MB M.2 NVMe PCIe 4.0 SSD, NVIDIA GeForce RTX 3050 Ti, Windows 11 Home",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 1899,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Asus Vivobook X",
+                    Slug = "asus-vivobook-x",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/5/5/550hzhz.png",
+                    Summary = "Asus Vivobook X, 16\" WUXGA 60Hz, AMD Ryzen 5 5600H, 16GB DDR4, 1TB M.2 NVMe PCIe 3.0 SSD, Radeon Graphics, Windows 11 Home",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
                     Price = 1300,
                     UnitsInStock = 10,
                     UnitsSold = 0,
                     Rating = 0,
                     ReviewCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
-                    Brand = _techStoreContext.Brands.Where(b => b.Name.ToLower().Equals("acer")).First(),
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Equals("laptops")).First(),
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Lenovo Ideapad 3",
+                    Slug = "lenovo-ideapad-3",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/n/o/notebook-lenovo-ideapad-ultraslim-3-82rn-0001271198_1.jpg",
+                    Summary = "Lenovo Ideapad 3, 15.6\" FHD IPS, AMD Ryzen 3 5425U up to 4.1GHz, 8GB DDR4, 512GB NVMe SSD, AMD Radeon Graphics, no OS",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 429,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Lenovo Ideapad 5",
+                    Slug = "lenovo-ideapad-5",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/2/0/2022-11-07_113159.jpg",
+                    Summary = "Lenovo Ideapad 5, 15.6\" FHD IPS, AMD Ryzen 5 5625U, 8GB DDR4, 512GB SSD M.2 2242 PCIe 3.0x4 NVMe, AMD Radeon Graphics, noOS",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 599,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Lenovo Ideapad Slim 3",
+                    Slug = "lenovo-ideapad-slim-3",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/2/4/247315-wqq.png",
+                    Summary = "Lenovo Ideapad Slim 3, 15,6\" FHD,AMD Ryzen 5-7520U 2,8GHz Core4, 16 GB, SSD 512GB M.2 PCIe NVMe, AMD Radeon 610M, FreeDOS",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 505,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Lenovo Yoga 7",
+                    Slug = "Lenovo Yoga 7",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/u/l/ultrabook-aswyoga-7-82yl002f.png",
+                    Summary = "Lenovo Yoga 7, 14\" 2.8 OLED Touch HDR500 90Hz, Intel Core i7 1360P up to 5.0GHz, 16GB DDR5, 1TB NVMe SSD, Intel Iris Xe Graphics, Win 11",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 1699,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
+                },
+                new Product
+                {
+                    Name = "Acer Aspire 3",
+                    Slug = "Acer Aspire 3",
+                    ImageURL = "https://cdn.sancta-domenica.hr/media/catalog/product/cache/f5919dfc2358b0859fbea71e815269bc/a/s/aspire-3-a317-53-non-sv-01_4.png",
+                    Summary = "17.3\" FHD IPS, Intel Core i5 1135G7 up to 4.2GHz, 16GB DDR4, 512GB NVMe SSD, Intel Iris Xe Graphics, Win 11 Home",
+                    Description = "Latest 7th Generation Intel Core i7 Processor 2.8GHz with Turbo Boost Technology up to 3.8GHz | Windows 10 Home 64-bit Latest NVIDIA GeForce GTX 1060 with 6 GB of dedicated GDDR5 VRAM 15.6\" Full HD (1920 x 1080) widescreen IPS display, Red Backlit Keyboard 16GB DDR4 DRAM Memory & 256GB SSD | Extra empty expandable hard drive slot for 2.5\" hard drives. Up to 7 - hours of battery life.",
+                    Discount = 0,
+                    OnSale = false,
+                    Price = 759,
+                    UnitsInStock = 10,
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("notebooks")).First(),
                 },
                 new Product
                 {
@@ -455,16 +738,12 @@ namespace TechStore.Infrastructure.Data.Seed
                     Description = "17. 3-inch Full HD (1920 x 1080) Anti-Glare LED-Backlit Non-touch WVA Display Intel UHD Graphics 10th Generation Intel Core i5-1035G1 Processor, 6MB Cache, up to 3. 60 GHz, 8GB DDR4 Ram, 512GB M. 2 PCIe NVMe Solid State Drive SD Card Reader, USB 2. 0, Optical Disk Drive, USB 3. 1 Type-C, HDMI 1. 4b, RJ45, (2) USB 3. 1 Gen 1, Windows 10, 1 Year, Headphone & Microphone Audio Jack",
                     Discount = 10,
                     OnSale = true,
-                    SalePrice = 900,
                     Price = 1000,
                     UnitsInStock = 15,
                     UnitsSold = 5,
                     Rating = 4,
                     ReviewCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
-                    Brand = _techStoreContext.Brands.Where(b => b.Name.ToLower().Equals("dell")).First(),
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Equals("gaming laptops")).First(),
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("gaming-laptops")).First(),
                 },
                 new Product
                 {
@@ -475,16 +754,12 @@ namespace TechStore.Infrastructure.Data.Seed
                     Description = " Maximize your memory and get a boost to your gaming, multitasking, and rendering. Plug N Play Automatic Overclocking Functionality - automatically overclocks to the highest published frequency. Intel XMP-Ready Profiles. Ready for AMD Ryzen. Higher Performance with Low Power Consumption - Low 1.2V power draw to run your system efficiently.",
                     Discount = 0,
                     OnSale = false,
-                    SalePrice = 0,
                     Price = 90,
                     UnitsInStock = 14,
                     UnitsSold = 5,
                     Rating = 4,
                     ReviewCount = 0,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
-                    Brand = _techStoreContext.Brands.Where(b => b.Name.ToLower().Equals("kingston")).First(),
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Equals("ram")).First(),
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("ram")).First(),
                 },
                 new Product
                 {
@@ -495,16 +770,12 @@ namespace TechStore.Infrastructure.Data.Seed
                     Description = "Built with Samsung’s industry leading V-NAND technology for reliable and superior performance Read speeds up to 3,500MB/s* with a 5-year limited warranty and exceptional endurance up to 1,200 TBW* (* May vary by capacity) Seamless cloning and file transfers with the Samsung Magician Software, the ideal SSD management solution for performance optimization and data security with automatic firmware updates Samsung’s Dynamic Thermal Guard reduces risk of overheating and minimizes performance drop. The NVMe interface (PCIe M.2 2280) offers enhanced bandwidth, low latency, and power efficiency, perfect for tech enthusiasts, high-end gamers, and 4K & 3D content designers.Power consumption (Idle):Max. 30 mW. Product of Korea, manufactured by China.",
                     Discount = 0,
                     OnSale = false,
-                    SalePrice = 0,
                     Price = 150,
                     UnitsInStock = 8,
-                    UnitsSold = 1,
-                    Rating = 4.5m,
-                    ReviewCount = 1,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
-                    Brand = _techStoreContext.Brands.Where(b => b.Name.ToLower().Equals("samsung")).First(),
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Equals("ssd")).First(),
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("ssd")).First(),
                 },
                 new Product
                 {
@@ -515,16 +786,12 @@ namespace TechStore.Infrastructure.Data.Seed
                     Description = "Magic Keyboard combines a sleek design with a built-in rechargeable battery and enhanced key features. With a stable scissor mechanism beneath each key, as well as optimized key travel and a low profile, Magic Keyboard provides a remarkably comfortable and precise typing experience. It pairs automatically with your Mac, so you can get to work right away. And the battery is incredibly long-lasting—it will power your keyboard for about a month or more between charges. System Requirements: Bluetooth - enabled Mac computer with OS X 10.11 or later, iPad models with iPadOS, iOS devices with iOS 9.1 or later",
                     Discount = 0,
                     OnSale = false,
-                    SalePrice = 0,
                     Price = 129,
                     UnitsInStock = 10,
-                    UnitsSold = 3,
-                    Rating = 1.8m,
-                    ReviewCount = 1,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
-                    Brand = _techStoreContext.Brands.Where(b => b.Name.ToLower().Equals("apple")).First(),
-                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Name.ToLower().Equals("keyboards")).First(),
+                    UnitsSold = 0,
+                    Rating = 0,
+                    ReviewCount = 0,
+                    Subcategory = _techStoreContext.Subcategories.Where(s => s.Slug.Equals("keyboards")).First(),
                 },
             };
 
@@ -532,37 +799,98 @@ namespace TechStore.Infrastructure.Data.Seed
             await _techStoreContext.SaveChangesAsync();
         }
 
-        private async Task SeedProductProperties()
+        private async Task SeedProductAttributes()
         {
-            var productProperties = new List<ProductProperty>()
+            var productAttributes = new List<ProductAttributeSet>()
             {
-                new ProductProperty
+                new ProductAttributeSet
                 {
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
-                    Property = _techStoreContext.Properties.Where(p => p.Name.ToLower().Equals("capacity")).First(),
-                    Value = "500",
+                    Product = _techStoreContext.Products.Where(p => p.Slug.Equals("acer-predator-helios-300")).First(),
+                    Attribute = _techStoreContext.Attributes.Where(a => a.Name.Equals("Manufacturer")).First(),
+                    AttributeValue = _techStoreContext.AttributeValues.Where(av => av.Value.Equals("Acer")).First(),
                 },
-                new ProductProperty
+                new ProductAttributeSet
                 {
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
-                    Property = _techStoreContext.Properties.Where(p => p.Name.ToLower().Equals("processor")).First(),
-                    Value = "3.2",
+                    Product = _techStoreContext.Products.Where(p => p.Slug.Equals("acer-predator-helios-300")).First(),
+                    Attribute = _techStoreContext.Attributes.Where(a => a.Name.Equals("Processor")).First(),
+                    AttributeValue = _techStoreContext.AttributeValues.Where(av => av.Value.Equals("Intel")).First(),
                 },
-                new ProductProperty
+                new ProductAttributeSet
                 {
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
-                    Property = _techStoreContext.Properties.Where(p => p.Name.ToLower().Equals("display size")).First(),
-                    Value = "17.3",
+                    Product = _techStoreContext.Products.Where(p => p.Slug.Equals("acer-predator-helios-300")).First(),
+                    Attribute = _techStoreContext.Attributes.Where(a => a.Name.Equals("Graphics Card")).First(),
+                    AttributeValue = _techStoreContext.AttributeValues.Where(av => av.Value.Equals("NVidia")).First(),
                 },
-                new ProductProperty
+                new ProductAttributeSet
                 {
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
-                    Property = _techStoreContext.Properties.Where(p => p.Name.ToLower().Equals("resolution")).First(),
-                    Value = "1920x1080",
+                    Product = _techStoreContext.Products.Where(p => p.Slug.Equals("acer-predator-helios-300")).First(),
+                    Attribute = _techStoreContext.Attributes.Where(a => a.Name.Equals("RAM")).First(),
+                    AttributeValue = _techStoreContext.AttributeValues.Where(av => av.Value.Equals("8 GB")).First(),
                 },
+                 new ProductAttributeSet
+                {
+                    Product = _techStoreContext.Products.Where(p => p.Slug.Equals("acer-predator-helios-300")).First(),
+                    Attribute = _techStoreContext.Attributes.Where(a => a.Name.Equals("RAM Frequency")).First(),
+                    AttributeValue = _techStoreContext.AttributeValues.Where(av => av.Value.Equals("2666 MMz")).First(),
+                },
+                new ProductAttributeSet
+                {
+                    Product = _techStoreContext.Products.Where(p => p.Slug.Equals("acer-predator-helios-300")).First(),
+                    Attribute = _techStoreContext.Attributes.Where(a => a.Name.Equals("RAM Type")).First(),
+                    AttributeValue = _techStoreContext.AttributeValues.Where(av => av.Value.Equals("DDR4")).First(),
+                },
+                new ProductAttributeSet
+                {
+                    Product = _techStoreContext.Products.Where(p => p.Slug.Equals("acer-predator-helios-300")).First(),
+                    Attribute = _techStoreContext.Attributes.Where(a => a.Name.Equals("Display Size")).First(),
+                    AttributeValue = _techStoreContext.AttributeValues.Where(av => av.Value.Equals("17,3 inch")).First(),
+                },
+                new ProductAttributeSet
+                {
+                    Product = _techStoreContext.Products.Where(p => p.Slug.Equals("acer-predator-helios-300")).First(),
+                    Attribute = _techStoreContext.Attributes.Where(a => a.Name.Equals("Operating System")).First(),
+                    AttributeValue = _techStoreContext.AttributeValues.Where(av => av.Value.Equals("Windows")).First(),
+                },
+                new ProductAttributeSet
+                {
+                    Product = _techStoreContext.Products.Where(p => p.Slug.Equals("acer-predator-helios-300")).First(),
+                    Attribute = _techStoreContext.Attributes.Where(a => a.Name.Equals("Storage Type")).First(),
+                    AttributeValue = _techStoreContext.AttributeValues.Where(av => av.Value.Equals("HDD")).First(),
+                },
+                new ProductAttributeSet
+                {
+                    Product = _techStoreContext.Products.Where(p => p.Slug.Equals("acer-predator-helios-300")).First(),
+                    Attribute = _techStoreContext.Attributes.Where(a => a.Name.Equals("Cooling System")).First(),
+                    AttributeValue = _techStoreContext.AttributeValues.Where(av => av.Value.Equals("Fan")).First(),
+                }
             };
 
-            _techStoreContext.ProductProperties.AddRange(productProperties);
+            _techStoreContext.ProductAttributes.AddRange(productAttributes);
+            await _techStoreContext.SaveChangesAsync();
+        }
+
+        private async Task SeedPromoCodes()
+        {
+            var promoCodes = new List<PromoCode>()
+            {
+                new PromoCode
+                {
+                    Code = "TP20",
+                    Discount = 20,
+                },
+                new PromoCode
+                {
+                    Code = "TP30",
+                    Discount = 30,
+                },
+                new PromoCode
+                {
+                    Code = "TP50",
+                    Discount = 50,
+                }
+            };
+
+            _techStoreContext.PromoCodes.AddRange(promoCodes);
             await _techStoreContext.SaveChangesAsync();
         }
 
@@ -573,12 +901,10 @@ namespace TechStore.Infrastructure.Data.Seed
                 new Newsletter
                 {
                     Email = "test@gmail.com",
-                    CreatedAt = DateTime.Now,
                 },
                 new Newsletter
                 {
                     Email = "subscriber@gmail.com",
-                    CreatedAt = DateTime.Now,
                 },
             };
 
@@ -593,18 +919,18 @@ namespace TechStore.Infrastructure.Data.Seed
                 new Review
                 {
                     Email = "test@gmail.com",
-                    Rate = 4.5m,
+                    Rate = 4,
                     Comment = "Very good!",
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("samsung-970-evo")).First(),
-                    CreatedAt = DateTime.Now,
+                    IsReported = false,
+                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
                 },
                 new Review
                 {
                     Email = "admin@gmail.com",
-                    Rate = 1.8m,
+                    Rate = 5,
                     Comment = "Not good! Wouldn't recommend.",
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("apple-magic-keyboard")).First(),
-                    CreatedAt = DateTime.Now,
+                    IsReported = false,
+                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
                 },
             };
 
@@ -620,10 +946,6 @@ namespace TechStore.Infrastructure.Data.Seed
                 {
                     Email = "test@gmail.com",
                 },
-                new Wishlist
-                {
-                    Email = "admin@gmail.com",
-                },
             };
 
             _techStoreContext.WishLists.AddRange(wishlists);
@@ -632,22 +954,12 @@ namespace TechStore.Infrastructure.Data.Seed
 
         private async Task SeedWishlistProducts()
         {
-            var wishlistProducts = new List<WishListProduct>()
+            var wishlistProducts = new List<WishlistProduct>()
             {
-                new WishListProduct
+                new WishlistProduct
                 {
-                    WishList = _techStoreContext.WishLists.Where(w => w.Email.ToLower().Equals("test@gmail.com")).First(),
+                    Wishlist = _techStoreContext.WishLists.Where(w => w.Email.ToLower().Equals("test@gmail.com")).First(),
                     Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
-                },
-                new WishListProduct
-                {
-                    WishList = _techStoreContext.WishLists.Where(w => w.Email.ToLower().Equals("test@gmail.com")).First(),
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("samsung-970-evo")).First(),
-                },
-                new WishListProduct
-                {
-                    WishList = _techStoreContext.WishLists.Where(w => w.Email.ToLower().Equals("admin@gmail.com")).First(),
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("kingston-fury-impact-16")).First(),
                 },
             };
 
@@ -661,13 +973,8 @@ namespace TechStore.Infrastructure.Data.Seed
             {
                 new Cart
                 {
-                    Username = "test@gmail.com",
+                    Email = "test@gmail.com",
                     TotalPrice = 1210,
-                },
-                new Cart
-                {
-                    Username = "admin@gmail.com",
-                    TotalPrice = 1480,
                 },
             };
 
@@ -681,44 +988,12 @@ namespace TechStore.Infrastructure.Data.Seed
             {
                 new CartProduct
                 {
-                    Cart = _techStoreContext.Carts.Where(c => c.Username.ToLower().Equals("test@gmail.com")).First(),
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("samsung-970-evo")).First(),
-                    Quantity = 1,
-                    UnitPrice = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("samsung-970-evo")).First().Price,
-                    TotalPrice = 1 * _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("samsung-970-evo")).First().Price,
-                },
-                new CartProduct
-                {
-                    Cart = _techStoreContext.Carts.Where(c => c.Username.ToLower().Equals("test@gmail.com")).First(),
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("dell-inspiron-17-3793")).First(),
-                    Quantity = 1,
-                    UnitPrice = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("dell-inspiron-17-3793")).First().Price,
-                    TotalPrice = 1 * _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("dell-inspiron-17-3793")).First().Price,
-                },
-                new CartProduct
-                {
-                    Cart = _techStoreContext.Carts.Where(c => c.Username.ToLower().Equals("test@gmail.com")).First(),
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("kingston-fury-impact-16")).First(),
-                    Quantity = 2,
-                    UnitPrice = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("kingston-fury-impact-16")).First().Price,
-                    TotalPrice = 2 * _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("kingston-fury-impact-16")).First().Price,
-                },
-                new CartProduct
-                {
-                    Cart = _techStoreContext.Carts.Where(c => c.Username.ToLower().Equals("admin@gmail.com")).First(),
+                    Cart = _techStoreContext.Carts.Where(c => c.Email.ToLower().Equals("test@gmail.com")).First(),
                     Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
                     Quantity = 1,
                     UnitPrice = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First().Price,
                     TotalPrice = 1 * _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First().Price,
-                },
-                new CartProduct
-                {
-                    Cart = _techStoreContext.Carts.Where(c => c.Username.ToLower().Equals("admin@gmail.com")).First(),
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("kingston-fury-impact-16")).First(),
-                    Quantity = 2,
-                    UnitPrice = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("kingston-fury-impact-16")).First().Price,
-                    TotalPrice = 2 * _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("kingston-fury-impact-16")).First().Price,
-                },
+                }
             };
 
             _techStoreContext.CartProducts.AddRange(cartProducts);
@@ -734,15 +1009,12 @@ namespace TechStore.Infrastructure.Data.Seed
                     LastName = "Test",
                     Email = "test@gmail.com",
                     ContactNumber = "0991234885",
-                    Country = "New Test",
-                    City = "Test City",
+                    Country = "Croatia",
+                    City = "Split",
                     ShippingAddress = "Ul. Test 127",
-                    PostalCode = 12700,
+                    ZipCode = 21000,
                     TotalPrice = 1210,
                     Status = OrderStatus.Completed,
-                    PaymentMethod = PaymentMethod.Cash,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
                 },
             };
 
@@ -755,28 +1027,12 @@ namespace TechStore.Infrastructure.Data.Seed
             var orderProducts = new List<OrderProduct>()
             {
                new OrderProduct
-                {
+               {
                     Order = _techStoreContext.Orders.Where(o => o.Email.ToLower().Equals("test@gmail.com")).First(),
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("samsung-970-evo")).First(),
+                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
                     Quantity = 1,
-                    UnitPrice = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("samsung-970-evo")).First().Price,
-                    TotalPrice = 1 * _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("samsung-970-evo")).First().Price,
-                },
-                new OrderProduct
-                {
-                    Order = _techStoreContext.Orders.Where(o => o.Email.ToLower().Equals("test@gmail.com")).First(),
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("dell-inspiron-17-3793")).First(),
-                    Quantity = 1,
-                    UnitPrice = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("dell-inspiron-17-3793")).First().Price,
-                    TotalPrice = 1 * _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("dell-inspiron-17-3793")).First().Price,
-                },
-                new OrderProduct
-                {
-                    Order = _techStoreContext.Orders.Where(o => o.Email.ToLower().Equals("test@gmail.com")).First(),
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("kingston-fury-impact-16")).First(),
-                    Quantity = 2,
-                    UnitPrice = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("kingston-fury-impact-16")).First().Price,
-                    TotalPrice = 2 * _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("kingston-fury-impact-16")).First().Price,
+                    UnitPrice = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First().Price,
+                    TotalPrice = 1 * _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First().Price,
                 },
             };
 
@@ -792,11 +1048,14 @@ namespace TechStore.Infrastructure.Data.Seed
             foreach(var role in userRoles)
             {
                 if (!_techStoreContext.Roles.Any(r => r.Name.ToLower().Equals(role.ToLower())))
-                    await roleStore.CreateAsync(new IdentityRole
-                    {
-                        Name = role,
-                        NormalizedName = role.ToUpper()
-                    });
+                {
+                    await roleStore.CreateAsync(
+                        new IdentityRole
+                        {
+                            Name = role,
+                            NormalizedName = role.ToUpper()
+                        });
+                }
             }
         }
     }

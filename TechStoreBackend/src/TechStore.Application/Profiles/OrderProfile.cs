@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using TechStore.Application.Models.Order;
-using TechStore.Domain.Entities.Order;
+using TechStore.Domain.Entities.OrderAggregate;
 
 
 namespace TechStore.Application.Profiles

@@ -1,17 +1,37 @@
 <script setup>
 import { ref } from "vue";
+import { useToast } from "vue-toastification";
+import { axiosPrivate } from "@/api/axios";
 import FormContainer from "@/components/common/FormContainer.vue";
+import { ITEM_CREATE_FAIL, ITEM_CREATE_SUCCESS } from "../../../constants/messages/create";
 
+const emit = defineEmits(["reload"]);
+const toast = useToast();
 const code = ref("");
-const discount = ref(0); // TODO: check => 0 && <= 100
+const discount = ref(0);
 const loading = ref(false);
 
-function handleSave() {
-  const formData = new FormData();
-  formData.append("code", code.value);
-  formData.append("discount", discount.value);
-
-  console.log(formData);
+async function handleSave() {
+  // TODO: add form validation and state
+  // TODO: code and slug can be max 12 characters long
+  // TODO: add discount validation (eg. check => 0 && <= 100)
+  await axiosPrivate
+    .post("/promo-codes", {
+      code: code.value,
+      discount: discount.value,
+    })
+    .then((resp) => {
+      if (resp.status == 200) {
+        code.value = "";
+        discount.value = 0;
+        toast.success(ITEM_CREATE_SUCCESS);
+        emit("reload");
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      toast.error(ITEM_CREATE_FAIL);
+    });
 }
 </script>
 

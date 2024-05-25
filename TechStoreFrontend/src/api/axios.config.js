@@ -1,16 +1,14 @@
-const user = JSON.parse(localStorage.getItem("user"));
-const accessToken = user?.accessToken ? user.accessToken : null;
-
 const defaultOptions = {
-  baseURL: import.meta.env.API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 };
 
 const privateOptions = {
   ...defaultOptions,
   headers: {
-    Authorization: `Bearer ${accessToken}`,
+    "Content-type": "application/json",
   },
   withCredentials: true,
+  credentials: "include",
 };
 
 export { defaultOptions, privateOptions };

@@ -5,13 +5,14 @@ namespace TechStore.Application.Interfaces.Services
 {
     public interface IOrderService
     {
-        Task AddAsync(OrderCreateModel orderModel);
-        Task DeleteAsync(int orderId);
+        Task CreateAsync(OrderCreateModel orderModel);
         Task UpdateAsync(OrderUpdateModel orderModel);
 
-        OrderReadModel GetOrderById(int orderId);
+        Task<int> UpdateOrderStatusAsync(OrderUpdateStatusModel updateModel);
+        Task<int> DeleteAsync(int orderId);
+        Task<OrderReadModel> GetOrderByIdAsync(int orderId);
 
-        IList<OrderReadModel> GetOrders();
-        IList<OrderReadModel> GetOrders(string email);
+        Task<IEnumerable<OrderReadModel>> GetOrdersAsync();
+        Task<IEnumerable<OrderReadModel>> GetOrdersAsync(string email);
     }
 }

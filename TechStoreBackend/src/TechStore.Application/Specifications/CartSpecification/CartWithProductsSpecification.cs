@@ -6,8 +6,8 @@ namespace TechStore.Application.Specifications.CartSpecification
 {
     public class CartWithProductsSpecification : BaseSpecification<Cart>
     {
-        public CartWithProductsSpecification(string username)
-           : base(c => c.Username.ToLower().Equals(username.ToLower()))
+        public CartWithProductsSpecification(string email)
+           : base(c => c.Email.ToLower().Equals(email.ToLower()))
         {
             AddInclude(c => c.Products);
         }

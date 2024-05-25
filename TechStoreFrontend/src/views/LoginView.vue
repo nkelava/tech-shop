@@ -1,5 +1,7 @@
 <script setup>
 import { computed, reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/store";
 import useVuelidate from "@vuelidate/core";
 import { required, sameAs } from "@vuelidate/validators";
 import BaseInput from "@/components/common/BaseInput.vue";
@@ -10,25 +12,38 @@ import {
   rules as registerRules,
 } from "@/vuelidate/auth/register";
 
+const router = useRouter();
+const userStore = useUserStore();
 const isRightPanelActive = ref(false);
-const togglePanel = () => {
-  isRightPanelActive.value = !isRightPanelActive.value;
-};
 const loginState = reactive({ ...initialLoginState });
 const registerState = reactive({ ...initialRegisterState });
 const loginValidationRules = computed(() => loginRules);
 const registerValidationRules = computed(() => {
-  registerRules.confirmPassword = { required, sameAs: sameAs(registerState.password) };
+  registerRules.confirmPassword = {
+    required,
+    sameAs: sameAs(computed(() => registerState.password)),
+  };
   return registerRules;
 });
 const vl$ = useVuelidate(loginValidationRules, loginState);
 const vr$ = useVuelidate(registerValidationRules, registerState);
+
+const togglePanel = () => (isRightPanelActive.value = !isRightPanelActive.value);
 
 async function handleSignIn() {
   const isFormValid = await vl$.value.$validate();
 
   if (!isFormValid) {
     return;
+  }
+
+  const { email, password } = loginState;
+
+  try {
+    await userStore.loginUser(email, password);
+    router.push("/");
+  } catch (error) {
+    console.log(`Error: ${error.message}`);
   }
 
   clearForm(vl$, initialLoginState, loginState);
@@ -39,6 +54,15 @@ async function handleSignUp() {
 
   if (!isFormValid) {
     return;
+  }
+
+  const { email, password, confirmPassword } = registerState;
+
+  try {
+    await userStore.registerUser(email, password, confirmPassword);
+    router.push("/");
+  } catch (error) {
+    console.log(`Error: ${error.message}`);
   }
 
   clearForm(vr$, initialRegisterState, registerState);
@@ -58,20 +82,6 @@ function clearForm(form, initialFormState, formState) {
     <div class="form-container sign-up-container">
       <form @submit.prevent>
         <h1>Create Account</h1>
-        <base-input
-          class="w-100"
-          v-model="registerState.firstName"
-          label="First Name"
-          :v$="vr$.firstName"
-          density="compact"
-        />
-        <base-input
-          class="w-100"
-          v-model="registerState.lastName"
-          label="Last Name"
-          :v$="vr$.lastName"
-          density="compact"
-        />
         <base-input
           class="w-100"
           v-model="registerState.email"

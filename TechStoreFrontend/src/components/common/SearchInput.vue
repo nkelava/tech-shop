@@ -28,7 +28,7 @@ function handleSearch() {
   display: flex;
   flex: 1;
   align-items: center;
-  max-width: 800px;
+  max-width: 600px;
 }
 
 .search__btn {

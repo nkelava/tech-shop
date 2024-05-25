@@ -4,33 +4,24 @@ namespace TechStore.Application.Models.Product
 {
     public class ProductCreateModel
     {
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
 
-        public string Slug { get; set; } = string.Empty;
+        public string Slug { get; set; }
 
-        public string ImageURL { get; set; } = string.Empty;
+        public decimal? Price { get; set; }
+        
+        public bool? OnSale { get; set; }
 
-        public string Summary { get; set; } = string.Empty;
+        public string? ImageURL { get; set; }
 
-        public string Description { get; set; } = string.Empty;
+        public string? Summary { get; set; }
 
-        public int Discount { get; set; } = 0;
+        public string? Description { get; set; }
 
-        public bool OnSale { get; set; } = false;
+        public int? UnitsInStock { get; set; }
 
-        public decimal SalePrice { get; set; } = 0;
 
-        public decimal Price { get; set; } = 0;
-
-        public int UnitsInStock { get; set; } = 0;
-
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
-
-        public int BrandId { get; set; }
+        public int? PromoCodeId { get; set; }
         public int SubcategoryId { get; set; }
-
-        public IList<ProductPropertyModel> Properties { get; set; }
     }
 }

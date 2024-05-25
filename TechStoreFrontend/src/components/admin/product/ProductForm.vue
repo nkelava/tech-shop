@@ -1,89 +1,80 @@
 <script setup>
 import { onMounted, ref } from "vue";
+import { useToast } from "vue-toastification";
+import { axiosPrivate } from "@/api/axios";
 import FormContainer from "@/components/common/FormContainer.vue";
+import { ITEM_CREATE_FAIL, ITEM_CREATE_SUCCESS } from "../../../constants/messages/create";
 
-const subcategories = ref([]);
-const attributes = ref([]);
-const attributeValues = ref([]);
-const promoCodes = ref([]);
-const name = ref("");
-const slug = ref("");
-const title = ref("");
-const summary = ref("");
-const description = ref("");
-const price = ref(0);
+const emit = defineEmits(["reload"]);
+const toast = useToast();
+const name = ref("Test");
+const slug = ref("test");
+const summary = ref("This is a summary.");
+const description = ref("This is a description.");
+const price = ref(1200);
 const onSale = ref(false);
-const promoCodeId = ref();
-const unitsInStock = ref(0);
-const image = ref(null);
-const subcategoryId = ref(null);
-const attributeId = ref(null);
-const attributeValueId = ref(null);
-const productAttributes = ref([]);
+const discount = ref(0);
+const promoCode = ref(null);
+const unitsInStock = ref(25);
+const imageURL = ref(null);
+const subcategory = ref(null);
+const promoCodes = ref([]);
+const subcategories = ref([]);
 const loading = ref(false);
 
-onMounted(() => {
-  subcategories.value = [
-    { id: 0, name: "Desktop" },
-    { id: 1, name: "Notebook" },
-    { id: 2, name: "Ultrabook" },
-  ];
-  promoCodes.value = [
-    { id: 0, code: "TP30" },
-    { id: 1, code: "TP50" },
-  ];
-  attributes.value = [
-    { id: 0, name: "RAM" },
-    { id: 1, name: "SSD" },
-    { id: 2, name: "SSD" },
-  ];
-  attributeValues.value = [
-    { id: 0, value: "5 GB" },
-    { id: 1, value: "Apple" },
-  ];
+onMounted(async () => {
+  await axiosPrivate
+    .get("/subcategories")
+    .then((resp) => {
+      if (resp?.status !== 200) return;
+      subcategories.value = resp.data;
+    })
+    .catch((error) => console.log(error));
+
+  await axiosPrivate
+    .get("/promo-codes")
+    .then((resp) => {
+      if (resp?.status !== 200) return;
+      promoCodes.value = resp.data;
+    })
+    .catch((error) => console.log(error));
 });
 
-function handleSave() {
-  const formData = new FormData();
-  formData.append("name", name.value);
-  formData.append("slug", slug.value);
-  formData.append("title", title.value);
-  formData.append("summary", summary.value);
-  formData.append("description", description.value);
-  formData.append("price", price.value);
-  formData.append("onSale", onSale.value);
-  formData.append("promoCodeId", promoCodeId.value);
-  formData.append("unitsInStock", unitsInStock.value);
-  formData.append("image", image.value);
-  formData.append("subcategoryId", subcategoryId.value);
-  formData.append("productAttributes", JSON.stringify(productAttributes.value));
-
-  console.log(formData);
-}
-
-function removeAttribute(attributeId, attributeValueId) {
-  productAttributes.value = productAttributes.value.filter(
-    (pa) => pa.attribute.id !== attributeId || pa.attributeValue.id !== attributeValueId
-  );
-}
-
-function handleAttributeValuePairAdd() {
-  if (attributeId.value !== null && attributeValueId.value !== null) {
-    const pairExists = productAttributes.value.find(
-      (av) =>
-        av.attribute.id === attributeId.value && av.attributeValue.id === attributeValueId.value
-    );
-
-    if (!pairExists) {
-      productAttributes.value.push({
-        attribute: attributes.value.find((a) => a.id === attributeId.value),
-        attributeValue: attributeValues.value.find((av) => av.id === attributeValueId.value),
-      });
-
-      attributeId.value = null;
-      attributeValueId.value = null;
-    }
-  }
+async function handleSave() {
+  await axiosPrivate
+    .post("/products", {
+      name: name.value,
+      slug: slug.value,
+      imageURL: imageURL?.value,
+      summary: summary.value,
+      description: description.value,
+      onSale: onSale.value,
+      price: price.value,
+      unitsInStock: unitsInStock.value,
+      promoCodeId: promoCode.value,
+      subcategoryId: subcategory.value,
+    })
+    .then((resp) => {
+      if (resp.status == 200) {
+        name.value = "Test";
+        slug.value = "test";
+        summary.value = "This is a summary.";
+        description.value = "This is a description.";
+        price.value = 1200;
+        onSale.value = false;
+        discount.value = 0;
+        promoCode.value = null;
+        unitsInStock.value = 25;
+        imageURL.value = null;
+        subcategory.value = null;
+        toast.success(ITEM_CREATE_SUCCESS);
+        emit("reload");
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      toast.error(ITEM_CREATE_FAIL);
+    });
 }
 </script>
 
@@ -102,14 +93,6 @@ function handleAttributeValuePairAdd() {
         v-model="slug"
         class="mt-5"
         label="Slug"
-        density="compact"
-        variant="outlined"
-        hide-details="auto"
-      />
-      <v-text-field
-        v-model="title"
-        class="mt-5"
-        label="Title"
         density="compact"
         variant="outlined"
         hide-details="auto"
@@ -140,13 +123,25 @@ function handleAttributeValuePairAdd() {
         min="0"
       />
       <v-checkbox v-model="onSale" class="mt-5" label="On Sale" hide-details="auto"></v-checkbox>
-      <v-select
-        v-model="promoCodeId"
+      <v-text-field
+        v-model="discount"
+        type="number"
         class="mt-5"
-        item-value="id"
-        item-title="code"
+        label="Discount"
+        density="compact"
+        variant="outlined"
+        hide-details="auto"
+        min="0"
+        max="100"
+        :disabled="!onSale"
+      />
+      <v-select
+        v-model="promoCode"
+        class="mt-5"
         label="Promo Code"
         :items="promoCodes"
+        item-value="id"
+        item-title="code"
         density="compact"
         hide-details="auto"
         variant="outlined"
@@ -162,7 +157,7 @@ function handleAttributeValuePairAdd() {
         min="0"
       />
       <v-file-input
-        v-model="image"
+        v-model="imageURL"
         class="mt-5"
         label="Image"
         density="compact"
@@ -170,7 +165,7 @@ function handleAttributeValuePairAdd() {
         hide-details="auto"
       ></v-file-input>
       <v-select
-        v-model="subcategoryId"
+        v-model="subcategory"
         class="mt-5"
         label="Subcategory"
         :items="subcategories"
@@ -180,49 +175,6 @@ function handleAttributeValuePairAdd() {
         hide-details="auto"
         variant="outlined"
       ></v-select>
-      <div class="attribue-container">
-        <div class="attribute__add">
-          <v-select
-            v-model="attributeId"
-            class="mt-5"
-            label="Attribute"
-            :items="attributes"
-            item-value="id"
-            item-title="name"
-            density="compact"
-            hide-details="auto"
-            variant="outlined"
-          ></v-select>
-          <v-select
-            v-model="attributeValueId"
-            label="Attribute Value"
-            class="mt-sm-5"
-            :items="attributeValues"
-            item-value="id"
-            item-title="value"
-            density="compact"
-            hide-details="auto"
-            variant="outlined"
-          ></v-select>
-          <v-btn class="btn--add" @click="handleAttributeValuePairAdd">Add</v-btn>
-        </div>
-        <div class="attribute__list">
-          <v-chip v-for="(attributeValuePair, i) in productAttributes" :key="i" class="chip" label>
-            {{ attributeValuePair.attribute.name }} {{ attributeValuePair.attributeValue.value }}
-            <v-btn
-              class="chip__btn"
-              icon="mdi-close-circle-outline"
-              density="compact"
-              @click="
-                removeAttribute(
-                  attributeValuePair.attribute.id,
-                  attributeValuePair.attributeValue.id
-                )
-              "
-            ></v-btn>
-          </v-chip>
-        </div>
-      </div>
       <v-btn type="submit" class="form__btn" :loading="loading" @click="handleSave">Save</v-btn>
     </v-form>
   </form-container>

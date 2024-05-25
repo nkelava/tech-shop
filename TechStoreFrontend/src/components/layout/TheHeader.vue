@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import { useUserStore } from "@/store";
 import TheNavBar from "@/components/layout/TheNavBar.vue";
 import SearchInput from "@/components/common/SearchInput.vue";
 import WishlistDialog from "@/components/wishlist/WishlistDialog.vue";
@@ -7,8 +8,7 @@ import CartDialog from "@/components/cart/CartDialog.vue";
 import UserProfileDropdown from "@/components/UserProfileDropdown.vue";
 import BrandLogo from "@/assets/icons/header/brand-logo.svg";
 
-// TODO: implement user state
-const isSignedIn = true;
+const userStore = useUserStore();
 </script>
 
 <template>
@@ -24,9 +24,9 @@ const isSignedIn = true;
     <div class="header__widgets">
       <the-nav-bar />
       <div class="d-flex">
-        <wishlist-dialog />
+        <wishlist-dialog v-if="userStore.isLoggedIn" />
         <cart-dialog />
-        <user-profile-dropdown v-if="isSignedIn" />
+        <user-profile-dropdown v-if="userStore.isLoggedIn" />
       </div>
     </div>
   </header>

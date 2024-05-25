@@ -7,8 +7,9 @@ namespace TechStore.Application.Interfaces.Repositories
     public interface ICategoryRepository : IRepository<Category>
     {
         Task<Category> GetCategoryByIdAsync(int categoryId);
+        Task<Category> GetCategoryBySlugAsync(string categorySlug);
         Task<Category> GetCategoryWithSubcategoriesAsync(int categoryId);
 
-        Task<IList<Category>> GetAllCategoriesAsync();
+        Task<IEnumerable<Category>> GetAllCategoriesAsync();
     }
 }

@@ -1,11 +1,11 @@
 <script setup>
+import { axiosPublic } from "@/api/axios";
 import { onMounted, ref } from "vue";
 import ImageSlider from "@/components/ImageSlider.vue";
 import TheBenefits from "@/components/TheBenefits.vue";
 import TheBanners from "@/components/TheAds.vue";
 import ProductGrid from "@/components/ProductGrid.vue";
 import ProductSlider from "@/components/ProductSlider.vue";
-import { getProducts } from "@/database/services/productService";
 
 const bestSellers = ref([]);
 const newArrivals = ref([]);
@@ -13,11 +13,26 @@ const hotOffers = ref([]);
 const topRated = ref([]);
 const tab = ref("new");
 
-onMounted(() => {
-  bestSellers.value = getProducts();
-  newArrivals.value = getProducts();
-  hotOffers.value = getProducts();
-  topRated.value = getProducts();
+onMounted(async () => {
+  bestSellers.value = await axiosPublic
+    .get("/products/bestsellers")
+    .then((response) => response.data)
+    .catch(() => null);
+
+  newArrivals.value = await axiosPublic
+    .get("/products/new")
+    .then((response) => response.data)
+    .catch(() => null);
+
+  hotOffers.value = await axiosPublic
+    .get("/products/top")
+    .then((response) => response.data)
+    .catch(() => null);
+
+  topRated.value = await axiosPublic
+    .get("/products/top")
+    .then((response) => response.data)
+    .catch(() => null);
 });
 </script>
 
@@ -28,20 +43,22 @@ onMounted(() => {
     <div class="best-sellers ts-container">
       <h2>Best Sellers</h2>
       <hr />
-      <product-grid :products="bestSellers" />
+      <product-grid v-if="bestSellers" :products="bestSellers" />
     </div>
     <the-banners />
     <div class="ts-container tabs-container">
       <div class="tabs">
         <v-tabs v-model="tab">
           <v-tab value="new">
-            <h2 class="text-capitalize">New Arrivals</h2>
+            <h3 class="text-capitalize">New Arrivals</h3>
           </v-tab>
+          <v-divider class="mx-3" inset vertical></v-divider>
           <v-tab value="hot">
-            <h2 class="text-capitalize">Hot Offers</h2>
+            <h3 class="text-capitalize">Hot Offers</h3>
           </v-tab>
+          <v-divider class="mx-3" inset vertical></v-divider>
           <v-tab value="top">
-            <h2 class="text-capitalize">Top Rated</h2>
+            <h3 class="text-capitalize">Top Rated</h3>
           </v-tab>
         </v-tabs>
       </div>
@@ -78,9 +95,23 @@ onMounted(() => {
   font-size: 12px;
 }
 
+:deep(.v-divider--vertical) {
+  display: none;
+}
+
+:deep(.tabs-container .carousel__slide) {
+  padding: 10px 0 !important;
+}
+
 @media only screen and (min-width: 48em) {
   .tabs button {
     font-size: 1rem;
+  }
+
+  :deep(.v-divider--vertical) {
+    display: inline;
+    border: 1px solid var(--ts-c-secondary);
+    border-radius: 5px;
   }
 }
 </style>

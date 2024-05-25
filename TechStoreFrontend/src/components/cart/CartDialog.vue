@@ -4,6 +4,7 @@ import { useCartStore } from "@/store";
 import CartTable from "@/components/cart/CartTable.vue";
 import OrderDialog from "@/components/order/OrderDialog.vue";
 import CartIcon from "@/assets/icons/header/cart.png";
+import EmptyStateImage from "@/assets/images/test/empty_state.png";
 import { getPromoCode } from "@/database/services/promoCodeService.js";
 
 const cart = useCartStore();
@@ -29,10 +30,6 @@ const currentPageItems = computed(() => {
 
 function toggleDialog() {
   orderDialogActive.value = !orderDialogActive.value;
-}
-
-function deleteItem(productId) {
-  cart.removeItem(productId);
 }
 
 function addPromoCode() {
@@ -63,16 +60,16 @@ function removePromoCode() {
     </v-btn>
     <v-dialog v-model="cartDialogActive" persistent width="auto">
       <v-card class="dialog">
-        <v-card-title> Your Shopping Cart</v-card-title>
-        <v-card-text>
-          <cart-table :products="currentPageItems" @deleteItem="deleteItem" />
+        <v-card-title class="font-weight-bold"> Your Shopping Cart </v-card-title>
+        <v-card-text v-if="currentPageItems.length">
+          <cart-table :products="currentPageItems" />
           <v-container>
             <v-row justify="center">
               <v-col cols="10">
                 <v-container class="max-width">
                   <v-pagination
                     v-model="pageState.currentPage"
-                    class="my-4"
+                    class="my-1"
                     :length="totalPageCount"
                   />
                 </v-container>
@@ -80,7 +77,7 @@ function removePromoCode() {
             </v-row>
           </v-container>
         </v-card-text>
-        <div class="price">
+        <div v-if="currentPageItems.length" class="price">
           <form @submit.prevent>
             <input
               v-model="promoCodeState.input"
@@ -103,12 +100,27 @@ function removePromoCode() {
           </form>
           <h2 class="text-end pr-4">Total: {{ cart.totalPrice(promoCodeState.discount) }}$</h2>
         </div>
-        <v-card-actions class="justify-space-between">
+        <div v-else class="empty__container">
+          <v-img class="empty__image" :src="EmptyStateImage">
+            <template v-slot:placeholder>
+              <div class="d-flex align-center justify-center fill-height">
+                <v-progress-circular
+                  :size="80"
+                  color="teal-darken-2"
+                  indeterminate
+                ></v-progress-circular>
+              </div>
+            </template>
+          </v-img>
+          <p>Your Cart is empty!</p>
+        </div>
+        <v-card-actions class="justify-space-between mt-4">
           <v-btn color="red-darken-1" variant="text" @click="cartDialogActive = !cartDialogActive">
             Close
           </v-btn>
           <v-btn
-            color="green-darken-1"
+            v-if="currentPageItems.length"
+            class="checkout"
             variant="text"
             @click="orderDialogActive = !orderDialogActive"
           >
@@ -123,6 +135,8 @@ function removePromoCode() {
 
 <style scoped>
 .dialog {
+  padding: 1rem 0.5rem;
+  min-width: 400px;
   background: var(--ts-c-bg-light);
 }
 
@@ -132,8 +146,12 @@ function removePromoCode() {
 
 .price {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: end;
+}
+
+.price h2 {
+  margin: 1rem 0 0 auto;
 }
 
 .promo-code {
@@ -147,18 +165,34 @@ function removePromoCode() {
 }
 
 .btn-submit {
-  height: 33px !important;
+  height: 100% !important;
   border: 1px solid transparent;
   border-radius: 0 5px 5px 0;
   background-color: var(--ts-c-bg-dark);
   color: var(--ts-c-text-light);
   height: 100%;
-  padding: 5px 10px;
+  padding: 5px 15px;
   text-transform: capitalize;
 }
 
 .checkout {
-  color: green;
   text-decoration: none;
+  color: var(--ts-c-success) !important;
+}
+
+.empty__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.empty__image {
+  height: 200px;
+  width: 200px;
+}
+
+.empty__container p {
+  color: var(--ts-c-text-dark);
 }
 </style>

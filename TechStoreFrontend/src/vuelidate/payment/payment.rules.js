@@ -4,11 +4,11 @@ const rules = {
   firstName: { required, alpha },
   lastName: { required, alpha },
   email: { required, email },
-  address: { required },
+  shippingAddress: { required },
   city: { required },
   zipCode: { required },
   country: { required },
-  phone: { required },
+  contactNumber: { required },
 };
 
 export { rules };

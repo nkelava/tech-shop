@@ -12,7 +12,7 @@ namespace TechStore.Application.Profiles
             CreateMap<Product, ProductReadModel>().ReverseMap();
             CreateMap<Product, ProductCreateModel>().ReverseMap();
             CreateMap<Product, ProductUpdateModel>().ReverseMap();
-            CreateMap<ProductProperty, ProductPropertyModel>().ReverseMap();
+            CreateMap<ProductAttributeSet, ProductAttributeSetModel>().ReverseMap();
         }
     }
 }

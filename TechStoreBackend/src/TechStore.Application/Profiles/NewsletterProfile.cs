@@ -10,6 +10,7 @@ namespace TechStore.Application.Profiles
         public NewsletterProfile()
         {
             CreateMap<Newsletter, NewsletterReadModel>().ReverseMap();
+            CreateMap<Newsletter, NewsletterCreateModel>().ReverseMap();
         }
     }
 }

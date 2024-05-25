@@ -1,5 +1,7 @@
 <script setup>
+import { onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
+import { axiosPublic } from "@/api/axios";
 import ContactInfo from "@/components/common/ContactInfo.vue";
 import ContactForm from "@/components/ContactForm.vue";
 import EmailIcon from "@/assets/icons/contact/gmail16.png";
@@ -8,7 +10,14 @@ import FacebookIcon from "@/assets/icons/socials/facebook.png";
 import InstagramIcon from "@/assets/icons/socials/instagram.png";
 import YoutubeIcon from "@/assets/icons/socials/youtube.png";
 
-const categories = ["laptops", "fcomputers", "components", "peripherals", "software"];
+const categories = ref([]);
+
+onMounted(async () => {
+  await axiosPublic
+    .get("/categories")
+    .then((response) => (categories.value = response.data))
+    .catch((error) => console.log(error));
+});
 </script>
 
 <template>
@@ -24,23 +33,23 @@ const categories = ["laptops", "fcomputers", "components", "peripherals", "softw
           class="link"
           v-for="(category, index) in categories"
           :key="index"
-          :to="category"
+          :to="category?.slug"
         >
-          {{ category }}
+          {{ category?.name }}
         </router-link>
       </div>
       <div class="info-container">
         <h3 class="footer__header">CONTACT INFO</h3>
         <contact-info :imgUrl="EmailIcon" imgAlt="email icon">
-          Email: tech-store@gmail.com
+          Email: info.techplanet@gmail.com
         </contact-info>
-        <v-divider class="my-1" />
+        <v-divider class="my-3" />
         <contact-info :imgUrl="PhoneIcon" imgAlt="phone icon"> Phone: 123-456-7890 </contact-info>
         <div class="socials">
-          <a href="https://www.facebook.com/" title="Facebook">
+          <a href="https://www.facebook.com/" target="_blank" title="Facebook">
             <img :src="FacebookIcon" class="socials__icon" title="Facebook" alt="facebook icon" />
           </a>
-          <a href="https://www.instagram.com/" title="Instagram">
+          <a href="https://www.instagram.com/" target="_blank" title="Instagram">
             <img
               :src="InstagramIcon"
               class="socials__icon"
@@ -48,7 +57,7 @@ const categories = ["laptops", "fcomputers", "components", "peripherals", "softw
               alt="instagram icon"
             />
           </a>
-          <a href="https://www.youtube.com/" title="Youtube">
+          <a href="https://www.youtube.com/" target="_blank" title="Youtube">
             <img :src="YoutubeIcon" class="socials__icon" title="Youtube" alt="youtube icon" />
           </a>
         </div>
@@ -61,6 +70,10 @@ const categories = ["laptops", "fcomputers", "components", "peripherals", "softw
 </template>
 
 <style scoped>
+.ts-container {
+  padding-bottom: 1rem;
+}
+
 .footer-container {
   display: flex;
   flex-wrap: wrap;
@@ -85,12 +98,16 @@ const categories = ["laptops", "fcomputers", "components", "peripherals", "softw
 .categories-container a {
   color: var(--ts-c-text-light);
   text-transform: capitalize;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .info-container {
   display: flex;
   flex-direction: column;
+}
+
+:deep(.v-card-item__content) {
+  font-size: 12px !important;
 }
 
 .socials {
@@ -102,7 +119,7 @@ const categories = ["laptops", "fcomputers", "components", "peripherals", "softw
 }
 
 .footer-copyright {
-  margin-top: 1rem;
+  margin-top: 2rem;
   padding-top: 5px;
   text-align: center;
   border-top: 1px solid var(--ts-c-primary-dark);
@@ -120,6 +137,12 @@ const categories = ["laptops", "fcomputers", "components", "peripherals", "softw
   .categories-container *,
   .info-container * {
     justify-content: center;
+  }
+}
+
+@media only screen and (min-width: 64em) {
+  :deep(.v-card-item__content) {
+    font-size: 14px !important;
   }
 }
 </style>

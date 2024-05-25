@@ -1,9 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { getCategoryBySlug } from "@/database/services/categoryService.js";
-
-function checkIfCategoryExists(category) {
-  return getCategoryBySlug(category) ? true : false;
-}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,15 +27,12 @@ const router = createRouter({
       path: "/user",
       name: "/user",
       component: () => import("../views/UserProfileView.vue"),
+      meta: { requiresAuth: true },
     },
     {
       path: "/:category",
       name: "category",
       component: () => import("../views/CategoryView.vue"),
-      beforeEnter: (to, from, next) => {
-        const categoryExists = checkIfCategoryExists(to.params.category);
-        categoryExists ? next() : next({ name: "not-found" });
-      },
     },
     {
       path: "/:category/:subcategory",
@@ -48,7 +40,7 @@ const router = createRouter({
       component: () => import("../views/SubcategoryView.vue"),
     },
     {
-      path: "/:category/:subcategory/:productId",
+      path: "/:category/:subcategory/:productSlug",
       name: "product",
       component: () => import("../views/ProductDetailsView.vue"),
     },
@@ -56,6 +48,7 @@ const router = createRouter({
       path: "/admin",
       name: "admin",
       component: () => import("../views/AdminView.vue"),
+      meta: { requiresAuth: true },
     },
     {
       path: "/:pathMatch(.*)*",

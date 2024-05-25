@@ -8,8 +8,8 @@ namespace TechStore.Application.Models.Authorization
         public string UserId { get; set; }
         public string Token { get; set; }
         public string JwtId { get; set; }
-        public bool isUsed { get; set; }
-        public bool isRevoked { get; set; }
+        public bool IsUsed { get; set; }
+        public bool IsRevoked { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ExpiryDate { get; set; }
     }

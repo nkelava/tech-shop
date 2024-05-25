@@ -1,39 +1,66 @@
-import axios, { axiosPrivate } from "@/api/axios";
+import { axiosPublic, axiosPrivate } from "@/api/axios";
 import { defineStore } from "pinia";
+import { useCartStore, useWishlistStore } from "@/store";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    user: {},
+    user: null,
+    error: null,
   }),
   getters: {
-    isLoggedIn: (state) => !!state.user.id,
+    isLoggedIn: (state) => !!state.user,
   },
   actions: {
     async getUser() {
       if (!this.isLoggedIn) return;
 
-      // const response = await axios.get(`api/v1/user/${this.user.id}`);
-      // this.user = { ...response.data.user, accessToken: this.user.accessToken };
+      // TODO
+      // const response = await axiosPrivate.get(`api/v1/user/${this.user.id}`);
+      // this.user = { ...response.data.user, accessToken: this.user.token };
     },
 
     async loginUser(email, password) {
-      console.log(`Login: ${email}, ${password}`);
+      const cart = useCartStore();
+      const wishlist = useWishlistStore();
 
-      const response = await axiosPrivate.post("api/v1/auth/login", {
-        email,
-        password,
-      });
+      await axiosPublic
+        .post("/auth/login", { email, password })
+        .then((response) => (this.user = response.data))
+        .catch((error) => (this.error = error.reponse ? error.response.data : error));
 
-      this.user = response.data.user;
+      await cart.loadData();
+      await wishlist.loadData();
+    },
+
+    async registerUser(email, password, confirmPassword) {
+      await axiosPublic
+        .post("/auth/register", {
+          email,
+          password,
+          confirmPassword,
+          FirstName: "Test", // TODO
+          LastName: "Test", // TODO
+        })
+        .then((response) => (this.user = response.data))
+        .catch((error) => (this.error = error.reponse ? error.response.data : error));
     },
 
     async logoutUser() {
+      const cart = useCartStore();
+      const wishlist = useWishlistStore();
+
+      await axiosPrivate
+        .get("/auth/logout")
+        .catch((error) => (this.error = error.reponse ? error.response.data : error));
+
+      await cart.clearStore();
+      await wishlist.clearStore();
       this.clearStore();
-      // await axiosPrivate.post("api/v1/auth/logout");
     },
 
     async deleteUser() {
-      // await axios.delete(`api/v1/user/${this.user.id}`);
+      // TODO
+      // await axiosPrivate.delete(`api/v1/user/${this.user.id}`);
     },
 
     async clearStore() {

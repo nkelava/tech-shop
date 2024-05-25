@@ -1,30 +1,54 @@
 <script setup>
 import { onMounted, ref } from "vue";
+import { useToast } from "vue-toastification";
+import { axiosPrivate } from "@/api/axios";
 import FormContainer from "@/components/common/FormContainer.vue";
+import { ITEM_CREATE_FAIL, ITEM_CREATE_SUCCESS } from "../../../constants/messages/create";
 
+const emit = defineEmits(["reload"]);
+const toast = useToast();
 const categories = ref([]);
 const name = ref("");
 const slug = ref("");
-const image = ref(null);
+const image = ref("");
 const category = ref(null);
 const loading = ref(false);
 
-onMounted(() => {
-  categories.value = [
-    { id: 0, name: "Laptops" },
-    { id: 1, name: "Computers" },
-    { id: 2, name: "Peripherals" },
-  ];
+onMounted(async () => {
+  await axiosPrivate
+    .get("/categories")
+    .then((resp) => {
+      if (resp.status !== 200) return;
+      categories.value = resp.data;
+    })
+    .catch((error) => console.log(error));
 });
 
-function handleSave() {
-  const formData = new FormData();
-  formData.append("name", name.value);
-  formData.append("slug", slug.value);
-  formData.append("image", image.value);
-  formData.append("categoryId", category.value);
-
-  console.log(formData);
+async function handleSave() {
+  // TODO: add form validation and state
+  // TODO: name and slug can be max 48 characters long
+  // TODO: add slug regex / format validation (eg. this-is-an-example)
+  await axiosPrivate
+    .post("/subcategories", {
+      name: name.value,
+      slug: slug.value,
+      imageURL: image?.value,
+      categoryId: category.value,
+    })
+    .then((resp) => {
+      if (resp.status == 200) {
+        name.value = "";
+        slug.value = "";
+        category.value = null;
+        image.value = "";
+        toast.success(ITEM_CREATE_SUCCESS);
+        emit("reload");
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      toast.error(ITEM_CREATE_FAIL);
+    });
 }
 </script>
 
@@ -47,14 +71,23 @@ function handleSave() {
         variant="outlined"
         hide-details="auto"
       />
-      <v-file-input
+      <v-text-field
+        v-model="image"
+        class="mt-5"
+        label="Image URL"
+        density="compact"
+        variant="outlined"
+        hide-details="auto"
+      />
+      <!-- TODO: Add image upload -->
+      <!-- <v-file-input
         v-model="image"
         class="mt-5"
         label="Image"
         density="compact"
         variant="outlined"
         hide-details="auto"
-      ></v-file-input>
+      ></v-file-input> -->
       <v-select
         v-model="category"
         class="mt-5 test"

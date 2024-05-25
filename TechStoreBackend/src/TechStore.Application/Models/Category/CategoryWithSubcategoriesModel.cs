@@ -7,6 +7,8 @@ namespace TechStore.Application.Models.Category
     {
         public string Name { get; set; }
 
+        public string Slug { get; set; }
+
         public IList<SubcategoryReadModel> Subcategories { get; set; }
     }
 }

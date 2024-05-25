@@ -5,10 +5,10 @@ namespace TechStore.Application.Interfaces.Services
 {
     public interface ICartService
     {
-        Task AddProductAsync(string username, int movieId);
+        Task AddProductAsync(string email, int productId, int quantity);
         Task RemoveProductAsync(int cartId, int productId);
-        Task ClearCart(string username);
+        Task<int> ClearCart(string email);
 
-        Task<CartReadModel> GetByUsername(string username);
+        Task<CartReadModel> GetByEmailAsync(string email);
     }
 }

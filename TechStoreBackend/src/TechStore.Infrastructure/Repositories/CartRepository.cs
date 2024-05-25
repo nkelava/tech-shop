@@ -1,4 +1,5 @@
-﻿using TechStore.Application.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using TechStore.Application.Interfaces.Repositories;
 using TechStore.Application.Specifications.CartSpecification;
 using TechStore.Domain.Entities.Cart;
 using TechStore.Infrastructure.Data;
@@ -13,11 +14,11 @@ namespace TechStore.Infrastructure.Repositories
             : base(techStoreContext) { }
 
 
-        public async Task<Cart> GetByUsernameAsync(string username)
+        public async Task<Cart> GetByEmailAsync(string email)
         {
-            var spec = new CartWithProductsSpecification(username);
+            var spec = new CartWithProductsSpecification(email);
 
-            return Find(spec).FirstOrDefault();
+            return await Find(spec).FirstOrDefaultAsync();
         }
     }
 }

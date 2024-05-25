@@ -1,18 +1,16 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
-import axios from "@/api/axios";
+import { axiosPublic } from "@/api/axios";
 
 const categories = ref([]);
 let isMenuOpened = ref(false);
 const windowWidth = ref(window.innerWidth);
 
 onMounted(async () => {
-  await axios
+  await axiosPublic
     .get("/categories")
     .then((response) => (categories.value = response.data))
-    .catch((error) => {
-      console.log(error);
-    });
+    .catch((error) => console.log(error));
 
   window.addEventListener("resize", handleResize);
 });
@@ -59,7 +57,7 @@ onUnmounted(() => {
         <li class="menu-item">
           <a href="/"> Home </a>
         </li>
-        <li v-for="(category, i) in categories" :key="i" class="menu-item">
+        <li v-for="category in categories" :key="category.slug" class="menu-item">
           <a :href="`/${category.slug}`"> {{ category.name }} </a>
         </li>
         <li class="menu-item">

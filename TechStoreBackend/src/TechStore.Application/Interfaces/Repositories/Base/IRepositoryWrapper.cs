@@ -4,13 +4,15 @@ namespace TechStore.Application.Interfaces.Repositories.Base
 {
     public interface IRepositoryWrapper
     {
-        IBrandRepository Brand { get; }
+        IAttributeRepository Attribute { get; }
+        IAttributeValueRepository AttributeValue { get; }
         ICartRepository Cart { get; }
         ICategoryRepository Category { get; }
         INewsletterRepository Newsletter { get; }
         IOrderRepository Order { get; }
         IProductRepository Product { get; }
-        IPropertyRepository Property { get; }
+        IProductAttributeSetRepository ProductAttributeSet { get; }
+        IPromoCodeRepository PromoCode { get; }
         IReviewRepository Review { get; }
         ISubcategoryRepository Subcategory { get; }
         IWishlistRepository Wishlist { get; }

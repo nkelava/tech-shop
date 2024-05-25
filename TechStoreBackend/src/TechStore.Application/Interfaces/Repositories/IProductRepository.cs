@@ -9,19 +9,15 @@ namespace TechStore.Application.Interfaces.Repositories
         Task<Product> GetProductByIdAsync(int productId);
         Task<Product> GetProductBySlugAsync(string slug);
 
-        Task<IList<Product>> GetAllProductsAsync();
-        Task<IList<Product>> GetProductsOnSaleAsync();
-        Task<IList<Product>> GetNewProductsAsync();
-        Task<IList<Product>> GetTopSellingProductsAsync();
-        Task<IList<Product>> GetTopRatedProductsAsync();
-        Task<IList<Product>> GetProductsByBrandIdAsync(int brandId);
-        Task<IList<Product>> GetProductsByBrandNameAsync(string brandName);
-        Task<IList<Product>> GetProductsBySubcategoryIdAsync(int subcategoryId);
-        Task<IList<Product>> GetProductsBySubcategoryNameAsync(string subcategoryName);
-        //Task<IEnumerable<Product>> GetProductsByPropertyIdAsync(int propertyId);
-        //Task<IEnumerable<Product>> GetProductsByPropertyNameAsync(string propertyName);
-        Task<IList<Product>> GetProductsByNameAsync(string productName);
-        Task<IList<Product>> GetProductsByPriceAsync(decimal priceFrom, decimal priceTo);
-        Task<IList<Product>> GetProductsByRatingAsync(decimal rating);
+        Task<IEnumerable<Product>> GetAllProductsAsync();
+        Task<IEnumerable<Product>> GetProductsOnSaleAsync();
+        Task<IEnumerable<Product>> GetNewProductsAsync();
+        Task<IEnumerable<Product>> GetTopSellingProductsAsync();
+        Task<IEnumerable<Product>> GetTopRatedProductsAsync();
+        Task<IEnumerable<Product>> GetProductsBySubcategoryIdAsync(int subcategoryId);
+        Task<IEnumerable<Product>> GetProductsBySubcategorySlugAsync(string subcategorySlug);
+        Task<IEnumerable<Product>> GetProductsByNameAsync(string productName);
+        Task<IEnumerable<Product>> GetProductsByPriceAsync(decimal priceFrom, decimal priceTo);
+        Task<IEnumerable<Product>> GetProductsByRatingAsync(decimal rating);
     }
 }

@@ -3,6 +3,7 @@ import ProductCard from "@/components/ProductCard.vue";
 import { computed, ref } from "vue";
 
 const props = defineProps(["products"]);
+
 const pageState = ref({
   currentPage: 1,
   itemsPerPage: 12,

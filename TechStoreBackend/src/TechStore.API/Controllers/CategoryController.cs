@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Category;
@@ -20,21 +21,23 @@ namespace TechStore.API.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CategoryCreateModel category)
+        public async Task<IActionResult> Create([FromBody] CategoryCreateModel category)
         {
-            if (category == null)
+            if (category is null)
                 return BadRequest();
 
-            await _categoryService.AddAsync(category);
+            await _categoryService.CreateAsync(category);
 
             return Ok(category);
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] CategoryUpdateModel category)
         {
-            if (category == null)
+            if (category is null)
                 return BadRequest();
 
             await _categoryService.UpdateAsync(category);
@@ -42,7 +45,7 @@ namespace TechStore.API.Controllers
             return Ok(category);
         }
 
-
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -54,34 +57,39 @@ namespace TechStore.API.Controllers
             return Ok(id);
         }
 
+        [HttpGet("{slug}")]
+        public async Task<ActionResult<CategoryReadModel>> GetCategoryBySlug(string slug)
+        {
+            if (string.IsNullOrWhiteSpace(slug))
+                return BadRequest();
+
+            try {
+                var category = await _categoryService.GetCategoryBySlugAsync(slug);
+                return (category is null) ? NotFound() : Ok(category);
+            } catch {
+                return BadRequest();
+            }
+        }
+
         [HttpGet]
-        public async Task<IList<CategoryReadModel>> GetAllCategories()
+        public async Task<IEnumerable<CategoryReadModel>> GetAllCategories()
         {
             var categories = await _categoryService.GetAllCategoriesAsync();
-
             return categories;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryReadModel>> GetCategoryById(int id)
+        [HttpGet("{slug}/subcategories")]
+        public async Task<IActionResult> GetCategoryWithSubcategories(string slug)
         {
-            if (id < 1)
+            if (string.IsNullOrWhiteSpace(slug))
                 return BadRequest();
 
-            var category = await _categoryService.GetCategoryByIdAsync(id);
-
-            if (category == null)
-                return NotFound();
-
-            return Ok(category);
-        }
-
-        [HttpGet("{id}/subcategories")]
-        public async Task<IActionResult> GetCategoryWithSubcategories(int id)
-        {
-            var category = await _categoryService.GetCategoryWithSubcategoriesAsync(id);
-
-            return Ok(category);
+            try {
+                var category = await _categoryService.GetCategoryWithSubcategoriesAsync(slug);
+                return (category is null) ? NotFound() : Ok(category);
+            } catch {
+                return BadRequest();
+            }
         }
     }
 }

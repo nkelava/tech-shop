@@ -16,9 +16,9 @@ import { DellImage, LogitechImage, AsusImage } from "@/assets/images/test/banner
   grid-template-areas:
     "first"
     "second"
-    "third"
-    "fourth";
+    "third";
   gap: 1rem;
+  justify-content: center;
   background-color: var(--ts-c-bg-light);
 }
 
@@ -28,10 +28,12 @@ import { DellImage, LogitechImage, AsusImage } from "@/assets/images/test/banner
 
 .ads__img:nth-child(2) {
   grid-area: second;
+  max-height: 300px;
 }
 
 .ads__img:nth-child(3) {
   grid-area: third;
+  max-height: 300px;
 }
 
 .ads__img {
@@ -50,8 +52,5 @@ import { DellImage, LogitechImage, AsusImage } from "@/assets/images/test/banner
       "first second"
       "first third";
   }
-}
-
-@media only screen and (min-width: 64em) {
 }
 </style>

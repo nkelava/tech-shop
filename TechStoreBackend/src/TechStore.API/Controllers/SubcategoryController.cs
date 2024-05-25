@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Subcategory;
@@ -19,21 +20,23 @@ namespace TechStore.API.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] SubcategoryCreateModel subcategory)
+        public async Task<IActionResult> Create([FromBody] SubcategoryCreateModel subcategory)
         {
-            if (subcategory == null)
+            if (subcategory is null)
                 return BadRequest();
 
-            await _subcategoryService.AddAsync(subcategory);
+            await _subcategoryService.CreateAsync(subcategory);
 
             return Ok(subcategory);
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] SubcategoryUpdateModel subcategory)
         {
-            if (subcategory == null)
+            if (subcategory is null)
                 return BadRequest();
 
             await _subcategoryService.UpdateAsync(subcategory);
@@ -41,14 +44,7 @@ namespace TechStore.API.Controllers
             return Ok(subcategory);
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<SubcategoryReadModel>> GetAllSubcategories()
-        {
-            var subcategories = await _subcategoryService.GetAllSubcategoriesAsync();
-
-            return subcategories;
-        }
-
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -60,7 +56,7 @@ namespace TechStore.API.Controllers
             return Ok(id);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetSubcategoryById(int id)
         {
             if (id < 1)
@@ -68,10 +64,27 @@ namespace TechStore.API.Controllers
 
             var subcategory = await _subcategoryService.GetSubcategoryByIdAsync(id);
 
-            if (subcategory == null)
-                return NotFound();
+            return (subcategory is null) ? NotFound() : Ok(subcategory);
+        }
 
-            return Ok(subcategory);
+
+        [HttpGet("{slug}")]
+        public async Task<IActionResult> GetSubcategoryBySlug(string slug)
+        {
+            if (string.IsNullOrWhiteSpace(slug))
+                return BadRequest();
+
+            var subcategory = await _subcategoryService.GetSubcategoryBySlugAsync(slug);
+
+            return (subcategory is null) ? NotFound() : Ok(subcategory);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllSubcategories()
+        {
+            var subcategories = await _subcategoryService.GetAllSubcategoriesAsync();
+
+            return Ok(subcategories);
         }
     }
 }

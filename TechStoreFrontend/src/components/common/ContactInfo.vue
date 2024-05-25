@@ -18,5 +18,6 @@ const props = defineProps(["imgUrl", "imgAlt"]);
 
 .contact-info__item {
   padding: 0;
+  font-size: 12px;
 }
 </style>

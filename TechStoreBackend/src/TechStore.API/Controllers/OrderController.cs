@@ -1,62 +1,89 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Order;
-
+using TechStore.Domain.Enums.Order;
 
 namespace TechStore.API.Controllers
 {
     [Route("api/orders")]
+    [Authorize]
     [ApiController]
     public class OrderController : ControllerBase
     {
         public readonly IOrderService _orderService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public readonly IMapper _mapper;
 
-        public OrderController(IOrderService orderService, IMapper mapper)
+        public OrderController(IOrderService orderService, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _orderService = orderService;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
 
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] OrderCreateModel order)
+        public async Task<IActionResult> Create([FromBody] OrderCreateModel order)
         {
-            if (order == null)
+            if (order is null)
                 return BadRequest();
 
-            await _orderService.AddAsync(order);
+            if (order.Products.Count < 1)
+                return BadRequest();
 
-            return Ok(order);
+            try
+            {
+                await _orderService.CreateAsync(order);
+                return Ok(order);
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
         }
 
-        [HttpDelete]
+        [HttpDelete("{orderId:int}")]
         public async Task<IActionResult> Delete(int orderId)
         {
             if (orderId < 1)
                 return BadRequest();
 
-            await _orderService.DeleteAsync(orderId);
+            int deletedOrderId = await _orderService.DeleteAsync(orderId);
 
-            return Ok(orderId);
+            return orderId < 1 ? NotFound() : Ok(deletedOrderId);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] OrderUpdateModel order)
+        [HttpPut("status")]
+        public async Task<IActionResult> UpdateOrderStatus(OrderUpdateStatusModel updateOrderModel)
         {
-            if (order == null)
-                return BadRequest();
+            if (CheckIfOrderStatusExists(updateOrderModel.OrderStatusValue) == false)
+                return NotFound();
 
-            await _orderService.UpdateAsync(order);
+            int orderId = await _orderService.UpdateOrderStatusAsync(updateOrderModel);
 
-            return Ok();
+            return (orderId < 1) ? NotFound() : Ok();
         }
 
         [HttpGet]
-        public IActionResult GetOrders(string? email)
+        async public Task<IActionResult> GetOrders()
         {
-            var orders = (email == null) ? _orderService.GetOrders() : _orderService.GetOrders(email);
+            string currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email) ?? "";
 
+            if (string.IsNullOrWhiteSpace(currentUserEmail))
+                return Unauthorized();
+
+            var orders = await _orderService.GetOrdersAsync(currentUserEmail);
+
+            return (orders is null) ? NotFound() : Ok(orders);
+        }
+
+        [HttpGet("all")]
+        async public Task<IActionResult> GetAllOrders()
+        {
+            var orders = await _orderService.GetOrdersAsync();
             return Ok(orders);
         }
 
@@ -66,26 +93,25 @@ namespace TechStore.API.Controllers
             if (id < 0)
                 return BadRequest();
 
-            var order =  _orderService.GetOrderById(id);
+            var order =  await _orderService.GetOrderByIdAsync(id);
 
-            if (order == null)
-                return NotFound();
-
-            return Ok(order);
+            return (order is null) ? NotFound() : Ok(order);
         }
 
-        //[HttpGet("{email}")]
+        private static bool CheckIfOrderStatusExists(int statusId)
+        {
+            return Enum.IsDefined(typeof(OrderStatus), statusId);
+        }
+
+        //[HttpGet("{email:string}")]
         //public async Task<IActionResult> GetByEmail(string email)
         //{
-        //    if (email == null || email.Length == 0)
+        //    if (string.IsNullOrWhiteSpace(email))
         //        return BadRequest();
 
-        //    var orders = _orderService.GetOrdersByEmail(email);
+        //    var orders = await _orderService.GetOrdersAsync(email);
 
-        //    if (orders == null)
-        //        return NotFound();
-
-        //    return Ok(orders);
+        //    return (orders is null) ? NotFound() : Ok(orders);
         //}
     }
 }

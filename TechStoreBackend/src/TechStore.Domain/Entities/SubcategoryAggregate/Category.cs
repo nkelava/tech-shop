@@ -1,8 +1,11 @@
-﻿using TechStore.Domain.Entities.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using TechStore.Domain.Entities.Base;
 
 
 namespace TechStore.Domain.Entities.SubcategoryAggregate
 {
+    [Index(nameof(Name), IsUnique = true)]
+    [Index(nameof(Slug), IsUnique = true)]
     public class Category : Entity
     {
         public string Name { get; set; }

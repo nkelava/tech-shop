@@ -55,6 +55,7 @@ const clearForm = (form, initialFormState, formState) => {
   <div>
     <form class="contact__form" @submit.prevent="onMessageSend">
       <base-input
+        v-if="props.density !== 'compact'"
         v-model="contactState.name"
         class="contact__input"
         label="Name"

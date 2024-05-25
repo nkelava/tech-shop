@@ -5,12 +5,13 @@ namespace TechStore.Application.Interfaces.Services
 {
     public interface ISubcategoryService
     {
-        Task AddAsync(SubcategoryCreateModel subcategory);
+        Task CreateAsync(SubcategoryCreateModel subcategory);
         Task DeleteAsync(int subcategoryId);
         Task UpdateAsync(SubcategoryUpdateModel subcategory);
 
         Task<SubcategoryReadModel> GetSubcategoryByIdAsync(int subcategoryId);
+        Task<SubcategoryReadModel> GetSubcategoryBySlugAsync(string subcategorySlug);
         
-        Task<IList<SubcategoryReadModel>> GetAllSubcategoriesAsync();
+        Task<IEnumerable<SubcategoryReadModel>> GetAllSubcategoriesAsync();
     }
 }

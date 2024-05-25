@@ -8,29 +8,45 @@ namespace TechStore.Infrastructure.Repositories.Base
     public class RepositoryWrapper : IRepositoryWrapper
     {
         private TechStoreContext _repositoryContext;
-        private IBrandRepository _brand;
+        private IAttributeRepository _attribute;
+        private IAttributeValueRepository _attributeValue;
         private ICartRepository _cart;
         private ICategoryRepository _category;
         private INewsletterRepository _newsletter;
         private IOrderRepository _order;
         private IProductRepository _product;
-        private IPropertyRepository _property;
+        private IProductAttributeSetRepository _productAttributeSet;
+        private IPromoCodeRepository _promoCode;
         private IReviewRepository _review;
         private ISubcategoryRepository _subcategory;
         private IWishlistRepository _wishlist;
 
-        public IBrandRepository Brand
+        public IAttributeRepository Attribute
         {
             get
             {
-                if (_brand == null)
+                if (_attribute == null)
                 {
-                    _brand = new BrandRepository(_repositoryContext);
+                    _attribute = new AttributeRepository(_repositoryContext);
                 }
 
-                return _brand;
+                return _attribute;
             }
         }
+
+        public IAttributeValueRepository AttributeValue
+        {
+            get
+            {
+                if (_attributeValue == null)
+                {
+                    _attributeValue = new AttributeValueRepository(_repositoryContext);
+                }
+
+                return _attributeValue;
+            }
+        }
+
 
         public ICartRepository Cart
         {
@@ -96,17 +112,30 @@ namespace TechStore.Infrastructure.Repositories.Base
                 return _product;
             }
         }
-
-        public IPropertyRepository Property
+        
+        public IProductAttributeSetRepository ProductAttributeSet
         {
             get
             {
-                if (_property == null)
+                if (_productAttributeSet == null)
                 {
-                    _property = new PropertyRepository(_repositoryContext);
+                    _productAttributeSet = new ProductAttributeSetRepository(_repositoryContext);
                 }
 
-                return _property;
+                return _productAttributeSet;
+            }
+        }
+
+        public IPromoCodeRepository PromoCode
+        {
+            get
+            {
+                if (_promoCode == null)
+                {
+                    _promoCode = new PromoCodeRepository(_repositoryContext);
+                }
+
+                return _promoCode;
             }
         }
 

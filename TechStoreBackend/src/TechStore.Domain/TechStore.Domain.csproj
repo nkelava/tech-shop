@@ -10,4 +10,8 @@
     <None Remove="Entities\ProductAggregate\Product.cs~RF54dd9506.TMP" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.7" />
+  </ItemGroup>
+
 </Project>

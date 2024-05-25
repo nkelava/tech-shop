@@ -1,6 +1,7 @@
-﻿using TechStore.Application.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using TechStore.Application.Interfaces.Repositories;
 using TechStore.Application.Specifications.OrderSpecification;
-using TechStore.Domain.Entities.Order;
+using TechStore.Domain.Entities.OrderAggregate;
 using TechStore.Infrastructure.Data;
 using TechStore.Infrastructure.Repositories.Base;
 
@@ -12,26 +13,20 @@ namespace TechStore.Infrastructure.Repositories
         public OrderRepository(TechStoreContext techStoreContext)
             : base(techStoreContext) { }
 
-        public Order GetOrderById(int orderId)
+        public async Task<Order> GetOrderByIdAsync(int orderId)
         {
             var spec = new OrderWithProductsSpecification(orderId);
-            var order = Find(spec).FirstOrDefault();
-
-            return order;
+            return await Find(spec).FirstOrDefaultAsync();
         }
         
-        public IList<Order> GetAllOrders()
+        public async Task<IEnumerable<Order>> GetAllOrdersAsync()
         {
-            var orders = FindAll().ToList();
-
-            return orders;
+            return await FindAll().ToListAsync();
         }
 
-        public IList<Order> GetAllOrders(string email)
+        public async Task<IEnumerable<Order>> GetAllOrdersAsync(string email)
         {
-            var orders = FindByCondition(o => o.Email.ToLower().Equals(email.ToLower())).ToList();
-
-            return orders;
+            return await FindByCondition(o => o.Email.ToLower().Equals(email.ToLower())).ToListAsync();
         }
     }
 }
