@@ -12,6 +12,7 @@
   "dependencies": {
     "@vuelidate/core": "^2.0.2",
     "@vuelidate/validators": "^2.0.2",
+    "axios": "^1.7.2",
     "pinia": "^2.0.32",
     "pinia-plugin-persistedstate": "^3.2.0",
     "vue": "^3.2.47",
