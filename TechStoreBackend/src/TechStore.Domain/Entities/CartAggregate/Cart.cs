@@ -1,8 +1,11 @@
-﻿using TechStore.Domain.Entities.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using TechStore.Domain.Entities.Base;
+using TechStore.Domain.Entities.ProductAggregate;
 
 
 namespace TechStore.Domain.Entities.Cart
 {
+    [Index(nameof(Email), IsUnique = true)]
     public class Cart : Entity
     {
         public string Email { get; set; }
@@ -11,27 +14,32 @@ namespace TechStore.Domain.Entities.Cart
         // n - n
         public List<CartProduct> Products { get; set; }
 
-        public void AddProduct(int productId, int quantity = 1, decimal unitPrice = 0)
+        public void AddProduct(Product product, int quantity = 1, decimal unitPrice = 0)
         {
-            var product = Products.FirstOrDefault(p => p.ProductId == productId);
+            var cartProduct = Products.FirstOrDefault(p => p.ProductId == product.Id);
 
-            if (product is not null) {
-                if (product.Product.UnitsInStock > 0) {
-                    ++product.Quantity;
+            if (cartProduct is not null)
+            {
+                if (product.UnitsInStock > 0 && product.UnitsInStock >= quantity)
+                {
+                    TotalPrice += quantity > cartProduct.Quantity ? cartProduct.UnitPrice : -(cartProduct.UnitPrice);
+                    cartProduct.Quantity = quantity;
                 }
 
-                product.TotalPrice = product.Quantity * product.UnitPrice;
                 return;
             }
 
             Products.Add(new CartProduct()
             {
                 CartId = this.Id,
-                ProductId = productId,
+                ProductId = product.Id,
+                Product = product,
                 Quantity = quantity,
                 UnitPrice = unitPrice,
                 TotalPrice = quantity * unitPrice
             });
+
+            TotalPrice += quantity * unitPrice;
         }
 
         public void RemoveProduct(int productId)
@@ -47,6 +55,7 @@ namespace TechStore.Domain.Entities.Cart
         public void Clear()
         {
             Products.Clear();
+            TotalPrice = 0;
         }
     }
 }

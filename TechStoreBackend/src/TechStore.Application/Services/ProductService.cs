@@ -26,12 +26,37 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task DeleteAsync(int productId)
+        public async Task AddSpecificationAsync(int productId, List<ProductAttributeSetModel> productAttributes)
+        {
+            var product = await _repository.Product.GetProductByIdAsync(productId);
+            //var productAttributeSets = new List<ProductAttributeSet>();
+
+            foreach (var attributeSet in productAttributes)
+            {
+                _repository.ProductAttributeSet.Add(new ProductAttributeSet
+                {
+                    ProductId = product.Id,
+                    AttributeId = attributeSet.AttributeId,
+                    AttributeValueId = attributeSet.AttributeValueId,
+                });
+            }
+
+            //_repository.ProductAttributeSet.AddRange(productAttributeSets);
+            await _repository.SaveAsync();
+        }
+
+
+        public async Task<int> DeleteAsync(int productId)
         {
             var product = await _repository.Product.GetProductByIdAsync(productId);
 
+            if (product == null)
+                return 0;
+
             _repository.Product.Delete(product);
             await _repository.SaveAsync();
+            
+            return product.Id;
         }
 
         public async Task UpdateAsync(ProductUpdateModel product)

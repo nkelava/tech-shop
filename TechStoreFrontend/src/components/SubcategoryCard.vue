@@ -3,6 +3,7 @@ import { RouterLink } from "vue-router";
 import DefaultImage from "@/assets/images/test/products/defaultProductImage.png";
 
 const props = defineProps(["category", "subcategory"]);
+console.log("subcategory: ", props.subcategory);
 </script>
 
 <template>
@@ -17,7 +18,12 @@ const props = defineProps(["category", "subcategory"]);
     }"
   >
     <div class="card">
-      <img :src="DefaultImage" class="card__image" alt="subcategory" />
+      <img
+        :src="props.subcategory.imageURL"
+        @error="$event.target.src = DefaultImage"
+        class="card__image"
+        alt="subcategory"
+      />
       <h2 class="card__title">
         {{ props.subcategory.name }}
       </h2>

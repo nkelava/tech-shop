@@ -10,6 +10,7 @@ namespace TechStore.Application.Profiles
         public WishlistProfile()
         {
             CreateMap<Wishlist, WishlistReadModel>().ReverseMap();
+            CreateMap<WishlistProduct, WishlistProductModel>().ReverseMap();
         }
     }
 }

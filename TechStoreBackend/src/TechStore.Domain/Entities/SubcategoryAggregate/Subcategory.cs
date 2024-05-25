@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 using TechStore.Domain.Entities.Base;
 
 
 namespace TechStore.Domain.Entities.SubcategoryAggregate
 {
+    [Index(nameof(Name), IsUnique = true)]
+    [Index(nameof(Slug), IsUnique = true)]
     public class Subcategory : Entity
     {
         public string Name { get; set; }

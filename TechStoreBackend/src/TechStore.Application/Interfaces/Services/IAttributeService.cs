@@ -6,13 +6,13 @@ namespace TechStore.Application.Interfaces.Services
     public interface IAttributeService
     {
         Task CreateAsync(AttributeCreateModel attribute);
-        Task DeleteAsync(int attributeId);
         Task UpdateAsync(AttributeUpdateModel attribute);
 
-        Task<AttributeReadModel> GetAttributeByIdAsync(int id);
-        Task<AttributeReadModel> GetAttributeByNameAsync(string name);
+        Task<int> DeleteAsync(int attributeId);
+        Task<AttributeReadModel> GetByIdAsync(int id);
+        Task<AttributeReadModel> GetByNameAsync(string name);
 
-        Task<IEnumerable<AttributeReadModel>> GetAllAttributesAsync();
+        Task<IEnumerable<AttributeReadModel>> GetAllAsync();
 
     }
 }

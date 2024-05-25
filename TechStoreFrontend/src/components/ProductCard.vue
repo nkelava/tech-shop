@@ -148,6 +148,7 @@ const productPrice = computed(() => {
 
 .card__image {
   width: 100%;
+  background-color: white;
   border-radius: 10px 10px 0 0;
 }
 

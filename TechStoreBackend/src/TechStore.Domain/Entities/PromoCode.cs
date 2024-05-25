@@ -1,8 +1,10 @@
-﻿using TechStore.Domain.Entities.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using TechStore.Domain.Entities.Base;
 
 
 namespace TechStore.Domain.Entities
 {
+    [Index(nameof(Code), IsUnique = true)]
     public class PromoCode : Entity
     {
         public string Code { get; set; }

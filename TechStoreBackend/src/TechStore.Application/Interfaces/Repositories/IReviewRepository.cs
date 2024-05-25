@@ -9,5 +9,6 @@ namespace TechStore.Application.Interfaces.Repositories
         Task<IEnumerable<Review>> GetReviewsByProductIdAsync(int productId);
         Task<IEnumerable<Review>> GetReviewsByEmailAsync(string email);
         Task<IEnumerable<Review>> GetAllReviewsAsync();
+        Task<IEnumerable<Review>> GetAllReportedReviewsAsync();
     }
 }

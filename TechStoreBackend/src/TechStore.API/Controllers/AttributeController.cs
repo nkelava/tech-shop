@@ -5,7 +5,7 @@ using TechStore.Application.Models.Attribute;
 
 namespace TechStore.API.Controllers
 {
-    [Route("api/attribute")]
+    [Route("api/attributes")]
     [ApiController]
     public class AttributeController : ControllerBase
     {
@@ -31,18 +31,14 @@ namespace TechStore.API.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id < 1)
                 return BadRequest();
 
-            try {
-                await _attributeService.DeleteAsync(id);
-                return Ok(id);
-            } catch {
-                return BadRequest();
-            }
+            int deletedAttributeId = await _attributeService.DeleteAsync(id);
+            return deletedAttributeId < 1 ? NotFound() : Ok(id);
 
         }
 
@@ -67,7 +63,7 @@ namespace TechStore.API.Controllers
             if (id < 1)
                 return BadRequest();
 
-            var attibute = await _attributeService.GetAttributeByIdAsync(id);
+            var attibute = await _attributeService.GetByIdAsync(id);
 
             return (attibute is null) ? NotFound() : Ok(attibute);
         }
@@ -78,15 +74,16 @@ namespace TechStore.API.Controllers
             if (name is null || name.Length < 1)
                 return BadRequest();
 
-            var attibute = await _attributeService.GetAttributeByNameAsync(name);
+            var attibute = await _attributeService.GetByNameAsync(name);
 
             return (attibute is null) ? NotFound() : Ok(attibute);
         }
 
+
         [HttpGet]
         public async Task<IEnumerable<AttributeReadModel>> GetAllAttributes()
         {
-            var attributes = await _attributeService.GetAllAttributesAsync();
+            var attributes = await _attributeService.GetAllAsync();
 
             return attributes;
         }

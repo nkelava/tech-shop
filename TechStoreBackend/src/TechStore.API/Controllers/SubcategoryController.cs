@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Subcategory;
-using TechStore.Domain.Entities.SubcategoryAggregate;
 
 
 namespace TechStore.API.Controllers
@@ -20,6 +20,7 @@ namespace TechStore.API.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SubcategoryCreateModel subcategory)
         {
@@ -31,6 +32,7 @@ namespace TechStore.API.Controllers
             return Ok(subcategory);
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] SubcategoryUpdateModel subcategory)
         {
@@ -42,6 +44,7 @@ namespace TechStore.API.Controllers
             return Ok(subcategory);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

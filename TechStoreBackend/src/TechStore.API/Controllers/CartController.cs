@@ -1,67 +1,108 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TechStore.Application.Interfaces.Services;
+using TechStore.Application.Models.Cart;
 
 
 namespace TechStore.API.Controllers
 {
     [Route("api/carts")]
+    [Authorize]
     [ApiController]
     public class CartController : ControllerBase
     {
         public readonly ICartService _cartService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public readonly IMapper _mapper;
 
-        public CartController(ICartService cartService, IMapper mapper)
+        public CartController(ICartService cartService, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _cartService = cartService;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Add(string username, int quantity, int productId)
+        public async Task<IActionResult> Add([FromBody] CartCreateModel cart)
         {
-            if (username is null || productId < 1)
+            var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
+
+            if (string.IsNullOrWhiteSpace(currentUserEmail))
+                return Unauthorized();
+
+            if (cart.ProductId < 1 || cart.Quantity < 1)
                 return BadRequest();
 
-            await _cartService.AddProductAsync(username, quantity, productId);
+            try
+            {
+                await _cartService.AddProductAsync(currentUserEmail, cart.ProductId, cart.Quantity);
+                return Ok(cart.ProductId);
+            } 
+            catch
+            {
+                return NotFound();
+            }
 
-            return Ok(productId);
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(int cartId, int productId)
+        public async Task<IActionResult> Delete()
         {
-            if (cartId < 1 || productId < 1)
-                return BadRequest();
+            var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
 
-            await _cartService.RemoveProductAsync(cartId, productId);
+            if (string.IsNullOrWhiteSpace(currentUserEmail))
+                return Unauthorized();
 
-            return Ok(productId);
+            int cartId = await _cartService.ClearCart(currentUserEmail);
+
+            return cartId < 1 ? NotFound() : Ok(cartId);
         }
 
-        //[HttpPut]
-        //public async Task<IActionResult> Update([FromBody] CartUpdateModel cart)
-        //{
-        //    if (cart == null)
-        //        return BadRequest();
-        //    // TODO: implement Update
-        //    await _cartService.Update(cart);
-
-        //    return Ok();
-        //}
-
-        [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> GetByEmail(string email)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Remove(int id)
         {
-            if (email is null)
+            var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
+
+            if (string.IsNullOrWhiteSpace(currentUserEmail))
+                return Unauthorized();
+
+            if (id < 1)
                 return BadRequest();
 
-            var cart = await _cartService.GetByEmail(email);
+            try 
+            {
+                var cart = await _cartService.GetByEmailAsync(currentUserEmail);
+                await _cartService.RemoveProductAsync(cart.Id, id);
+                
+                return Ok(id);
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
 
-            return (cart is null) ? NotFound() : Ok(cart);
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
+
+            if (string.IsNullOrWhiteSpace(currentUserEmail))
+                return Unauthorized();
+
+            try
+            {
+                var cart = await _cartService.GetByEmailAsync(currentUserEmail);
+
+                return (cart is null) ? NotFound() : Ok(cart);
+            }
+            catch
+            {
+                return NotFound();
+            }
         }
     }
 }

@@ -21,21 +21,21 @@ namespace TechStore.API.Controllers
         {
             if (product is null)
                 return BadRequest();
-            
+
             await _productService.CreateAsync(product);
-            
+
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id < 1)
                 return BadRequest();
 
-            await _productService.DeleteAsync(id);
+            int deleteProductId = await _productService.DeleteAsync(id);
             
-            return Ok(id);
+            return deleteProductId < 1 ? NotFound() : Ok(id);
         }
 
         [HttpPut]
@@ -147,6 +147,21 @@ namespace TechStore.API.Controllers
             var products = await _productService.GetProductsByRatingAsync(rating);
 
             return Ok(products);
+        }
+
+        [HttpPost("specification")]
+        public async Task<IActionResult> AddSpecification([FromBody] ProductSpecificationModel productSpecification)
+        {
+            if (productSpecification is null)
+                return BadRequest();
+
+            var product = await _productService.GetProductByIdAsync(productSpecification.ProductId);
+
+            if (product == null)
+                return NotFound();
+
+            await _productService.AddSpecificationAsync(product.Id, productSpecification.ProductAttributes);
+            return Ok();
         }
     }
 }

@@ -4,6 +4,7 @@ using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Attribute;
 using TechStore.Domain.Entities.ProductAggregate;
 
+
 namespace TechStore.Application.Services
 {
     public class AttributeService : IAttributeService
@@ -25,14 +26,16 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            var attribute = await _repository.Attribute.GetAttributeByIdAsync(id);
+            var attribute = await _repository.Attribute.GetByIdAsync(id);
 
-            if (attribute is null) return;
+            if (attribute == null) return 0;
 
             _repository.Attribute.Delete(attribute);
             await _repository.SaveAsync();
+
+            return attribute.Id;
         }
 
         public async Task UpdateAsync(AttributeUpdateModel attributeModel)
@@ -44,25 +47,25 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task<AttributeReadModel> GetAttributeByIdAsync(int id)
+        public async Task<AttributeReadModel> GetByIdAsync(int id)
         {
-            var attribute = await _repository.Attribute.GetAttributeByIdAsync(id);
+            var attribute = await _repository.Attribute.GetByIdAsync(id);
             var attributeModel = _mapper.Map<AttributeReadModel>(attribute);
 
             return attributeModel;
         }
         
-        public async Task<AttributeReadModel> GetAttributeByNameAsync(string name)
+        public async Task<AttributeReadModel> GetByNameAsync(string name)
         {
-            var attribute = await _repository.Attribute.GetAttributeByNameAsync(name);
+            var attribute = await _repository.Attribute.GetByNameAsync(name);
             var attributeModel = _mapper.Map<AttributeReadModel>(attribute);
 
             return attributeModel;
         }
 
-        public async Task<IEnumerable<AttributeReadModel>> GetAllAttributesAsync()
+        public async Task<IEnumerable<AttributeReadModel>> GetAllAsync()
         {
-            var attributes = await _repository.Attribute.GetAllAttributesAsync();
+            var attributes = await _repository.Attribute.GetAllAsync();
             var attributesReadModel = _mapper.Map<IList<AttributeReadModel>>(attributes);
 
             return attributesReadModel;

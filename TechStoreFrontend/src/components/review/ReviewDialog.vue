@@ -2,7 +2,6 @@
 import { ref } from "vue";
 import { axiosPrivate } from "@/api/axios";
 import { useToast } from "vue-toastification";
-import "vue-toast-notification/dist/theme-sugar.css";
 
 const props = defineProps(["product"]);
 const dialog = ref(false);

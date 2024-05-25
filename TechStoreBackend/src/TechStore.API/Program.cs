@@ -66,6 +66,7 @@ app.Run();
 
 void ConfigureServices(IServiceCollection services)
 {
+    ConfigureHttpContextAccessor(services);
     ConfigureIdentity(services);
     ConfigureAuthentication(services);
     ConfigureDatabase(services);
@@ -86,9 +87,15 @@ void ConfigureSeeder(IServiceCollection services)
     services.AddTransient<DataSeeder>();
 }
 
+void ConfigureHttpContextAccessor(IServiceCollection services)
+{
+    services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+}
+
 void ConfigureIdentity(IServiceCollection services)
 {
     services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<TechStoreContext>()
     .AddDefaultTokenProviders();
 
@@ -114,9 +121,9 @@ void ConfigureAuthentication(IServiceCollection services)
     var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtSettings:SecretKey").Value);
     var tokenValidationParameters = new TokenValidationParameters()
     {
+        ValidateIssuer = true,
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = true,
         ValidIssuer = builder.Configuration.GetSection("JwtSettings:Issuer").Value,
         ValidateAudience = true,
         ValidAudience = builder.Configuration.GetSection("JwtSettings:Audience").Value,
@@ -134,6 +141,7 @@ void ConfigureAuthentication(IServiceCollection services)
     .AddJwtBearer(jwt =>
     {
         jwt.SaveToken = true;
+        jwt.RequireHttpsMetadata = false;
         jwt.TokenValidationParameters = tokenValidationParameters; 
     });
 
@@ -142,12 +150,14 @@ void ConfigureAuthentication(IServiceCollection services)
 
 void ConfigureApplicationLayer(IServiceCollection services)
 {
+    services.AddScoped<IAttributeService, AttributeService>();
+    services.AddScoped<IAttributeValueService, AttributeValueService>();
     services.AddScoped<ICartService, CartService>();
     services.AddScoped<ICategoryService, CategoryService>();
     services.AddScoped<INewsletterService, NewsletterService>();
     services.AddScoped<IOrderService, OrderService>();
     services.AddScoped<IProductService, ProductService>();
-    services.AddScoped<IAttributeService, AttributeService>();
+    services.AddScoped<IPromoCodeService, PromoCodeService>();
     services.AddScoped<IReviewService, ReviewService>();
     services.AddScoped<ISubcategoryService, SubcategoryService>();
     services.AddScoped<IWishlistService, WishlistService>();
@@ -157,12 +167,15 @@ void ConfigureInfrastructureLayer(IServiceCollection services)
 {
     services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
     services.AddScoped(typeof(IRepositoryWrapper), typeof(RepositoryWrapper));
+    services.AddScoped<IAttributeRepository, AttributeRepository>();
+    services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
     services.AddScoped<ICartRepository, CartRepository>();
     services.AddScoped<ICategoryRepository, CategoryRepository>();
     services.AddScoped<INewsletterRepository, NewsletterRepository>();
     services.AddScoped<IOrderRepository, OrderRepository>();
+    services.AddScoped<IPromoCodeRepository, PromoCodeRepository>();
     services.AddScoped<IProductRepository, ProductRepository>();
-    services.AddScoped<IAttributeRepository, AttributeRepository>();
+    services.AddScoped<IProductAttributeSetRepository, ProductAttributeSetRepository>();
     services.AddScoped<IReviewRepository, ReviewRepository>();
     services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
     services.AddScoped<IWishlistRepository, WishlistRepository>();

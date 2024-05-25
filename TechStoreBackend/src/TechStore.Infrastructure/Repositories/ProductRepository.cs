@@ -31,7 +31,8 @@ namespace TechStore.Infrastructure.Repositories
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            return await FindAll().ToListAsync();
+            var spec = new ProductsWithSubcategorySpecification();
+            return await Find(spec).ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> GetProductsOnSaleAsync()
@@ -41,17 +42,20 @@ namespace TechStore.Infrastructure.Repositories
 
         public async Task<IEnumerable<Product>> GetNewProductsAsync()
         {
-            return await FindAll().OrderByDescending(p => p.CreatedAt).Take(12).ToListAsync();
+            var spec = new ProductsWithSubcategorySpecification();
+            return await Find(spec).OrderByDescending(p => p.CreatedAt).Take(12).ToListAsync();
         }
         
         public async Task<IEnumerable<Product>> GetTopSellingProductsAsync()
         {
-            return await FindAll().OrderByDescending(p => p.UnitsSold).Take(12).ToListAsync();
+            var spec = new ProductsWithSubcategorySpecification();
+            return await Find(spec).OrderByDescending(p => p.UnitsSold).Take(12).ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> GetTopRatedProductsAsync()
         {
-            return await FindAll().OrderByDescending(p => p.Rating).Take(12).ToListAsync();
+            var spec = new ProductsWithSubcategorySpecification();
+            return await Find(spec).OrderByDescending(p => p.Rating).Take(12).ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> GetProductsBySubcategoryIdAsync(int subcategoryId)

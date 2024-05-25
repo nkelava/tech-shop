@@ -66,6 +66,41 @@ namespace TechStore.API.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("register-admin")]
+        public async Task<IActionResult> RegisterAdmin()
+        {
+            try
+            {
+
+                var newUser = new ApplicationUser()
+                {
+                    Email = "admin2@gmail.com",
+                    UserName = "admin2@gmail.com",
+                    FirstName = "Admin",
+                    LastName = "Admin",
+                    EmailConfirmed = true
+                };
+
+                var user = await _userManager.FindByEmailAsync("admin2@gmail.com");
+
+                if (user is not null)
+                    return BadRequest("The email address is already in use.");
+
+                var isCreatedResponse = await _userManager.CreateAsync(newUser, "Admin_994");
+
+                if (isCreatedResponse.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(newUser, UserRoles.Admin);
+                }
+
+                return Ok(newUser);
+            } catch
+            {
+                return BadRequest("Oh no");
+            }
+        }
+
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterModel registerModel)
         {
@@ -274,6 +309,8 @@ namespace TechStore.API.Controllers
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_configuration.GetSection("JwtSettings:SecretKey").Value);
+            var userRoles = await _userManager.GetRolesAsync(user);
+
             var tokenDescriptor = new SecurityTokenDescriptor() {
                 Subject = new ClaimsIdentity(new[] {
                     new Claim("Id", user.Id),
@@ -287,6 +324,12 @@ namespace TechStore.API.Controllers
                 Expires = DateTime.UtcNow.Add(TimeSpan.Parse(_configuration.GetSection("JwtSettings:ExpiryTimeFrame").Value)),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
             };
+
+            foreach (var role in userRoles)
+            {
+                var claim = new Claim(ClaimTypes.Role, role);
+                tokenDescriptor.Subject.AddClaim(claim);
+            }
 
             var token = jwtTokenHandler.CreateToken(tokenDescriptor);
             var jwtToken = jwtTokenHandler.WriteToken(token);

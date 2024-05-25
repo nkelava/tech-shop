@@ -24,7 +24,7 @@ namespace TechStore.Infrastructure.Repositories
 
         public async Task<IEnumerable<Subcategory>> GetAllSubcategoriesAsync()
         {
-            return await FindAll().ToListAsync();
+            return await FindAll().Include(s => s.Category).ToListAsync();
         }
     }
 }

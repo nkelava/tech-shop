@@ -1,56 +1,77 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TechStore.Application.Interfaces.Services;
+using TechStore.Application.Models.Wishlist;
 
 
 namespace TechStore.API.Controllers
 {
-    [Route("api/wishlist")]
+    [Route("api/wishlists")]
+    [Authorize]
     [ApiController]
     public class WishlistController : ControllerBase
     {
         public readonly IWishlistService _wishlistService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public readonly IMapper _mapper;
 
-        public WishlistController(IWishlistService wishlistService, IMapper mapper)
+        public WishlistController(IWishlistService wishlistService, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _wishlistService = wishlistService;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
 
-        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create(string username, int productId)
+        public async Task<IActionResult> Add([FromBody] WishlistAddProductModel wishlist)
         {
-            if (username is null || productId < 1)
+            var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
+
+            if (string.IsNullOrWhiteSpace(currentUserEmail))
+                return Unauthorized();
+
+            if (wishlist.ProductId < 1)
                 return BadRequest();
 
-            await _wishlistService.AddProductAsync(username, productId);
-
-            return Ok(productId);
+            try
+            {
+                await _wishlistService.AddProductAsync(currentUserEmail, wishlist.ProductId);
+                return Ok(wishlist.ProductId);
+            }
+            catch
+            {
+                return NotFound();
+            }
         }
 
-        [Authorize]
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int wishlistId, int productId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Remove(int id)
         {
-            if (wishlistId < 1 || productId < 1)
+            var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
+
+            if (string.IsNullOrWhiteSpace(currentUserEmail))
+                return Unauthorized();
+
+            if (id < 1)
                 return BadRequest();
 
-            await _wishlistService.RemoveProductAsync(wishlistId, productId);
-
-            return Ok(productId);
+            var wishlist = await _wishlistService.GetByEmailAsync(currentUserEmail);
+            int productId = await _wishlistService.RemoveProductAsync(wishlist.Id, id);
+             
+            return productId > 0 ? Ok(id) : NotFound();
         }
 
-        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetWishlistByUsername(string username)
+        public async Task<IActionResult> Get()
         {
-            if (string.IsNullOrWhiteSpace(username))
-                return BadRequest();
+            var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
 
-            var wishlist = await _wishlistService.GetByUsernameAsync(username);
+            if (string.IsNullOrWhiteSpace(currentUserEmail) )
+                return Unauthorized();
+
+            var wishlist = await _wishlistService.GetByEmailAsync(currentUserEmail);
 
             return (wishlist is null) ? NotFound() : Ok(wishlist);
         }

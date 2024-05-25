@@ -28,7 +28,7 @@ export const useWishlistStore = defineStore("wishlist", {
       try {
         if (this.isUserLoggedIn) {
           const resp = await axiosPrivate
-            .post("/wishlist", {
+            .post("/wishlists", {
               productId: item?.id,
             })
             .catch((error) => {
@@ -54,7 +54,7 @@ export const useWishlistStore = defineStore("wishlist", {
     async removeItem(productId) {
       try {
         if (this.isUserLoggedIn) {
-          const resp = await axiosPrivate.delete(`/wishlist/${productId}`).catch((error) => {
+          const resp = await axiosPrivate.delete(`/wishlists/${productId}`).catch((error) => {
             toast.error(
               "Oops! Something went wrong while trying to remove the item from your wishlist. Please try again later or contact customer support for assistance."
             );
@@ -93,7 +93,7 @@ export const useWishlistStore = defineStore("wishlist", {
         const data =
           this.isUserLoggedIn &&
           (await axiosPrivate
-            .get("/wishlist")
+            .get("/wishlists")
             .then((resp) => {
               let formattedWishlist = [];
 

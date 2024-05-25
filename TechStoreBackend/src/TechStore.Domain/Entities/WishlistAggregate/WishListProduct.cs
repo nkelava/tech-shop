@@ -1,14 +1,13 @@
-﻿using TechStore.Domain.Entities.Base;
-using TechStore.Domain.Entities.ProductAggregate;
+﻿using TechStore.Domain.Entities.ProductAggregate;
 
 
 namespace TechStore.Domain.Entities.Wishlist
 {
-    public class WishListProduct
+    public class WishlistProduct
     {
         // n - n
-        public int WishListId { get; set; }
-        public Wishlist WishList { get; set; }
+        public int WishlistId { get; set; }
+        public Wishlist Wishlist { get; set; }
 
         public int ProductId { get; set; }
         public Product Product { get; set; }

@@ -1,22 +1,16 @@
 <script setup>
 import { ref } from "vue";
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
-import CategoryForm from "@/components/admin/category/CategoryForm.vue";
-import CategoryList from "@/components/admin/category/CategoryList.vue";
-import SubcategoryForm from "@/components/admin/subcategory/SubcategoryForm.vue";
-import SubcategoryList from "@/components/admin/subcategory/SubcategoryList.vue";
-import AttributeForm from "@/components/admin/attribute/AttributeForm.vue";
-import AttributeList from "@/components/admin/attribute/AttributeList.vue";
-import AttributeValuesForm from "@/components/admin/attribute_values/AttributeValuesForm.vue";
-import AttributeValuesList from "@/components/admin/attribute_values/AttributeValuesList.vue";
-import ProductForm from "@/components/admin/product/ProductForm.vue";
-import ProductList from "@/components/admin/product/ProductList.vue";
 import UserList from "@/components/admin/user/UserList.vue";
 import OrderList from "@/components/admin/order/OrderList.vue";
 import ReviewList from "@/components/admin/review/ReviewList.vue";
-import PromoCodeForm from "@/components/admin/promo_code/PromoCodeForm.vue";
-import PromoCodeList from "@/components/admin/promo_code/PromoCodeList.vue";
-import CategoryDashboard from "./CategoryDashboard.vue";
+import CategoryDashboard from "./dashboard/CategoryDashboard.vue";
+import SubcategoryDashboard from "./dashboard/SubcategoryDashboard.vue";
+import PromoCodeDashboard from "./dashboard/PromoCodeDashboard.vue";
+import AttributeValuesDashboard from "./dashboard/AttributeValuesDashboard.vue";
+import AttributeDashboard from "./dashboard/AttributeDashboard.vue";
+import ProductDashboard from "./dashboard/ProductDashboard.vue";
+import ProductSpecificationForm from "../components/admin/product-specification/ProductSpecificationForm.vue";
 
 const tabs = [
   {
@@ -27,22 +21,27 @@ const tabs = [
   {
     value: "subcategory",
     label: "Subcategories",
-    components: [SubcategoryForm, SubcategoryList],
+    components: [SubcategoryDashboard],
   },
   {
     value: "attribute",
     label: "Attributes",
-    components: [AttributeForm, AttributeList],
+    components: [AttributeDashboard],
   },
   {
     value: "attribute_values",
     label: "Attribute Values",
-    components: [AttributeValuesForm, AttributeValuesList],
+    components: [AttributeValuesDashboard],
   },
   {
     value: "products",
     label: "Products",
-    components: [ProductForm, ProductList],
+    components: [ProductDashboard],
+  },
+  {
+    value: "products-specification",
+    label: "Products Specification",
+    components: [ProductSpecificationForm],
   },
   {
     value: "users",
@@ -62,7 +61,7 @@ const tabs = [
   {
     value: "promo_codes",
     label: "Promo Codes",
-    components: [PromoCodeForm, PromoCodeList],
+    components: [PromoCodeDashboard],
   },
 ];
 

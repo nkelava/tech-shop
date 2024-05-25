@@ -11,18 +11,21 @@ namespace TechStore.Application.Specifications.ProductSpecification
             : base()
         {
             AddInclude(p => p.Subcategory);
+            AddInclude(p => p.Subcategory.Category);
         }
 
         public ProductsWithSubcategorySpecification(int subcategoryId)
             : base(p => p.Subcategory.Id.Equals(subcategoryId))
         {
             AddInclude(p => p.Subcategory);
+            AddInclude(p => p.Subcategory.Category);
         }
 
         public ProductsWithSubcategorySpecification(string subcategorySlug)
             : base(p => p.Subcategory.Slug.ToLower().Equals(subcategorySlug.ToLower()))
         {
             AddInclude(p => p.Subcategory);
+            AddInclude(p => p.Subcategory.Category);
         }
     }
 }

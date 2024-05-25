@@ -15,8 +15,6 @@ async function reloadCategories() {
 
   categories.value = resp.data;
 }
-
-console.log("categories: ", categories.value);
 </script>
 
 <template>

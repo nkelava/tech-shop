@@ -1,38 +1,46 @@
-﻿using TechStore.Domain.Entities.Base;
-
+﻿using Microsoft.EntityFrameworkCore;
+using TechStore.Domain.Entities.Base;
+using TechStore.Domain.Entities.ProductAggregate;
 
 namespace TechStore.Domain.Entities.Wishlist
 {
+    [Index(nameof(Email), IsUnique = true)]
     public class Wishlist : Entity
     {
         public string Email { get; set; }
 
         // n - n
-        public List<WishListProduct> Products { get; set; } = new List<WishListProduct>();
+        public List<WishlistProduct> Products { get; set; } = new List<WishlistProduct>();
 
 
-        public void AddProduct(int productId)
+        public void AddProduct(Product product)
         {
-            var product = Products.FirstOrDefault(p => p.ProductId == productId);
+            var wishlistProduct = Products.FirstOrDefault(p => p.ProductId == product.Id);
 
-            if (product is not null)
+            if (wishlistProduct is not null)
                 return;
 
-            Products.Add(new WishListProduct
+            Products.Add(new WishlistProduct
             {
-                WishListId = this.Id,
-                ProductId = productId
-            });
+                WishlistId = this.Id,
+                ProductId = product.Id,
+                Product = product
+            }); ;
         }
 
         public void RemoveProduct(int productId)
         {
             var product = Products.FirstOrDefault(p => p.ProductId == productId);
 
-            if(product is not null)
+            if (product is not null)
             {
                 Products.Remove(product);
             }
+        }
+
+        public void Clear()
+        {
+            Products.Clear();
         }
     }
 }

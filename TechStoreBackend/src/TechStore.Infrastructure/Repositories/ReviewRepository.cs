@@ -33,6 +33,11 @@ namespace TechStore.Infrastructure.Repositories
         {
             return await FindAll().ToListAsync();
         }
+
+        public async Task<IEnumerable<Review>> GetAllReportedReviewsAsync()
+        {
+            return await FindByCondition(r => r.IsReported).ToListAsync();
+        }
     }
 }
  

@@ -1,35 +1,25 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
+import { useToast } from "vue-toastification";
+import { axiosPrivate } from "@/api/axios";
 import FormContainer from "@/components/common/FormContainer.vue";
+import { ITEM_CREATE_FAIL, ITEM_CREATE_SUCCESS } from "../../../constants/messages/create";
 
-const attributes = ref([]);
-const value = ref("");
-const attributeIds = ref([]);
+const emit = defineEmits(["reload"]);
+const toast = useToast();
+const attributeValue = ref("");
 const loading = ref(false);
 
-onMounted(() => {
-  attributes.value = [
-    {
-      id: 0,
-      name: "RAM",
-    },
-    {
-      id: 1,
-      name: "SSD",
-    },
-    {
-      id: 2,
-      name: "HDD",
-    },
-  ];
-});
+async function handleSave() {
+  await axiosPrivate
+    .post("/attribute-values", {
+      value: attributeValue.value,
+    })
+    .catch(() => toast.error(ITEM_CREATE_FAIL));
 
-function handleSave() {
-  const formData = new FormData();
-  formData.append("value", value.value);
-  formData.append("attributeIds", attributeIds.value);
-
-  console.log(formData);
+  attributeValue.value = "";
+  toast.success(ITEM_CREATE_SUCCESS);
+  emit("reload");
 }
 </script>
 
@@ -37,25 +27,13 @@ function handleSave() {
   <form-container title="New Attribute Value">
     <v-form @submit.prevent>
       <v-text-field
-        v-model="value"
+        v-model="attributeValue"
         class="mt-5"
         label="Value"
         density="compact"
         variant="outlined"
         hide-details="auto"
       />
-      <v-select
-        v-model="attributeIds"
-        class="mt-5"
-        label="Attributes"
-        :items="attributes"
-        item-value="id"
-        item-title="name"
-        density="compact"
-        hide-details="auto"
-        variant="outlined"
-        multiple
-      ></v-select>
       <v-btn type="submit" class="form__btn" :loading="loading" @click="handleSave">Save</v-btn>
     </v-form>
   </form-container>

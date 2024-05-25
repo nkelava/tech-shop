@@ -1,7 +1,9 @@
-﻿using TechStore.Domain.Entities.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using TechStore.Domain.Entities.Base;
 
 namespace TechStore.Domain.Entities.ProductAggregate
 {
+    [Index(nameof(Name), IsUnique = true)]
     public class ProductAttribute : Entity
     {
         public string Name { get; set; }

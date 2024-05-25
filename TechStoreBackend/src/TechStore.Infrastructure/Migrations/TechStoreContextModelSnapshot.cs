@@ -202,12 +202,15 @@ namespace TechStore.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Cart", (string)null);
                 });
@@ -397,7 +400,6 @@ namespace TechStore.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ImageURL")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -421,7 +423,7 @@ namespace TechStore.Infrastructure.Migrations
 
                     b.Property<string>("Slug")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("SubcategoryId")
                         .HasColumnType("int");
@@ -443,6 +445,9 @@ namespace TechStore.Infrastructure.Migrations
 
                     b.HasIndex("PromoCodeId");
 
+                    b.HasIndex("Slug")
+                        .IsUnique();
+
                     b.HasIndex("SubcategoryId");
 
                     b.ToTable("Product", (string)null);
@@ -461,12 +466,15 @@ namespace TechStore.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("ProductAttribute", (string)null);
                 });
@@ -559,7 +567,7 @@ namespace TechStore.Infrastructure.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -571,6 +579,9 @@ namespace TechStore.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.ToTable("PromoCode", (string)null);
                 });
@@ -588,16 +599,22 @@ namespace TechStore.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Slug")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("Category", (string)null);
                 });
@@ -621,11 +638,11 @@ namespace TechStore.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Slug")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -633,6 +650,12 @@ namespace TechStore.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("Subcategory", (string)null);
                 });
@@ -720,26 +743,29 @@ namespace TechStore.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Wishlist", (string)null);
                 });
 
-            modelBuilder.Entity("TechStore.Domain.Entities.Wishlist.WishListProduct", b =>
+            modelBuilder.Entity("TechStore.Domain.Entities.Wishlist.WishlistProduct", b =>
                 {
-                    b.Property<int>("WishListId")
+                    b.Property<int>("WishlistId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.HasKey("WishListId", "ProductId");
+                    b.HasKey("WishlistId", "ProductId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("WishListProduct", (string)null);
+                    b.ToTable("WishlistProduct", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -908,7 +934,7 @@ namespace TechStore.Infrastructure.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("TechStore.Domain.Entities.Wishlist.WishListProduct", b =>
+            modelBuilder.Entity("TechStore.Domain.Entities.Wishlist.WishlistProduct", b =>
                 {
                     b.HasOne("TechStore.Domain.Entities.ProductAggregate.Product", "Product")
                         .WithMany("WishLists")
@@ -916,15 +942,15 @@ namespace TechStore.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TechStore.Domain.Entities.Wishlist.Wishlist", "WishList")
+                    b.HasOne("TechStore.Domain.Entities.Wishlist.Wishlist", "Wishlist")
                         .WithMany("Products")
-                        .HasForeignKey("WishListId")
+                        .HasForeignKey("WishlistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
 
-                    b.Navigation("WishList");
+                    b.Navigation("Wishlist");
                 });
 
             modelBuilder.Entity("TechStore.Domain.Entities.Cart.Cart", b =>

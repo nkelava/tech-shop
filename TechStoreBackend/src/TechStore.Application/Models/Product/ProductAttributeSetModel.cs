@@ -1,4 +1,5 @@
 ﻿using TechStore.Application.Models.Attribute;
+using TechStore.Application.Models.AttributeValue;
 
 
 namespace TechStore.Application.Models.Product

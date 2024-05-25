@@ -9,6 +9,7 @@ using TechStore.Domain.Entities.User;
 using TechStore.Domain.Entities.Wishlist;
 using TechStore.Domain.Enums.Order;
 
+
 namespace TechStore.Infrastructure.Data.Seed
 {
     public class DataSeeder
@@ -153,7 +154,7 @@ namespace TechStore.Infrastructure.Data.Seed
                 },
                 new Subcategory()
                 {
-                    Name = "Gaming",
+                    Name = "Gaming Laptops",
                     Slug = "gaming-laptops",
                     Category = _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("laptops")).First(),
                 },
@@ -177,7 +178,7 @@ namespace TechStore.Infrastructure.Data.Seed
                 },
                 new Subcategory()
                 {
-                    Name = "Gaming",
+                    Name = "Gaming Desktops",
                     Slug = "gaming-desktops",
                     Category = _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("desktops")).First(),
                 },
@@ -255,7 +256,7 @@ namespace TechStore.Infrastructure.Data.Seed
                 },
                 new Subcategory()
                 {
-                    Name = "Gaming",
+                    Name = "Gaming Monitors",
                     Slug = "gaming-monitors",
                     Category =  _techStoreContext.Categories.Where(c => c.Name.ToLower().Equals("monitors")).First(),
                 },
@@ -953,11 +954,11 @@ namespace TechStore.Infrastructure.Data.Seed
 
         private async Task SeedWishlistProducts()
         {
-            var wishlistProducts = new List<WishListProduct>()
+            var wishlistProducts = new List<WishlistProduct>()
             {
-                new WishListProduct
+                new WishlistProduct
                 {
-                    WishList = _techStoreContext.WishLists.Where(w => w.Email.ToLower().Equals("test@gmail.com")).First(),
+                    Wishlist = _techStoreContext.WishLists.Where(w => w.Email.ToLower().Equals("test@gmail.com")).First(),
                     Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
                 },
             };

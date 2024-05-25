@@ -28,7 +28,7 @@ namespace TechStore.Infrastructure.Data
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
         public DbSet<Wishlist> WishLists { get; set; }
-        public DbSet<WishListProduct> WishListProducts { get; set; }
+        public DbSet<WishlistProduct> WishListProducts { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Newsletter> Newsletters { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
@@ -45,7 +45,7 @@ namespace TechStore.Infrastructure.Data
 
             builder.Entity<ProductAttributeSet>(ConfigureProductAttributes);
             builder.Entity<CartProduct>(ConfigureCartProducts);
-            builder.Entity<WishListProduct>(ConfigureWishListProducts);
+            builder.Entity<WishlistProduct>(ConfigureWishListProducts);
             builder.Entity<OrderProduct>(ConfigureOrderProducts);
         }
 
@@ -68,14 +68,17 @@ namespace TechStore.Infrastructure.Data
             builder.HasKey(cp => new { cp.CartId, cp.ProductId });
         }
 
-        private void ConfigureWishListProducts(EntityTypeBuilder<WishListProduct> builder)
+        private void ConfigureWishListProducts(EntityTypeBuilder<WishlistProduct> builder)
         {
-            builder.HasKey(wp => new { wp.WishListId, wp.ProductId });
+            builder.HasKey(wp => new { wp.WishlistId, wp.ProductId });
         }
 
         private void ConfigureOrderProducts(EntityTypeBuilder<OrderProduct> builder)
         {
             builder.HasKey(op => new { op.OrderId, op.ProductId });
+
+            builder.HasOne(o => o.Order).WithMany(op => op.Products).HasForeignKey(o => o.OrderId);
+            builder.HasOne(p => p.Product).WithMany(op => op.Orders).HasForeignKey(p => p.ProductId);
         }
     }
 }

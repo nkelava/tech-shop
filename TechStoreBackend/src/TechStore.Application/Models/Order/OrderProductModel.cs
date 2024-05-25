@@ -9,6 +9,6 @@ namespace TechStore.Application.Models.Order
         public decimal UnitPrice { get; set; }
         public decimal TotalPrice { get; set; }
 
-        public int ProductId { get; set; }
+        public ProductReadModel Product { get; set; }
     }
 }

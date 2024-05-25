@@ -6,7 +6,7 @@ namespace TechStore.Domain.Entities.ProductAggregate
     public class Review : Entity
     {
         public string Email { get; set; }
-        public int Rate { get; set; } = 0;
+        public int Rate { get; set; }
         public string Comment { get; set; }
         public bool IsReported { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.Now;

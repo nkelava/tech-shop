@@ -1,7 +1,7 @@
 const initialState = {
   firstName: "Nikola",
   lastName: "Kelava",
-  email: "n.kelava@dotien.hr",
+  email: "admin@gmail.com",
   shippingAddress: "Ul. Josipa Jovica 40",
   city: "Split",
   zipCode: "21000",
