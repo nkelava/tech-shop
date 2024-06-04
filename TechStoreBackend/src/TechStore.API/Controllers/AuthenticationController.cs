@@ -94,9 +94,9 @@ namespace TechStore.API.Controllers
                 }
 
                 return Ok(newUser);
-            } catch
+            } catch (Exception ex)
             {
-                return BadRequest("Oh no");
+                return BadRequest(ex.Message);
             }
         }
 

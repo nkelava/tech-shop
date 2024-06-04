@@ -41,10 +41,12 @@ builder.Services.AddCors(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
 SeedData(app);
+app.MapHealthChecks("/health-checks");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -54,9 +56,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-//app.UseCors(options => options.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials());
-app.UseCors();
+app.UseCors(options => options.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials());
+// app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
@@ -78,7 +79,7 @@ void ConfigureServices(IServiceCollection services)
 void ConfigureDatabase(IServiceCollection services)
 {
     services.AddDbContext<TechStoreContext>(options => {
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+        options.UseSqlServer(builder.Configuration.GetConnectionString("Database"));
     });
 }
 

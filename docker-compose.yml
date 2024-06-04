@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  database:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    platform: linux/amd64
+    container_name: sql_server2022
+    environment:
+      - ACCEPT_EULA=y
+      - MSSQL_SA_PASSWORD=A&VeryComplex123Password
+    ports:
+      - "1433:1433"
+
+  api:
+    container_name: api
+    build:
+      context: ./TechStoreBackend
+      dockerfile: Dockerfile
+    ports:
+      - "7156:80"
+    environment:
+      - ConnectionStrings__Database=Server=sql_server2022;Database=TechPlanetDb;User Id=SA;Password=A&VeryComplex123Password;TrustServerCertificate=True;
+    depends_on:
+      - database
+
+  client:
+    container_name: client
+    build:
+      context: ./TechStoreFrontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    env_file:
+      - ./TechStoreFrontend/.env
+    volumes:
+      - ./TechStoreFrontend:/app
+      - /app/node_modules
+    depends_on:
+      - api
