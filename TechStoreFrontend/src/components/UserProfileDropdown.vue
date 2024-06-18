@@ -47,7 +47,7 @@ onMounted(async () => {
         <v-list-item v-for="(item, i) in dropdownItems" :key="i">
           <router-link :to="item.to" class="link">{{ item.title }}</router-link>
         </v-list-item>
-        <v-list-item v-if="userRole.includes('Admin')">
+        <v-list-item v-if="userRole?.includes('Admin')">
           <router-link to="/admin" class="link"> Dashboard </router-link>
         </v-list-item>
         <v-list-item class="link" @click="handleLogout"> Logout </v-list-item>

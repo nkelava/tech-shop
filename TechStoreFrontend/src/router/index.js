@@ -1,4 +1,25 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useUserStore } from "@/store";
+
+const userGuard = (to, from, next) => {
+  const userStore = useUserStore();
+
+  if (userStore.isLoggedIn) {
+    next();
+  } else {
+    next("/");
+  }
+};
+
+const adminGuard = (to, from, next) => {
+  const userStore = useUserStore();
+
+  if (userStore.isLoggedIn) {
+    next();
+  } else {
+    next("/");
+  }
+};
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,8 +46,16 @@ const router = createRouter({
     },
     {
       path: "/user",
-      name: "/user",
+      name: "user",
       component: () => import("../views/UserProfileView.vue"),
+      beforeEnter: userGuard,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/admin",
+      name: "admin",
+      component: () => import("../views/AdminView.vue"),
+      beforeEnter: adminGuard,
       meta: { requiresAuth: true },
     },
     {
@@ -43,12 +72,6 @@ const router = createRouter({
       path: "/:category/:subcategory/:productSlug",
       name: "product",
       component: () => import("../views/ProductDetailsView.vue"),
-    },
-    {
-      path: "/admin",
-      name: "admin",
-      component: () => import("../views/AdminView.vue"),
-      meta: { requiresAuth: true },
     },
     {
       path: "/:pathMatch(.*)*",

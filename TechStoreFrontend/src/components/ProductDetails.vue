@@ -152,7 +152,7 @@ input[type="number"] {
 @media only screen and (min-width: 80em) {
   .price {
     font-size: 26px;
-    margin: 2rem 0 1rem;
+    margin: auto 0 1rem;
   }
 }
 </style>

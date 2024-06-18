@@ -51,7 +51,13 @@ function handleFilter() {
       <h3 class="sidebar-item__title">Price</h3>
       <hr />
       <div class="sidebar-price">
-        <input class="sidebar-price__input" v-model="price.from" type="number" min="0" />
+        <input
+          class="sidebar-price__input"
+          v-model="price.from"
+          type="number"
+          min="0"
+          @input="handlepPriceFilter"
+        />
         <input
           class="sidebar-price__input"
           v-model="price.to"
@@ -61,6 +67,7 @@ function handleFilter() {
         />
       </div>
     </div>
+
     <div class="sidebar-item">
       <h3 class="sidebar-item__title">Rating</h3>
       <hr />
@@ -70,12 +77,13 @@ function handleFilter() {
         <span>{{ rating }}</span>
       </div>
     </div>
+
     <div
       class="sidebar-item"
       v-for="[attributeId, attribute] in attributeValuesMap"
       :key="attributeId"
     >
-      <h3 class="sidebar-item__title">{{ attribute.name }}</h3>
+      <h3 class="sidebar-item__title">{{ attribute?.name }}</h3>
       <hr />
       <div v-for="[attributeValueId, attributeValue] in attribute.values" :key="attributeValueId">
         <input

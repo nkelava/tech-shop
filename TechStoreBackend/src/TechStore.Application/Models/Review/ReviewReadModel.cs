@@ -1,8 +1,9 @@
-﻿
+﻿using TechStore.Application.Models.Base;
+
 
 namespace TechStore.Application.Models.Review
 {
-    public class ReviewReadModel
+    public class ReviewReadModel : BaseModel
     {
         public string Email { get; set; }
 

@@ -18,28 +18,35 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task CreateAsync(PromoCodeCreateModel promoCodeModel)
+        public async Task CreateAsync(PromoCodeCreateModel createModel)
         {
-            var promoCode = _mapper.Map<PromoCode>(promoCodeModel);
+            var promoCode = _mapper.Map<PromoCode>(createModel);
+
             _repository.PromoCode.Add(promoCode);
-
             await _repository.SaveAsync();
         }
 
-        public async Task UpdateAsync(PromoCodeUpdateModel promoCodeUpdateModel)
+        public async Task<PromoCodeReadModel?> UpdateAsync(int id, PromoCodeUpdateModel updateModel)
         {
-            var promoCode = _mapper.Map<PromoCode>(promoCodeUpdateModel);
+            var existingPromoCode = await _repository.PromoCode.GetByIdAsync(id);
 
-            _repository.PromoCode.Update(promoCode);
+            if (existingPromoCode == null)
+                return null;
+
+            _mapper.Map(updateModel, existingPromoCode);
+            _repository.PromoCode.Update(existingPromoCode);
             await _repository.SaveAsync();
+
+            var promoCodeModel = _mapper.Map<PromoCodeReadModel>(existingPromoCode);
+            return promoCodeModel;
         }
 
-        public async Task<int> DeleteAsync(int promoCodeId)
+        public async Task<int?> DeleteAsync(int promoCodeId)
         {
             var promoCode = await _repository.PromoCode.GetByIdAsync(promoCodeId);
 
             if (promoCode == null)
-                return 0;
+                return null;
 
             _repository.PromoCode.Delete(promoCode);
             await _repository.SaveAsync();
@@ -47,17 +54,25 @@ namespace TechStore.Application.Services
             return promoCode.Id;
         }
 
-        public async Task<PromoCodeReadModel> GetByIdAsync(int id)
+        public async Task<PromoCodeReadModel?> GetByIdAsync(int id)
         {
             var promoCode = await _repository.PromoCode.GetByIdAsync(id);
+
+            if (promoCode == null)
+                return null;
+
             var promoCodeModel = _mapper.Map<PromoCodeReadModel>(promoCode);
 
             return promoCodeModel;
         }
 
-        public async Task<PromoCodeReadModel> GetByCodeAsync(string code)
+        public async Task<PromoCodeReadModel?> GetByCodeAsync(string code)
         {
             var promoCode = await _repository.PromoCode.GetByCodeAsync(code);
+
+            if (promoCode == null)
+                return null;
+
             var promoCodeModel = _mapper.Map<PromoCodeReadModel>(promoCode);
 
             return promoCodeModel;

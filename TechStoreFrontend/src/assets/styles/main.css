@@ -41,6 +41,16 @@
   padding: 0 !important;
 }
 
+.header-search {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-search__input {
+  width: 300px !important;
+  max-width: 300px !important;
+}
+
 @media only screen and (min-width: 40em) {
   .ts-breadcrumbs {
     font-size: 16px;

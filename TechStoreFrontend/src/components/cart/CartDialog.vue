@@ -1,15 +1,19 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
+import { useToast } from "vue-toastification";
 import { useCartStore } from "@/store";
+import { axiosPrivate } from "@/api/axios";
 import CartTable from "@/components/cart/CartTable.vue";
 import OrderDialog from "@/components/order/OrderDialog.vue";
 import CartIcon from "@/assets/icons/header/cart.png";
 import EmptyStateImage from "@/assets/images/test/empty_state.png";
-import { getPromoCode } from "@/database/services/promoCodeService.js";
 
 const cart = useCartStore();
+const toast = useToast();
 const cartDialogActive = ref(false);
 const orderDialogActive = ref(false);
+const promoCodes = ref([]);
+const promoCode = ref(null);
 const promoCodeState = ref({
   input: "",
   isActive: false,
@@ -20,7 +24,18 @@ const pageState = ref({
   itemsPerPage: 3,
 });
 
+onMounted(async () => {
+  await axiosPrivate
+    .get("/promo-codes")
+    .then((resp) => {
+      if (resp?.status !== 200) return;
+      promoCodes.value = resp.data;
+    })
+    .catch((error) => console.log(error));
+});
+
 const totalPageCount = computed(() => Math.ceil(cart.items.length / pageState.value.itemsPerPage));
+
 const currentPageItems = computed(() => {
   return cart.items.slice(
     (pageState.value.currentPage - 1) * pageState.value.itemsPerPage,
@@ -32,22 +47,28 @@ function toggleDialog() {
   orderDialogActive.value = !orderDialogActive.value;
 }
 
-function addPromoCode() {
-  if (promoCodeState.value.input < 1) return;
+const addPromoCode = async () => {
+  let promoCodeDiscount = null;
 
-  const promoCode = getPromoCode(promoCodeState.value.input);
+  try {
+    const { data, status } = await axiosPrivate.get(`/promo-codes/${promoCode?.value}`);
 
-  // Check promo code
-  // If false display error
-  if (!promoCode) return;
-  // Else apply promo code and display success message
-  promoCodeState.value.discount = promoCode.discount;
+    if (status === 200) {
+      promoCodeDiscount = data.discount;
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to load promo code.");
+  }
+
+  promoCodeState.value.discount = promoCodeDiscount;
   promoCodeState.value.isActive = true;
-}
+};
 
 function removePromoCode() {
   promoCodeState.value.discount = 0;
   promoCodeState.value.isActive = false;
+  promoCode.value = null;
 }
 </script>
 
@@ -63,7 +84,7 @@ function removePromoCode() {
         <v-card-title class="font-weight-bold"> Your Shopping Cart </v-card-title>
         <v-card-text v-if="currentPageItems.length">
           <cart-table :products="currentPageItems" />
-          <v-container>
+          <v-container v-if="cart?.items?.length > pageState.itemsPerPage">
             <v-row justify="center">
               <v-col cols="10">
                 <v-container class="max-width">
@@ -79,24 +100,31 @@ function removePromoCode() {
         </v-card-text>
         <div v-if="currentPageItems.length" class="price">
           <form @submit.prevent>
-            <input
-              v-model="promoCodeState.input"
-              class="promo-code"
-              type="text"
-              placeholder="Promo Code"
-              :disabled="promoCodeState.isActive"
-              required
-            />
-            <input
-              v-if="!promoCodeState.isActive"
-              class="btn-submit"
-              type="submit"
-              value="Add"
-              @click="addPromoCode"
-            />
-            <button v-if="promoCodeState.isActive" class="btn-submit" @click="removePromoCode">
-              Remove
-            </button>
+            <div class="d-flex align-end ml-3">
+              <v-select
+                v-model="promoCode"
+                class="mt-5 promo__select"
+                label="Promo Code"
+                :items="promoCodes"
+                item-value="id"
+                item-title="code"
+                density="compact"
+                hide-details="auto"
+                variant="outlined"
+                :disabled="promoCode"
+                @update:modelValue="addPromoCode"
+              ></v-select>
+              <v-btn
+                v-if="promoCode"
+                class="ml-2 mb-1"
+                color="red"
+                icon="mdi-tag-remove"
+                size="32"
+                title="Remove promo code"
+                alt="Remove promo code"
+                @click="removePromoCode"
+              />
+            </div>
           </form>
           <h2 class="text-end pr-4">Total: {{ cart.totalPrice(promoCodeState.discount) }}$</h2>
         </div>
@@ -164,17 +192,6 @@ function removePromoCode() {
   padding: 5px 10px;
 }
 
-.btn-submit {
-  height: 100% !important;
-  border: 1px solid transparent;
-  border-radius: 0 5px 5px 0;
-  background-color: var(--ts-c-bg-dark);
-  color: var(--ts-c-text-light);
-  height: 100%;
-  padding: 5px 15px;
-  text-transform: capitalize;
-}
-
 .checkout {
   text-decoration: none;
   color: var(--ts-c-success) !important;
@@ -194,5 +211,11 @@ function removePromoCode() {
 
 .empty__container p {
   color: var(--ts-c-text-dark);
+}
+
+.promo__select {
+  width: 100%;
+  min-width: 200px !important;
+  max-width: 300px !important;
 }
 </style>

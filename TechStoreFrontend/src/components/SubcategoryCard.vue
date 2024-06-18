@@ -3,11 +3,9 @@ import { RouterLink } from "vue-router";
 import DefaultImage from "@/assets/images/test/products/defaultProductImage.png";
 
 const props = defineProps(["category", "subcategory"]);
-console.log("subcategory: ", props.subcategory);
 </script>
 
 <template>
-  <!-- TODO: add favorites and cart icon on hover -->
   <router-link
     :to="{
       name: 'subcategory',
@@ -36,7 +34,8 @@ console.log("subcategory: ", props.subcategory);
   width: 100%;
   max-width: 300px;
   height: 100%;
-  max-height: 300px;
+  min-height: 250px;
+  max-height: 400px;
   text-align: center;
   background-color: var(--ts-c-bg-light);
   border-radius: 10px;
@@ -53,7 +52,7 @@ console.log("subcategory: ", props.subcategory);
 }
 
 .card__title {
-  margin: 0.5rem;
+  margin: 0.2rem auto 0.5rem;
   font-size: var(--ts-text-size-lg);
 }
 

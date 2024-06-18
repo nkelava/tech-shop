@@ -2,6 +2,7 @@
 using TechStore.Application.Interfaces.Repositories.Base;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Category;
+using TechStore.Application.Models.PromoCode;
 using TechStore.Domain.Entities.SubcategoryAggregate;
 
 
@@ -26,12 +27,19 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task UpdateAsync(CategoryUpdateModel categoryModel)
+        public async Task<CategoryReadModel?> UpdateAsync(int id, CategoryUpdateModel updateModel)
         {
-            var category = _mapper.Map<Category>(categoryModel);
-            _repository.Category.Update(category);
+            var existingCategory = await _repository.Category.GetCategoryByIdAsync(id);
 
+            if (existingCategory == null)
+                return null;
+
+            _mapper.Map(updateModel, existingCategory);
+            _repository.Category.Update(existingCategory);
             await _repository.SaveAsync();
+
+            var categoryModel = _mapper.Map<CategoryReadModel>(existingCategory);
+            return categoryModel;
         }
 
         public async Task DeleteAsync(int categoryId)
@@ -40,6 +48,17 @@ namespace TechStore.Application.Services
 
             _repository.Category.Delete(category);
             await _repository.SaveAsync();
+        }
+
+        public async Task<CategoryReadModel?> GetByIdAsync(int id)
+        {
+            var category = await _repository.Category.GetCategoryByIdAsync(id);
+
+            if (category == null)
+                return null;
+            
+            var categoryModel = _mapper.Map<CategoryReadModel>(category);
+            return categoryModel;
         }
 
         public async Task<CategoryReadModel> GetCategoryBySlugAsync(string categorySlug)

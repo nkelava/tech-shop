@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Security.Claims;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Review;
-using TechStore.Domain.Entities.ProductAggregate;
 
 
 namespace TechStore.API.Controllers
@@ -17,12 +17,15 @@ namespace TechStore.API.Controllers
         public readonly IReviewService _reviewService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         public readonly IMapper _mapper;
+        public readonly ILogger<ReviewController> _logger;
 
-        public ReviewController(IReviewService reviewService, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+
+        public ReviewController(IReviewService reviewService, IHttpContextAccessor httpContextAccessor, IMapper mapper, ILogger<ReviewController> logger)
         {
             _reviewService = reviewService;
             _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -42,22 +45,6 @@ namespace TechStore.API.Controllers
             } catch {
                 return BadRequest();
             }
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> ReportReview(ReviewReportModel reportModel)
-        {
-            var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
-
-            if (currentUserEmail is null)
-                return Unauthorized();
-
-            if (reportModel.Id < 1)
-                return BadRequest();
-
-            var updatedReviewId = await _reviewService.ReportReviewAsync(reportModel.Id, reportModel.IsReported);
-
-            return updatedReviewId < 1 ? NotFound() : Ok(updatedReviewId);
         }
 
         [HttpDelete("{reviewId:int}")]
@@ -111,8 +98,39 @@ namespace TechStore.API.Controllers
             return Ok(reviews);
         }
 
+        [HttpPost("report/{id:int}")]
+        public async Task<IActionResult> ReportReview(int id, [FromBody] ReviewReportModel reportedReview)
+        {
+            _logger.LogInformation("Received request to report review with ID {Id}.", id);
 
-        [HttpGet("/reported")]
+            if (id < 1)
+            {
+                _logger.LogWarning("Invalid review ID {Id}.", id);
+                return BadRequest("Invalid review ID.");
+            }
+
+            try
+            {
+                var review = await _reviewService.ReportReviewAsync(id, reportedReview.IsReported);
+
+                if (review == null)
+                {
+                    _logger.LogWarning("Review with ID {Id} not found.", id);
+                    return NotFound("Review not found.");
+                }
+
+                _logger.LogInformation("Review with ID {Id} fetched successfully.", id);
+                return Ok(review);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching promo codes.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
+
+        [HttpGet("reported")]
         public async Task<IActionResult> GetAllReportedReviews()
         {
             var reviews = await _reviewService.GetAllReportedReviewsAsync();

@@ -5,6 +5,7 @@ import ProductForm from "@/components/admin/product/ProductForm.vue";
 import ProductList from "@/components/admin/product/ProductList.vue";
 
 const products = ref([]);
+const selectedProductId = ref(null);
 
 onMounted(() => reloadProducts());
 
@@ -15,11 +16,18 @@ async function reloadProducts() {
 
   products.value = resp.data;
 }
+function editProduct(id) {
+  selectedProductId.value = id;
+}
 </script>
 
 <template>
   <div>
-    <product-form @reload="reloadProducts" />
-    <product-list @reload="reloadProducts" :products="products" />
+    <product-form
+      :id="selectedProductId"
+      @reload="reloadProducts"
+      @clearSelectedId="selectedProductId = null"
+    />
+    <product-list :products="products" @reload="reloadProducts" @edit="editProduct" />
   </div>
 </template>

@@ -3,7 +3,7 @@
 
 namespace TechStore.Application.Models.Review
 {
-    public class ReviewReportModel: BaseModel
+    public class ReviewReportModel
     {
         public bool IsReported { get; set; }
     }

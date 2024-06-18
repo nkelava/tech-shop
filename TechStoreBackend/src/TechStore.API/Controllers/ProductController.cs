@@ -125,10 +125,10 @@ namespace TechStore.API.Controllers
             return (products is null) ? NotFound() : Ok(products);
         }
 
-        [HttpGet("name/{name}")]
-        public async Task<IActionResult> GetProductsByName(string name)
+        [HttpGet("search/{search}")]
+        public async Task<IActionResult> SearchProductsAsync(string search)
         {
-            var products = await _productService.GetProductsByNameAsync(name);
+            var products = await _productService.SearchProductsAsync(search);
 
             return Ok(products);
         }

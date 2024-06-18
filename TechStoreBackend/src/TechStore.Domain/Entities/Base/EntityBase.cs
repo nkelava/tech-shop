@@ -4,20 +4,23 @@ namespace TechStore.Domain.Entities.Base
 {
     public abstract class EntityBase<TId> : IEntityBase<TId>
     {
-        public virtual TId Id { get; protected set; }
-        
         int? _requestedHashCode;
+        
+        public virtual TId Id { get; protected set; }
 
 
         public bool IsTransient()
         {
+            if(Id == null)
+                return false;
+
             return Id.Equals(default(TId));
         }
 
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            if (obj == null || !(obj is EntityBase<TId>))
+            if (obj == null || obj is not EntityBase<TId>)
                 return false;
 
             if (ReferenceEquals(this, obj))
@@ -30,8 +33,8 @@ namespace TechStore.Domain.Entities.Base
 
             if (item.IsTransient() || IsTransient())
                 return false;
-            else
-                return item == this;
+            
+            return item == this;
         }
 
 

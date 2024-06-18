@@ -5,6 +5,7 @@ import PromoCodeForm from "@/components/admin/promo_code/PromoCodeForm.vue";
 import PromoCodeList from "@/components/admin/promo_code/PromoCodeList.vue";
 
 const promoCodes = ref([]);
+const selectedPromoCodeId = ref(null);
 
 onMounted(() => reloadPromoCodes());
 
@@ -15,11 +16,19 @@ async function reloadPromoCodes() {
 
   promoCodes.value = resp.data;
 }
+
+function editPromoCode(id) {
+  selectedPromoCodeId.value = id;
+}
 </script>
 
 <template>
   <div>
-    <promo-code-form @reload="reloadPromoCodes" />
-    <promo-code-list @reload="reloadPromoCodes" :promoCodes="promoCodes" />
+    <promo-code-form
+      :id="selectedPromoCodeId"
+      @reload="reloadPromoCodes"
+      @clearSelectedId="selectedPromoCodeId = null"
+    />
+    <promo-code-list :promoCodes="promoCodes" @reload="reloadPromoCodes" @edit="editPromoCode" />
   </div>
 </template>

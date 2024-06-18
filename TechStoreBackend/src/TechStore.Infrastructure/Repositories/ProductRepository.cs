@@ -85,9 +85,12 @@ namespace TechStore.Infrastructure.Repositories
             return products;
         }
 
-        public async Task<IEnumerable<Product>> GetProductsByNameAsync(string productName)
+        public async Task<IEnumerable<Product>> SearchProductsAsync(string search)
         {
-            return await FindByCondition(p => p.Name.ToLower().Contains(productName.ToLower())).ToListAsync();
+            return await FindByCondition(p => p.Summary.ToLower().Contains(search.ToLower()))
+                .Include(p => p.Subcategory)
+                    .ThenInclude(s => s.Category)
+                .ToListAsync();
         }
 
 

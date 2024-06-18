@@ -40,12 +40,12 @@ const getProduct = async () => {
     .then((response) => (product.value = response.data));
 };
 
-const updateProduct = () => {
-  getProduct();
+const updateProduct = async () => {
+  await getProduct();
 };
 
-onMounted(() => {
-  getProduct();
+onMounted(async () => {
+  await getProduct();
 });
 </script>
 

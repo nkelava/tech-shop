@@ -31,7 +31,6 @@ const wishlist = useWishlistStore();
             title="Add to Cart"
             @click="cart.addItem(product)"
           />
-          <!-- TODO: implement favorites item deletion -->
           <v-btn
             icon="mdi-delete"
             color="red"

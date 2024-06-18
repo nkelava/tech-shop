@@ -4,20 +4,20 @@ import { axiosPrivate } from "@/api/axios";
 import { useToast } from "vue-toastification";
 
 const props = defineProps(["product"]);
-const dialog = ref(false);
+const emit = defineEmits(["toggleDialog"]);
+const showDialog = ref(false);
 const rating = ref(1);
 const message = ref("");
 const toast = useToast();
-const emit = defineEmits(["toggleDialog"]);
 
 const handleSubmit = async () => {
   if (message.value.length < 1) return;
 
   try {
     await axiosPrivate.post("/reviews", {
-      Rate: rating.value,
-      Comment: message.value,
-      ProductId: props.product.id,
+      rate: rating.value,
+      comment: message.value,
+      productId: props.product.id,
     });
 
     rating.value = 1;
@@ -35,7 +35,7 @@ const closeDialog = () => {
 </script>
 
 <template>
-  <v-dialog class="dialog" v-model="dialog">
+  <v-dialog v-model="showDialog" class="dialog">
     <v-card class="dialog__card">
       <v-card-title class="card__title"> Leave your review </v-card-title>
       <v-container class="mb-4">

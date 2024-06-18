@@ -21,21 +21,25 @@ const breadcrumbsItems = [
   },
 ];
 
+const fetchCategoryData = async (slug) => {
+  try {
+    const response = await axiosPublic.get(`/categories/${slug}/subcategories`);
+    category.value = response.data;
+  } catch (error) {
+    console.error(`Failed to fetch data for category ${slug}:`, error);
+    category.value = null; // Set to null on error
+  }
+};
+
 onMounted(async () => {
-  await axiosPublic
-    .get(`/categories/${categorySlug.value}/subcategories`)
-    .then((response) => (category.value = response.data))
-    .catch((error) => console.log(error));
+  await fetchCategoryData(categorySlug.value);
 });
 
 watch(
   () => route.params.category,
   async (newCategory) => {
     categorySlug.value = newCategory;
-    await axiosPublic
-      .get(`/categories/${categorySlug.value}/subcategories`)
-      .then((response) => (category.value = response.data))
-      .catch((error) => console.log(error));
+    await fetchCategoryData(categorySlug.value);
   }
 );
 </script>
@@ -43,6 +47,7 @@ watch(
 <template>
   <div>
     <image-slider />
+
     <div class="ts-breadcrumbs">
       <v-breadcrumbs :items="breadcrumbsItems">
         <template v-slot:divider>
@@ -50,10 +55,11 @@ watch(
         </template>
       </v-breadcrumbs>
     </div>
+
     <div class="ts-container">
-      <h1 class="category__title text-capitalize">{{ category.name || categorySlug }}</h1>
+      <h1 class="category__title text-capitalize">{{ category?.name || categorySlug }}</h1>
       <hr />
-      <base-grid v-if="category.subcategories">
+      <base-grid v-if="category?.subcategories?.length">
         <subcategory-card
           v-for="subcategory in category.subcategories"
           :key="subcategory.categoryId"
@@ -61,7 +67,7 @@ watch(
           :subcategory="subcategory"
         />
       </base-grid>
-      <h3 v-else>No subcategories.</h3>
+      <p v-else>No subcategories available at the moment.</p>
     </div>
   </div>
 </template>

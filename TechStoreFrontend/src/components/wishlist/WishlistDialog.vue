@@ -39,7 +39,7 @@ const toggleDialog = () => {
         <v-card-title class="font-weight-bold"> Your Wishlist </v-card-title>
         <v-card-text v-if="currentPageItems.length">
           <wishlist-table :products="currentPageItems" />
-          <v-container>
+          <v-container v-if="wishlist?.items?.length > pageState.itemsPerPage">
             <v-row justify="center">
               <v-col cols="10">
                 <v-container class="max-width">

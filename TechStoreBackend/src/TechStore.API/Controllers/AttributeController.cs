@@ -31,7 +31,7 @@ namespace TechStore.API.Controllers
 
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id < 1)

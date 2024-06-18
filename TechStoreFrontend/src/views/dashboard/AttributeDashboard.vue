@@ -5,6 +5,7 @@ import AttributeForm from "@/components/admin/attribute/AttributeForm.vue";
 import AttributeList from "@/components/admin/attribute/AttributeList.vue";
 
 const attributes = ref([]);
+const selectedAttributeId = ref(null);
 
 onMounted(() => reloadAttributes());
 
@@ -15,11 +16,19 @@ async function reloadAttributes() {
 
   attributes.value = resp.data;
 }
+
+function editAttribute(id) {
+  selectedAttributeId.value = id;
+}
 </script>
 
 <template>
   <div>
-    <attribute-form @reload="reloadAttributes" />
-    <attribute-list @reload="reloadAttributes" :attributes="attributes" />
+    <attribute-form
+      :id="selectedAttributeId"
+      @reload="reloadAttributes"
+      @clearSelectedId="selectedAttributeId = null"
+    />
+    <attribute-list :attributes="attributes" @reload="reloadAttributes" @edit="editAttribute" />
   </div>
 </template>

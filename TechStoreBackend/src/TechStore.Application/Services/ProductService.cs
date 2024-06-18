@@ -139,9 +139,9 @@ namespace TechStore.Application.Services
             return productsMapped;
         }
 
-        public async Task<IEnumerable<ProductReadModel>> GetProductsByNameAsync(string productsName)
+        public async Task<IEnumerable<ProductReadModel>> SearchProductsAsync(string search)
         {
-            var products = await _repository.Product.GetProductsByNameAsync(productsName);
+            var products = await _repository.Product.SearchProductsAsync(search);
             var productsMapped = _mapper.Map<IList<ProductReadModel>>(products);
 
             return productsMapped;

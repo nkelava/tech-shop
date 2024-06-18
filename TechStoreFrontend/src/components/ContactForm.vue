@@ -2,17 +2,24 @@
 import { reactive, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { alpha, email, required } from "@vuelidate/validators";
+import emailjs from "@emailjs/browser";
+import { useToast } from "vue-toastification";
 import BaseInput from "@/components/common/BaseInput.vue";
-import BaseAlert from "@/components/common/BaseAlert.vue";
 
 const props = defineProps(["density", "isBtnAbsolute"]);
-const showAlert = ref(false);
+const formRef = ref(null);
+const toast = useToast();
+
 const initialContactState = {
   name: "",
   email: "",
   subject: "",
   message: "",
 };
+
+const contactState = reactive({
+  ...initialContactState,
+});
 
 const contactRules = {
   name: { alpha, required },
@@ -21,43 +28,44 @@ const contactRules = {
   message: { required },
 };
 
-const contactState = reactive({
-  ...initialContactState,
-});
-
 const v$ = useVuelidate(contactRules, contactState);
 
-async function onMessageSend() {
-  const isFormValid = await v$.value.$validate();
-
-  if (!isFormValid) {
-    return;
+const sendEmail = async () => {
+  if (!v$.value.$pending) {
+    v$.value.$touch();
+    if (!v$.value.$invalid) {
+      try {
+        await emailjs.sendForm("service_k3zjinq", "template_njdddeo", formRef.value, {
+          publicKey: "gAZ_t_BaWVRyr4qMu",
+        });
+        toast.success("Thanks for contacting us! We will be in touch with you shortly.");
+        clearForm();
+      } catch (error) {
+        console.error("Failed to send email:", error);
+        toast.error(
+          "Oops! We couldn't send your message right now. Please check your internet connection and try again. If the problem persists, feel free to contact us via phone."
+        );
+      }
+    }
   }
-
-  toggleAlert();
-  clearForm(v$, initialContactState, contactState);
-}
-
-const toggleAlert = () => {
-  showAlert.value = !showAlert.value;
 };
 
-const clearForm = (form, initialFormState, formState) => {
-  form.value.$reset();
+const clearForm = () => {
+  v$.value.$reset();
 
-  for (const [key, value] of Object.entries(initialFormState)) {
-    formState[key] = value;
+  for (const [key, value] of Object.entries(initialContactState)) {
+    contactState[key] = value;
   }
 };
 </script>
 
 <template>
   <div>
-    <form class="contact__form" @submit.prevent="onMessageSend">
+    <form ref="formRef" class="contact__form" @submit.prevent="sendEmail">
       <base-input
-        v-if="props.density !== 'compact'"
         v-model="contactState.name"
         class="contact__input"
+        name="name"
         label="Name"
         :v$="v$.name"
         :density="props.density"
@@ -65,6 +73,7 @@ const clearForm = (form, initialFormState, formState) => {
       <base-input
         v-model="contactState.email"
         class="contact__input"
+        name="email"
         label="Email"
         :v$="v$.email"
         :density="props.density"
@@ -72,6 +81,7 @@ const clearForm = (form, initialFormState, formState) => {
       <base-input
         v-model="contactState.subject"
         class="contact__input"
+        name="subject"
         label="Subject"
         :v$="v$.subject"
         :density="props.density"
@@ -80,6 +90,7 @@ const clearForm = (form, initialFormState, formState) => {
         v-model="contactState.message"
         :error-messages="v$.message.$errors.map((e) => e.$message)"
         class="contact__input"
+        name="message"
         label="Message"
         hide-details="auto"
         variant="outlined"
@@ -93,13 +104,6 @@ const clearForm = (form, initialFormState, formState) => {
         value="Send"
       />
     </form>
-    <base-alert
-      v-if="showAlert"
-      type="success"
-      title="Success!"
-      message="Thanks for contacting us! We will be in touch with you shortly."
-      @toggleShowAlert="toggleAlert"
-    />
   </div>
 </template>
 
@@ -120,6 +124,7 @@ const clearForm = (form, initialFormState, formState) => {
 }
 
 .contact__btn--absolute {
+  z-index: 100000;
   background: none !important;
   color: var(--ts-c-text-light) !important;
   position: absolute;

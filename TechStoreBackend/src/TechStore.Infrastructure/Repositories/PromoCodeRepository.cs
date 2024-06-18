@@ -12,12 +12,12 @@ namespace TechStore.Infrastructure.Repositories
         public PromoCodeRepository(TechStoreContext techStoreContext) 
             : base(techStoreContext) { }
 
-        public async Task<PromoCode> GetByIdAsync(int id)
+        public async Task<PromoCode?> GetByIdAsync(int id)
         {
             return await FindByCondition(pc => pc.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
-        public async Task<PromoCode> GetByCodeAsync(string code)
+        public async Task<PromoCode?> GetByCodeAsync(string code)
         {
             return await FindByCondition(pc => pc.Code.Equals(code)).FirstOrDefaultAsync();
         }

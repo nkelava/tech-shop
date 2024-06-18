@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import { axiosPublic } from "@/api/axios";
 import ProductList from "@/components/ProductList.vue";
@@ -10,55 +10,55 @@ import { filterProducts } from "@/helpers/filter";
 const route = useRoute();
 const categorySlug = ref(route.params.category);
 const subcategorySlug = ref(route.params.subcategory);
-const subcategory = ref({});
+const subcategoryDetails = ref({});
 const products = ref([]);
 const filteredProducts = ref([]);
 const attributeValuesMap = ref();
 const sortType = ref("");
-const breadcrumbsItems = [
+
+const breadcrumbsItems = computed(() => [
   {
     title: "Home",
     disabled: false,
     href: "/",
   },
   {
-    title: `${categorySlug.value}`,
+    title: categorySlug.value,
     disabled: false,
     href: `/${categorySlug.value}`,
   },
   {
-    title: `${subcategorySlug.value}`,
+    title: subcategoryDetails.value.name || subcategorySlug.value,
     disabled: true,
   },
-];
+]);
 
 onMounted(async () => {
-  subcategory.value = await axiosPublic
+  await axiosPublic
     .get(`/subcategories/${subcategorySlug.value}`)
-    .then((response) => response.data)
+    .then((response) => (subcategoryDetails.value = response.data))
     .catch((error) => {
-      console.log(error);
-      return null;
+      console.error(`Failed to fetch subcategory details for ${slug}:`, error);
     });
 
-  products.value = await axiosPublic
+  await axiosPublic
     .get(`/products/subcategory/${subcategorySlug.value}`)
-    .then((response) => response.data)
+    .then((response) => {
+      products.value = response.data;
+      filteredProducts.value = products.value;
+      attributeValuesMap.value = parseProductAttributes(products.value);
+    })
     .catch((error) => {
-      console.log(error);
-      return null;
+      console.error(`Failed to fetch products for subcategory ${slug}:`, error);
     });
-
-  filteredProducts.value = products.value;
-  attributeValuesMap.value = parseProductAttributes(products.value);
 });
 
-const updateSort = (event) => {
+const updateSortType = (event) => {
   sortType.value = event.target.value;
 };
 
 const sortedProducts = computed(() => {
-  const sortedProducts = filteredProducts.value;
+  const sortedProducts = [...filteredProducts.value];
 
   switch (sortType.value) {
     case "low":
@@ -74,9 +74,9 @@ const sortedProducts = computed(() => {
   }
 });
 
-function handleFilter(price, rating, filters) {
+const handleFilterProducts = (price, rating, filters) => {
   filteredProducts.value = filterProducts(products.value, price, rating, filters);
-}
+};
 </script>
 
 <template>
@@ -88,17 +88,18 @@ function handleFilter(price, rating, filters) {
         </template>
       </v-breadcrumbs>
     </div>
+
     <div class="sidebar-layout ts-container">
       <filter-sidebar
         class="sidebar"
         :attributeValuesMap="attributeValuesMap"
-        @filter="handleFilter"
+        @filter="handleFilterProducts"
       />
       <div class="main">
         <div class="heading">
-          <h1 class="heading__title">{{ subcategory.name || subcategorySlug }}</h1>
+          <h1 class="heading__title">{{ subcategoryDetails?.name || subcategorySlug }}</h1>
           <!-- TODO: create sort select component -->
-          <select class="heading__sort" name="sort" @change="updateSort">
+          <select class="heading__sort" name="sort" @change="updateSortType">
             <option value="" hidden>Sort...</option>
             <option value="asc">Alphabetically: A-Z</option>
             <option value="desc">Alphabetically: Z-A</option>
@@ -108,7 +109,7 @@ function handleFilter(price, rating, filters) {
         </div>
         <hr />
         <product-list v-if="products.length" :products="sortedProducts" />
-        <h3 v-else>No products.</h3>
+        <p v-else>No products available at the moment.</p>
       </div>
     </div>
   </div>

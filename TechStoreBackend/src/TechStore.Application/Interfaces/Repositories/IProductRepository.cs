@@ -16,7 +16,7 @@ namespace TechStore.Application.Interfaces.Repositories
         Task<IEnumerable<Product>> GetTopRatedProductsAsync();
         Task<IEnumerable<Product>> GetProductsBySubcategoryIdAsync(int subcategoryId);
         Task<IEnumerable<Product>> GetProductsBySubcategorySlugAsync(string subcategorySlug);
-        Task<IEnumerable<Product>> GetProductsByNameAsync(string productName);
+        Task<IEnumerable<Product>> SearchProductsAsync(string search);
         Task<IEnumerable<Product>> GetProductsByPriceAsync(decimal priceFrom, decimal priceTo);
         Task<IEnumerable<Product>> GetProductsByRatingAsync(decimal rating);
     }

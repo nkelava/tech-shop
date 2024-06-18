@@ -1,23 +1,23 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import { axiosPublic } from "@/api/axios";
+import { useToast } from "vue-toastification";
+import { useUserStore } from "@/store";
+import { axiosPublic, axiosPrivate } from "@/api/axios";
 import ReviewDialog from "@/components/review/ReviewDialog.vue";
 import { formatDate } from "@/helpers/formatDate.js";
 
 const props = defineProps(["product", "update"]);
+const userStore = useUserStore();
+const toast = useToast();
 const reviews = ref([]);
 const pageState = ref({
   currentPage: 1,
   itemsPerPage: 5,
 });
 
-const totalPageCount = computed(() =>
-  Math.ceil(reviews.value.length / pageState.value.itemsPerPage)
-);
-
 const getReviews = async () => {
   await axiosPublic
-    .get(`/reviews/${props.product.id}`)
+    .get(`/reviews/${props?.product?.id}`)
     .then((response) => {
       reviews.value = response.data;
     })
@@ -27,6 +27,24 @@ const getReviews = async () => {
 onMounted(async () => {
   await getReviews();
 });
+
+const handleReviewReport = async (reviewId) => {
+  await axiosPrivate
+    .post(`/reviews/report/${reviewId}`, {
+      isReported: true,
+    })
+    .then(() => {
+      toast.success("Review is reported successfully.");
+    })
+    .catch((error) => {
+      toast.success("Review is not reported.");
+      console.log(error);
+    });
+};
+
+const totalPageCount = computed(() =>
+  Math.ceil(reviews.value.length / pageState.value.itemsPerPage)
+);
 
 const currentPageItems = computed(() => {
   return reviews.value.slice(
@@ -49,14 +67,26 @@ async function toggleDialog() {
     <v-list v-if="currentPageItems.length > 0" lines="10">
       <v-list-item v-for="(review, i) in currentPageItems" :key="i">
         <div class="review">
-          <span class="review__name">{{ review.email }}</span>
+          <span class="review__name">
+            {{ review.email }}
+            <v-btn
+              v-if="userStore?.isLoggedIn"
+              class="review__report-btn"
+              title="Report"
+              variant="text"
+              color="error"
+              density="compact"
+              @click="handleReviewReport(review?.id)"
+              >Report</v-btn
+            >
+          </span>
           <v-rating v-model="review.rate" size="small" density="compact" readonly />
           <span class="review__text">{{ review.comment }}</span>
           <div class="review__date">{{ formatDate(review.createdAt) }}</div>
         </div>
         <v-divider></v-divider>
       </v-list-item>
-      <v-container v-if="currentPageItems.length > 0">
+      <v-container v-if="currentPageItems.length > pageState.itemsPerPage">
         <v-row justify="center">
           <v-col cols="10">
             <v-container class="max-width">
@@ -65,17 +95,21 @@ async function toggleDialog() {
           </v-col>
         </v-row>
       </v-container>
+    </v-list>
+    <p v-else>Be the first to leave a review.</p>
+    <div class="d-flex justify-end">
+      <v-btn
+        v-if="userStore?.isLoggedIn"
+        class="review__btn"
+        @click="reviewDialogActive = !reviewDialogActive"
+      >
+        Add Review
+      </v-btn>
       <review-dialog
         v-model="reviewDialogActive"
         @toggleDialog="toggleDialog"
         :product="props.product"
       />
-    </v-list>
-    <v-card-text v-else> Be the first to leave a review. </v-card-text>
-    <div class="d-flex justify-end">
-      <v-btn class="review__btn" @click="reviewDialogActive = !reviewDialogActive">
-        Add Review
-      </v-btn>
     </div>
   </v-card>
 </template>
@@ -101,7 +135,13 @@ async function toggleDialog() {
 }
 
 .review__name {
+  display: flex;
+  justify-content: space-between;
   font-weight: bold;
+}
+
+.review__report-btn {
+  text-transform: capitalize;
 }
 
 .review-input {
@@ -137,5 +177,9 @@ async function toggleDialog() {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+
+p {
+  font-size: 1rem;
 }
 </style>

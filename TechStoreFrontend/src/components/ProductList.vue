@@ -1,8 +1,13 @@
 <script setup>
-import ProductCard from "@/components/ProductCard.vue";
 import { computed, ref } from "vue";
+import ProductCard from "@/components/ProductCard.vue";
 
-const props = defineProps(["products"]);
+const props = defineProps({
+  products: {
+    type: Array,
+    default: () => [],
+  },
+});
 
 const pageState = ref({
   currentPage: 1,
@@ -24,7 +29,7 @@ const currentPageItems = computed(() => {
 <template>
   <div class="products">
     <product-card v-for="product in currentPageItems" :key="product" :product="product" />
-    <v-container>
+    <v-container v-if="props?.products?.length > pageState.itemsPerPage">
       <v-row justify="center">
         <v-col cols="10">
           <v-container class="max-width">

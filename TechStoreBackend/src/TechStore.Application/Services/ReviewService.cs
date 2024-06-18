@@ -43,18 +43,19 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task<int> ReportReviewAsync(int reviewId, bool isReported)
+        public async Task<ReviewReadModel?> ReportReviewAsync(int reviewId, bool isReported)
         {
             var review = _repository.Review.FindById(reviewId);
 
             if (review == null)
-                return 0;
+                return null;
 
             review.IsReported = isReported;
             _repository.Review.Update(review);
             await _repository.SaveAsync();
-                
-            return review.Id;
+
+            var reviewModel = _mapper.Map<ReviewReadModel>(review);
+            return reviewModel;
         }
 
         public async Task<IEnumerable<ReviewReadModel>> GetReviewsByProductIdAsync(int productId)
