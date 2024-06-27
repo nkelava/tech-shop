@@ -1,9 +1,13 @@
 <script setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, reactive } from "vue";
+import { useVuelidate } from "@vuelidate/core";
 import { useToast } from "vue-toastification";
 import { axiosPrivate } from "@/api/axios";
+import BaseInput from "@/components/common/BaseInput.vue";
 import FormContainer from "@/components/common/FormContainer.vue";
+import { initialPromoCodeState, promoCodeRules } from "@/vuelidate/promoCode";
 import { ITEM_CREATE_FAIL, ITEM_CREATE_SUCCESS } from "../../../constants/messages/create";
+import { ITEM_UPDATE_FAIL, ITEM_UPDATE_SUCCESS } from "@/constants/messages/update";
 import { getTomorrowDate } from "@/helpers/getTomorrowDate";
 
 const props = defineProps({
@@ -15,10 +19,10 @@ const props = defineProps({
 });
 const emit = defineEmits(["reload", "clearSelectedId"]);
 const toast = useToast();
-const code = ref("");
-const discount = ref(0);
-const expirationDate = ref(getTomorrowDate());
+const promoCodeState = reactive({ ...initialPromoCodeState });
 const loading = ref(false);
+
+const v$ = useVuelidate(promoCodeRules, promoCodeState);
 
 watch(
   () => props.id,
@@ -37,43 +41,27 @@ const formTitle = computed(() => (props.id ? "Edit Promo Code" : "New Promo Code
 async function loadPromoCode(id) {
   try {
     const { data, status } = await axiosPrivate.get(`/promo-codes/${id}`);
+
     if (status === 200) {
-      code.value = data.code;
-      discount.value = data.discount;
-      expirationDate.value = new Date(data.expirationDate).toISOString().substring(0, 10);
+      promoCodeState.code = data?.code;
+      promoCodeState.discount = data?.discount;
+      promoCodeState.expirationDate = new Date(data?.expirationDate).toISOString().substring(0, 10);
     }
   } catch (error) {
-    console.error(error);
     toast.error("Failed to load promo code.");
+    console.error(error);
   }
-}
-
-function resetForm() {
-  props.id = null;
-  code.value = "";
-  discount.value = 0;
-  expirationDate.value = getTomorrowDate();
 }
 
 const handleSave = async () => {
+  if (!(await v$.value.$validate())) return;
+
   loading.value = true;
 
-  if (code.value.length > 12) {
-    toast.error("Code must be less than 12 characters.");
-    loading.value = false;
-    return;
-  }
-
-  if (discount.value < 0 || discount.value > 100) {
-    toast.error("Discount must be between 0 and 100.");
-    loading.value = false;
-    return;
-  }
-
   const payload = {
-    code: code.value,
-    discount: discount.value,
-    expirationDate: expirationDate.value,
+    code: promoCodeState?.code,
+    discount: promoCodeState?.discount,
+    expirationDate: promoCodeState?.expirationDate,
   };
 
   try {
@@ -87,13 +75,15 @@ const handleSave = async () => {
 
     if (resp.status === 200) {
       resetForm();
-      toast.success(ITEM_CREATE_SUCCESS);
+      toast.success(props?.id ? ITEM_UPDATE_SUCCESS : ITEM_CREATE_SUCCESS);
       emit("clearSelectedId");
       emit("reload");
     }
   } catch (error) {
+    toast.error(
+      error?.response?.data ? error.response.data : props?.id ? ITEM_UPDATE_FAIL : ITEM_CREATE_FAIL
+    );
     console.error(error);
-    toast.error(ITEM_CREATE_FAIL);
   } finally {
     loading.value = false;
   }
@@ -103,57 +93,61 @@ const handleCancel = () => {
   resetForm();
   emit("clearSelectedId");
 };
+
+function resetForm() {
+  props.id = null;
+  v$.value.$reset();
+  Object.assign(promoCodeState, initialPromoCodeState);
+}
 </script>
 
 <template>
   <form-container :title="formTitle">
-    <v-form @submit.prevent>
-      <v-text-field
-        v-model="code"
+    <v-form @submit.prevent="handleSave">
+      <base-input
+        v-model="promoCodeState.code"
         class="mt-5"
+        name="code"
         label="Code"
+        :v$="v$.code"
         density="compact"
-        variant="outlined"
         hide-details="auto"
       />
-      <v-text-field
-        v-model="discount"
+      <base-input
+        v-model="promoCodeState.discount"
         type="number"
         class="mt-5"
+        name="discount"
         label="Discount"
+        :v$="v$.discount"
         density="compact"
         variant="outlined"
         hide-details="auto"
         :min="0"
         :max="100"
       />
-      <v-text-field
-        v-model="expirationDate"
+      <base-input
+        v-model="promoCodeState.expirationDate"
         type="date"
         class="mt-5"
+        name="expirationDate"
         label="Expiration Date"
+        :v$="v$.expirationDate"
         density="compact"
         variant="outlined"
         hide-details="auto"
         :min="getTomorrowDate()"
-      ></v-text-field>
+      />
       <v-btn
         v-if="props?.id"
-        type="submit"
+        type="button"
         class="form__btn mr-5"
         :loading="loading"
         :disabled="loading"
         @click="handleCancel"
         >Cancel</v-btn
       >
-      <v-btn
-        type="submit"
-        class="form__btn"
-        :loading="loading"
-        :disabled="loading"
-        @click="handleSave"
-        >Save</v-btn
-      >
+      <v-btn type="submit" class="form__btn" :loading="loading" :disabled="loading">Save</v-btn>
     </v-form>
   </form-container>
 </template>

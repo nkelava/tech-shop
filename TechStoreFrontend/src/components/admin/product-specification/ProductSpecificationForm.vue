@@ -42,25 +42,25 @@ onMounted(async () => {
     .catch((error) => console.log(error));
 });
 
-async function handleSave() {
+const handleSave = async () => {
+  if (productAttributes.value.length < 1) {
+    toast.error("");
+  }
   await axiosPrivate
     .post("/products/specification", {
       productId: product.value,
       productAttributes: productAttributes.value,
     })
-    .then((resp) => {
-      product.value = null;
-      attribute.value = null;
-      attributeValue.value = null;
-      productAttributes.value = null;
+    .then(() => {
+      resetForm();
       toast.success(ITEM_CREATE_SUCCESS);
       emit("relaod");
     })
     .catch((error) => {
-      console.log(error);
       toast.error(ITEM_CREATE_FAIL);
+      console.log(error);
     });
-}
+};
 
 function removeAttribute(attributeId, attributeValueId) {
   productAttributes.value = productAttributes.value.filter(
@@ -86,6 +86,13 @@ function handleAttributeValuePairAdd() {
       attributeValue.value = null;
     }
   }
+}
+
+function resetForm() {
+  product.value = null;
+  attribute.value = null;
+  attributeValue.value = null;
+  productAttributes.value = null;
 }
 </script>
 
@@ -132,7 +139,7 @@ function handleAttributeValuePairAdd() {
         </div>
         <div class="attribute__list">
           <v-chip v-for="(attributeValuePair, i) in productAttributes" :key="i" class="chip" label>
-            {{ attributeValuePair.attribute.name }} {{ attributeValuePair.attributeValue.value }}
+            {{ attributeValuePair.attribute.name }} - {{ attributeValuePair.attributeValue.value }}
             <v-btn
               class="chip__btn"
               icon="mdi-close-circle-outline"

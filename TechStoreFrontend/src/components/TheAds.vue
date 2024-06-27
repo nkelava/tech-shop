@@ -1,12 +1,12 @@
 <script setup>
-import { DellImage, LogitechImage, AsusImage } from "@/assets/images/test/banners";
+import { AsusImage, DellImage, LogitechImage } from "@/assets/images/test/banners";
 </script>
 
 <template>
   <div class="ads ts-container">
-    <img class="ads__img" :src="DellImage" alt="" />
-    <img class="ads__img" :src="LogitechImage" alt="" />
-    <img class="ads__img" :src="AsusImage" alt="" />
+    <img class="ads__img" :src="DellImage" alt="dell-ad" />
+    <img class="ads__img" :src="LogitechImage" alt="logitech-ad" />
+    <img class="ads__img" :src="AsusImage" alt="asus-ad" />
   </div>
 </template>
 
@@ -19,7 +19,7 @@ import { DellImage, LogitechImage, AsusImage } from "@/assets/images/test/banner
     "third";
   gap: 1rem;
   justify-content: center;
-  background-color: var(--ts-c-bg-light);
+  background: url("/src/assets/images/test/banners/ads_background.jpg"), var(--ts-c-bg-light);
 }
 
 .ads__img:nth-child(1) {

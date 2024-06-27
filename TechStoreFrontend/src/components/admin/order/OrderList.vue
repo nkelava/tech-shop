@@ -7,7 +7,7 @@ import { getOrderStatus } from "@/helpers/orderStatus.js";
 import { OrderStatus } from "@/constants/enums/order";
 import { ITEM_DELETE_FAIL, ITEM_DELETE_SUCCESS } from "@/constants/messages/delete";
 import { ITEM_UPDATE_FAIL, ITEM_UPDATE_SUCCESS } from "@/constants/messages/update";
-import DeleteDialog from "@/components/common/DeleteDialog.vue";
+import ConfirmationDialog from "@/components/common/ConfirmationDialog.vue";
 
 const orders = ref([]);
 const toast = useToast();
@@ -29,7 +29,7 @@ async function reloadOrders() {
   orders.value = resp.data;
 }
 
-const openDeleteDialog = (id) => {
+const openConfirmationDialog = (id) => {
   selectedItemId.value = id;
   showDialog.value = true;
 };
@@ -133,7 +133,7 @@ const currentPageItems = computed(() => {
                 size="30"
                 title="Delete"
                 alt="Delete"
-                @click="openDeleteDialog(order?.id)"
+                @click="openConfirmationDialog(order?.id)"
               />
               <v-btn
                 color="yellow"
@@ -162,7 +162,7 @@ const currentPageItems = computed(() => {
             </td>
           </tr>
           <tr v-if="orders.length < 1">
-            <td>Nothing to see here yet</td>
+            <td>Nothing to see here yet.</td>
           </tr>
         </tbody>
       </v-table>
@@ -176,7 +176,10 @@ const currentPageItems = computed(() => {
         </v-row>
       </v-container>
     </v-row>
-    <delete-dialog
+    <confirmation-dialog
+      title="Confirm Deletion"
+      content="Are you sure you want to delete this item?"
+      confirmText="Delete"
       :showDialog="showDialog"
       :itemId="selectedItemId"
       @update:showDialog="showDialog = $event"

@@ -1,12 +1,14 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, reactive, ref, watch } from "vue";
+import { useVuelidate } from "@vuelidate/core";
 import { useToast } from "vue-toastification";
 import { axiosPrivate } from "@/api/axios";
+import BaseInput from "@/components/common/BaseInput.vue";
 import FormContainer from "@/components/common/FormContainer.vue";
+import { initialAttributeState, attributeRules } from "@/vuelidate/attribute";
 import { ITEM_CREATE_FAIL, ITEM_CREATE_SUCCESS } from "@/constants/messages/create";
 import { ITEM_UPDATE_FAIL, ITEM_UPDATE_SUCCESS } from "@/constants/messages/update";
 
-// TODO: Add valdator and init state
 const props = defineProps({
   id: {
     type: [String, Number],
@@ -16,8 +18,10 @@ const props = defineProps({
 });
 const emit = defineEmits(["reload", "clearSelectedId"]);
 const toast = useToast();
-const name = ref("");
+const attributeState = reactive({ ...initialAttributeState });
 const loading = ref(false);
+
+const v$ = useVuelidate(attributeRules, attributeState);
 
 watch(
   () => props.id,
@@ -38,24 +42,21 @@ async function loadAttribute(id) {
     const { data, status } = await axiosPrivate.get(`/attributes/${id}`);
 
     if (status === 200) {
-      name.value = data.name;
+      attributeState.name = data?.name;
     }
   } catch (error) {
-    console.error(error);
     toast.error("Failed to load attribute.");
+    console.error(error);
   }
 }
 
-function resetForm() {
-  props.id = null;
-  name.value = "";
-}
+const handleSave = async () => {
+  if (!(await v$.value.$validate())) return;
 
-async function handleSave() {
   loading.value = true;
 
   const payload = {
-    name: name.value,
+    name: attributeState?.name,
   };
 
   try {
@@ -74,47 +75,47 @@ async function handleSave() {
       emit("reload");
     }
   } catch (error) {
-    console.log(error);
     toast.error(props?.id ? ITEM_UPDATE_FAIL : ITEM_CREATE_FAIL);
+    console.log(error);
   } finally {
     loading.value = false;
   }
-}
+};
 
 const handleCancel = () => {
   resetForm();
   emit("clearSelectedId");
 };
+
+function resetForm() {
+  props.id = null;
+  v$.value.$reset();
+  Object.assign(attributeState, initialAttributeState);
+}
 </script>
 
 <template>
   <form-container :title="formTitle">
-    <v-form @submit.prevent>
-      <v-text-field
-        v-model="name"
+    <v-form @submit.prevent="handleSave">
+      <base-input
+        v-model="attributeState.name"
         class="mt-5"
+        name="name"
         label="Name"
+        :v$="v$.name"
         density="compact"
-        variant="outlined"
         hide-details="auto"
       />
       <v-btn
         v-if="props?.id"
-        type="submit"
+        type="button"
         class="form__btn mr-5"
         :loading="loading"
         :disabled="loading"
         @click="handleCancel"
         >Cancel</v-btn
       >
-      <v-btn
-        type="submit"
-        class="form__btn"
-        :loading="loading"
-        :disabled="loading"
-        @click="handleSave"
-        >Save</v-btn
-      >
+      <v-btn type="submit" class="form__btn" :loading="loading" :disabled="loading">Save</v-btn>
     </v-form>
   </form-container>
 </template>

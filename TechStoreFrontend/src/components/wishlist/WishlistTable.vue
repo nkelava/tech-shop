@@ -4,6 +4,11 @@ import { useCartStore, useWishlistStore } from "@/store";
 const props = defineProps(["products"]);
 const cart = useCartStore();
 const wishlist = useWishlistStore();
+
+const handleCartTransfer = (product) => {
+  cart.addItem(product);
+  wishlist.removeItem(product?.id);
+};
 </script>
 
 <template>
@@ -29,7 +34,7 @@ const wishlist = useWishlistStore();
             color="green"
             variant="text"
             title="Add to Cart"
-            @click="cart.addItem(product)"
+            @click="handleCartTransfer(product)"
           />
           <v-btn
             icon="mdi-delete"

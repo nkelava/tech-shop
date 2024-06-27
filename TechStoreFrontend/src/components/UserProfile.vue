@@ -1,121 +1,124 @@
 <script setup>
 import { reactive, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import { useVuelidate } from "@vuelidate/core";
-import { alpha, email, required, sameAs } from "@vuelidate/validators";
+import { minLength, required, sameAs } from "@vuelidate/validators";
 import { axiosPrivate } from "@/api/axios";
+import { useUserStore } from "@/store";
+import {
+  emailRules,
+  initialEmailState,
+  infoRules,
+  initialInfoState,
+  passwordRules,
+  initialPasswordState,
+} from "@/vuelidate/user";
 import BaseInput from "@/components/common/BaseInput.vue";
 import HiddenInput from "@/components/common/BaseInputHidden.vue";
+import { LOGOUT_SUCCESS, LOGOUT_FAIL } from "@/constants/messages/auth.js";
 
+const router = useRouter();
 const toast = useToast();
+const userStore = useUserStore();
+const infoState = reactive({ ...initialInfoState });
+const passwordState = reactive({ ...initialPasswordState });
+const emailState = reactive({ ...initialEmailState });
 
-const initialState = {
-  firstName: "",
-  lastName: "",
-  phoneNumber: "",
-};
-
-const initialEmailState = {
-  email: "",
-};
-
-const emailState = reactive({
-  ...initialEmailState,
+const passwordValidationRules = computed(() => {
+  passwordRules.confirmPassword = {
+    required,
+    sameAs: sameAs(computed(() => passwordState.newPassword)),
+    minLength: minLength(8),
+  };
+  return passwordRules;
 });
 
-const emailRules = {
-  email: { required, email },
-};
-
-const initialPasswordState = {
-  currentPassword: "",
-  newPassword: "",
-  confirmPassword: "",
-};
-
-const passwordState = reactive({
-  ...initialPasswordState,
-});
-
-const passwordRules = {
-  currentPassword: { required },
-  newPassword: { required },
-  confirmPassword: { required, sameAs: sameAs(computed(() => passwordState.newPassword)) },
-};
-
-const state = reactive({
-  ...initialState,
-});
-
-const rules = {
-  firstName: { required, alpha },
-  lastName: { required, alpha },
-};
-
-const v$ = useVuelidate(rules, state);
+const v$ = useVuelidate(infoRules, infoState);
 const ve$ = useVuelidate(emailRules, emailState);
-const vp$ = useVuelidate(passwordRules, passwordState);
+const vp$ = useVuelidate(passwordValidationRules, passwordState);
 
 onMounted(async () => {
-  const userInfo = await axiosPrivate.get("/users").catch((error) => console.log(error));
+  try {
+    const userInfo = await axiosPrivate.get("/users");
 
-  if (userInfo?.data) {
-    state.firstName = userInfo.data.firstName;
-    state.lastName = userInfo.data.lastName;
-    state.phoneNumber = userInfo?.data?.phoneNumber ?? "";
-    emailState.email = userInfo.data.email;
+    if (userInfo?.data) {
+      infoState.firstName = userInfo.data.firstName;
+      infoState.lastName = userInfo.data.lastName;
+      infoState.phoneNumber = userInfo?.data?.phoneNumber ?? "";
+      emailState.email = userInfo.data.email;
+    }
+  } catch (error) {
+    console.error("Error fetching user information:", error);
+    toast.error("Failed to load user information. Please try again later.");
   }
 });
 
-async function updateProfileInfo() {
+const updateProfileInfo = async () => {
   const isFormValid = await v$.value.$validate();
 
   if (!isFormValid) return;
 
-  await axiosPrivate
-    .post("/users/edit/profile", { ...state })
-    .then(() => toast.success("Profile updated successfully."))
-    .catch(() => toast.error("Failed to update your profile information. Please try again later."));
-}
+  try {
+    await axiosPrivate.post("/users/edit/profile", { ...infoState });
+    toast.success("Profile updated successfully.");
+  } catch (error) {
+    toast.error("Failed to update your profile information. Please try again later.");
+  }
+};
 
-async function updateEmail() {
+const updateEmail = async () => {
   const isFormValid = await ve$.value.$validate();
 
   if (!isFormValid) return;
 
-  await axiosPrivate
-    .post("/users/edit/email", { newEmail: emailState.email })
-    .then(() => toast.success("Email updated successfully."))
-    .catch(() => toast.error("Failed to update your email address. Please try again later."));
+  try {
+    await axiosPrivate.post("/users/edit/email", { newEmail: emailState.email });
+    toast.success("Email updated successfully.");
+    handleLogout();
+  } catch (error) {
+    toast.error("Failed to update your email address. Please try again later.");
+  }
+};
+
+async function handleLogout() {
+  try {
+    await userStore.logoutUser();
+
+    toast.success(LOGOUT_SUCCESS);
+    router.push("/auth");
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response);
+    } else {
+      console.log(`Error: ${error.message}`);
+    }
+    toast.error(LOGOUT_FAIL);
+  }
 }
 
-async function updatePassword() {
+const updatePassword = async () => {
   const isFormValid = await vp$.value.$validate();
 
   if (!isFormValid) return;
 
-  await axiosPrivate
-    .post("/users/edit/password", {
+  try {
+    await axiosPrivate.post("/users/edit/password", {
       currentPassword: passwordState.currentPassword,
       newPassword: passwordState.newPassword,
-    })
-    .then(() => {
-      toast.success("Password updated successfully.");
-      clearForm(vp$, initialPasswordState, passwordState);
-    })
-    .catch(() =>
-      toast.error(
-        "Failed to update your password. Please ensure your new password meets the requirements and try again later."
-      )
+    });
+    toast.success("Password updated successfully.");
+    resetForm(vp$, initialPasswordState, passwordState);
+  } catch (error) {
+    toast.error(
+      "Failed to update your password. Please ensure your new password meets the requirements and try again later."
     );
-}
-
-const clearForm = (form, initialFormState, formState) => {
-  form.value.$reset();
-
-  for (const [key, value] of Object.entries(initialFormState)) {
-    formState[key] = value;
   }
+};
+
+const resetForm = (form, initialFormState, formState) => {
+  form.value.$reset();
+  Object.assign(formState, initialFormState);
 };
 </script>
 
@@ -135,13 +138,13 @@ const clearForm = (form, initialFormState, formState) => {
         <form class="details-item__form">
           <v-row>
             <v-col class="pb-0" cols="12" lg="6">
-              <base-input v-model="state.firstName" label="First Name" :v$="v$" />
+              <base-input v-model="infoState.firstName" label="First Name" :v$="v$" />
             </v-col>
             <v-col class="pb-0" cols="12" lg="6">
-              <base-input v-model="state.lastName" label="Last Name" :v$="v$" />
+              <base-input v-model="infoState.lastName" label="Last Name" :v$="v$" />
             </v-col>
             <v-col class="pt-0" cols="12">
-              <base-input v-model="state.phoneNumber" label="Phone Number" />
+              <base-input v-model="infoState.phoneNumber" label="Phone Number" />
               <v-btn class="details-item__btn" @click="updateProfileInfo"> Save </v-btn>
             </v-col>
           </v-row>

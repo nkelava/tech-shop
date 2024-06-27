@@ -4,7 +4,7 @@ import { useToast } from "vue-toastification";
 import { axiosPrivate } from "@/api/axios";
 import { ITEM_DELETE_FAIL, ITEM_DELETE_SUCCESS } from "@/constants/messages/delete";
 import { ITEM_UPDATE_FAIL, ITEM_UPDATE_SUCCESS } from "@/constants/messages/update";
-import DeleteDialog from "@/components/common/DeleteDialog.vue";
+import ConfirmationDialog from "@/components/common/ConfirmationDialog.vue";
 
 const reportedReviews = ref([]);
 const toast = useToast();
@@ -26,7 +26,7 @@ async function reloadReportedReviews() {
   reportedReviews.value = resp.data;
 }
 
-const openDeleteDialog = (id) => {
+const openConfirmationDialog = (id) => {
   selectedItemId.value = id;
   showDialog.value = true;
 };
@@ -134,7 +134,7 @@ const currentPageItems = computed(() => {
                 size="32"
                 title="Delete"
                 alt="Delete"
-                @click="openDeleteDialog(review?.id)"
+                @click="openConfirmationDialog(review?.id)"
               />
             </td>
           </tr>
@@ -153,7 +153,10 @@ const currentPageItems = computed(() => {
         </v-row>
       </v-container>
     </v-row>
-    <delete-dialog
+    <confirmation-dialog
+      title="Confirm Deletion"
+      content="Are you sure you want to delete this item?"
+      confirmText="Delete"
       :showDialog="showDialog"
       :itemId="selectedItemId"
       @update:showDialog="showDialog = $event"

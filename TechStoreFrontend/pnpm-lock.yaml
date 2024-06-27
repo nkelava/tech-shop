@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@emailjs/browser': ^4.3.3
   '@rushstack/eslint-patch': ^1.2.0
   '@vitejs/plugin-vue': ^4.0.0
   '@vitejs/plugin-vue-jsx': ^3.0.0
@@ -20,6 +21,7 @@ specifiers:
   vuetify: ^3.3.3
 
 dependencies:
+  '@emailjs/browser': 4.3.3
   '@vuelidate/core': 2.0.3_vue@3.2.47
   '@vuelidate/validators': 2.0.3_vue@3.2.47
   pinia: 2.0.33_vue@3.2.47
@@ -341,6 +343,11 @@ packages:
       '@babel/helper-string-parser': 7.19.4
       '@babel/helper-validator-identifier': 7.19.1
       to-fast-properties: 2.0.0
+
+  /@emailjs/browser/4.3.3:
+    resolution: {integrity: sha512-ltpt2S/WVREIBXptxYAVYBvXb2O6yTUYiRUWF8OLikMxlmiGsIgKpgHppikNd4Df0uAav7jCsQKcOJ3TJFUx5g==}
+    engines: {node: '>=14.0.0'}
+    dev: false
 
   /@esbuild/android-arm/0.17.15:
     resolution: {integrity: sha512-sRSOVlLawAktpMvDyJIkdLI/c/kdRTOqo8t6ImVxg8yT7LQDUYV5Rp2FKeEosLr6ZCja9UjYAzyRSxGteSJPYg==}

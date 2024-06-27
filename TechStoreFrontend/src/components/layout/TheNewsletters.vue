@@ -1,42 +1,40 @@
 <script setup>
 import { computed, reactive, ref } from "vue";
+import { useToast } from "vue-toastification";
 import { axiosPublic } from "@/api/axios";
 import { useVuelidate } from "@vuelidate/core";
 import { email } from "@vuelidate/validators";
 import BaseInput from "@/components/common/BaseInput.vue";
-import BaseAlert from "@/components/common/BaseAlert.vue";
 
-const showAlert = ref(false);
-const initialState = { email: "" };
+const toast = useToast();
+const initialNewslettersState = { email: "" };
 const rules = { email: { email } };
-const state = reactive({ ...initialState });
-const v$ = useVuelidate(rules, state);
-const isFieldShort = computed(() => state.email.length < 4);
+const newslettersState = reactive({ ...initialNewslettersState });
+const v$ = useVuelidate(rules, newslettersState);
+const isFieldShort = computed(() => newslettersState.email.length < 4);
 
 async function onSubscribe() {
-  const isValid = await v$.value.$validate();
-
-  if (!isValid) return;
+  if (!(await v$.value.$validate())) return;
 
   await axiosPublic
-    .post("/newsletters", { email: state.email })
+    .post("/newsletters", { email: newslettersState.email })
     .then(() => {
-      toggleAlert();
-      clearForm();
+      toast.success(
+        "Thank you for subscribing to our newsletter! You will now receive the latest updates and exclusive offers directly in your inbox."
+      );
+      resetForm();
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      console.log(error);
+      toast.error(
+        "Oops! There was an issue with your subscription. Please try again later or contact our support team for assistance."
+      );
+    });
 }
 
-function clearForm() {
+function resetForm() {
   v$.value.$reset();
-
-  for (const [key, value] of Object.entries(initialState)) {
-    state[key] = value;
-  }
-}
-
-function toggleAlert() {
-  showAlert.value = !showAlert.value;
+  Object.assign(newslettersState, initialNewslettersState);
 }
 </script>
 
@@ -46,24 +44,17 @@ function toggleAlert() {
       <h2>Subscribe to our newsletters!</h2>
       <h4>Get early access to new tech products and sales.</h4>
     </div>
+
     <div class="newsletters__subscribe">
       <base-input
-        v-model="state.email"
+        v-model="newslettersState.email"
         class="subscribe__input"
         label="Email"
         :v$="v$.email"
         variant="filled"
         density="compact"
       />
-
       <input type="submit" value="Subscribe" @click="onSubscribe" :disabled="isFieldShort" />
-      <base-alert
-        v-if="showAlert"
-        type="success"
-        title="Success!"
-        message="Welcome to Tech Planet. Thank you for subscribing."
-        @toggleShowAlert="toggleAlert"
-      />
     </div>
   </div>
 </template>

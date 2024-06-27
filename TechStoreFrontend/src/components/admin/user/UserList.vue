@@ -4,12 +4,14 @@ import { useToast } from "vue-toastification";
 import { axiosPrivate } from "@/api/axios";
 import { ITEM_DELETE_FAIL, ITEM_DELETE_SUCCESS } from "@/constants/messages/delete";
 import { ITEM_UPDATE_FAIL, ITEM_UPDATE_SUCCESS } from "@/constants/messages/update";
-import DeleteDialog from "@/components/common/DeleteDialog.vue";
+import ConfirmationDialog from "@/components/common/ConfirmationDialog.vue";
 
 const users = ref([]);
 const toast = useToast();
 const selectedItemEmail = ref(null);
-const showDialog = ref(false);
+const showDeleteDialog = ref(false);
+const showPromoteDialog = ref(false);
+const showDemoteDialog = ref(false);
 const searchQuery = ref("");
 const pageState = ref({
   currentPage: 1,
@@ -25,9 +27,20 @@ async function reloadUsers() {
   users.value = resp.data;
 }
 
-const openDeleteDialog = (email) => {
+const openConfirmationDialog = (email, dialogType) => {
   selectedItemEmail.value = email;
-  showDialog.value = true;
+
+  switch (dialogType) {
+    case "delete":
+      showDeleteDialog.value = true;
+      break;
+    case "promote":
+      showPromoteDialog.value = true;
+      break;
+    case "demote":
+      showDemoteDialog.value = true;
+      break;
+  }
 };
 
 const deleteUser = async (email) => {
@@ -133,8 +146,8 @@ const currentPageItems = computed(() => {
             <td>{{ user?.info?.firstName }}</td>
             <td>{{ user?.info?.lastName }}</td>
             <td :title="user?.info?.email">{{ user?.info?.email }}</td>
-            <td>{{ user?.info?.emailConfirmed }}</td>
-            <td>{{ user?.isAdmin }}</td>
+            <td class="text-capitalize">{{ user?.info?.emailConfirmed }}</td>
+            <td class="text-capitalize">{{ user?.isAdmin }}</td>
             <td class="d-flex align-center">
               <v-btn
                 color="orange"
@@ -142,7 +155,7 @@ const currentPageItems = computed(() => {
                 size="32"
                 title="Promote to admin"
                 alt="Promote to admin"
-                @click="promoteToAdmin(user?.info?.email)"
+                @click="openConfirmationDialog(user?.info?.email, 'promote')"
               />
               <v-btn
                 class="ml-2"
@@ -151,7 +164,7 @@ const currentPageItems = computed(() => {
                 size="32"
                 title="Demote to user"
                 alt="Demote to user"
-                @click="demoteToUser(user?.info?.email)"
+                @click="openConfirmationDialog(user?.info?.email, 'demote')"
               />
               <v-btn
                 class="ml-2"
@@ -160,7 +173,7 @@ const currentPageItems = computed(() => {
                 size="32"
                 title="Delete"
                 alt="Delete"
-                @click="openDeleteDialog(user?.info?.email)"
+                @click="openConfirmationDialog(user?.info?.email, 'delete')"
               />
             </td>
           </tr>
@@ -179,10 +192,31 @@ const currentPageItems = computed(() => {
         </v-row>
       </v-container>
     </v-row>
-    <delete-dialog
-      :showDialog="showDialog"
+    <confirmation-dialog
+      title="Promote account"
+      content="Are you sure you want to promote this account?"
+      confirmText="Promote"
+      :showDialog="showPromoteDialog"
       :itemId="selectedItemEmail"
-      @update:showDialog="showDialog = $event"
+      @update:showDialog="showPromoteDialog = $event"
+      @confirm="promoteToAdmin"
+    />
+    <confirmation-dialog
+      title="Demote Account"
+      content="Are you sure you want to demote this account?"
+      confirmText="Demote"
+      :showDialog="showDemoteDialog"
+      :itemId="selectedItemEmail"
+      @update:showDialog="showDemoteDialog = $event"
+      @confirm="demoteToUser"
+    />
+    <confirmation-dialog
+      title="Confirm Deletion"
+      content="Are you sure you want to delete this item?"
+      confirmText="Delete"
+      :showDialog="showDeleteDialog"
+      :itemId="selectedItemEmail"
+      @update:showDialog="showDeleteDialog = $event"
       @confirm="deleteUser"
     />
   </v-container>

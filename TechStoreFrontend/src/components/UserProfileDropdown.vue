@@ -3,17 +3,21 @@ import { onMounted, ref } from "vue";
 import { useRouter, RouterLink } from "vue-router";
 import { axiosPrivate } from "@/api/axios";
 import { useUserStore } from "@/store";
+import { useToast } from "vue-toastification";
+import { LOGOUT_SUCCESS, LOGOUT_FAIL } from "@/constants/messages/auth.js";
 import UserIcon from "@/assets/icons/header/user.png";
 
 const router = useRouter();
 const userStore = useUserStore();
 const userRole = ref(null);
 const dropdownItems = [{ title: "My Account", to: "/user" }];
+const toast = useToast();
 
 async function handleLogout() {
   try {
     await userStore.logoutUser();
 
+    toast.success(LOGOUT_SUCCESS);
     router.push("/");
   } catch (error) {
     if (error.response) {
@@ -21,6 +25,7 @@ async function handleLogout() {
     } else {
       console.log(`Error: ${error.message}`);
     }
+    toast.error(LOGOUT_FAIL);
   }
 }
 

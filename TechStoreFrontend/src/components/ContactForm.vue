@@ -1,61 +1,56 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { alpha, email, required } from "@vuelidate/validators";
-import emailjs from "@emailjs/browser";
 import { useToast } from "vue-toastification";
+import emailjs from "@emailjs/browser";
 import BaseInput from "@/components/common/BaseInput.vue";
+import { initialContactState, contactRules } from "@/vuelidate/contact";
+import { CONTACT_SUCCESS, CONTACT_FAIL } from "@/constants/messages/contact.js";
 
-const props = defineProps(["density", "isBtnAbsolute"]);
+const props = defineProps({
+  density: {
+    type: String,
+    default: "compact",
+  },
+  isBtnAbsolute: {
+    type: Boolean,
+    default: false,
+  },
+});
 const formRef = ref(null);
 const toast = useToast();
-
-const initialContactState = {
-  name: "",
-  email: "",
-  subject: "",
-  message: "",
-};
-
-const contactState = reactive({
-  ...initialContactState,
-});
-
-const contactRules = {
-  name: { alpha, required },
-  email: { email, required },
-  subject: { required },
-  message: { required },
-};
+const contactState = reactive({ ...initialContactState });
 
 const v$ = useVuelidate(contactRules, contactState);
 
 const sendEmail = async () => {
-  if (!v$.value.$pending) {
-    v$.value.$touch();
-    if (!v$.value.$invalid) {
-      try {
-        await emailjs.sendForm("service_k3zjinq", "template_njdddeo", formRef.value, {
-          publicKey: "gAZ_t_BaWVRyr4qMu",
-        });
-        toast.success("Thanks for contacting us! We will be in touch with you shortly.");
-        clearForm();
-      } catch (error) {
-        console.error("Failed to send email:", error);
-        toast.error(
-          "Oops! We couldn't send your message right now. Please check your internet connection and try again. If the problem persists, feel free to contact us via phone."
-        );
-      }
-    }
+  v$.value.$touch();
+
+  if (v$.value.$pending) {
+    toast.info("Please wait while we validate the form.");
+    return;
+  }
+
+  if (v$.value.$invalid) {
+    toast.error("Please fix the errors in the form before submitting.");
+    return;
+  }
+
+  try {
+    await emailjs.sendForm("service_k3zjinq", "template_njdddeo", formRef.value, {
+      publicKey: "gAZ_t_BaWVRyr4qMu",
+    });
+    toast.success(CONTACT_SUCCESS);
+    resetForm();
+  } catch (error) {
+    toast.error(CONTACT_FAIL);
+    console.error("Failed to send email:", error);
   }
 };
 
-const clearForm = () => {
+const resetForm = () => {
   v$.value.$reset();
-
-  for (const [key, value] of Object.entries(initialContactState)) {
-    contactState[key] = value;
-  }
+  Object.assign(contactState, initialContactState);
 };
 </script>
 

@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from "vue";
 import { useToast } from "vue-toastification";
 import { useCartStore } from "@/store";
 import { axiosPrivate } from "@/api/axios";
+import { validatePromoCodeExpirationDate } from "@/helpers/validatePromoCodeExpirationDate.js";
 import CartTable from "@/components/cart/CartTable.vue";
 import OrderDialog from "@/components/order/OrderDialog.vue";
 import CartIcon from "@/assets/icons/header/cart.png";
@@ -29,7 +30,9 @@ onMounted(async () => {
     .get("/promo-codes")
     .then((resp) => {
       if (resp?.status !== 200) return;
-      promoCodes.value = resp.data;
+      promoCodes.value = resp?.data?.filter((promoCode) =>
+        validatePromoCodeExpirationDate(promoCode)
+      );
     })
     .catch((error) => console.log(error));
 });
@@ -54,7 +57,13 @@ const addPromoCode = async () => {
     const { data, status } = await axiosPrivate.get(`/promo-codes/${promoCode?.value}`);
 
     if (status === 200) {
-      promoCodeDiscount = data.discount;
+      if (validatePromoCodeExpirationDate(data)) {
+        promoCodeDiscount = data?.discount;
+      } else {
+        toast.error(
+          "Oops! The promo code you tried to use has expired. Please check our latest offers or contact support for assistance."
+        );
+      }
     }
   } catch (error) {
     console.error(error);
@@ -99,33 +108,32 @@ function removePromoCode() {
           </v-container>
         </v-card-text>
         <div v-if="currentPageItems.length" class="price">
-          <form @submit.prevent>
-            <div class="d-flex align-end ml-3">
-              <v-select
-                v-model="promoCode"
-                class="mt-5 promo__select"
-                label="Promo Code"
-                :items="promoCodes"
-                item-value="id"
-                item-title="code"
-                density="compact"
-                hide-details="auto"
-                variant="outlined"
-                :disabled="promoCode"
-                @update:modelValue="addPromoCode"
-              ></v-select>
-              <v-btn
-                v-if="promoCode"
-                class="ml-2 mb-1"
-                color="red"
-                icon="mdi-tag-remove"
-                size="32"
-                title="Remove promo code"
-                alt="Remove promo code"
-                @click="removePromoCode"
-              />
-            </div>
-          </form>
+          <div class="d-flex align-end ml-3">
+            <v-select
+              v-model="promoCode"
+              class="mt-5 promo__select"
+              label="Promo Code"
+              :items="promoCodes"
+              item-value="id"
+              item-title="code"
+              density="compact"
+              hide-details="auto"
+              variant="outlined"
+              :disabled="promoCode"
+              @update:modelValue="addPromoCode"
+            ></v-select>
+            <v-btn
+              type="button"
+              v-if="promoCode"
+              class="ml-2 mb-1"
+              color="red"
+              icon="mdi-tag-remove"
+              size="32"
+              title="Remove promo code"
+              alt="Remove promo code"
+              @click="removePromoCode"
+            />
+          </div>
           <h2 class="text-end pr-4">Total: {{ cart.totalPrice(promoCodeState.discount) }}$</h2>
         </div>
         <div v-else class="empty__container">

@@ -17,7 +17,7 @@ onMounted(async () => {
   bestSellerProducts.value = await axiosPublic
     .get("/products/bestsellers")
     .then((response) => response.data)
-    .catch(() => {
+    .catch((error) => {
       console.error(`Failed to fetch bestsellers:`, error);
       bestSellerProducts.value = [];
     });
@@ -25,7 +25,7 @@ onMounted(async () => {
   newArrivalProducts.value = await axiosPublic
     .get("/products/new")
     .then((response) => response.data)
-    .catch(() => {
+    .catch((error) => {
       console.error(`Failed to fetch new arrivals:`, error);
       newArrivalProducts.value = [];
     });
@@ -33,7 +33,7 @@ onMounted(async () => {
   hotOfferProducts.value = await axiosPublic
     .get("/products/top")
     .then((response) => response.data)
-    .catch(() => {
+    .catch((error) => {
       console.error(`Failed to fetch hot offers:`, error);
       hotOfferProducts.value = [];
     });
@@ -41,7 +41,7 @@ onMounted(async () => {
   topRatedProducts.value = await axiosPublic
     .get("/products/top")
     .then((response) => response.data)
-    .catch(() => {
+    .catch((error) => {
       console.error(`Failed to fetch top rated products:`, error);
       topRatedProducts.value = [];
     });

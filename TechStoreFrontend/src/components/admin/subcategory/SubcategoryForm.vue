@@ -1,14 +1,14 @@
 <script setup>
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
+import { useVuelidate } from "@vuelidate/core";
 import { useToast } from "vue-toastification";
 import { axiosPrivate } from "@/api/axios";
+import BaseInput from "@/components/common/BaseInput.vue";
 import FormContainer from "@/components/common/FormContainer.vue";
+import { initialSubcategoryState, subcategoryRules } from "@/vuelidate/subcategory";
 import { ITEM_CREATE_FAIL, ITEM_CREATE_SUCCESS } from "@/constants/messages/create";
 import { ITEM_UPDATE_FAIL, ITEM_UPDATE_SUCCESS } from "@/constants/messages/update";
 
-// TODO: add form validation and state
-// TODO: name and slug can be max 48 characters long
-// TODO: add slug regex / format validation (eg. this-is-an-example)
 const props = defineProps({
   id: {
     type: [String, Number],
@@ -19,11 +19,10 @@ const props = defineProps({
 const emit = defineEmits(["reload", "clearSelectedId"]);
 const toast = useToast();
 const categories = ref([]);
-const name = ref("");
-const slug = ref("");
-const image = ref("");
-const category = ref(null);
+const subcategoryState = reactive({ ...initialSubcategoryState });
 const loading = ref(false);
+
+const v$ = useVuelidate(subcategoryRules, subcategoryState);
 
 onMounted(async () => {
   await axiosPrivate
@@ -32,11 +31,14 @@ onMounted(async () => {
       if (resp.status !== 200) return;
       categories.value = resp.data;
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      toast.error("Failed to load categories.");
+      console.log(error);
+    });
 });
 
 watch(
-  () => props.id,
+  () => props?.id,
   (newId) => {
     if (newId) {
       loadSubcategory(newId);
@@ -52,40 +54,35 @@ const formTitle = computed(() => (props.id ? "Edit Subcategory" : "New Subcatego
 async function loadSubcategory(id) {
   try {
     const { data, status } = await axiosPrivate.get(`/subcategories/${id}`);
+
     if (status === 200) {
-      name.value = data.name;
-      slug.value = data.slug;
-      image.value = data?.imageURL;
-      category.value = data?.category;
+      subcategoryState.name = data?.name;
+      subcategoryState.slug = data?.slug;
+      subcategoryState.image = data?.imageURL;
+      subcategoryState.category = data?.category?.id;
     }
   } catch (error) {
-    console.error(error);
     toast.error("Failed to load subcategory.");
+    console.error(error);
   }
 }
 
-function resetForm() {
-  props.id = null;
-  name.value = "";
-  slug.value = "";
-  image.value = "";
-  category.value = null;
-}
+const handleSave = async () => {
+  if (!(await v$.value.$validate())) return;
 
-async function handleSave() {
   loading.value = true;
 
   const payload = {
-    name: name.value,
-    slug: slug.value,
-    imageURL: image.value,
-    categoryId: category.value,
+    name: subcategoryState?.name,
+    slug: subcategoryState?.slug,
+    imageURL: subcategoryState?.image,
+    categoryId: subcategoryState?.category,
   };
 
   try {
     let resp;
 
-    if (props.id) {
+    if (props?.id) {
       resp = await axiosPrivate.put(`/subcategories/${props.id}`, payload);
     } else {
       resp = await axiosPrivate.post("/subcategories", payload);
@@ -98,58 +95,61 @@ async function handleSave() {
       emit("reload");
     }
   } catch (error) {
+    toast.error(
+      error?.response?.data ? error.response.data : props?.id ? ITEM_UPDATE_FAIL : ITEM_CREATE_FAIL
+    );
     console.log(error);
-    toast.error(props?.id ? ITEM_UPDATE_FAIL : ITEM_CREATE_FAIL);
   } finally {
     loading.value = false;
   }
-}
+};
 
 const handleCancel = () => {
   resetForm();
   emit("clearSelectedId");
 };
+
+function resetForm() {
+  props.id = null;
+  v$.value.$reset();
+  Object.assign(subcategoryState, initialSubcategoryState);
+}
 </script>
 
 <template>
   <form-container :title="formTitle">
-    <v-form @submit.prevent>
-      <v-text-field
-        v-model="name"
+    <v-form @submit.prevent="handleSave">
+      <base-input
+        v-model="subcategoryState.name"
         class="mt-5"
+        name="name"
         label="Name"
+        :v$="v$.name"
         density="compact"
-        variant="outlined"
         hide-details="auto"
       />
-      <v-text-field
-        v-model="slug"
+      <base-input
+        v-model="subcategoryState.slug"
         class="mt-5"
+        name="slug"
         label="Slug"
+        :v$="v$.slug"
         density="compact"
-        variant="outlined"
-        hide-details="auto"
-      />
-      <v-text-field
-        v-model="image"
-        class="mt-5"
-        label="Image URL"
-        density="compact"
-        variant="outlined"
         hide-details="auto"
       />
       <!-- TODO: Add image upload -->
-      <!-- <v-file-input
-        v-model="image"
+      <base-input
+        v-model="subcategoryState.image"
         class="mt-5"
-        label="Image"
+        name="image"
+        label="Image URL"
         density="compact"
-        variant="outlined"
         hide-details="auto"
-      ></v-file-input> -->
+      />
       <v-select
-        v-model="category"
+        v-model="subcategoryState.category"
         class="mt-5 test"
+        name="category"
         label="Category"
         :items="categories"
         item-value="id"
@@ -157,24 +157,18 @@ const handleCancel = () => {
         density="compact"
         hide-details="auto"
         variant="outlined"
-      ></v-select>
+        :error-messages="v$?.category?.$errors.map((e) => e.$message)"
+      />
       <v-btn
         v-if="props?.id"
-        type="submit"
+        type="button"
         class="form__btn mr-5"
         :loading="loading"
         :disabled="loading"
         @click="handleCancel"
         >Cancel</v-btn
       >
-      <v-btn
-        type="submit"
-        class="form__btn"
-        :loading="loading"
-        :disabled="loading"
-        @click="handleSave"
-        >Save</v-btn
-      >
+      <v-btn type="submit" class="form__btn" :loading="loading" :disabled="loading">Save</v-btn>
     </v-form>
   </form-container>
 </template>
