@@ -107,10 +107,9 @@ void ConfigureIdentity(IServiceCollection services)
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequiredUniqueChars = 0;
         options.Password.RequiredLength = 8;
-
+        options.User.RequireUniqueEmail = true;
         options.User.AllowedUserNameCharacters =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@";
-        options.User.RequireUniqueEmail = true;
     });
 }
 

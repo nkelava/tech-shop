@@ -23,7 +23,8 @@ namespace TechStore.Application.Services
             var product = await _repository.Product.GetProductByIdAsync(reviewModel.ProductId);
             var review = _mapper.Map<Review>(reviewModel);
 
-            if (product is null || review is null) throw new ArgumentNullException();
+            if (product == null)
+                throw new ArgumentNullException($"Product with ID {reviewModel.ProductId} not found.");
             
             review.Email = email;
             review.Product = product;
@@ -35,12 +36,17 @@ namespace TechStore.Application.Services
             await _repository.SaveAsync();
         }
 
-        public async Task DeleteAsync(int reviewId)
+        public async Task<int?> DeleteAsync(int id)
         {
-            var review = _repository.Review.FindById(reviewId);
+            var review = _repository.Review.FindById(id);
+
+            if (review == null)
+                return null;
 
             _repository.Review.Delete(review);
             await _repository.SaveAsync();
+
+            return review.Id;
         }
 
         public async Task<ReviewReadModel?> ReportReviewAsync(int reviewId, bool isReported)
@@ -58,25 +64,30 @@ namespace TechStore.Application.Services
             return reviewModel;
         }
 
-        public async Task<IEnumerable<ReviewReadModel>> GetReviewsByProductIdAsync(int productId)
+        public async Task<IEnumerable<ReviewReadModel>?> GetByProductIdAsync(int productId)
         {
-            var reviews = await _repository.Review.GetReviewsByProductIdAsync(productId);
+            var product = await _repository.Product.GetProductByIdAsync(productId);
+
+            if (product == null)
+                return null;
+
+            var reviews = await _repository.Review.GetByProductIdAsync(productId);
             var reviewsModel = _mapper.Map<IList<ReviewReadModel>>(reviews);
 
             return reviewsModel;
         }
 
-        public async Task<IEnumerable<ReviewReadModel>> GetReviewsByEmailAsync(string email)
+        public async Task<IEnumerable<ReviewReadModel>> GetByEmailAsync(string email)
         {
-            var reviews = await _repository.Review.GetReviewsByEmailAsync(email);
+            var reviews = await _repository.Review.GetByEmailAsync(email);
             var reviewsModel = _mapper.Map<IList<ReviewReadModel>>(reviews);
 
             return reviewsModel;
         }
 
-        public async Task<IEnumerable<ReviewReadModel>> GetAllReviewsAsync()
+        public async Task<IEnumerable<ReviewReadModel>> GetAllAsync()
         {
-            var reviews = await _repository.Review.GetAllReviewsAsync();
+            var reviews = await _repository.Review.GetAllAsync();
             var reviewsModel = _mapper.Map<IList<ReviewReadModel>>(reviews);
 
             return reviewsModel;

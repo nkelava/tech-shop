@@ -6,7 +6,7 @@ namespace TechStore.Application.Interfaces.Repositories
 {
     public interface IProductRepository : IRepository<Product>
     {
-        Task<Product> GetProductByIdAsync(int productId);
+        Task<Product?> GetProductByIdAsync(int productId);
         Task<Product> GetProductBySlugAsync(string slug);
 
         Task<IEnumerable<Product>> GetAllProductsAsync();

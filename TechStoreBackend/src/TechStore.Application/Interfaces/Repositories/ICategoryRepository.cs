@@ -6,10 +6,10 @@ namespace TechStore.Application.Interfaces.Repositories
 {
     public interface ICategoryRepository : IRepository<Category>
     {
-        Task<Category> GetCategoryByIdAsync(int categoryId);
-        Task<Category> GetCategoryBySlugAsync(string categorySlug);
-        Task<Category> GetCategoryWithSubcategoriesAsync(int categoryId);
+        Task<Category?> GetByIdAsync(int id);
+        Task<Category?> GetBySlugAsync(string slug);
+        Task<Category?> GetWithSubcategoriesAsync(int id);
 
-        Task<IEnumerable<Category>> GetAllCategoriesAsync();
+        Task<IEnumerable<Category>> GetAllAsync();
     }
 }

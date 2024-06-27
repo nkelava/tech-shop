@@ -13,6 +13,7 @@ namespace TechStore.Application.Profiles
             CreateMap<Order, OrderReadModel>().ReverseMap();
             CreateMap<Order, OrderUpdateModel>().ReverseMap();
             CreateMap<OrderProduct, OrderProductModel>().ReverseMap();
+            CreateMap<DeliveryAddress, DeliveryAddressModel>().ReverseMap();
         }
     }
 }

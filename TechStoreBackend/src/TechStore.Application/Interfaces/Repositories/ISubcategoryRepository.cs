@@ -6,9 +6,9 @@ namespace TechStore.Application.Interfaces.Repositories
 {
     public interface ISubcategoryRepository : IRepository<Subcategory>
     {
-        Task<Subcategory> GetSubcategoryByIdAsync(int subcategoryId);
-        Task<Subcategory> GetSubcategoryBySlugAsync(string subcategorySlug);
+        Task<Subcategory?> GetByIdAsync(int id);
+        Task<Subcategory?> GetBySlugAsync(string slug);
 
-        Task<IEnumerable<Subcategory>> GetAllSubcategoriesAsync();
+        Task<IEnumerable<Subcategory?>> GetAllAsync();
     }
 }

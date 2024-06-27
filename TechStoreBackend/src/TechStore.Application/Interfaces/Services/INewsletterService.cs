@@ -5,9 +5,9 @@ namespace TechStore.Application.Interfaces.Services
 {
     public interface INewsletterService
     {
-        Task Subscribe(string email);
-        Task Unsubscribe(string email);
-
-        Task<IEnumerable<NewsletterReadModel>> GetAllNewsletterSubsribersAsync();
+        Task<NewsletterReadModel?> Subscribe(NewsletterCreateModel subscription);
+        Task<NewsletterReadModel?> Unsubscribe(string email);
+        
+        Task<IEnumerable<NewsletterReadModel>> GetAllSubscribersAsync();
     }
 }

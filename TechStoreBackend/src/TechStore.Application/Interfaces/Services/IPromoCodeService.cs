@@ -7,7 +7,7 @@ namespace TechStore.Application.Interfaces.Services
     {
         Task CreateAsync(PromoCodeCreateModel promoCode);
         
-        Task<int?> DeleteAsync(int promoCodeId);
+        Task<int?> DeleteAsync(int id);
         Task<PromoCodeReadModel?> UpdateAsync(int id, PromoCodeUpdateModel promoCode);
         Task<PromoCodeReadModel?> GetByIdAsync(int id);
         Task<PromoCodeReadModel?> GetByCodeAsync(string code);

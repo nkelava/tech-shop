@@ -1,10 +1,11 @@
-﻿using TechStore.Application.Models.Base;
+﻿using System.ComponentModel.DataAnnotations;
 
 
 namespace TechStore.Application.Models.Attribute
 {
-    public class AttributeUpdateModel : BaseModel
+    public class AttributeUpdateModel
     {
+        [Required(ErrorMessage = "Attribute name is required.")]
         public string Name { get; set; }
     }
 }

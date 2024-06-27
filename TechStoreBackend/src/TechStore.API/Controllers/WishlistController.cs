@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Security.Claims;
 using TechStore.Application.Interfaces.Services;
-using TechStore.Application.Models.Wishlist;
 
 
 namespace TechStore.API.Controllers
@@ -13,54 +13,98 @@ namespace TechStore.API.Controllers
     [ApiController]
     public class WishlistController : ControllerBase
     {
-        public readonly IWishlistService _wishlistService;
+        private readonly IWishlistService _wishlistService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public readonly IMapper _mapper;
+        private readonly ILogger<WishlistController> _logger;
 
-        public WishlistController(IWishlistService wishlistService, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+        public WishlistController(IWishlistService wishlistService, IHttpContextAccessor httpContextAccessor, ILogger<WishlistController> logger)
         {
             _wishlistService = wishlistService;
             _httpContextAccessor = httpContextAccessor;
-            _mapper = mapper;
+            _logger = logger;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Add([FromBody] WishlistAddProductModel wishlist)
+
+        [HttpPost("{productId:int}")]
+        public async Task<IActionResult> Add(int productId)
         {
             var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
 
             if (string.IsNullOrWhiteSpace(currentUserEmail))
-                return Unauthorized();
+            {
+                _logger.LogWarning("Unauthorized access attempt.");
+                return Unauthorized("User is not authorized.");
+            }
 
-            if (wishlist.ProductId < 1)
-                return BadRequest();
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Invalid wishlist model received: {ModelStateErrors}", ModelState);
+                return BadRequest("Invalid wishlist data. Please check the details and try again.");
+            }
 
             try
             {
-                await _wishlistService.AddProductAsync(currentUserEmail, wishlist.ProductId);
-                return Ok(wishlist.ProductId);
+                var wishlist = await _wishlistService.AddProductAsync(currentUserEmail, productId);
+
+                if (wishlist == null)
+                {
+                    _logger.LogWarning("Product with ID {id} was not found.", productId);
+                    return NotFound("Product not found.");
+                }
+
+                _logger.LogInformation("User with email {Email} added product with {Id} to wishlist.", currentUserEmail, productId);
+                return Ok(wishlist);
             }
-            catch
+            catch (Exception ex)
             {
-                return NotFound();
+                _logger.LogError(ex, "An error occurred while adding product with {Id} to the wishlist for user {Email}.", productId, currentUserEmail);
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Remove(int id)
+        [HttpDelete("{productId:int}")]
+        public async Task<IActionResult> Remove(int productId)
         {
             var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
 
             if (string.IsNullOrWhiteSpace(currentUserEmail))
-                return Unauthorized();
+            {
+                _logger.LogWarning("Unauthorized access attempt.");
+                return Unauthorized("User is not authorized.");
+            }
 
-            if (id < 1)
-                return BadRequest();
+            if (productId < 1)
+            {
+                _logger.LogWarning("Invalid product ID {Id}.", productId);
+                return BadRequest("Invalid product ID.");
+            }
 
-            var wishlist = await _wishlistService.GetByEmailAsync(currentUserEmail);
-            int productId = await _wishlistService.RemoveProductAsync(wishlist.Id, id);
-             
-            return productId > 0 ? Ok(id) : NotFound();
+            try
+            {
+                var wishlist = await _wishlistService.GetByEmailAsync(currentUserEmail);
+
+                if (wishlist == null)
+                {
+                    _logger.LogWarning("Wishlist for user {Email} was not found.", currentUserEmail);
+                    return NotFound("Wishlist not found.");
+                }
+
+                var response = await _wishlistService.RemoveProductAsync(wishlist.Id, productId);
+
+                if (response == null)
+                {
+                    _logger.LogWarning("Product with ID {id} was not found.", productId);
+                    return NotFound("Product not found.");
+                }
+
+                _logger.LogInformation("User with email {Email} removed product with ID {Id} from wishlist.", currentUserEmail, productId);
+                return Ok(wishlist);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while removing the product from the wishlist.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet]
@@ -68,12 +112,30 @@ namespace TechStore.API.Controllers
         {
             var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
 
-            if (string.IsNullOrWhiteSpace(currentUserEmail) )
-                return Unauthorized();
+            if (string.IsNullOrWhiteSpace(currentUserEmail))
+            {
+                _logger.LogWarning("Unauthorized access attempt.");
+                return Unauthorized("User is not authorized.");
+            }
 
-            var wishlist = await _wishlistService.GetByEmailAsync(currentUserEmail);
+            try
+            {
+                var wishlist = await _wishlistService.GetByEmailAsync(currentUserEmail);
 
-            return (wishlist is null) ? NotFound() : Ok(wishlist);
+                if (wishlist == null)
+                {
+                    _logger.LogWarning("Wishlist for user {Email} was not found.", currentUserEmail);
+                    return NotFound("Wishlist not found.");
+                }
+
+                _logger.LogInformation("Wishlist with email {Email} fetched successfully.", currentUserEmail);
+                return Ok(wishlist);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching wishlist.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
     }
 }

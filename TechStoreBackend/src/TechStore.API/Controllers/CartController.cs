@@ -1,6 +1,7 @@
-﻿using AutoMapper;
+﻿    using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Security.Claims;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Cart;
@@ -13,39 +14,54 @@ namespace TechStore.API.Controllers
     [ApiController]
     public class CartController : ControllerBase
     {
-        public readonly ICartService _cartService;
+        private readonly ICartService _cartService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public readonly IMapper _mapper;
+        private readonly ILogger<CartController> _logger;
 
-        public CartController(ICartService cartService, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+
+        public CartController(ICartService cartService, IHttpContextAccessor httpContextAccessor, ILogger<CartController> logger)
         {
             _cartService = cartService;
             _httpContextAccessor = httpContextAccessor;
-            _mapper = mapper;
+            _logger = logger;
         }
 
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CartCreateModel cart)
         {
-            var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
+            var currentUserEmail =  _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
 
             if (string.IsNullOrWhiteSpace(currentUserEmail))
-                return Unauthorized();
+            {
+                _logger.LogWarning("Unauthorized access attempt.");
+                return Unauthorized("User is not authorized.");
+            }
 
-            if (cart.ProductId < 1 || cart.Quantity < 1)
-                return BadRequest();
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Invalid cart model received: {ModelStateErrors}", ModelState);
+                return BadRequest("Invalid cart data. Please check the details and try again.");
+            }
 
             try
             {
-                await _cartService.AddProductAsync(currentUserEmail, cart.ProductId, cart.Quantity);
-                return Ok(cart.ProductId);
-            } 
-            catch
-            {
-                return NotFound();
-            }
+                var response = await _cartService.AddProductAsync(currentUserEmail, cart);
 
+                if (response == null)
+                {
+                    _logger.LogWarning("Product with ID {id} was not found.", cart.ProductId);
+                    return NotFound("Product not found.");
+                }
+               
+                _logger.LogInformation("User with email {Email} updated cart: Product ID: {ID}, Quantity: {Quantity}.", currentUserEmail, cart.ProductId, cart.Quantity);
+                return Ok(cart);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating the cart for user {Email}.", currentUserEmail);
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpDelete]
@@ -54,12 +70,31 @@ namespace TechStore.API.Controllers
             var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
 
             if (string.IsNullOrWhiteSpace(currentUserEmail))
+            {
+                _logger.LogWarning("Unauthorized access attempt with no email found in claims.");
                 return Unauthorized();
+            }
 
-            int cartId = await _cartService.ClearCart(currentUserEmail);
+            try
+            {
+                var cart = await _cartService.ClearCart(currentUserEmail);
 
-            return cartId < 1 ? NotFound() : Ok(cartId);
+                if (cart == null)
+                {
+                    _logger.LogInformation("No cart found to clear for user with email {Email}.", currentUserEmail);
+                    return NotFound();
+                }
+
+                _logger.LogInformation("Cart successfully cleared for user with email {Email}.", currentUserEmail);
+                return Ok(cart);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while clearing cart for user.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
+
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Remove(int id)
@@ -67,21 +102,42 @@ namespace TechStore.API.Controllers
             var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
 
             if (string.IsNullOrWhiteSpace(currentUserEmail))
-                return Unauthorized();
+            {
+                _logger.LogWarning("Unauthorized access attempt.");
+                return Unauthorized("User is not authorized.");
+            }
 
             if (id < 1)
-                return BadRequest();
+            {
+                _logger.LogWarning("Invalid product ID {Id}.", id);
+                return BadRequest("Invalid product ID.");
+            }
 
             try 
             {
                 var cart = await _cartService.GetByEmailAsync(currentUserEmail);
-                await _cartService.RemoveProductAsync(cart.Id, id);
-                
-                return Ok(id);
+
+                if (cart == null)
+                {
+                    _logger.LogWarning("Cart for user {Email} was not found.", currentUserEmail);
+                    return NotFound("Cart not found.");
+                }
+
+                var response = await _cartService.RemoveProductAsync(cart.Id, id);
+
+                if (response == null)
+                {
+                    _logger.LogWarning("Product with ID {id} was not found.", id);
+                    return NotFound("Product not found.");
+                }
+
+                _logger.LogInformation("User with email {Email} removed product with ID {Id} from cart.", currentUserEmail, id);
+                return Ok(cart);
             }
-            catch
+            catch (Exception ex)
             {
-                return NotFound();
+                _logger.LogError(ex, "An error occurred while removing the product from the cart.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
             }
         }
 
@@ -91,17 +147,28 @@ namespace TechStore.API.Controllers
             var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
 
             if (string.IsNullOrWhiteSpace(currentUserEmail))
-                return Unauthorized();
+            {
+                _logger.LogWarning("Unauthorized access attempt.");
+                return Unauthorized("User is not authorized.");
+            }
 
             try
             {
                 var cart = await _cartService.GetByEmailAsync(currentUserEmail);
 
-                return (cart is null) ? NotFound() : Ok(cart);
+                if (cart == null)
+                {
+                    _logger.LogWarning("Cart for user {Email} was not found.", currentUserEmail);
+                    return NotFound("Cart not found.");
+                }
+
+                _logger.LogInformation("Cart with email {Email} fetched successfully.", currentUserEmail);
+                return Ok(cart);
             }
-            catch
+            catch (Exception ex)
             {
-                return NotFound();
+                _logger.LogError(ex, "An error occurred while fetching cart.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
             }
         }
     }

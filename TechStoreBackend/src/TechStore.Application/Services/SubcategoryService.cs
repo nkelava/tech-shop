@@ -18,52 +18,71 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task CreateAsync(SubcategoryCreateModel subcategoryModel)
+
+        public async Task CreateAsync(SubcategoryCreateModel createModel)
         {
-            var subcategory = _mapper.Map<Subcategory>(subcategoryModel);
+            var subcategory = _mapper.Map<Subcategory>(createModel);
 
             _repository.Subcategory.Add(subcategory);
             await _repository.SaveAsync();
         }
 
-        public async Task UpdateAsync(SubcategoryUpdateModel subcategoryModel)
+        public async Task<SubcategoryReadModel?> UpdateAsync(int id, SubcategoryUpdateModel updateModel)
         {
-            var subcategory = _mapper.Map<Subcategory>(subcategoryModel);
-            
-            _repository.Subcategory.Update(subcategory);
+            var existingSubcategory = await _repository.Subcategory.GetByIdAsync(id);
+
+            if (existingSubcategory == null)
+                return null;
+
+            _mapper.Map(updateModel, existingSubcategory);
+            _repository.Subcategory.Update(existingSubcategory);
             await _repository.SaveAsync();
+
+            var subcategoryModel = _mapper.Map<SubcategoryReadModel>(existingSubcategory);
+            return subcategoryModel;
         }
 
-        public async Task DeleteAsync(int subcategoryId)
+        public async Task<int?> DeleteAsync(int id)
         {
-            var subcategory= await _repository.Subcategory.GetSubcategoryByIdAsync(subcategoryId);
+            var subcategory = await _repository.Subcategory.GetByIdAsync(id);
+
+            if (subcategory == null)
+                return null;
 
             _repository.Subcategory.Delete(subcategory);
             await _repository.SaveAsync();
+
+            return subcategory.Id;
         }
 
-        public async Task<SubcategoryReadModel> GetSubcategoryByIdAsync(int subcategoryId)
+        public async Task<SubcategoryReadModel?> GetByIdAsync(int id)
         {
-            var subcategory = await _repository.Subcategory.GetSubcategoryByIdAsync(subcategoryId);
-            var subcategoryReadModel = _mapper.Map<SubcategoryReadModel>(subcategory);
+            var subcategory = await _repository.Subcategory.GetByIdAsync(id);
 
-            return subcategoryReadModel;
+            if (subcategory == null)
+                return null;
+
+            var subcategoryModel = _mapper.Map<SubcategoryReadModel>(subcategory);
+            return subcategoryModel;
         } 
         
-        public async Task<SubcategoryReadModel> GetSubcategoryBySlugAsync(string subcategorySlug)
+        public async Task<SubcategoryReadModel?> GetBySlugAsync(string slug)
         {
-            var subcategory = await _repository.Subcategory.GetSubcategoryBySlugAsync(subcategorySlug);
-            var subcategoryReadModel = _mapper.Map<SubcategoryReadModel>(subcategory);
+            var subcategory = await _repository.Subcategory.GetBySlugAsync(slug);
 
-            return subcategoryReadModel;
+            if (subcategory == null)
+                return null;
+
+            var subcategoryModel = _mapper.Map<SubcategoryReadModel>(subcategory);
+            return subcategoryModel;
         }
 
-        public async Task<IEnumerable<SubcategoryReadModel>> GetAllSubcategoriesAsync()
+        public async Task<IEnumerable<SubcategoryReadModel>> GetAllAsync()
         {
-            var subcategories = await _repository.Subcategory.GetAllSubcategoriesAsync();
-            var subcategoriesReadModel = _mapper.Map<IList<SubcategoryReadModel>>(subcategories);
+            var subcategories = await _repository.Subcategory.GetAllAsync();
+            var subcategoriesModel = _mapper.Map<IList<SubcategoryReadModel>>(subcategories);
 
-            return subcategoriesReadModel;
+            return subcategoriesModel;
         }
     }
 }

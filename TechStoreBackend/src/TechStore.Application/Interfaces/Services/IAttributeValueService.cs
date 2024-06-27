@@ -5,11 +5,11 @@ namespace TechStore.Application.Interfaces.Services
 {
     public interface IAttributeValueService
     {
-        Task CreateAsync(AttributeValueCreateModel attributeValueModel);
-        Task UpdateAsync(AttributeValueUpdateModel attributeValueModel);
+        Task CreateAsync(AttributeValueCreateModel createModel);
 
-        Task<int> DeleteAsync(int id);
-        Task<AttributeValueReadModel> GetByIdAsync(int id);
+        Task<AttributeValueReadModel?> UpdateAsync(int id, AttributeValueUpdateModel updateModel);
+        Task<int?> DeleteAsync(int id);
+        Task<AttributeValueReadModel?> GetByIdAsync(int id);
 
         Task<IEnumerable<AttributeValueReadModel>> GetAllAsync();
     }

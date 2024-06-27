@@ -13,7 +13,7 @@ namespace TechStore.Infrastructure.Repositories
         public ReviewRepository(TechStoreContext techStoreContext)
             : base(techStoreContext) { }
 
-        public async Task<IEnumerable<Review>> GetReviewsByProductIdAsync(int productId)
+        public async Task<IEnumerable<Review>> GetByProductIdAsync(int productId)
         {
             var spec = new ReviewsWithProductSpecification(productId);
             var reviews = await Find(spec).ToListAsync();
@@ -21,7 +21,7 @@ namespace TechStore.Infrastructure.Repositories
             return reviews;
         }
 
-        public async Task<IEnumerable<Review>> GetReviewsByEmailAsync(string email)
+        public async Task<IEnumerable<Review>> GetByEmailAsync(string email)
         {
             var spec = new ReviewsWithProductSpecification(email);
             var reviews = await Find(spec).ToListAsync();
@@ -29,7 +29,7 @@ namespace TechStore.Infrastructure.Repositories
             return reviews;
         }
 
-        public async Task<IEnumerable<Review>> GetAllReviewsAsync()
+        public async Task<IEnumerable<Review>> GetAllAsync()
         {
             return await FindAll().ToListAsync();
         }

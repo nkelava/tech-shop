@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TechStore.Application.Models.Authorization
 {
-    public class TokenRequrest
+    public class TokenRequest
     {
         [Required]
         public string Token { get; set; }

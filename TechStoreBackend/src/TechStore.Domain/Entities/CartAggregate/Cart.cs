@@ -12,24 +12,35 @@ namespace TechStore.Domain.Entities.Cart
         public decimal TotalPrice { get; set; } = 0;
 
         // n - n
-        public List<CartProduct> Products { get; set; }
+        public List<CartProduct> Products { get; set; } = new List<CartProduct>();
+
 
         public void AddProduct(Product product, int quantity = 1, decimal unitPrice = 0)
         {
+            if (product == null) throw new ArgumentNullException(nameof(product));
+            if (quantity <= 0) throw new ArgumentOutOfRangeException(nameof(quantity), "Quantity must be greater than zero.");
+            if (unitPrice < 0) throw new ArgumentOutOfRangeException(nameof(unitPrice), "Unit price cannot be negative.");
+
             var cartProduct = Products.FirstOrDefault(p => p.ProductId == product.Id);
 
-            if (cartProduct is not null)
+            if (cartProduct != null)
             {
-                if (product.UnitsInStock > 0 && product.UnitsInStock >= quantity)
-                {
-                    TotalPrice += quantity > cartProduct.Quantity ? cartProduct.UnitPrice : -(cartProduct.UnitPrice);
-                    cartProduct.Quantity = quantity;
-                }
+                if (product.UnitsInStock < quantity)
+                    throw new InvalidOperationException("Not enough units in stock.");
 
+                var quantityDifference = quantity - cartProduct.Quantity;
+                cartProduct.Quantity = quantity;
+                cartProduct.UnitPrice = unitPrice;
+                cartProduct.TotalPrice = cartProduct.Quantity * cartProduct.UnitPrice;
+
+                TotalPrice += quantityDifference * unitPrice;
                 return;
             }
 
-            Products.Add(new CartProduct()
+            if (product.UnitsInStock < quantity)
+                throw new InvalidOperationException("Not enough units in stock.");
+
+            var newCartProduct = new CartProduct()
             {
                 CartId = this.Id,
                 ProductId = product.Id,
@@ -37,25 +48,29 @@ namespace TechStore.Domain.Entities.Cart
                 Quantity = quantity,
                 UnitPrice = unitPrice,
                 TotalPrice = quantity * unitPrice
-            });
+            };
 
+            Products.Add(newCartProduct);
             TotalPrice += quantity * unitPrice;
         }
 
-        public void RemoveProduct(int productId)
+        public int? RemoveProduct(int productId)
         {
-            var product = Products.FirstOrDefault(p => p.ProductId == productId);
+            var cartProduct = Products.FirstOrDefault(p => p.ProductId == productId);
 
-            if (product is not null)
-            {
-                Products.Remove(product);
-            }
+            if (cartProduct == null)
+                return null;
+
+            TotalPrice -= cartProduct.TotalPrice;
+            Products.Remove(cartProduct);
+
+            return cartProduct.ProductId;
         }
 
         public void Clear()
         {
-            Products.Clear();
             TotalPrice = 0;
+            Products.Clear();
         }
     }
 }

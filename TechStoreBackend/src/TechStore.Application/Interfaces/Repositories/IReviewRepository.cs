@@ -6,9 +6,9 @@ namespace TechStore.Application.Interfaces.Repositories
 {
     public interface IReviewRepository : IRepository<Review>
     {
-        Task<IEnumerable<Review>> GetReviewsByProductIdAsync(int productId);
-        Task<IEnumerable<Review>> GetReviewsByEmailAsync(string email);
-        Task<IEnumerable<Review>> GetAllReviewsAsync();
+        Task<IEnumerable<Review>> GetByProductIdAsync(int productId);
+        Task<IEnumerable<Review>> GetByEmailAsync(string email);
+        Task<IEnumerable<Review>> GetAllAsync();
         Task<IEnumerable<Review>> GetAllReportedReviewsAsync();
     }
 }

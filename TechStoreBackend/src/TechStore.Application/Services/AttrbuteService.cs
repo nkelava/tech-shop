@@ -18,19 +18,36 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task CreateAsync(AttributeCreateModel attributeModel)
+
+        public async Task CreateAsync(AttributeCreateModel createModel)
         {
-            var attribute = _mapper.Map<ProductAttribute>(attributeModel);
+            var attribute = _mapper.Map<ProductAttribute>(createModel);
 
             _repository.Attribute.Add(attribute);
             await _repository.SaveAsync();
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<AttributeReadModel?> UpdateAsync(int id, AttributeUpdateModel updateModel)
         {
             var attribute = await _repository.Attribute.GetByIdAsync(id);
 
-            if (attribute == null) return 0;
+            if (attribute == null)
+                return null;
+
+            _mapper.Map(updateModel, attribute);
+            _repository.Attribute.Update(attribute);
+            await _repository.SaveAsync();
+
+            var attributeModel = _mapper.Map<AttributeReadModel>(attribute);
+            return attributeModel;
+        }
+
+        public async Task<int?> DeleteAsync(int id)
+        {
+            var attribute = await _repository.Attribute.GetByIdAsync(id);
+
+            if (attribute == null)
+                return null;
 
             _repository.Attribute.Delete(attribute);
             await _repository.SaveAsync();
@@ -38,37 +55,34 @@ namespace TechStore.Application.Services
             return attribute.Id;
         }
 
-        public async Task UpdateAsync(AttributeUpdateModel attributeModel)
-        {
-            var attribute = _mapper.Map<ProductAttribute>(attributeModel);
-
-            _repository.Attribute.Update(attribute);
-
-            await _repository.SaveAsync();
-        }
-
-        public async Task<AttributeReadModel> GetByIdAsync(int id)
+        public async Task<AttributeReadModel?> GetByIdAsync(int id)
         {
             var attribute = await _repository.Attribute.GetByIdAsync(id);
-            var attributeModel = _mapper.Map<AttributeReadModel>(attribute);
+            
+            if (attribute == null)
+                return null;
 
+            var attributeModel = _mapper.Map<AttributeReadModel>(attribute);
             return attributeModel;
         }
         
-        public async Task<AttributeReadModel> GetByNameAsync(string name)
+        public async Task<AttributeReadModel?> GetByNameAsync(string name)
         {
             var attribute = await _repository.Attribute.GetByNameAsync(name);
+            
+            if (attribute == null)
+                return null;
+            
             var attributeModel = _mapper.Map<AttributeReadModel>(attribute);
-
             return attributeModel;
         }
 
         public async Task<IEnumerable<AttributeReadModel>> GetAllAsync()
         {
             var attributes = await _repository.Attribute.GetAllAsync();
-            var attributesReadModel = _mapper.Map<IList<AttributeReadModel>>(attributes);
+            var attributesModel = _mapper.Map<IList<AttributeReadModel>>(attributes);
 
-            return attributesReadModel;
+            return attributesModel;
         }
     }
 }

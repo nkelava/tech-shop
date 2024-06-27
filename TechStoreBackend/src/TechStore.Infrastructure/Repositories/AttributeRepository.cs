@@ -12,12 +12,13 @@ namespace TechStore.Infrastructure.Repositories
         public AttributeRepository(TechStoreContext techStoreContext)
            : base(techStoreContext) { }
 
-        public async Task<ProductAttribute> GetByIdAsync(int id)
+
+        public async Task<ProductAttribute?> GetByIdAsync(int id)
         {
             return await FindByCondition(a => a.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
-        public async Task<ProductAttribute> GetByNameAsync(string name)
+        public async Task<ProductAttribute?> GetByNameAsync(string name)
         {
             return await FindByCondition(p => p.Name.Equals(name)).FirstOrDefaultAsync();
         }

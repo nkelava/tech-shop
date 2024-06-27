@@ -12,7 +12,8 @@ namespace TechStore.Infrastructure.Repositories
         public AttributeValueRepository(TechStoreContext techStoreContext)
            : base(techStoreContext) { }
 
-        public async Task<ProductAttributeValue> GetByIdAsync(int id)
+
+        public async Task<ProductAttributeValue?> GetByIdAsync(int id)
         {
             return await FindByCondition(av => av.Id.Equals(id)).FirstOrDefaultAsync();
         }

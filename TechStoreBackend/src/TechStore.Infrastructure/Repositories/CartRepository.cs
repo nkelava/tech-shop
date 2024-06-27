@@ -14,10 +14,9 @@ namespace TechStore.Infrastructure.Repositories
             : base(techStoreContext) { }
 
 
-        public async Task<Cart> GetByEmailAsync(string email)
+        public async Task<Cart?> GetByEmailAsync(string email)
         {
             var spec = new CartWithProductsSpecification(email);
-
             return await Find(spec).FirstOrDefaultAsync();
         }
     }

@@ -5,14 +5,14 @@ namespace TechStore.Application.Interfaces.Services
 {
     public interface ICategoryService
     {
-        Task CreateAsync(CategoryCreateModel category);
-        Task DeleteAsync(int categoryId);
-
+        Task<CategoryReadModel?> CreateAsync(CategoryCreateModel category);
         Task<CategoryReadModel?> UpdateAsync(int id, CategoryUpdateModel category);
+        Task<int?> DeleteAsync(int id);
         Task<CategoryReadModel?> GetByIdAsync(int id);
-        Task<CategoryReadModel> GetCategoryBySlugAsync(string categorySlug);
-        Task<CategoryWithSubcategoriesModel> GetCategoryWithSubcategoriesAsync(string categorySlug);
+        Task<CategoryReadModel?> GetBySlugAsync(string slug);
+        Task<CategoryWithSubcategoriesModel?> GetWithSubcategoriesAsync(string slug);
 
-        Task<IEnumerable<CategoryReadModel>> GetAllCategoriesAsync();
+
+        Task<IEnumerable<CategoryReadModel>> GetAllAsync();
     }
 }

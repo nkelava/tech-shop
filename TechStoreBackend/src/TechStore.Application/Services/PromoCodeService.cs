@@ -18,6 +18,7 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
+
         public async Task CreateAsync(PromoCodeCreateModel createModel)
         {
             var promoCode = _mapper.Map<PromoCode>(createModel);
@@ -41,9 +42,9 @@ namespace TechStore.Application.Services
             return promoCodeModel;
         }
 
-        public async Task<int?> DeleteAsync(int promoCodeId)
+        public async Task<int?> DeleteAsync(int id)
         {
-            var promoCode = await _repository.PromoCode.GetByIdAsync(promoCodeId);
+            var promoCode = await _repository.PromoCode.GetByIdAsync(id);
 
             if (promoCode == null)
                 return null;
@@ -62,7 +63,6 @@ namespace TechStore.Application.Services
                 return null;
 
             var promoCodeModel = _mapper.Map<PromoCodeReadModel>(promoCode);
-
             return promoCodeModel;
         }
 
@@ -74,7 +74,6 @@ namespace TechStore.Application.Services
                 return null;
 
             var promoCodeModel = _mapper.Map<PromoCodeReadModel>(promoCode);
-
             return promoCodeModel;
         }
 

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Product;
 
@@ -9,25 +11,49 @@ namespace TechStore.API.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        public readonly IProductService _productService;
+        private readonly IProductService _productService;
+        private readonly ILogger<ProductController> _logger;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, ILogger<ProductController> logger)
         {
             _productService = productService;
+            _logger = logger;
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody]ProductCreateModel product)
         {
-            if (product is null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Invalid product model state.");
+                return BadRequest(ModelState);
+            }
 
-            await _productService.CreateAsync(product);
+            var existingProduct = await _productService.GetProductBySlugAsync(product.Slug);
 
-            return Ok();
+            if (existingProduct != null)
+            {
+                _logger.LogInformation("A product with slug {Slug} already exists.", product.Slug);
+                return BadRequest("A product with the specified slug already exists. Please choose a different slug.");
+            }
+
+            try
+            {
+                await _productService.CreateAsync(product);
+
+                _logger.LogInformation("Product created successfully with slug {Slug}.", product.Slug);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while creating the product.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id < 1)
@@ -38,15 +64,32 @@ namespace TechStore.API.Controllers
             return deleteProductId < 1 ? NotFound() : Ok(id);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody]ProductUpdateModel product)
+        [HttpPut("{id:int}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Update(int id, [FromBody]ProductUpdateModel product)
         {
-            if (product is null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            await _productService.UpdateAsync(product);
+            try
+            {
+                var updatedProduct = await _productService.UpdateAsync(id, product);
 
-            return Ok(product);
+                if (updatedProduct == null)
+                {
+                    _logger.LogWarning("Product with ID {id} was not found.", id);
+                    return NotFound("Product not found.");
+                }
+
+                _logger.LogInformation("Product {Code} successfully updated.", id);
+                return Ok(updatedProduct);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating the product.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
+
         }
 
         [HttpGet("{id:int}")]

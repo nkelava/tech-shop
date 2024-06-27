@@ -13,8 +13,10 @@ namespace TechStore.Infrastructure.Repositories
         public ProductRepository(TechStoreContext techStoreContext)
             : base(techStoreContext) { }
 
-        public async Task<Product> GetProductByIdAsync(int productId) {
-            var product = await FindByCondition(p => p.Id.Equals(productId)).FirstOrDefaultAsync();
+        public async Task<Product?> GetProductByIdAsync(int productId) {
+            var product = await FindByCondition(p => p.Id.Equals(productId))
+                .Include(p => p.Subcategory)
+                .FirstOrDefaultAsync();
             return product;
         }
         public async Task<Product> GetProductBySlugAsync(string slug)
@@ -76,6 +78,8 @@ namespace TechStore.Infrastructure.Repositories
             var spec = new ProductsWithSubcategorySpecification(subcategorySlug);
             //var products = await Find(spec).ToListAsync();
             var products = await Find(spec)
+                .Include(p => p.Subcategory)
+                    .ThenInclude(s => s.Category)
                 .Include(p => p.ProductAttributes)
                     .ThenInclude(pas => pas.Attribute)
                 .Include(p => p.ProductAttributes)

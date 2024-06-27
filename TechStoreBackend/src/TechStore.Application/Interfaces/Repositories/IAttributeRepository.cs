@@ -6,8 +6,8 @@ namespace TechStore.Application.Interfaces.Repositories
 {
     public interface IAttributeRepository : IRepository<ProductAttribute>
     {
-        Task<ProductAttribute> GetByIdAsync(int id);
-        Task<ProductAttribute> GetByNameAsync(string name);
+        Task<ProductAttribute?> GetByIdAsync(int id);
+        Task<ProductAttribute?> GetByNameAsync(string name);
 
         Task<IEnumerable<ProductAttribute>> GetAllAsync();
     }

@@ -1,5 +1,6 @@
 ﻿using TechStore.Domain.Entities.Base;
 
+
 namespace TechStore.Domain.Entities.ProductAggregate
 {
     public class ProductAttributeValue : Entity

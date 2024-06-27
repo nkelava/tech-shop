@@ -59,12 +59,20 @@ namespace TechStore.Application.Services
             return product.Id;
         }
 
-        public async Task UpdateAsync(ProductUpdateModel product)
+        public async Task<ProductReadModel?> UpdateAsync(int id, ProductUpdateModel product)
         {
-            var movieMapped = _mapper.Map<Product>(product);
+            var existingProduct = await _repository.Product.GetProductByIdAsync(id);
 
-            _repository.Product.Update(movieMapped);
+            if (existingProduct == null)
+                return null;
+
+            _mapper.Map(product, existingProduct);
+
+            _repository.Product.Update(existingProduct);
             await _repository.SaveAsync();
+
+            var productModel = _mapper.Map<ProductReadModel>(existingProduct);
+            return productModel;
         }
 
         public async Task<ProductReadModel> GetProductByIdAsync(int productId)

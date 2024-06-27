@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Category;
-using TechStore.Application.Services;
 
 
 namespace TechStore.API.Controllers
@@ -14,35 +12,52 @@ namespace TechStore.API.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        public readonly ICategoryService _categoryService;
-        public readonly IMapper _mapper;
-        public readonly ILogger<CategoryController> _logger;
+        private readonly ICategoryService _categoryService;
+        private readonly ILogger<CategoryController> _logger;
 
-        public CategoryController(ICategoryService categoryService, IMapper mapper, ILogger<CategoryController> logger)
+        public CategoryController(ICategoryService categoryService, ILogger<CategoryController> logger)
         {
             _categoryService = categoryService;
-            _mapper = mapper;
             _logger = logger;
         }
 
-        [Authorize]
+
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] CategoryCreateModel category)
         {
-            if (category is null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            await _categoryService.CreateAsync(category);
+            try
+            {
+                var newCategory = await _categoryService.CreateAsync(category);
 
-            return Ok(category);
+                if (newCategory == null)
+                    return BadRequest("Category already exists.");
+
+                _logger.LogInformation("Category created with name {Name} and slug {Slug}.", category.Name, category.Slug);
+                return Ok(newCategory);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while creating the category.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
-        [Authorize]
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, [FromBody] CategoryUpdateModel category)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            if (id < 1)
+            {
+                _logger.LogWarning("Invalid category ID {Id}.", id);
+                return BadRequest("Invalid category ID.");
+            }
 
             try
             {
@@ -54,7 +69,7 @@ namespace TechStore.API.Controllers
                     return NotFound("Category not found.");
                 }
 
-                _logger.LogInformation("Category {ID} updated with name {Name}% and slug {Slug}.", id, category.Name, category.Slug);
+                _logger.LogInformation("Category {ID} updated with name {Name} and slug {Slug}.", id, category.Name, category.Slug);
                 return Ok(updatedCategory);
             }
             catch (Exception ex)
@@ -64,16 +79,34 @@ namespace TechStore.API.Controllers
             }
         }
 
-        [Authorize]
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id < 1)
-                return BadRequest();
+            {
+                _logger.LogWarning("Invalid category ID {Id}.", id);
+                return BadRequest("Invalid category ID.");
+            }
 
-            await _categoryService.DeleteAsync(id);
+            try
+            {
+                int? deletedCategoryId = await _categoryService.DeleteAsync(id);
 
-            return Ok(id);
+                if (deletedCategoryId == null)
+                {
+                    _logger.LogWarning("Category with ID {Id} was not found.", id);
+                    return NotFound("Category not found.");
+                }
+
+                _logger.LogInformation("Category with ID {Id} was deleted successfully.", id);
+                return Ok(deletedCategoryId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting the category with ID {Id}.", id);
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet("{id:int}")]
@@ -111,34 +144,76 @@ namespace TechStore.API.Controllers
         public async Task<ActionResult<CategoryReadModel>> GetCategoryBySlug(string slug)
         {
             if (string.IsNullOrWhiteSpace(slug))
-                return BadRequest();
-
-            try {
-                var category = await _categoryService.GetCategoryBySlugAsync(slug);
-                return (category is null) ? NotFound() : Ok(category);
-            } catch {
-                return BadRequest();
+            {
+                _logger.LogWarning("Invalid category slug {Slug}.", slug);
+                return BadRequest("Invalid category slug.");
             }
-        }
 
-        [HttpGet]
-        public async Task<IEnumerable<CategoryReadModel>> GetAllCategories()
-        {
-            var categories = await _categoryService.GetAllCategoriesAsync();
-            return categories;
+            try
+            {
+                var category = await _categoryService.GetBySlugAsync(slug);
+
+                if (category == null)
+                {
+                    _logger.LogWarning("Category with slug {Slug} not found.", slug);
+                    return NotFound("Category not found.");
+                }
+
+                _logger.LogInformation("Category with slug {Slug} fetched successfully.", slug);
+                return Ok(category);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching category.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet("{slug}/subcategories")]
         public async Task<IActionResult> GetCategoryWithSubcategories(string slug)
         {
             if (string.IsNullOrWhiteSpace(slug))
-                return BadRequest();
+            {
+                _logger.LogWarning("Invalid category slug {Slug}.", slug);
+                return BadRequest("Invalid category slug.");
+            }
 
-            try {
-                var category = await _categoryService.GetCategoryWithSubcategoriesAsync(slug);
-                return (category is null) ? NotFound() : Ok(category);
-            } catch {
-                return BadRequest();
+            try
+            {
+                var category = await _categoryService.GetWithSubcategoriesAsync(slug);
+                
+                if (category == null)
+                {
+                    _logger.LogWarning("Category with slug {Slug} not found.", slug);
+                    return NotFound("Category not found.");
+                }
+
+                _logger.LogInformation("Category with slug {Slug} fetched successfully.", slug);
+                return Ok(category);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching category.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            _logger.LogInformation("Fetching all categories.");
+
+            try
+            {
+                var categories = await _categoryService.GetAllAsync();
+
+                _logger.LogInformation("Successfully fetched all categories.");
+                return Ok(categories);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching categories.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
             }
         }
     }

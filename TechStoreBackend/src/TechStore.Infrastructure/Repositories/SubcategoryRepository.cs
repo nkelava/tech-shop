@@ -12,17 +12,18 @@ namespace TechStore.Infrastructure.Repositories
         public SubcategoryRepository(TechStoreContext techStoreContext) 
             : base(techStoreContext) { }
 
-        public async Task<Subcategory> GetSubcategoryByIdAsync(int subcategoryId)
+
+        public async Task<Subcategory?> GetByIdAsync(int id)
         {
-            return await FindByCondition(subcategory => subcategory.Id.Equals(subcategoryId)).Include(s => s.Category).FirstOrDefaultAsync();
+            return await FindByCondition(s => s.Id.Equals(id)).Include(s => s.Category).FirstOrDefaultAsync();
         }
 
-        public async Task<Subcategory> GetSubcategoryBySlugAsync(string subcategorySlug)
+        public async Task<Subcategory?> GetBySlugAsync(string id)
         {
-            return await FindByCondition(subcategory => subcategory.Slug.Equals(subcategorySlug)).FirstOrDefaultAsync();
+            return await FindByCondition(s => s.Slug.Equals(id)).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Subcategory>> GetAllSubcategoriesAsync()
+        public async Task<IEnumerable<Subcategory?>> GetAllAsync()
         {
             return await FindAll().Include(s => s.Category).ToListAsync();
         }

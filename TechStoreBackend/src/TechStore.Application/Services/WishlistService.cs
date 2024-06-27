@@ -20,42 +20,50 @@ namespace TechStore.Application.Services
             _mapper = mapper;
         }
 
-        public async Task AddProductAsync(string email, int productId)
+
+        public async Task<WishlistReadModel?> AddProductAsync(string email, int productId)
         {
             var wishlist = await GetExistingOrCreateNewWishlist(email);
             var product = await _repository.Product.GetProductByIdAsync(productId);
 
-            if (product is not null)
-            {
-                wishlist.AddProduct(product);
+            if (product == null)
+                return null;
 
-                _repository.Wishlist.Update(wishlist);
-                await _repository.SaveAsync();
-            }
+            wishlist.AddProduct(product);
+
+            _repository.Wishlist.Update(wishlist);
+            await _repository.SaveAsync();
+
+            var wishlistModel = _mapper.Map<WishlistReadModel>(wishlist);
+            return wishlistModel;
         }
 
-
-        public async Task<int> RemoveProductAsync(int wishlistId, int productId)
+        public async Task<WishlistReadModel?> RemoveProductAsync(int wishlistId, int productId)
         {
             var spec = new WishlistWithProductsSpecification(wishlistId);
             var wishlist = _repository.Wishlist.Find(spec).FirstOrDefault();
 
-            if (wishlist is null)
-                return 0;
+            if (wishlist == null)
+                return null;
 
-            wishlist.RemoveProduct(productId);
+            var removedWishlistId = wishlist.RemoveProduct(productId);
+
+            if (removedWishlistId == null)
+                return null;
 
             _repository.Wishlist.Update(wishlist);
             await _repository.SaveAsync();
-            return productId;
-        }
 
+            var wishlistModel = _mapper.Map<WishlistReadModel>(wishlist);
+            return wishlistModel;
+        }
 
         public async Task<WishlistReadModel> GetByEmailAsync(string email)
         {
             var wishlist = await GetExistingOrCreateNewWishlist(email);
             var wishlistModel = _mapper.Map<WishlistReadModel>(wishlist);
 
+            // If product can't be loaded from page we than manually map it
             foreach (var item in wishlist.Products) {
                 if (item.Product is null)
                 {
@@ -70,12 +78,11 @@ namespace TechStore.Application.Services
             return wishlistModel;
         }
 
-
         private async Task<Wishlist> GetExistingOrCreateNewWishlist(string email)
         {
-            var wishlist = _repository.Wishlist.GetByEmailAsync(email);
+            var wishlist = await _repository.Wishlist.GetByEmailAsync(email);
 
-            if (wishlist is not null)
+            if (wishlist != null)
                 return wishlist;
 
             // Create new in case of first attempt

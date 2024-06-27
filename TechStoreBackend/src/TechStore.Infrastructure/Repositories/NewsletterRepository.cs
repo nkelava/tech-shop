@@ -12,7 +12,8 @@ namespace TechStore.Infrastructure.Repositories
         public NewsletterRepository(TechStoreContext techStoreContext)
             : base(techStoreContext) { }
 
-        public async Task<IEnumerable<Newsletter>> GetAllNewsletterSubscribersAsync()
+
+        public async Task<IEnumerable<Newsletter>> GetAllSubscribersAsync()
         {
             return await FindAll().ToListAsync();
         }

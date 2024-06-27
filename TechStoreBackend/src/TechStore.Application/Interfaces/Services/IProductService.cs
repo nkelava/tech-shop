@@ -6,10 +6,10 @@ namespace TechStore.Application.Interfaces.Services
     public interface IProductService
     {
         Task CreateAsync(ProductCreateModel product);
-        Task UpdateAsync(ProductUpdateModel product);
         Task AddSpecificationAsync(int productId, List<ProductAttributeSetModel> productAttributes);
 
         Task<int> DeleteAsync(int productId);
+        Task<ProductReadModel?> UpdateAsync(int id, ProductUpdateModel product);
         Task<ProductReadModel> GetProductByIdAsync(int productId);
         Task<ProductReadModel> GetProductBySlugAsync(string slug);
 

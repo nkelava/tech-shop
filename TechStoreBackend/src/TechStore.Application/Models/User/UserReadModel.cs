@@ -1,5 +1,4 @@
-﻿using TechStore.Application.Models.Base;
-using TechStore.Domain.Entities.User;
+﻿using TechStore.Domain.Entities.User;
 
 
 namespace TechStore.Application.Models.User

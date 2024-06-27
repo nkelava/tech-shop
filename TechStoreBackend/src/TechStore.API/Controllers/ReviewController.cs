@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Security.Claims;
@@ -16,86 +15,146 @@ namespace TechStore.API.Controllers
     {
         public readonly IReviewService _reviewService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public readonly IMapper _mapper;
         public readonly ILogger<ReviewController> _logger;
 
 
-        public ReviewController(IReviewService reviewService, IHttpContextAccessor httpContextAccessor, IMapper mapper, ILogger<ReviewController> logger)
+        public ReviewController(IReviewService reviewService, IHttpContextAccessor httpContextAccessor, ILogger<ReviewController> logger)
         {
             _reviewService = reviewService;
             _httpContextAccessor = httpContextAccessor;
-            _mapper = mapper;
             _logger = logger;
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Create(ReviewCreateModel review)
+        public async Task<IActionResult> Create([FromBody] ReviewCreateModel review)
         {
             var currentUserEmail =  _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
 
-            if (review is null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            if (currentUserEmail is null)
-                return Unauthorized();
+            if (currentUserEmail == null)
+                return Unauthorized("Unauthorized access: User is not authenticated.");
 
             try {
                 await _reviewService.CreateAsync(currentUserEmail, review);
-                return Ok();
-            } catch {
-                return BadRequest();
+                
+                _logger.LogInformation("Review from email {Email} wa created with comment {Comment} and rate {Rate}.", currentUserEmail, review.Comment, review.Rate);
+                return Ok(review);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while creating the review.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
             }
         }
 
-        [HttpDelete("{reviewId:int}")]
-        public async Task<IActionResult> Delete(int reviewId)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            if (reviewId < 1)
-                return BadRequest();
+            if (id < 1)
+                return BadRequest("Invalid review ID.");
 
-            try {
-                await _reviewService.DeleteAsync(reviewId);
+            try
+            {
+                int? deletedReviewId = await _reviewService.DeleteAsync(id);
 
-                return Ok(reviewId);
-            } catch {
-                return BadRequest();
+                if (deletedReviewId == null)
+                {
+                    _logger.LogWarning("Review with ID {Id} was not found.", id);
+                    return NotFound("Review not found.");
+                }
+
+                _logger.LogInformation("Review with ID {Id} was deleted successfully.", id);
+                return Ok(deletedReviewId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting the review with ID {Id}.", id);
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
             }
         }
 
         [AllowAnonymous]
         [HttpGet("{productId:int}")]
-        public async Task<IActionResult> GetReviewsByProductId(int productId)
+        public async Task<IActionResult> GetByProductId(int productId)
         {
+            _logger.LogInformation("Received request to reviews by product ID {Id}.", productId);
+
             if (productId < 1)
-                return BadRequest();
+            {
+                _logger.LogWarning("Invalid product ID {Id}.", productId);
+                return BadRequest("Invalid product ID.");
+            }
 
             try
             {
-                var reviews = await _reviewService.GetReviewsByProductIdAsync(productId);
+                var reviews = await _reviewService.GetByProductIdAsync(productId);
 
-                return (reviews is null) ? NotFound() : Ok(reviews);
-            } catch {
-                return BadRequest();
+                if (reviews == null)
+                {
+                    _logger.LogWarning("Reviews with product ID {Id} not found.", productId);
+                    return NotFound("Reviews not found.");
+                }
+
+                _logger.LogInformation("Reviews with product ID {Id} fetched successfully.", productId);
+                return Ok(reviews);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching reviews.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
             }
         }
 
         [AllowAnonymous]
         [HttpGet("{email}")]
-        public async Task<IActionResult> GetReviewsByEmail(string email)
+        public async Task<IActionResult> GetByEmail(string email)
         {
-            if (email is null)
-                return BadRequest();
+            if (string.IsNullOrEmpty(email))
+            {
+                _logger.LogWarning("Invalid email {Email}.", email);
+                return BadRequest("Invalid email.");
+            }
 
-            var reviews = await _reviewService.GetReviewsByEmailAsync(email);
+            try
+            {
+                var reviews = await _reviewService.GetByEmailAsync(email);
 
-            return (reviews is null) ? NotFound() : Ok(reviews);
+                if (reviews == null)
+                {
+                    _logger.LogWarning("Reviews with email {Email} not found.", email);
+                    return NotFound("Reviews not found.");
+                }
+
+                _logger.LogInformation("Reviews with email {Email} fetched successfully.", email);
+                return Ok(reviews);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching reviews.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllReviews()
         {
-            var reviews = await _reviewService.GetAllReviewsAsync();
-            return Ok(reviews);
+            _logger.LogInformation("Received request to fetch all reviews.");
+
+            try
+            {
+                var reviews = await _reviewService.GetAllAsync();
+                _logger.LogInformation("Successfully fetched all reviews.");
+                return Ok(reviews);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching reviews.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpPost("report/{id:int}")]
@@ -129,12 +188,23 @@ namespace TechStore.API.Controllers
             }
         }
 
-
         [HttpGet("reported")]
         public async Task<IActionResult> GetAllReportedReviews()
         {
-            var reviews = await _reviewService.GetAllReportedReviewsAsync();
-            return Ok(reviews);
+            _logger.LogInformation("Received request to fetch all reported reviews.");
+
+            try
+            {
+                var reportedReviews = await _reviewService.GetAllReportedReviewsAsync();
+
+                _logger.LogInformation("Successfully fetched all reported reviews.");
+                return Ok(reportedReviews);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching reported reviews.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
     }
 }
