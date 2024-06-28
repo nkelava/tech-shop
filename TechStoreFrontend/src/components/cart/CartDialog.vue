@@ -7,7 +7,7 @@ import { validatePromoCodeExpirationDate } from "@/helpers/validatePromoCodeExpi
 import CartTable from "@/components/cart/CartTable.vue";
 import OrderDialog from "@/components/order/OrderDialog.vue";
 import CartIcon from "@/assets/icons/header/cart.png";
-import EmptyStateImage from "@/assets/images/test/empty_state.png";
+import EmptyStateImage from "@/assets/images/test/empty_state.webp";
 
 const cart = useCartStore();
 const toast = useToast();
@@ -148,7 +148,7 @@ function removePromoCode() {
               </div>
             </template>
           </v-img>
-          <p>Your Cart is empty!</p>
+          <p class="text-h6">Your cart is empty!</p>
         </div>
         <v-card-actions class="justify-space-between mt-4">
           <v-btn color="red-darken-1" variant="text" @click="cartDialogActive = !cartDialogActive">
@@ -213,8 +213,8 @@ function removePromoCode() {
 }
 
 .empty__image {
-  height: 200px;
-  width: 200px;
+  height: 350px;
+  width: 350px;
 }
 
 .empty__container p {

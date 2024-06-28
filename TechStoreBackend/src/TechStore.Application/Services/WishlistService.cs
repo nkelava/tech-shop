@@ -24,7 +24,7 @@ namespace TechStore.Application.Services
         public async Task<WishlistReadModel?> AddProductAsync(string email, int productId)
         {
             var wishlist = await GetExistingOrCreateNewWishlist(email);
-            var product = await _repository.Product.GetProductByIdAsync(productId);
+            var product = await _repository.Product.GetByIdAsync(productId);
 
             if (product == null)
                 return null;
@@ -68,7 +68,7 @@ namespace TechStore.Application.Services
                 if (item.Product is null)
                 {
                     var wishlistProductModel = _mapper.Map<WishlistProductModel>(item);
-                    var product = await _repository.Product.GetProductByIdAsync(item.ProductId);
+                    var product = await _repository.Product.GetByIdAsync(item.ProductId);
                     var productModel = _mapper.Map<ProductReadModel>(product);
                     wishlistProductModel.Product = productModel;
                     wishlistModel.Products.Add(wishlistProductModel);

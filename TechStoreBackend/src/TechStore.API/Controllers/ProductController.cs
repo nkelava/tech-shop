@@ -20,6 +20,7 @@ namespace TechStore.API.Controllers
             _logger = logger;
         }
 
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody]ProductCreateModel product)
@@ -30,7 +31,7 @@ namespace TechStore.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingProduct = await _productService.GetProductBySlugAsync(product.Slug);
+            var existingProduct = await _productService.GetBySlugAsync(product.Slug);
 
             if (existingProduct != null)
             {
@@ -52,24 +53,15 @@ namespace TechStore.API.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (id < 1)
-                return BadRequest();
-
-            int deleteProductId = await _productService.DeleteAsync(id);
-            
-            return deleteProductId < 1 ? NotFound() : Ok(id);
-        }
-
         [HttpPut("{id:int}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update(int id, [FromBody]ProductUpdateModel product)
+        public async Task<IActionResult> Update(int id, [FromBody] ProductUpdateModel product)
         {
             if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Invalid product update request for product ID {id}. ModelState: {@ModelState}", id, ModelState);
                 return BadRequest(ModelState);
+            }
 
             try
             {
@@ -81,7 +73,7 @@ namespace TechStore.API.Controllers
                     return NotFound("Product not found.");
                 }
 
-                _logger.LogInformation("Product {Code} successfully updated.", id);
+                _logger.LogInformation("Product {id} successfully updated.", id);
                 return Ok(updatedProduct);
             }
             catch (Exception ex)
@@ -92,118 +84,291 @@ namespace TechStore.API.Controllers
 
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetProductById(int id)
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
         {
             if (id < 1)
-                return BadRequest();
+            {
+                _logger.LogWarning("Invalid product ID {id} for delete request.", id);
+                return BadRequest("Invalid product ID.");
+            }
 
-            var product = await _productService.GetProductByIdAsync(id);
+            try
+            {
+                int? deleteProductId = await _productService.DeleteAsync(id);
 
-            return (product is null) ? NotFound() : Ok(product);
+                if (deleteProductId == null)
+                {
+                    _logger.LogWarning("Product with ID {id} was not found for delete request.", id);
+                    return NotFound("Product not found.");
+                }
+
+                _logger.LogInformation("Product {id} successfully deleted.", id);
+                return Ok(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting the product.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            if (id < 1)
+            {
+                _logger.LogWarning("Invalid product ID {id} for GetById request.", id);
+                return BadRequest("Invalid product ID.");
+            }
+            
+            try
+            {
+                var product = await _productService.GetByIdAsync(id);
+
+                if (product == null)
+                {
+                    _logger.LogWarning("Product with ID {id} was not found for GetById request.", id);
+                    return NotFound("Product not found.");
+                }
+
+                _logger.LogInformation("Product {id} retrieved successfully.", id);
+                return Ok(product);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving the product.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet("{slug}")]
-        public async Task<ActionResult<ProductReadModel>> GetProductBySlug(string slug)
+        public async Task<ActionResult<ProductReadModel>> GetBySlug(string slug)
         {
-            var product = await _productService.GetProductBySlugAsync(slug);
+            if (string.IsNullOrWhiteSpace(slug))
+            {
+                _logger.LogWarning("Invalid product slug '{slug}' for GetBySlug request.", slug);
+                return BadRequest("Invalid product slug.");
+            }
+            
+            try
+            {
+                var product = await _productService.GetBySlugAsync(slug);
 
-            return (product is null) ? NotFound() : Ok(product);
+                if (product == null)
+                {
+                    _logger.LogWarning("Product with slug '{slug}' was not found for GetBySlug request.", slug);
+                    return NotFound("Product not found.");
+                }
+
+                _logger.LogInformation("Product with slug '{slug}' retrieved successfully.", slug);
+                return Ok(product);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving the product by slug '{slug}'.", slug);
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetProducts()
-        {
-            var products = await _productService.GetAllProductsAsync();
-
-            return Ok(products);
-        }
-
-        [HttpGet("onsale")]
+        [HttpGet("hot-offers")]
         public async Task<IActionResult> GetProductsOnSaleAsync()
         {
-            var products = await _productService.GetProductsOnSaleAsync();
+            try
+            {
+                var hotOffers = await _productService.GetHotOffersAsync();
 
-            return Ok(products);
+                _logger.LogInformation("Retrieved hot offer products successfully.");
+                return Ok(hotOffers);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving hot products.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet("new")]
         public async Task<IActionResult> GetNewProducts()
         {
-            var newProducts = await _productService.GetNewProductsAsync();
+            try
+            {
+                var newProducts = await _productService.GetNewProductsAsync();
 
-            return Ok(newProducts);
+                _logger.LogInformation("Retrieved new products successfully.");
+                return Ok(newProducts);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving new products.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet("bestsellers")]
         public async Task<IActionResult> GetTopSellingProducts()
         {
-            var topSellingProducts = await _productService.GetTopSellingProductsAsync();
+            try
+            {
+                var bestSellers = await _productService.GetTopSellingProductsAsync();
 
-            return Ok(topSellingProducts);
+                _logger.LogInformation("Retrieved top selling products successfully.");
+                return Ok(bestSellers);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving top selling products.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
 
         [HttpGet("top")]
         public async Task<IActionResult> GetTopRatedProducts()
         {
-            var topRatedProducts = await _productService.GetTopRatedProductsAsync();
+            try
+            {
+                var topRated = await _productService.GetTopRatedProductsAsync();
 
-            return Ok(topRatedProducts);
+                _logger.LogInformation("Retrieved top rated products successfully.");
+                return Ok(topRated);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving top rated products.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet("subcategory/{id:int}")]
         public async Task<IActionResult> GetProductsBySubcategoryIdAsync(int id)
         {
-            var products = await _productService.GetProductsBySubcategoryIdAsync(id);
+            try
+            {
+                var products = await _productService.GetProductsBySubcategoryIdAsync(id);
 
-            return (products is null) ? NotFound() : Ok(products);
+                if (products == null)
+                {
+                    _logger.LogWarning("Subcategory with ID {Id} not found.", id);
+                    return NotFound("Subcategory not found.");
+                }
+
+                _logger.LogInformation("Retrieved products for subcategory ID {id} successfully.", id);
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving products for subcategory ID {id}.", id);
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet("subcategory/{slug}")]
         public async Task<IActionResult> GetProductsBySubcategorySlug(string slug)
         {
-            var products = await _productService.GetProductsBySubcategorySlugAsync(slug);
+            try
+            {
+                var products = await _productService.GetProductsBySubcategorySlugAsync(slug);
 
-            return (products is null) ? NotFound() : Ok(products);
+                if (products == null)
+                {
+                    _logger.LogWarning("Subcategory with slug {Slug} not found.", slug);
+                    return NotFound("Subcategory not found.");
+                }
+
+                _logger.LogInformation("Retrieved products for subcategory with slug '{slug}' successfully.", slug);
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving products for subcategory with slug '{slug}'.", slug);
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet("search/{search}")]
         public async Task<IActionResult> SearchProductsAsync(string search)
         {
-            var products = await _productService.SearchProductsAsync(search);
+            try
+            {
+                var products = await _productService.SearchProductsAsync(search);
 
-            return Ok(products);
+                _logger.LogInformation("Retrieved products for search query '{search}' successfully.", search);
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while searching products for query '{search}'.", search);
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet("price")]
         public async Task<IActionResult> GetProductsByPrice(decimal priceFrom, decimal priceTo)
         {
-            var products = await _productService.GetProductsByPriceAsync(priceFrom, priceTo);
+            try
+            {
+                var products = await _productService.GetProductsByPriceAsync(priceFrom, priceTo);
 
-            return Ok(products);
+                _logger.LogInformation("Retrieved products within the price range {priceFrom} - {priceTo} successfully.", priceFrom, priceTo);
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving products within the price range {priceFrom} - {priceTo}.", priceFrom, priceTo);
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
         [HttpGet("rating")]
         public async Task<IActionResult> GetProductsByRating(decimal rating)
         {
-            var products = await _productService.GetProductsByRatingAsync(rating);
+            try
+            {
+                var products = await _productService.GetProductsByRatingAsync(rating);
 
-            return Ok(products);
+                _logger.LogInformation("Retrieved products with rating {rating} successfully.", rating);
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving products with rating {rating}.", rating);
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
-        [HttpPost("specification")]
-        public async Task<IActionResult> AddSpecification([FromBody] ProductSpecificationModel productSpecification)
+        [HttpGet]
+        public async Task<IActionResult> GetProducts()
         {
-            if (productSpecification is null)
+            try
+            {
+                var products = await _productService.GetAllProductsAsync();
+
+                _logger.LogInformation("Retrieved products successfully.");
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving products.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
+        [HttpPost("specification/{id:int}")]
+        public async Task<IActionResult> AddSpecification(int id, [FromBody] ProductSpecificationModel productSpecification)
+        {
+            if (id < 0)
                 return BadRequest();
 
-            var product = await _productService.GetProductByIdAsync(productSpecification.ProductId);
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var product = await _productService.AddSpecificationAsync(id, productSpecification.ProductAttributes);
 
             if (product == null)
                 return NotFound();
 
-            await _productService.AddSpecificationAsync(product.Id, productSpecification.ProductAttributes);
             return Ok();
         }
     }

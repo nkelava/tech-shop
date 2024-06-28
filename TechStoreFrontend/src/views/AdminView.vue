@@ -4,6 +4,7 @@ import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import UserList from "@/components/admin/user/UserList.vue";
 import OrderList from "@/components/admin/order/OrderList.vue";
 import ReviewList from "@/components/admin/review/ReviewList.vue";
+import SubscriberList from "@/components/admin/newsletters/SubscriberList.vue";
 import CategoryDashboard from "./dashboard/CategoryDashboard.vue";
 import SubcategoryDashboard from "./dashboard/SubcategoryDashboard.vue";
 import PromoCodeDashboard from "./dashboard/PromoCodeDashboard.vue";
@@ -44,6 +45,11 @@ const tabs = [
     components: [ProductSpecificationForm],
   },
   {
+    value: "promo_codes",
+    label: "Promo Codes",
+    components: [PromoCodeDashboard],
+  },
+  {
     value: "users",
     label: "Users",
     components: [UserList],
@@ -59,9 +65,9 @@ const tabs = [
     components: [ReviewList],
   },
   {
-    value: "promo_codes",
-    label: "Promo Codes",
-    components: [PromoCodeDashboard],
+    value: "newsletters",
+    label: "Newsletters",
+    components: [SubscriberList],
   },
 ];
 

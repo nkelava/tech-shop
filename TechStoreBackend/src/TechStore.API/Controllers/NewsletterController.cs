@@ -51,32 +51,32 @@ namespace TechStore.API.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("{email}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Unsubscribe([FromBody] NewsletterCreateModel subscription)
+        public async Task<IActionResult> Unsubscribe(string email)
         {
-            if (!ModelState.IsValid)
+            if (string.IsNullOrWhiteSpace(email))
             {
-                _logger.LogWarning("Invalid subscription model received: {ModelStateErrors}", ModelState);
-                return BadRequest(ModelState);
+                _logger.LogWarning("Invalid email.");
+                return Unauthorized();
             }
 
             try
             {
-                var unsubscribedEmail= await _newsletterService.Unsubscribe(subscription.Email);
+                var unsubscribedEmail= await _newsletterService.Unsubscribe(email);
 
                 if (unsubscribedEmail == null)
                 {
-                    _logger.LogWarning("Subscribtion with email {Email} not found.", subscription.Email);
+                    _logger.LogWarning("Subscribtion with email {Email} not found.", email);
                     return Conflict("Email is not found.");
                 }
 
-                _logger.LogInformation("Successfully unsubscribed email: {Email}", subscription.Email);
-                return Ok(subscription.Email);
+                _logger.LogInformation("Successfully unsubscribed email: {Email}", email);
+                return Ok(email);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An unexpected error occurred during unsubscription for email: {Email}", subscription.Email);
+                _logger.LogError(ex, "An unexpected error occurred during unsubscription for email: {Email}", email);
                 return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
             }
         }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using TechStore.Application.Interfaces.Repositories.Base;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Newsletter;
@@ -21,8 +22,8 @@ namespace TechStore.Application.Services
 
         public async Task<NewsletterReadModel?> Subscribe(NewsletterCreateModel subscriptionModel)
         {
-            var existingSubscription = _repository.Newsletter.FindByCondition(s => s.Email == subscriptionModel.Email);
-
+            var existingSubscription = await _repository.Newsletter.FindByCondition(s => s.Email.ToLower().Equals(subscriptionModel.Email.ToLower())).FirstOrDefaultAsync();
+            
             if (existingSubscription != null)
                 return null;
 

@@ -3,7 +3,7 @@ import { computed, ref } from "vue";
 import { useWishlistStore } from "@/store";
 import WishlistTable from "./WishlistTable.vue";
 import WishlistIcon from "@/assets/icons/header/favorite.png";
-import EmptyStateImage from "@/assets/images/test/empty_state.png";
+import EmptyStateImage from "@/assets/images/test/empty_state.webp";
 
 const wishlist = useWishlistStore();
 const dialog = ref(false);
@@ -59,14 +59,13 @@ const toggleDialog = () => {
               <div class="d-flex align-center justify-center fill-height">
                 <v-progress-circular
                   :size="80"
-                  :width="7"
                   color="teal-darken-2"
                   indeterminate
                 ></v-progress-circular>
               </div>
             </template>
           </v-img>
-          <p>Your Wishlist is empty!</p>
+          <p class="text-h6">Your wishlit is empty!</p>
         </div>
         <v-card-actions>
           <v-btn color="red-darken-1" variant="text" @click="toggleDialog"> Close </v-btn>
@@ -95,8 +94,8 @@ const toggleDialog = () => {
 }
 
 .empty__image {
-  height: 200px;
-  width: 200px;
+  height: 350px;
+  width: 350px;
 }
 
 .empty__container p {

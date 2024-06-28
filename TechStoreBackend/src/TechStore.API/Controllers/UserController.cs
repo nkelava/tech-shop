@@ -52,12 +52,15 @@ namespace TechStore.API.Controllers
                     return NotFound("User not found.");
                 }
 
+                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+
                 var userModel = new
                 {
                     user.FirstName,
                     user.LastName,
                     user.PhoneNumber,
-                    user.Email
+                    user.Email,
+                    isAdmin
                 };
 
                 _logger.LogInformation("User with email {Email} fetched successfully.", currentUserEmail);

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RestSharp.Authenticators;
+using RestSharp;
 using System.Net;
 using System.Security.Claims;
 using TechStore.Application.Interfaces.Services;
@@ -16,12 +18,14 @@ namespace TechStore.API.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IConfiguration _configuration;
         private readonly ILogger<OrderController> _logger;
 
-        public OrderController(IOrderService orderService, IHttpContextAccessor httpContextAccessor, ILogger<OrderController> logger)
+        public OrderController(IOrderService orderService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, ILogger<OrderController> logger)
         {
             _orderService = orderService;
             _httpContextAccessor = httpContextAccessor;
+            _configuration = configuration;
             _logger = logger;
         }
 
@@ -39,6 +43,30 @@ namespace TechStore.API.Controllers
             try
             {
                 await _orderService.CreateAsync(order);
+
+                var emailBody =
+                     $"<h1 style=\"margin-bottom: 10px;\">Order Details</h1>" +
+                     $"<p style=\"margin-bottom: 40px;\">Thank you for your order! Below are your order details:</p>" +
+                     $"<p><strong>Order ID:</strong> {order.Id}</p>" +
+                     $"<p><strong>Customer Name:</strong> {order.FirstName} {order.LastName}</p>" +
+                     $"<p><strong>Email:</strong> {order.Email}</p>" +
+                     $"<p><strong>Contact Number:</strong> {order.ContactNumber}</p>" +
+                     $"<p><strong>Shipping Address:</strong> {order.ShippingAddress}, {order.City}, {order.Country} - {order.ZipCode}</p>" +
+                     $"<p><strong>Order Status:</strong> {order.Status}</p>" +
+                     $"<p><strong>Products:</strong></p>" +
+                     $"<ul>{string.Join("", order.Products.Select(p => $"<li>{p.Product.Name} (Quantity: {p.Quantity}, Price: {p.Product.Price:C})</li>"))}</ul>" +
+                     $"<p><strong>Delivery Address:</strong> {order.DeliveryAddress?.ShippingAddress}, {order.DeliveryAddress?.City}, {order.DeliveryAddress?.Country} - {order.DeliveryAddress?.ZipCode}</p>" +
+                     $"<p style=\"margin-top: 40px;\">If you have any questions or need further assistance, please contact our customer support.</p>" +
+                     $"<p>Thank you for shopping with us!<br/><br/>Best regards,<br/>TechPlanet Team</p>";
+                
+                var emailSent = SendEmail(emailBody, order.Email);
+
+                if (emailSent)
+                {
+                    _logger.LogInformation("User with email {Email} changed their password successfully.", order.Email);
+                    return Ok("Please, check your email. Order information is sent to your email address.");
+                }
+
                 return Ok(order);
             }
             catch (Exception ex)
@@ -201,6 +229,29 @@ namespace TechStore.API.Controllers
         private static bool CheckIfOrderStatusExists(int statusId)
         {
             return Enum.IsDefined(typeof(OrderStatus), statusId);
+        }
+
+        private Boolean SendEmail(string body, string email)
+        {
+            var options = new RestClientOptions()
+            {
+                BaseUrl = new Uri("https://api.mailgun.net/v3"),
+                Authenticator = new HttpBasicAuthenticator("api", _configuration.GetSection("EmailConfig:API_KEY").Value)
+            };
+            var client = new RestClient(options);
+            var request = new RestRequest();
+
+            request.AddParameter("domain", "sandbox582822b6660543f09628c673c33be7b1.mailgun.org", ParameterType.UrlSegment);
+            request.Resource = "{domain}/messages";
+            request.AddParameter("from", "Mailgun Sandbox <mailgun@sandbox582822b6660543f09628c673c33be7b1.mailgun.org>");
+            request.AddParameter("to", email);
+            request.AddParameter("subject", "Tech Planet - Order Details");
+            request.AddParameter("html", body);
+            request.Method = Method.Post;
+
+            var response = client.Execute(request);
+
+            return response.IsSuccessful;
         }
     }
 }

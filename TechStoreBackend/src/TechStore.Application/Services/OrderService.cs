@@ -137,7 +137,7 @@ namespace TechStore.Application.Services
                 foreach (var order in orders) {
                     foreach(var product in order.Products)
                     {
-                        var foundProduct = await _repository.Product.GetProductByIdAsync(product.ProductId);
+                        var foundProduct = await _repository.Product.GetByIdAsync(product.ProductId);
 
                         if (foundProduct != null)
                         {

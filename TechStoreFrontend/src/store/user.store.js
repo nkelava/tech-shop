@@ -8,6 +8,7 @@ export const useUserStore = defineStore("user", {
   }),
   getters: {
     isLoggedIn: (state) => !!state.user,
+    info: (state) => state.user,
   },
   actions: {
     async loginUser(email, password) {
@@ -49,6 +50,10 @@ export const useUserStore = defineStore("user", {
       await cart.clearStore();
       await wishlist.clearStore();
       this.clearStore();
+    },
+
+    async updateTokens(token, refreshToken) {
+      console.log(this.user);
     },
 
     async clearStore() {

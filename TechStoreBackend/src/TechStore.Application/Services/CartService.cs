@@ -24,7 +24,7 @@ namespace TechStore.Application.Services
         public async Task<CartReadModel?> AddProductAsync(string email, CartCreateModel createModel)
         {
             var cart = await GetExistingOrCreateNewCart(email);
-            var product = await _repository.Product.GetProductByIdAsync(createModel.ProductId);
+            var product = await _repository.Product.GetByIdAsync(createModel.ProductId);
 
             if (product == null)
                 return null;
@@ -87,7 +87,7 @@ namespace TechStore.Application.Services
                 foreach (var item in cart.Products)
                 {
                     var cartProductModel = _mapper.Map<CartProductModel>(item);
-                    var product = await _repository.Product.GetProductByIdAsync(item.ProductId);
+                    var product = await _repository.Product.GetByIdAsync(item.ProductId);
                     var productModel = _mapper.Map<ProductReadModel>(product);
                     cartProductModel.Product = productModel;
                     cartModel.Products.Add(cartProductModel);

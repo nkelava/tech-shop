@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { axiosPublic } from "@/api/axios";
 import ProductList from "@/components/ProductList.vue";
 import FilterSidebar from "@/components/TheFilterSidebar.vue";

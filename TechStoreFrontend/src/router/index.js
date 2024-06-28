@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { axiosPrivate } from "@/api/axios";
 import { useUserStore } from "@/store";
+import { useToast } from "vue-toastification";
 
 const userGuard = (to, from, next) => {
   const userStore = useUserStore();
@@ -11,11 +13,26 @@ const userGuard = (to, from, next) => {
   }
 };
 
-const adminGuard = (to, from, next) => {
+const adminGuard = async (to, from, next) => {
+  const toast = useToast();
   const userStore = useUserStore();
 
   if (userStore.isLoggedIn) {
-    next();
+    await axiosPrivate
+      .get("/users")
+      .then(async (resp) => {
+        if (resp?.data?.isAdmin) {
+          next();
+        } else {
+          next("/");
+        }
+      })
+      .catch(async (error) => {
+        console.log(error);
+        userStore.logoutUser();
+        toast.info("Your session has expired.");
+        next("/");
+      });
   } else {
     next("/");
   }

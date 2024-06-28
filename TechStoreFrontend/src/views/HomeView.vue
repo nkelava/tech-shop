@@ -31,7 +31,7 @@ onMounted(async () => {
     });
 
   hotOfferProducts.value = await axiosPublic
-    .get("/products/top")
+    .get("/products/hot-offers")
     .then((response) => response.data)
     .catch((error) => {
       console.error(`Failed to fetch hot offers:`, error);

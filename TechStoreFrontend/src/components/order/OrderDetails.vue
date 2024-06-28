@@ -22,6 +22,10 @@ const { order } = toRefs(props);
         <h4>Total Price</h4>
         <p>${{ order?.totalPrice }}</p>
       </v-col>
+      <v-col>
+        <h4>Status</h4>
+        <p>{{ getOrderStatus(order?.status) }}</p>
+      </v-col>
     </v-row>
     <v-row>
       <v-table class="order__table transparent">
@@ -31,7 +35,6 @@ const { order } = toRefs(props);
             <th class="text-left">Price</th>
             <th class="text-left">Quantity</th>
             <th class="text-left">Total</th>
-            <th class="text-left">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -40,10 +43,23 @@ const { order } = toRefs(props);
             <td>${{ orderProduct?.product?.price }}</td>
             <td>{{ orderProduct?.quantity }}</td>
             <td>${{ orderProduct?.totalPrice }}</td>
-            <td>{{ getOrderStatus(order?.status) }}</td>
           </tr>
         </tbody>
       </v-table>
+    </v-row>
+    <v-row>
+      <v-expansion-panels>
+        <v-expansion-panel title="Delivery Address">
+          <v-expansion-panel-text>
+            <p>{{ order?.deliveryAddress?.firstName }}</p>
+            <p>{{ order?.deliveryAddress?.lastName }}</p>
+            <p>{{ order?.deliveryAddress?.contactNumber }}</p>
+            <p>{{ order?.deliveryAddress?.country }}</p>
+            <p>{{ order?.deliveryAddress?.shippingAddress }}</p>
+            <p>{{ order?.deliveryAddress?.zipCode }}</p>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
     </v-row>
   </v-container>
 </template>

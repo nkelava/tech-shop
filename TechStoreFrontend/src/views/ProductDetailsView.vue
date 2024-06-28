@@ -1,12 +1,13 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { axiosPublic } from "@/api/axios";
 import ProductGallery from "@/components/ProductGallery.vue";
 import ProductDetails from "@/components/ProductDetails.vue";
 import TabsWrapper from "@/components/TabsWrapper.vue";
 
 const route = useRoute();
+const router = useRouter();
 const categorySlug = ref(route.params.category);
 const subcategorySlug = ref(route.params.subcategory);
 const productSlug = ref(route.params.productSlug);
@@ -37,7 +38,8 @@ const breadcrumbsItems = [
 const getProduct = async () => {
   await axiosPublic
     .get(`/products/${productSlug.value}`)
-    .then((response) => (product.value = response.data));
+    .then((response) => (product.value = response.data))
+    .catch((error) => console.log(error));
 };
 
 const updateProduct = async () => {

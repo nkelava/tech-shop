@@ -27,9 +27,10 @@ namespace TechStore.API.Controllers
         //private readonly JwtSettings _jwtSettings;
         private readonly TechStoreContext _context;
         private readonly TokenValidationParameters _tokenValidationParameters;
+        private readonly ILogger<AuthenticationController> _logger;
 
         public AuthenticationController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, 
-            IConfiguration configuration, TechStoreContext techStoreContext, TokenValidationParameters tokenValidationParameters)
+            IConfiguration configuration, TechStoreContext techStoreContext, TokenValidationParameters tokenValidationParameters, ILogger<AuthenticationController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -38,6 +39,7 @@ namespace TechStore.API.Controllers
             _configuration = configuration;
             _context = techStoreContext;
             _tokenValidationParameters = tokenValidationParameters;
+            _logger = logger;
         }
 
         [AllowAnonymous]
@@ -170,34 +172,41 @@ namespace TechStore.API.Controllers
             return BadRequest("Bad request.");
         }
 
-        [AllowAnonymous]
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody] TokenRequest tokenRequest)
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("Invalid token request model state.");
                 return BadRequest("Bad token request.");
             }
 
             try
             {
-                var jwtToken = await VerifyAndGenerateToken(tokenRequest);
+                var jwtToken = await VerifyAndGenerateTokenAsync(tokenRequest);
 
                 if (jwtToken == null)
                 {
+                    _logger.LogWarning("Invalid tokens provided for refresh.");
                     return Unauthorized("Invalid tokens.");
                 }
 
+                _logger.LogInformation("Token refreshed successfully.");
                 return Ok(jwtToken);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogWarning(ex, "Unauthorized access attempt during token refresh.");
+                return Unauthorized("Invalid tokens.");
             }
             catch (Exception ex)
             {
-                //_logger.LogError(ex, "An error occurred while creating the access and refresh tokens.");
+                _logger.LogError(ex, "An error occurred while processing the token refresh request.");
                 return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
             }
         }
 
-        private async Task<AuthResponse> VerifyAndGenerateToken(TokenRequest tokenRequest)
+        private async Task<AuthResponse?> VerifyAndGenerateTokenAsync(TokenRequest tokenRequest)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
 

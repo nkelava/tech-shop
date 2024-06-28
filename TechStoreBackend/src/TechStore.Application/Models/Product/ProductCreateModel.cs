@@ -17,6 +17,10 @@ namespace TechStore.Application.Models.Product
         
         public bool? OnSale { get; set; }
 
+
+        [Range(0, int.MaxValue, ErrorMessage = "Discount cannot be negative.")]
+        public int? Discount { get; set; }
+
         [Url(ErrorMessage = "Invalid image URL format.")]
         public string? ImageURL { get; set; }
 

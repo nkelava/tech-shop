@@ -47,8 +47,7 @@ const handleSave = async () => {
     toast.error("");
   }
   await axiosPrivate
-    .post("/products/specification", {
-      productId: product.value,
+    .post(`/products/specification/${product.value}`, {
       productAttributes: productAttributes.value,
     })
     .then(() => {

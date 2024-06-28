@@ -64,7 +64,7 @@ onMounted(async () => {
       </div>
     </div>
     <div class="footer-copyright">
-      <h4>&copy; 2023 TechPlanet</h4>
+      <h4>&copy; 2024 TechPlanet</h4>
     </div>
   </footer>
 </template>

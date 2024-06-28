@@ -20,7 +20,7 @@ namespace TechStore.Application.Services
 
         public async Task CreateAsync(string email, ReviewCreateModel reviewModel)
         {
-            var product = await _repository.Product.GetProductByIdAsync(reviewModel.ProductId);
+            var product = await _repository.Product.GetByIdWithoutSubcategoryAsync(reviewModel.ProductId);
             var review = _mapper.Map<Review>(reviewModel);
 
             if (product == null)
@@ -66,7 +66,7 @@ namespace TechStore.Application.Services
 
         public async Task<IEnumerable<ReviewReadModel>?> GetByProductIdAsync(int productId)
         {
-            var product = await _repository.Product.GetProductByIdAsync(productId);
+            var product = await _repository.Product.GetByIdAsync(productId);
 
             if (product == null)
                 return null;

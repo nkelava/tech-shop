@@ -1,26 +1,42 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations;
+
 namespace TechStore.Application.Models.Product
 {
     public class ProductUpdateModel
     {
-        public string Name { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Please provide product name.")]
+        public string Name { get; set; }
 
-        public string Slug { get; set; } = string.Empty;
-        public decimal? Price { get; set; } = 0;
-        public bool? OnSale { get; set; } = false;
+        [Required(ErrorMessage = "Please provide product slug.")]
+        [RegularExpression(@"^[a-z0-9]+(-[a-z0-9]+)*$", ErrorMessage = "Invalid slug format. Use lowercase letters, numbers and hyphens (e.g., 'this-is-a-slug-123').")]
+        public string Slug { get; set; }
 
-        public string ImageURL { get; set; } = string.Empty;
+        [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than zero.")]
+        public decimal? Price { get; set; }
 
-        public string Summary { get; set; } = string.Empty;
+        public bool? OnSale { get; set; }
 
-        public string Description { get; set; } = string.Empty;
 
-        public int UnitsInStock { get; set; } = 0;
-        
-        public int Discount { get; set; } = 0;
+        [Range(0, int.MaxValue, ErrorMessage = "Discount cannot be negative.")]
+        public int? Discount {  get; set; }
+
+        [Url(ErrorMessage = "Invalid image URL format.")]
+        public string? ImageURL { get; set; }
+
+        public string? Summary { get; set; }
+
+        public string? Description { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "Units in stock cannot be negative.")]
+        public int? UnitsInStock { get; set; }
+
 
         public int? PromoCodeId { get; set; }
+
+        [Required(ErrorMessage = "Subcategory ID is required.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Subcategory ID must be greater than zero.")]
         public int SubcategoryId { get; set; }
     }
 }

@@ -6,11 +6,12 @@ namespace TechStore.Application.Interfaces.Repositories
 {
     public interface IProductRepository : IRepository<Product>
     {
-        Task<Product?> GetProductByIdAsync(int productId);
-        Task<Product> GetProductBySlugAsync(string slug);
+        Task<Product?> GetByIdAsync(int productId);
+        Task<Product?> GetByIdWithoutSubcategoryAsync(int id);
+        Task<Product?> GetBySlugAsync(string slug);
 
         Task<IEnumerable<Product>> GetAllProductsAsync();
-        Task<IEnumerable<Product>> GetProductsOnSaleAsync();
+        Task<IEnumerable<Product>> GetHotOffersAsync();
         Task<IEnumerable<Product>> GetNewProductsAsync();
         Task<IEnumerable<Product>> GetTopSellingProductsAsync();
         Task<IEnumerable<Product>> GetTopRatedProductsAsync();
