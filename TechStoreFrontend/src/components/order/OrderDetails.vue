@@ -47,16 +47,16 @@ const { order } = toRefs(props);
         </tbody>
       </v-table>
     </v-row>
-    <v-row>
-      <v-expansion-panels>
-        <v-expansion-panel title="Delivery Address">
-          <v-expansion-panel-text>
-            <p>{{ order?.deliveryAddress?.firstName }}</p>
-            <p>{{ order?.deliveryAddress?.lastName }}</p>
-            <p>{{ order?.deliveryAddress?.contactNumber }}</p>
-            <p>{{ order?.deliveryAddress?.country }}</p>
-            <p>{{ order?.deliveryAddress?.shippingAddress }}</p>
-            <p>{{ order?.deliveryAddress?.zipCode }}</p>
+    <v-row v-if="order?.deliveryAddress">
+      <v-expansion-panels class="expansion">
+        <v-expansion-panel class="expansion__panel" title="Delivery Address">
+          <v-expansion-panel-text class="expansion__content">
+            <p><strong>First Name:</strong> {{ order?.deliveryAddress?.firstName }}</p>
+            <p><strong>Last Name:</strong> {{ order?.deliveryAddress?.lastName }}</p>
+            <p><strong>Contact Number:</strong> {{ order?.deliveryAddress?.contactNumber }}</p>
+            <p><strong>Country:</strong> {{ order?.deliveryAddress?.country }}</p>
+            <p><strong>Shipping Address:</strong> {{ order?.deliveryAddress?.shippingAddress }}</p>
+            <p><strong>Zip Code:</strong> {{ order?.deliveryAddress?.zipCode }}</p>
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -82,6 +82,14 @@ const { order } = toRefs(props);
 .order__table {
   width: 100%;
   font-size: 14px;
+}
+
+.expansion__panel {
+  background-color: var(--ts-c-primary-mute) !important;
+}
+
+.expansion__content {
+  padding: 1rem 0;
 }
 
 :deep(table) {

@@ -55,6 +55,7 @@ const handleSubmit = async () => {
         console.log(error);
       });
 
+    // TODO: check if cart is cleared on the backend
     await cart.clearStore();
 
     if (cart.isUserLoggedIn) {
@@ -64,6 +65,63 @@ const handleSubmit = async () => {
         toast.error("Uh-oh! There was an issue processing your order. Please try again.");
         return;
       }
+    }
+
+    toast.success("Order received! Thank you for choosing us.");
+    resetForm(vp$, paymentState, initPaymentState);
+    resetForm(vd$, deliveryState, initDeliveryState);
+    emit("toggleDialog");
+  } catch {
+    toast.error("Uh-oh! There was an issue processing your order. Please try again.");
+  }
+};
+
+const handleStripeCheckout = async () => {
+  if (!(await vp$.value.$validate())) return;
+
+  if (hasDeliveryAddress.value) {
+    if (!(await vd$.value.$validate())) return;
+  }
+
+  const order = {
+    ...paymentState,
+    ...(hasDeliveryAddress.value ? { deliveryAddress: { ...deliveryState } } : {}),
+    products: cart.formattedCartItemsForOrder,
+  };
+
+  try {
+    const resp = await axiosPublic
+      .post("/orders/create-checkout-session", order)
+      // .then(async () => {
+      //   await cart.clearStore();
+      //   if (cart.isUserLoggedIn) {
+      //     const resp = await axiosPrivate.delete("/carts").catch((error) => console.log(error));
+      //     if (resp.status !== 200) {
+      //       toast.error("Uh-oh! There was an issue while cleaning your cart. Please try again.");
+      //       return;
+      //     }
+      //   }
+      // })
+      .catch((error) => {
+        toast.error("Uh-oh! There was an issue processing your order. Please try again.");
+        console.log(error);
+      });
+
+    // TODO: check if cart is cleared on the backend
+    // await cart.clearStore();
+
+    // if (cart.isUserLoggedIn) {
+    //   const resp = await axiosPrivate.delete("/carts").catch((error) => console.log(error));
+
+    //   if (resp.status !== 200) {
+    //     toast.error("Uh-oh! There was an issue processing your order. Please try again.");
+    //     return;
+    //   }
+    // }
+
+    console.log(resp);
+    if (resp.data) {
+      window.location.href = resp.data.url;
     }
 
     toast.success("Order received! Thank you for choosing us.");
@@ -199,6 +257,9 @@ const closeDialog = () => {
         <v-btn class="btn-action--cancel" variant="text" @click="closeDialog"> Back To Cart </v-btn>
         <v-btn class="btn-action--submit" variant="text" @click="handleSubmit">
           Complete Order
+        </v-btn>
+        <v-btn class="btn-action--submit" variant="text" @click="handleStripeCheckout">
+          Stripe Checkout
         </v-btn>
       </v-card-actions>
     </v-card>

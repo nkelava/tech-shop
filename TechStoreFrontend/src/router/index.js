@@ -76,6 +76,20 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/order-success",
+      name: "order-success",
+      component: () => import("../views/OrderSuccess.vue"),
+      beforeEnter: userGuard,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/order-cancel",
+      name: "order-cancel",
+      component: () => import("../views/OrderCancel.vue"),
+      beforeEnter: userGuard,
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/:category",
       name: "category",
       component: () => import("../views/CategoryView.vue"),

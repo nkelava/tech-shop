@@ -42,8 +42,18 @@ onMounted(async () => {
     .catch((error) => console.log(error));
 });
 
+const refetchProducts = async () => {
+  await axiosPrivate
+    .get("/products")
+    .then((resp) => {
+      if (resp?.status !== 200) return;
+      products.value = resp.data;
+    })
+    .catch((error) => console.log(error));
+};
+
 const handleSave = async () => {
-  if (productAttributes.value.length < 1) {
+  if (productAttributes?.value.length < 1) {
     toast.error("");
   }
   await axiosPrivate
@@ -62,19 +72,19 @@ const handleSave = async () => {
 };
 
 function removeAttribute(attributeId, attributeValueId) {
-  productAttributes.value = productAttributes.value.filter(
+  productAttributes.value = productAttributes?.value.filter(
     (pa) => pa.attribute.id !== attributeId || pa.attributeValue.id !== attributeValueId
   );
 }
 
 function handleAttributeValuePairAdd() {
   if (attribute.value !== null && attributeValue.value !== null) {
-    const pairExists = productAttributes.value.find(
+    const pairExists = productAttributes?.value.find(
       (av) => av.attribute.id === attribute.value && av.attributeValue.id === attributeValue.value
     );
 
     if (!pairExists) {
-      productAttributes.value.push({
+      productAttributes?.value.push({
         attributeId: attribute.value,
         attribute: attributes.value.find((a) => a.id === attribute.value),
         attributeValueId: attributeValue.value,
@@ -92,6 +102,8 @@ function resetForm() {
   attribute.value = null;
   attributeValue.value = null;
   productAttributes.value = null;
+
+  refetchProducts();
 }
 </script>
 

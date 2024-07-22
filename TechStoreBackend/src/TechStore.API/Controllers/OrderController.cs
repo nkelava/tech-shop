@@ -7,6 +7,7 @@ using System.Security.Claims;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Order;
 using TechStore.Domain.Enums.Order;
+using Stripe.Checkout;
 
 
 namespace TechStore.API.Controllers
@@ -29,6 +30,53 @@ namespace TechStore.API.Controllers
             _logger = logger;
         }
 
+
+        [AllowAnonymous]
+        [HttpPost("create-checkout-session")]
+        public async Task<IActionResult> CreateCheckoutSession([FromBody] OrderCreateModel order)
+        {
+            try
+            {
+                var options = new SessionCreateOptions
+                {
+                    LineItems = new List<SessionLineItemOptions>(),
+                    Mode = "payment",
+                    SuccessUrl = "http://localhost:5173/order-success",
+                    CancelUrl = "http://localhost:5173/order-cancel",
+                };
+
+                foreach (var item in order.Products)
+                {
+                    var sessionLineItem = new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = (long)(item.Product.Price * 100),
+                            Currency = "eur",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = item.Product.Name,
+                            },
+                        },
+                        Quantity = item.Quantity
+                    };
+
+                    options.LineItems.Add(sessionLineItem);
+                }
+
+                var service = new SessionService();
+                Session session = service.Create(options);
+
+                return Ok(session.Url);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while creating the order.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+            }
+            //Response.Headers.Add("Location", session.Url);
+            //return new StatusCodeResult(303);
+        }
 
         [AllowAnonymous]
         [HttpPost]

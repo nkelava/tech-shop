@@ -201,6 +201,7 @@ function resetForm() {
       ></v-checkbox>
       <base-input
         v-model="productState.discount"
+        name="discount"
         type="number"
         class="mt-5"
         label="Discount"

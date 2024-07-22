@@ -68,7 +68,7 @@ const filteredOrders = computed(() => {
   return orders.value.filter(
     (order) =>
       order?.email.toLowerCase().includes(searchQuery.value.trim().toLowerCase()) ||
-      order?.id === parseInt(searchQuery.value.trim())
+      order?.id?.toString().includes(searchQuery.value.trim())
   );
 });
 
@@ -162,7 +162,7 @@ const currentPageItems = computed(() => {
             </td>
           </tr>
           <tr v-if="orders.length < 1">
-            <td>Nothing to see here yet.</td>
+            <td>Nothing to see here yet</td>
           </tr>
         </tbody>
       </v-table>

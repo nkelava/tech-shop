@@ -20,6 +20,7 @@ namespace TechStore.Application.Specifications.OrderSpecification
             : base(o => o.Email.Equals(email))
         {
             AddInclude(o => o.Products);
+            AddInclude(o => o.DeliveryAddress);
         }
     }
 }

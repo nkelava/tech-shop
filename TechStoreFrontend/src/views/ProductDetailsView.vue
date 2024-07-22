@@ -59,7 +59,7 @@ onMounted(async () => {
       </template>
     </v-breadcrumbs>
     <div class="product-container ts-container">
-      <product-gallery class="gallery" />
+      <product-gallery class="gallery" :product="product" />
       <product-details class="info" :product="product" />
       <tabs-wrapper class="tabs" :product="product" :update="updateProduct" />
     </div>

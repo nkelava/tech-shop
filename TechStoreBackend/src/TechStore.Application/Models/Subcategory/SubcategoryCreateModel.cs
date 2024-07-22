@@ -6,8 +6,8 @@ namespace TechStore.Application.Models.Subcategory
     public class SubcategoryCreateModel
     {
         [Required(ErrorMessage = "Please provide a name.")]
-        [MaxLength(48, ErrorMessage = "Name  must be 48 characters or fewer.")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Name can only contain alphabetic characters.")]
+        [MaxLength(48, ErrorMessage = "Name must be 48 characters or fewer.")]
+        [RegularExpression(@"^[a-zA-Z ]+$", ErrorMessage = "Name can only contain alphabetic characters.")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Please provide a slug.")]

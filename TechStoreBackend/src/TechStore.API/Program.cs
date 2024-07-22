@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Stripe;
 using TechStore.API.Configuration;
 using TechStore.Application.Interfaces.Repositories;
 using TechStore.Application.Interfaces.Repositories.Base;
@@ -13,7 +14,7 @@ using TechStore.Infrastructure.Data;
 using TechStore.Infrastructure.Data.Seed;
 using TechStore.Infrastructure.Repositories;
 using TechStore.Infrastructure.Repositories.Base;
-
+using TechStore.Infrastructure.Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,8 @@ var app = builder.Build();
 
 SeedData(app);
 
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -73,6 +76,7 @@ void ConfigureServices(IServiceCollection services)
     ConfigureSeeder(services);
     ConfigureApplicationLayer(services);
     ConfigureInfrastructureLayer(services);
+    ConfigureStripe(services);
 }
 
 void ConfigureDatabase(IServiceCollection services)
@@ -87,6 +91,11 @@ void ConfigureSeeder(IServiceCollection services)
     services.AddTransient<DataSeeder>();
 }
 
+void ConfigureStripe(IServiceCollection services)
+{
+    services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+}
+
 void ConfigureHttpContextAccessor(IServiceCollection services)
 {
     services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -96,8 +105,8 @@ void ConfigureIdentity(IServiceCollection services)
 {
     services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<TechStoreContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    .AddEntityFrameworkStores<TechStoreContext>();
 
     services.Configure<IdentityOptions>(options =>
     {
@@ -155,9 +164,9 @@ void ConfigureApplicationLayer(IServiceCollection services)
     services.AddScoped<ICategoryService, CategoryService>();
     services.AddScoped<INewsletterService, NewsletterService>();
     services.AddScoped<IOrderService, OrderService>();
-    services.AddScoped<IProductService, ProductService>();
+    services.AddScoped<IProductService, TechStore.Application.Services.ProductService>();
     services.AddScoped<IPromoCodeService, PromoCodeService>();
-    services.AddScoped<IReviewService, ReviewService>();
+    services.AddScoped<IReviewService, TechStore.Application.Services.ReviewService>();
     services.AddScoped<ISubcategoryService, SubcategoryService>();
     services.AddScoped<IWishlistService, WishlistService>();
 }

@@ -18,9 +18,13 @@ const pageState = ref({
   currentPage: 1,
   itemsPerPage: 3,
 });
-const totalPageCount = computed(() => Math.ceil(orders.length / pageState.value.itemsPerPage));
+
+const totalPageCount = computed(() =>
+  Math.ceil(orders?.value?.length / pageState.value.itemsPerPage)
+);
+
 const currentPageItems = computed(() => {
-  return orders.value?.slice(
+  return orders?.value?.slice(
     (pageState.value.currentPage - 1) * pageState.value.itemsPerPage,
     pageState.value.currentPage * pageState.value.itemsPerPage
   );
@@ -35,8 +39,8 @@ const currentPageItems = computed(() => {
     <v-row v-for="order in currentPageItems" :key="order?.id">
       <order-details :order="order" />
     </v-row>
-    <v-container>
-      <v-row justify="center" v-if="totalPageCount > 1">
+    <v-container v-if="orders.length > pageState.itemsPerPage">
+      <v-row justify="center">
         <v-col cols="10">
           <v-container class="max-width">
             <v-pagination v-model="pageState.currentPage" class="my-4" :length="totalPageCount" />

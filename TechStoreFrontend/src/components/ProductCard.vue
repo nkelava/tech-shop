@@ -26,7 +26,6 @@ function addToWishlist(product) {
 
 const productPrice = computed(() => {
   const product = props?.product;
-
   return product?.onSale
     ? product?.price - (product?.price * product?.discount) / 100
     : product?.price;

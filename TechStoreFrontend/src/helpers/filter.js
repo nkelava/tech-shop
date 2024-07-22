@@ -8,7 +8,7 @@ export function filterProducts(products, price, rating, filters) {
     if (filterAttributes.length) {
       checkAttributeValue = filterAttributes.some((attrId) =>
         Array.from(filters.get(attrId)).some((attrValue) =>
-          product.productAttributes.map((attr) => attr.attributeValueId).includes(attrValue)
+          product.productAttributes.some((attr) => attr.attributeValueId === attrValue)
         )
       );
     }

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, toRefs } from "vue";
 import { Carousel, Slide } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 import Helios from "@/assets/images/test/products/helios300.png";
@@ -8,6 +8,9 @@ import HeliosR from "@/assets/images/test/products/helios300-rside.png";
 import HeliosB from "@/assets/images/test/products/helios300-back.png";
 import HeliosA from "@/assets/images/test/products/helios300-both.png";
 
+const props = defineProps(["product"]);
+const { product } = toRefs(props);
+console.log(product.value);
 const productImages = [Helios, HeliosL, HeliosR, HeliosB, HeliosA];
 const currentSlide = ref(0);
 const slideTo = (val) => {

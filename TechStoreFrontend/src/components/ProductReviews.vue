@@ -96,6 +96,7 @@ async function toggleDialog() {
         </v-row>
       </v-container>
     </v-list>
+    <p v-else-if="!userStore?.isLoggedIn">Create an account to leave the first review.</p>
     <p v-else>Be the first to leave a review.</p>
     <div class="d-flex justify-end">
       <v-btn

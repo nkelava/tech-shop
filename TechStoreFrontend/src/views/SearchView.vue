@@ -72,6 +72,7 @@ const sortedProducts = computed(() => {
       </div>
       <hr />
       <product-list :products="sortedProducts" />
+      <v-if>No products found matching your search criteria.</v-if>
     </div>
   </div>
 </template>
