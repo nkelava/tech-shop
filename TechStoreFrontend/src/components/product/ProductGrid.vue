@@ -1,5 +1,5 @@
 <script setup>
-import ProductCard from "@/components/ProductCard.vue";
+import ProductCard from "@/components/product/ProductCard.vue";
 
 const props = defineProps(["products"]);
 // TODO: add slice count as prop if you dont think of another solution

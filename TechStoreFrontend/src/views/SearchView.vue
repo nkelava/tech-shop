@@ -3,7 +3,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { axiosPublic } from "@/api/axios";
 import ImageSlider from "@/components/ImageSlider.vue";
-import ProductList from "@/components/ProductList.vue";
+import ProductList from "@/components/product/ProductList.vue";
 
 const route = useRoute();
 const products = ref([]);

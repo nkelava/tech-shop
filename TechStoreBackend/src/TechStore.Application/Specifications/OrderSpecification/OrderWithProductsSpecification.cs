@@ -16,8 +16,8 @@ namespace TechStore.Application.Specifications.OrderSpecification
             AddInclude(o => o.Products);
         }
 
-        public OrderWithProductsSpecification(string email)
-            : base(o => o.Email.Equals(email))
+        public OrderWithProductsSpecification(string userId)
+            : base(o => o.ApplicationUserId != null && o.ApplicationUserId.Equals(userId))
         {
             AddInclude(o => o.Products);
             AddInclude(o => o.DeliveryAddress);

@@ -3,7 +3,7 @@ import { onMounted, ref } from "vue";
 import { useToast } from "vue-toastification";
 import { axiosPrivate } from "@/api/axios";
 import FormContainer from "@/components/common/FormContainer.vue";
-import { ITEM_CREATE_FAIL, ITEM_CREATE_SUCCESS } from "../../../constants/messages/create";
+import { ITEM_CREATE_FAIL, ITEM_CREATE_SUCCESS } from "@/constants/messages/create";
 
 const emit = defineEmits(["reload"]);
 const toast = useToast();

@@ -1,13 +1,13 @@
 ﻿using TechStore.Application.Specifications.Base;
-using TechStore.Domain.Entities.Cart;
+using TechStore.Domain.Entities.CartAggregate;
 
 
 namespace TechStore.Application.Specifications.CartSpecification
 {
     public class CartWithProductsSpecification : BaseSpecification<Cart>
     {
-        public CartWithProductsSpecification(string email)
-           : base(c => c.Email.ToLower().Equals(email.ToLower()))
+        public CartWithProductsSpecification(string userId)
+           : base(c => c.ApplicationUser != null && c.ApplicationUser.Id.Equals(userId))
         {
             AddInclude(c => c.Products);
         }

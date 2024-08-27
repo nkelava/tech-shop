@@ -17,6 +17,7 @@ namespace TechStore.Infrastructure.Repositories
         public async Task<Product?> GetByIdAsync(int id) {
             return await FindByCondition(p => p.Id.Equals(id))
                 .Include(p => p.Subcategory)
+                    .ThenInclude(s => s.Category)
                 .FirstOrDefaultAsync();
         }
 
@@ -33,6 +34,8 @@ namespace TechStore.Infrastructure.Repositories
                     .ThenInclude(pas => pas.Attribute)
                 .Include(p => p.ProductAttributes)
                     .ThenInclude(pas => pas.AttributeValue)
+                .Include(p => p.Subcategory)
+                    .ThenInclude(s => s.Category)
                 .FirstOrDefaultAsync();
         }
 

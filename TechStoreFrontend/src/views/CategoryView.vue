@@ -4,7 +4,7 @@ import { useRoute } from "vue-router";
 import { axiosPublic } from "@/api/axios";
 import ImageSlider from "@/components/ImageSlider.vue";
 import BaseGrid from "@/components/common/BaseGrid.vue";
-import SubcategoryCard from "@/components/SubcategoryCard.vue";
+import SubcategoryCard from "@/components/subcategory/SubcategoryCard.vue";
 
 const route = useRoute();
 const categorySlug = ref(route.params.category);

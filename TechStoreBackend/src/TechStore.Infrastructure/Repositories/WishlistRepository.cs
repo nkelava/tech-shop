@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TechStore.Application.Interfaces.Repositories;
 using TechStore.Application.Specifications.WishlistSpecification;
-using TechStore.Domain.Entities.Wishlist;
+using TechStore.Domain.Entities.WishlistAggregate;
 using TechStore.Infrastructure.Data;
 using TechStore.Infrastructure.Repositories.Base;
 
@@ -14,9 +14,9 @@ namespace TechStore.Infrastructure.Repositories
             : base(techStoreContext) { }
 
 
-        public async Task<Wishlist?> GetByEmailAsync(string email)
+        public async Task<Wishlist?> GetByUserIdAsync(string id)
         {
-            var spec = new WishlistWithProductsSpecification(email);
+            var spec = new WishlistWithProductsSpecification(id);
             return await Find(spec).FirstOrDefaultAsync();
         }
     }

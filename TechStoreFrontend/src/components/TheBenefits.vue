@@ -1,9 +1,9 @@
 <script setup>
 import BenefitCard from "@/components/TheBenefitsCard.vue";
-import HomeIcon from "../assets/icons/benefits/house.png";
-import RefundIcon from "../assets/icons/benefits/refund.png";
-import SupportIcon from "../assets/icons/benefits/shield.png";
-import RocketIcon from "../assets/icons/benefits/rocket.png";
+import HomeIcon from "@/assets/icons/benefits/house.png";
+import RefundIcon from "@/assets/icons/benefits/refund.png";
+import SupportIcon from "@/assets/icons/benefits/shield.png";
+import RocketIcon from "@/assets/icons/benefits/rocket.png";
 </script>
 
 <template>

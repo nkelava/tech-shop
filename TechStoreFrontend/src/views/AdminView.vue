@@ -11,7 +11,7 @@ import PromoCodeDashboard from "./dashboard/PromoCodeDashboard.vue";
 import AttributeValuesDashboard from "./dashboard/AttributeValuesDashboard.vue";
 import AttributeDashboard from "./dashboard/AttributeDashboard.vue";
 import ProductDashboard from "./dashboard/ProductDashboard.vue";
-import ProductSpecificationForm from "../components/admin/product-specification/ProductSpecificationForm.vue";
+import ProductSpecificationForm from "@/components/admin/product-specification/ProductSpecificationForm.vue";
 
 const tabs = [
   {

@@ -1,10 +1,11 @@
-﻿    using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Security.Claims;
 using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Cart;
+using TechStore.Domain.Entities.User;
 
 
 namespace TechStore.API.Controllers
@@ -15,13 +16,15 @@ namespace TechStore.API.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartService _cartService;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<CartController> _logger;
 
 
-        public CartController(ICartService cartService, IHttpContextAccessor httpContextAccessor, ILogger<CartController> logger)
+        public CartController(ICartService cartService, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor, ILogger<CartController> logger)
         {
             _cartService = cartService;
+            _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
         }
@@ -30,7 +33,7 @@ namespace TechStore.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CartCreateModel cart)
         {
-            var currentUserEmail =  _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
+            var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
 
             if (string.IsNullOrWhiteSpace(currentUserEmail))
             {
@@ -46,7 +49,8 @@ namespace TechStore.API.Controllers
 
             try
             {
-                var response = await _cartService.AddProductAsync(currentUserEmail, cart);
+                var currentUser = await _userManager.FindByEmailAsync(currentUserEmail);
+                var response = await _cartService.AddProductAsync(currentUser, cart);
 
                 if (response == null)
                 {
@@ -75,9 +79,11 @@ namespace TechStore.API.Controllers
                 return Unauthorized();
             }
 
+
             try
             {
-                var cart = await _cartService.ClearCart(currentUserEmail);
+                var currentUser = await _userManager.FindByEmailAsync(currentUserEmail);
+                var cart = await _cartService.ClearCart(currentUser);
 
                 if (cart == null)
                 {
@@ -113,9 +119,11 @@ namespace TechStore.API.Controllers
                 return BadRequest("Invalid product ID.");
             }
 
+
             try 
             {
-                var cart = await _cartService.GetByEmailAsync(currentUserEmail);
+                var currentUser = await _userManager.FindByEmailAsync(currentUserEmail);
+                var cart = await _cartService.GetAsync(currentUser);
 
                 if (cart == null)
                 {
@@ -154,7 +162,8 @@ namespace TechStore.API.Controllers
 
             try
             {
-                var cart = await _cartService.GetByEmailAsync(currentUserEmail);
+                var currentUser = await _userManager.FindByEmailAsync(currentUserEmail);
+                var cart = await _cartService.GetAsync(currentUser);
 
                 if (cart == null)
                 {

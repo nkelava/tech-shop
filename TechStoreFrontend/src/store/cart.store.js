@@ -30,7 +30,7 @@ export const useCartStore = defineStore("cart", {
       const itemIndex = state.items.findIndex((item) => item.id === id);
 
       if (itemIndex >= 0) {
-        return state.items[itemIndex].quantity * state.items[itemIndex].price;
+        return (state.items[itemIndex].quantity * state.items[itemIndex].price).toFixed(2);
       }
     },
     isUserLoggedIn: () => {
@@ -218,6 +218,15 @@ export const useCartStore = defineStore("cart", {
 
     async clearStore() {
       this.$reset();
+
+      if (this.isUserLoggedIn) {
+        const resp = await axiosPrivate.delete("/carts").catch((error) => console.log(error));
+
+        if (resp.status !== 200) {
+          toast.error("Uh-oh! There was an issue while cleaning your cart. Please try again.");
+          return;
+        }
+      }
     },
   },
   persist: true,

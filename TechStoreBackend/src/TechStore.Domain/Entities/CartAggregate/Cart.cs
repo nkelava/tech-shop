@@ -1,15 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TechStore.Domain.Entities.Base;
 using TechStore.Domain.Entities.ProductAggregate;
+using TechStore.Domain.Entities.User;
 
 
-namespace TechStore.Domain.Entities.Cart
+namespace TechStore.Domain.Entities.CartAggregate
 {
-    [Index(nameof(Email), IsUnique = true)]
     public class Cart : Entity
     {
-        public string Email { get; set; }
         public decimal TotalPrice { get; set; } = 0;
+
+        // 1 - 1
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser? ApplicationUser { get; set; }
 
         // n - n
         public List<CartProduct> Products { get; set; } = new List<CartProduct>();

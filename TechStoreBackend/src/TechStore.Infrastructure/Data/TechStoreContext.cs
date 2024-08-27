@@ -1,19 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TechStore.Application.Models.Authorization;
 using TechStore.Domain.Entities;
-using TechStore.Domain.Entities.Cart;
+using TechStore.Domain.Entities.CartAggregate;
 using TechStore.Domain.Entities.OrderAggregate;
 using TechStore.Domain.Entities.ProductAggregate;
 using TechStore.Domain.Entities.SubcategoryAggregate;
 using TechStore.Domain.Entities.User;
-using TechStore.Domain.Entities.Wishlist;
+using TechStore.Domain.Entities.WishlistAggregate;
 
 
 namespace TechStore.Infrastructure.Data
 {
-    public  class TechStoreContext : IdentityDbContext<ApplicationUser>
+    public class TechStoreContext : IdentityDbContext<ApplicationUser>
     {
         public TechStoreContext(DbContextOptions<TechStoreContext> options) : base(options) { }
 
@@ -45,8 +44,12 @@ namespace TechStore.Infrastructure.Data
 
             builder.Entity<ProductAttributeSet>(ConfigureProductAttributes);
             builder.Entity<CartProduct>(ConfigureCartProducts);
-            builder.Entity<WishlistProduct>(ConfigureWishListProducts);
+            builder.Entity<Cart>(ConfigureCartUser);
             builder.Entity<OrderProduct>(ConfigureOrderProducts);
+            builder.Entity<Order>(ConfigureOrderUser);
+            builder.Entity<RefreshToken>(ConfigureRefreshTokenUser);
+            builder.Entity<WishlistProduct>(ConfigureWishListProducts);
+            builder.Entity<Wishlist>(ConfigureWishlistUser);
         }
 
         private static void SetTableNamesAsSingle(ModelBuilder builder)
@@ -68,9 +71,9 @@ namespace TechStore.Infrastructure.Data
             builder.HasKey(cp => new { cp.CartId, cp.ProductId });
         }
 
-        private void ConfigureWishListProducts(EntityTypeBuilder<WishlistProduct> builder)
+        private void ConfigureCartUser(EntityTypeBuilder<Cart> builder)
         {
-            builder.HasKey(wp => new { wp.WishlistId, wp.ProductId });
+            builder.HasOne(c => c.ApplicationUser).WithOne(u => u.Cart).HasForeignKey<ApplicationUser>(u => u.CartId).IsRequired(false);
         }
 
         private void ConfigureOrderProducts(EntityTypeBuilder<OrderProduct> builder)
@@ -79,6 +82,26 @@ namespace TechStore.Infrastructure.Data
 
             builder.HasOne(o => o.Order).WithMany(op => op.Products).HasForeignKey(o => o.OrderId);
             builder.HasOne(p => p.Product).WithMany(op => op.Orders).HasForeignKey(p => p.ProductId);
+        }
+
+        private void ConfigureOrderUser(EntityTypeBuilder<Order> builder)
+        {
+            builder.HasOne(o => o.ApplicationUser).WithMany(u => u.Orders).HasForeignKey(o => o.ApplicationUserId).IsRequired(false);
+        }
+
+        private void ConfigureRefreshTokenUser(EntityTypeBuilder<RefreshToken> builder)
+        {
+            builder.HasOne(rt => rt.ApplicationUser).WithOne(u => u.RefreshToken).HasForeignKey<ApplicationUser>(u => u.RefreshTokenId).IsRequired(false);
+        }
+
+        private void ConfigureWishListProducts(EntityTypeBuilder<WishlistProduct> builder)
+        {
+            builder.HasKey(wp => new { wp.WishlistId, wp.ProductId });
+        }
+
+        private void ConfigureWishlistUser(EntityTypeBuilder<Wishlist> builder)
+        {
+            builder.HasOne(w => w.ApplicationUser).WithOne(u => u.Wishlist).HasForeignKey<ApplicationUser>(u => u.CartId).IsRequired(false);
         }
     }
 }

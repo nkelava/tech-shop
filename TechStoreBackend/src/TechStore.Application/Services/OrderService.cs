@@ -87,7 +87,7 @@ namespace TechStore.Application.Services
 
             _repository.Order.Delete(order);
             await _repository.SaveAsync();
-            
+
             return true;
         }
 
@@ -98,8 +98,23 @@ namespace TechStore.Application.Services
             if (order == null)
                 return null;
 
-            var status = (OrderStatus)updateModel.OrderStatusValue;
-            order.Status = status;
+            order.Status = (OrderStatus)updateModel.OrderStatusValue;
+            order.UpdatedAt = DateTime.Now;
+
+            _repository.Order.Update(order);
+            await _repository.SaveAsync();
+
+            return order.Id;
+        }
+
+        public async Task<int?> UpdatePaymentStatusAsync(int orderId, PaymentStatus paymentStatus)
+        {
+            var order = _repository.Order.FindById(orderId);
+
+            if (order == null)
+                return null;
+
+            order.PaymentStatus = (PaymentStatus)paymentStatus;
             order.UpdatedAt = DateTime.Now;
 
             _repository.Order.Update(order);
@@ -119,6 +134,17 @@ namespace TechStore.Application.Services
             return orderModel;
         }
 
+        public async Task<OrderReadModel?> GetBySessionIdAsync(string sessionId)
+        {
+            var order = await _repository.Order.GetBySessionIdAsync(sessionId);
+
+            if (order == null)
+                return null;
+
+            var orderModel = _mapper.Map<OrderReadModel>(order);
+            return orderModel;
+        }
+
         public async Task<IEnumerable<OrderReadModel>> GetAllAsync()
         {
             var orders = await _repository.Order.GetAllAsync();
@@ -127,9 +153,9 @@ namespace TechStore.Application.Services
             return ordersModel;
         }
 
-        public async Task<IEnumerable<OrderReadModel>> GetAllAsync(string email)
+        public async Task<IEnumerable<OrderReadModel>> GetAllAsync(string userId)
         {
-            var spec = new OrderWithProductsSpecification(email);
+            var spec = new OrderWithProductsSpecification(userId);
             var orders = await _repository.Order.Find(spec).ToListAsync();
 
             if (orders != null)

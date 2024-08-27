@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
-import UserProfile from "@/components/UserProfile.vue";
-import UserOrders from "@/components/UserOrders.vue";
+import UserProfile from "@/components/user/UserProfile.vue";
+import UserOrders from "@/components/user/UserOrders.vue";
 
 const tab = ref("details");
 const breadcrumbsItems = [

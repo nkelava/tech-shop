@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Security.Claims;
 using TechStore.Application.Interfaces.Services;
+using TechStore.Domain.Entities.User;
 
 
 namespace TechStore.API.Controllers
@@ -14,12 +16,14 @@ namespace TechStore.API.Controllers
     public class WishlistController : ControllerBase
     {
         private readonly IWishlistService _wishlistService;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<WishlistController> _logger;
 
-        public WishlistController(IWishlistService wishlistService, IHttpContextAccessor httpContextAccessor, ILogger<WishlistController> logger)
+        public WishlistController(IWishlistService wishlistService, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor, ILogger<WishlistController> logger)
         {
             _wishlistService = wishlistService;
+            _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
         }
@@ -44,7 +48,8 @@ namespace TechStore.API.Controllers
 
             try
             {
-                var wishlist = await _wishlistService.AddProductAsync(currentUserEmail, productId);
+                var currentUser = await _userManager.FindByEmailAsync(currentUserEmail);
+                var wishlist = await _wishlistService.AddProductAsync(currentUser, productId);
 
                 if (wishlist == null)
                 {
@@ -81,7 +86,8 @@ namespace TechStore.API.Controllers
 
             try
             {
-                var wishlist = await _wishlistService.GetByEmailAsync(currentUserEmail);
+                var currentUser = await _userManager.FindByEmailAsync(currentUserEmail);
+                var wishlist = await _wishlistService.GetAsync(currentUser);
 
                 if (wishlist == null)
                 {
@@ -120,7 +126,8 @@ namespace TechStore.API.Controllers
 
             try
             {
-                var wishlist = await _wishlistService.GetByEmailAsync(currentUserEmail);
+                var currentUser = await _userManager.FindByEmailAsync(currentUserEmail);
+                var wishlist = await _wishlistService.GetAsync(currentUser);
 
                 if (wishlist == null)
                 {

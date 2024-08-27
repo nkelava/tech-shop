@@ -212,6 +212,7 @@ function resetForm() {
         max="100"
         :disabled="!productState.onSale"
       />
+      <!-- TODO -->
       <!-- <v-select
         v-model="productState.promoCode"
         class="mt-5"

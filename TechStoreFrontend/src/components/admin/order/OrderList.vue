@@ -139,9 +139,17 @@ const currentPageItems = computed(() => {
                 color="yellow"
                 icon="mdi-progress-clock"
                 size="30"
-                title="Set to In Progress"
-                alt="In Progress"
+                title="Set to Pending"
+                alt="Pending"
                 @click="updateOrderStatus(order?.id, OrderStatus.PENDING)"
+              />
+              <v-btn
+                color="yellow"
+                icon="mdi-truck"
+                size="30"
+                title="Set to Packing"
+                alt="Packing"
+                @click="updateOrderStatus(order?.id, OrderStatus.PACKING)"
               />
               <v-btn
                 color="orange"
@@ -153,11 +161,35 @@ const currentPageItems = computed(() => {
               />
               <v-btn
                 color="green"
-                icon="mdi-check"
+                icon="mdi-truck"
                 size="30"
-                title="Set to Completed"
-                alt="Completed"
-                @click="updateOrderStatus(order?.id, OrderStatus.COMPLETED)"
+                title="Set to Delivered"
+                alt="Delivered"
+                @click="updateOrderStatus(order?.id, OrderStatus.DELIVERED)"
+              />
+              <v-btn
+                color="red"
+                icon="mdi-truck"
+                size="30"
+                title="Set to Returned"
+                alt="Returned"
+                @click="updateOrderStatus(order?.id, OrderStatus.RETURNED)"
+              />
+              <v-btn
+                color="red"
+                icon="mdi-cancel"
+                size="30"
+                title="Set to Cancelled"
+                alt="Cancelled"
+                @click="updateOrderStatus(order?.id, OrderStatus.CANCELLED)"
+              />
+              <v-btn
+                color="red"
+                icon="mdi-cash"
+                size="30"
+                title="Set to Refunded"
+                alt="Refunded"
+                @click="updateOrderStatus(order?.id, OrderStatus.REFUNDED)"
               />
             </td>
           </tr>
@@ -219,6 +251,6 @@ td {
 .table__actions {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 </style>

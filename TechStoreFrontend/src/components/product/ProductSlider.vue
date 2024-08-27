@@ -1,7 +1,7 @@
 <script setup>
 import { Carousel, Slide, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
-import ProductCard from "@/components/ProductCard.vue";
+import ProductCard from "@/components/product/ProductCard.vue";
 
 const props = defineProps(["products"]);
 const breakpoints = {

@@ -4,7 +4,8 @@ using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Cart;
 using TechStore.Application.Models.Product;
 using TechStore.Application.Specifications.CartSpecification;
-using TechStore.Domain.Entities.Cart;
+using TechStore.Domain.Entities.CartAggregate;
+using TechStore.Domain.Entities.User;
 
 
 namespace TechStore.Application.Services
@@ -21,9 +22,9 @@ namespace TechStore.Application.Services
         }
 
 
-        public async Task<CartReadModel?> AddProductAsync(string email, CartCreateModel createModel)
+        public async Task<CartReadModel?> AddProductAsync(ApplicationUser user, CartCreateModel createModel)
         {
-            var cart = await GetExistingOrCreateNewCart(email);
+            var cart = await GetExistingOrCreateNewCart(user);
             var product = await _repository.Product.GetByIdAsync(createModel.ProductId);
 
             if (product == null)
@@ -58,9 +59,9 @@ namespace TechStore.Application.Services
             return cartModel;
         }
 
-        public async Task<CartReadModel?> ClearCart(string email)
+        public async Task<CartReadModel?> ClearCart(ApplicationUser user)
         {
-            var cart = await _repository.Cart.GetByEmailAsync(email);
+            var cart = await _repository.Cart.GetByUserIdAsync(user.Id);
 
             if (cart == null)
                 return null;
@@ -74,9 +75,9 @@ namespace TechStore.Application.Services
             return cartModel;
         }
 
-        public async Task<CartReadModel> GetByEmailAsync(string email)
+        public async Task<CartReadModel> GetAsync(ApplicationUser user)
         {
-            var cart = await GetExistingOrCreateNewCart(email);
+            var cart = await GetExistingOrCreateNewCart(user);
             var cartModel = _mapper.Map<CartReadModel>(cart);
 
             // If product can't be loaded from page we than manually map it
@@ -97,16 +98,16 @@ namespace TechStore.Application.Services
             return cartModel;
         }
 
-        private async Task<Cart> GetExistingOrCreateNewCart(string email)
+        private async Task<Cart> GetExistingOrCreateNewCart(ApplicationUser user)
         {
-            var cart = await _repository.Cart.GetByEmailAsync(email);
+            var cart = await _repository.Cart.GetByUserIdAsync(user.Id);
 
             if (cart != null)
                 return cart;
 
             // If it's first time create new cart
             var newCart = new Cart {
-                Email = email
+                ApplicationUserId = user.Id
             };
 
             _repository.Cart.Add(newCart);

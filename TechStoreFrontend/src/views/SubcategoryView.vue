@@ -2,8 +2,8 @@
 import { ref, computed, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { axiosPublic } from "@/api/axios";
-import ProductList from "@/components/ProductList.vue";
-import FilterSidebar from "@/components/TheFilterSidebar.vue";
+import ProductList from "@/components/product/ProductList.vue";
+import FilterSidebar from "@/components/subcategory/TheFilterSidebar.vue";
 import { parseProductAttributes } from "@/helpers/product";
 import { filterProducts } from "@/helpers/filter";
 

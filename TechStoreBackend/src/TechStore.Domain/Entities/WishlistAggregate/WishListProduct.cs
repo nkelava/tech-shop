@@ -1,7 +1,7 @@
 ﻿using TechStore.Domain.Entities.ProductAggregate;
 
 
-namespace TechStore.Domain.Entities.Wishlist
+namespace TechStore.Domain.Entities.WishlistAggregate
 {
     public class WishlistProduct
     {

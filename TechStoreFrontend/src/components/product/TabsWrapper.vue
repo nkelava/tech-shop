@@ -1,7 +1,7 @@
 <script setup>
 import { ref, toRefs } from "vue";
-import ProductSpecification from "@/components/ProductSpecification.vue";
-import ProductReviews from "@/components/ProductReviews.vue";
+import ProductSpecification from "@/components/product/ProductSpecification.vue";
+import ProductReviews from "@/components/product/ProductReviews.vue";
 
 const props = defineProps(["product", "update"]);
 const { product } = toRefs(props);

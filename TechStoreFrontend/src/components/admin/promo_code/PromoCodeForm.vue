@@ -6,7 +6,7 @@ import { axiosPrivate } from "@/api/axios";
 import BaseInput from "@/components/common/BaseInput.vue";
 import FormContainer from "@/components/common/FormContainer.vue";
 import { initialPromoCodeState, promoCodeRules } from "@/vuelidate/promoCode";
-import { ITEM_CREATE_FAIL, ITEM_CREATE_SUCCESS } from "../../../constants/messages/create";
+import { ITEM_CREATE_FAIL, ITEM_CREATE_SUCCESS } from "@/constants/messages/create";
 import { ITEM_UPDATE_FAIL, ITEM_UPDATE_SUCCESS } from "@/constants/messages/update";
 import { getTomorrowDate } from "@/helpers/getTomorrowDate";
 

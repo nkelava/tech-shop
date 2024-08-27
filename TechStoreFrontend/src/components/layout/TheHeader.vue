@@ -5,7 +5,7 @@ import TheNavBar from "@/components/layout/TheNavBar.vue";
 import SearchInput from "@/components/common/SearchInput.vue";
 import WishlistDialog from "@/components/wishlist/WishlistDialog.vue";
 import CartDialog from "@/components/cart/CartDialog.vue";
-import UserProfileDropdown from "@/components/UserProfileDropdown.vue";
+import UserProfileDropdown from "@/components/user/UserProfileDropdown.vue";
 import BrandLogo from "@/assets/icons/header/brand-logo.svg";
 
 const userStore = useUserStore();

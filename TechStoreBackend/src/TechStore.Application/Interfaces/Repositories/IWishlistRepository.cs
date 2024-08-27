@@ -1,11 +1,11 @@
 ﻿using TechStore.Application.Interfaces.Repositories.Base;
-using TechStore.Domain.Entities.Wishlist;
+using TechStore.Domain.Entities.WishlistAggregate;
 
 
 namespace TechStore.Application.Interfaces.Repositories
 {
     public interface IWishlistRepository : IRepository<Wishlist>
     {
-        Task<Wishlist?> GetByEmailAsync(string email);
+        Task<Wishlist?> GetByUserIdAsync(string id);
     }
 }

@@ -4,7 +4,8 @@ using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Product;
 using TechStore.Application.Models.Wishlist;
 using TechStore.Application.Specifications.WishlistSpecification;
-using TechStore.Domain.Entities.Wishlist;
+using TechStore.Domain.Entities.User;
+using TechStore.Domain.Entities.WishlistAggregate;
 
 
 namespace TechStore.Application.Services
@@ -21,9 +22,9 @@ namespace TechStore.Application.Services
         }
 
 
-        public async Task<WishlistReadModel?> AddProductAsync(string email, int productId)
+        public async Task<WishlistReadModel?> AddProductAsync(ApplicationUser user, int productId)
         {
-            var wishlist = await GetExistingOrCreateNewWishlist(email);
+            var wishlist = await GetExistingOrCreateNewWishlist(user);
             var product = await _repository.Product.GetByIdAsync(productId);
 
             if (product == null)
@@ -58,9 +59,9 @@ namespace TechStore.Application.Services
             return wishlistModel;
         }
 
-        public async Task<WishlistReadModel> GetByEmailAsync(string email)
+        public async Task<WishlistReadModel> GetAsync(ApplicationUser user)
         {
-            var wishlist = await GetExistingOrCreateNewWishlist(email);
+            var wishlist = await GetExistingOrCreateNewWishlist(user);
             var wishlistModel = _mapper.Map<WishlistReadModel>(wishlist);
 
             // If product can't be loaded from page we than manually map it
@@ -78,16 +79,16 @@ namespace TechStore.Application.Services
             return wishlistModel;
         }
 
-        private async Task<Wishlist> GetExistingOrCreateNewWishlist(string email)
+        private async Task<Wishlist> GetExistingOrCreateNewWishlist(ApplicationUser user)
         {
-            var wishlist = await _repository.Wishlist.GetByEmailAsync(email);
+            var wishlist = await _repository.Wishlist.GetByUserIdAsync(user.Id);
 
             if (wishlist != null)
                 return wishlist;
 
             // Create new in case of first attempt
             var newWishlist = new Wishlist {
-                Email = email
+                ApplicationUserId = user.Id
             };
 
             _repository.Wishlist.Add(newWishlist);

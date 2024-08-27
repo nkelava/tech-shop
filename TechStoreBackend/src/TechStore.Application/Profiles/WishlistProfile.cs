@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using TechStore.Application.Models.Wishlist;
-using TechStore.Domain.Entities.Wishlist;
+using TechStore.Domain.Entities.WishlistAggregate;
 
 
 namespace TechStore.Application.Profiles

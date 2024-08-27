@@ -9,6 +9,7 @@ const rules = {
   zipCode: { required },
   country: { required },
   contactNumber: { required },
+  paymentMethod: { required },
 };
 
 export { rules };

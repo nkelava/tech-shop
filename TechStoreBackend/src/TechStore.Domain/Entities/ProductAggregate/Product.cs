@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TechStore.Domain.Entities.Base;
-using TechStore.Domain.Entities.Cart;
+using TechStore.Domain.Entities.CartAggregate;
 using TechStore.Domain.Entities.OrderAggregate;
 using TechStore.Domain.Entities.SubcategoryAggregate;
-using TechStore.Domain.Entities.Wishlist;
+using TechStore.Domain.Entities.WishlistAggregate;
 
 
 namespace TechStore.Domain.Entities.ProductAggregate
@@ -32,10 +32,10 @@ namespace TechStore.Domain.Entities.ProductAggregate
         public int? PromoCodeId { get; set; }
         public PromoCode PromoCode {  get; set; }
 
-        //// 1 - n
+        // 1 - n
         public List<Review> Reviews { get; set; }
 
-        //// n - n
+        // n - n
         public List<ProductAttributeSet> ProductAttributes { get; set; }
         public List<OrderProduct> Orders { get; set; }
         public List<CartProduct> Carts { get; set; }

@@ -7,6 +7,7 @@ const initialState = {
   zipCode: "21000",
   country: "Hrvatska",
   contactNumber: "0998696994",
+  paymentMethod: 0,
 };
 
 export { initialState };

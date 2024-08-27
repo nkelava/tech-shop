@@ -1,13 +1,12 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { axiosPublic } from "@/api/axios";
-import ProductGallery from "@/components/ProductGallery.vue";
-import ProductDetails from "@/components/ProductDetails.vue";
-import TabsWrapper from "@/components/TabsWrapper.vue";
+import ProductGallery from "@/components/product/ProductGallery.vue";
+import ProductDetails from "@/components/product/ProductDetails.vue";
+import TabsWrapper from "@/components/product/TabsWrapper.vue";
 
 const route = useRoute();
-const router = useRouter();
 const categorySlug = ref(route.params.category);
 const subcategorySlug = ref(route.params.subcategory);
 const productSlug = ref(route.params.productSlug);

@@ -1,5 +1,5 @@
 ﻿using TechStore.Application.Specifications.Base;
-using TechStore.Domain.Entities.Wishlist;
+using TechStore.Domain.Entities.WishlistAggregate;
 
 
 namespace TechStore.Application.Specifications.WishlistSpecification
@@ -12,8 +12,8 @@ namespace TechStore.Application.Specifications.WishlistSpecification
             AddInclude(w => w.Products);
         }
 
-        public WishlistWithProductsSpecification(string email) 
-            : base(w => w.Email.ToLower().Equals(email.ToLower()))
+        public WishlistWithProductsSpecification(string userId) 
+            : base(w => w.ApplicationUser != null && w.ApplicationUser.Id.Equals(userId))
         {
             AddInclude(w => w.Products);
         }

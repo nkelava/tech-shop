@@ -1,7 +1,7 @@
 ﻿using TechStore.Domain.Entities.ProductAggregate;
 
 
-namespace TechStore.Domain.Entities.Cart
+namespace TechStore.Domain.Entities.CartAggregate
 {
     public class CartProduct
     {

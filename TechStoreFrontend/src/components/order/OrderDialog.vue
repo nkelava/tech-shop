@@ -15,6 +15,16 @@ const toast = useToast();
 const hasDeliveryAddress = ref(false);
 const paymentState = reactive({ ...initPaymentState });
 const deliveryState = reactive({ ...initDeliveryState });
+const paymentMethods = [
+  {
+    name: "Cash",
+    value: 0,
+  },
+  {
+    name: "Credit card",
+    value: 1,
+  },
+];
 
 const paymentValidationRules = computed(() => paymentRules);
 const deliveryValidationRules = computed(() => deliveryRules);
@@ -36,9 +46,18 @@ const handleSubmit = async () => {
   };
 
   try {
-    await axiosPublic
+    await axiosPrivate
       .post("/orders", order)
-      .then(async () => {
+      .then(async (resp) => {
+        if (resp.status !== 200) {
+          toast.error("Uh-oh! There was an issue processing your order. Please try again.");
+          return;
+        }
+
+        if (resp?.data?.redirectUrl) {
+          window.location.href = resp.data.redirectUrl;
+        }
+
         await cart.clearStore();
 
         if (cart.isUserLoggedIn) {
@@ -65,63 +84,6 @@ const handleSubmit = async () => {
         toast.error("Uh-oh! There was an issue processing your order. Please try again.");
         return;
       }
-    }
-
-    toast.success("Order received! Thank you for choosing us.");
-    resetForm(vp$, paymentState, initPaymentState);
-    resetForm(vd$, deliveryState, initDeliveryState);
-    emit("toggleDialog");
-  } catch {
-    toast.error("Uh-oh! There was an issue processing your order. Please try again.");
-  }
-};
-
-const handleStripeCheckout = async () => {
-  if (!(await vp$.value.$validate())) return;
-
-  if (hasDeliveryAddress.value) {
-    if (!(await vd$.value.$validate())) return;
-  }
-
-  const order = {
-    ...paymentState,
-    ...(hasDeliveryAddress.value ? { deliveryAddress: { ...deliveryState } } : {}),
-    products: cart.formattedCartItemsForOrder,
-  };
-
-  try {
-    const resp = await axiosPublic
-      .post("/orders/create-checkout-session", order)
-      // .then(async () => {
-      //   await cart.clearStore();
-      //   if (cart.isUserLoggedIn) {
-      //     const resp = await axiosPrivate.delete("/carts").catch((error) => console.log(error));
-      //     if (resp.status !== 200) {
-      //       toast.error("Uh-oh! There was an issue while cleaning your cart. Please try again.");
-      //       return;
-      //     }
-      //   }
-      // })
-      .catch((error) => {
-        toast.error("Uh-oh! There was an issue processing your order. Please try again.");
-        console.log(error);
-      });
-
-    // TODO: check if cart is cleared on the backend
-    // await cart.clearStore();
-
-    // if (cart.isUserLoggedIn) {
-    //   const resp = await axiosPrivate.delete("/carts").catch((error) => console.log(error));
-
-    //   if (resp.status !== 200) {
-    //     toast.error("Uh-oh! There was an issue processing your order. Please try again.");
-    //     return;
-    //   }
-    // }
-
-    console.log(resp);
-    if (resp.data) {
-      window.location.href = resp.data.url;
     }
 
     toast.success("Order received! Thank you for choosing us.");
@@ -193,6 +155,19 @@ const closeDialog = () => {
                   :v$="vp$.contactNumber"
                   label="Contact Number*"
                 />
+                <v-select
+                  v-model="paymentState.paymentMethod"
+                  class="mt-5 test"
+                  name="paymentMethod"
+                  label="Payment Method*"
+                  :items="paymentMethods"
+                  item-value="value"
+                  item-title="name"
+                  density="compact"
+                  hide-details="auto"
+                  variant="outlined"
+                  :error-messages="vp$?.paymentMethod?.$errors.map((e) => e.$message)"
+                />
 
                 <v-checkbox
                   v-model="hasDeliveryAddress"
@@ -255,12 +230,7 @@ const closeDialog = () => {
       </v-container>
       <v-card-actions class="justify-space-between">
         <v-btn class="btn-action--cancel" variant="text" @click="closeDialog"> Back To Cart </v-btn>
-        <v-btn class="btn-action--submit" variant="text" @click="handleSubmit">
-          Complete Order
-        </v-btn>
-        <v-btn class="btn-action--submit" variant="text" @click="handleStripeCheckout">
-          Stripe Checkout
-        </v-btn>
+        <v-btn class="btn-action--submit" variant="text" @click="handleSubmit"> Complete </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

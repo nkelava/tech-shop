@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using TechStore.Application.Models.Cart;
-using TechStore.Domain.Entities.Cart;
+using TechStore.Domain.Entities.CartAggregate;
 
 
 namespace TechStore.Application.Profiles

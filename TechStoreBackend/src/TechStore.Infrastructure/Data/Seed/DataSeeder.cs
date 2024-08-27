@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using TechStore.Domain.Entities;
-using TechStore.Domain.Entities.Cart;
-using TechStore.Domain.Entities.OrderAggregate;
 using TechStore.Domain.Entities.ProductAggregate;
 using TechStore.Domain.Entities.SubcategoryAggregate;
 using TechStore.Domain.Entities.User;
-using TechStore.Domain.Entities.Wishlist;
-using TechStore.Domain.Enums.Order;
 
 
 namespace TechStore.Infrastructure.Data.Seed
@@ -46,30 +42,6 @@ namespace TechStore.Infrastructure.Data.Seed
 
                 if (!_techStoreContext.PromoCodes.Any())
                     await SeedPromoCodes();
-
-                if (!_techStoreContext.Newsletters.Any())
-                    await SeedNewsletters();
-
-                if (!_techStoreContext.Reviews.Any())
-                    await SeedReviews();
-
-                if (!_techStoreContext.WishLists.Any())
-                    await SeedWishlists();
-
-                if (!_techStoreContext.WishListProducts.Any())
-                    await SeedWishlistProducts();
-
-                if (!_techStoreContext.Carts.Any())
-                    await SeedCarts();
-
-                if (!_techStoreContext.CartProducts.Any())
-                    await SeedCartProducts();
-
-                if (!_techStoreContext.Orders.Any())
-                    await SeedOrders();
-
-                if (!_techStoreContext.OrderProducts.Any())
-                    await SeedOrderProducts();
 
                 if (!_techStoreContext.UserRoles.Any())
                     await SeedRoles();
@@ -891,152 +863,6 @@ namespace TechStore.Infrastructure.Data.Seed
             };
 
             _techStoreContext.PromoCodes.AddRange(promoCodes);
-            await _techStoreContext.SaveChangesAsync();
-        }
-
-        private async Task SeedNewsletters()
-        {
-            var newsletters = new List<Newsletter>()
-            {
-                new Newsletter
-                {
-                    Email = "test@gmail.com",
-                },
-                new Newsletter
-                {
-                    Email = "subscriber@gmail.com",
-                },
-            };
-
-            _techStoreContext.Newsletters.AddRange(newsletters);
-            await _techStoreContext.SaveChangesAsync();
-        }
-
-        private async Task SeedReviews()
-        {
-            var reviews = new List<Review>()
-            {
-                new Review
-                {
-                    Email = "test@gmail.com",
-                    Rate = 4,
-                    Comment = "Very good!",
-                    IsReported = false,
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
-                },
-                new Review
-                {
-                    Email = "admin@gmail.com",
-                    Rate = 5,
-                    Comment = "Not good! Wouldn't recommend.",
-                    IsReported = false,
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
-                },
-            };
-
-            _techStoreContext.Reviews.AddRange(reviews);
-            await _techStoreContext.SaveChangesAsync();
-        }
-
-        private async Task SeedWishlists()
-        {
-            var wishlists = new List<Wishlist>()
-            {
-                new Wishlist
-                {
-                    Email = "test@gmail.com",
-                },
-            };
-
-            _techStoreContext.WishLists.AddRange(wishlists);
-            await _techStoreContext.SaveChangesAsync();
-        }
-
-        private async Task SeedWishlistProducts()
-        {
-            var wishlistProducts = new List<WishlistProduct>()
-            {
-                new WishlistProduct
-                {
-                    Wishlist = _techStoreContext.WishLists.Where(w => w.Email.ToLower().Equals("test@gmail.com")).First(),
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
-                },
-            };
-
-            _techStoreContext.WishListProducts.AddRange(wishlistProducts);
-            await _techStoreContext.SaveChangesAsync();
-        }
-
-        private async Task SeedCarts()
-        {
-            var carts = new List<Cart>()
-            {
-                new Cart
-                {
-                    Email = "test@gmail.com",
-                    TotalPrice = 1210,
-                },
-            };
-
-            _techStoreContext.Carts.AddRange(carts);
-            await _techStoreContext.SaveChangesAsync();
-        }
-
-        private async Task SeedCartProducts()
-        {
-            var cartProducts = new List<CartProduct>()
-            {
-                new CartProduct
-                {
-                    Cart = _techStoreContext.Carts.Where(c => c.Email.ToLower().Equals("test@gmail.com")).First(),
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
-                    Quantity = 1,
-                    UnitPrice = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First().Price,
-                    TotalPrice = 1 * _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First().Price,
-                }
-            };
-
-            _techStoreContext.CartProducts.AddRange(cartProducts);
-            await _techStoreContext.SaveChangesAsync();
-        }
-        private async Task SeedOrders()
-        {
-            var orders = new List<Order>()
-            {
-                new Order
-                {
-                    FirstName = "Test",
-                    LastName = "Test",
-                    Email = "test@gmail.com",
-                    ContactNumber = "0991234885",
-                    Country = "Croatia",
-                    City = "Split",
-                    ShippingAddress = "Ul. Test 127",
-                    ZipCode = 21000,
-                    TotalPrice = 1210,
-                    Status = OrderStatus.Completed,
-                },
-            };
-
-            _techStoreContext.Orders.AddRange(orders);
-            await _techStoreContext.SaveChangesAsync();
-        }
-
-        private async Task SeedOrderProducts()
-        {
-            var orderProducts = new List<OrderProduct>()
-            {
-               new OrderProduct
-               {
-                    Order = _techStoreContext.Orders.Where(o => o.Email.ToLower().Equals("test@gmail.com")).First(),
-                    Product = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First(),
-                    Quantity = 1,
-                    UnitPrice = _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First().Price,
-                    TotalPrice = 1 * _techStoreContext.Products.Where(p => p.Slug.ToLower().Equals("acer-predator-helios-300")).First().Price,
-                },
-            };
-
-            _techStoreContext.OrderProducts.AddRange(orderProducts);
             await _techStoreContext.SaveChangesAsync();
         }
 

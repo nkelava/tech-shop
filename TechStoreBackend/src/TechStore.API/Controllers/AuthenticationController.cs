@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -260,7 +259,7 @@ namespace TechStore.API.Controllers
                 _context.RefreshTokens.Update(storedToken);
                 await _context.SaveChangesAsync();
 
-                var user = await _userManager.FindByIdAsync(storedToken.UserId);
+                var user = await _userManager.FindByIdAsync(storedToken?.ApplicationUser?.Id);
 
                 return await GenerateJwtToken(user);
             }
@@ -318,7 +317,7 @@ namespace TechStore.API.Controllers
                 ExpiryDate = DateTime.UtcNow.AddMonths(6),
                 IsRevoked = false,
                 IsUsed = false,
-                UserId = user.Id
+                ApplicationUserId = user.Id
             };
 
             await _context.RefreshTokens.AddAsync(refreshToken); 

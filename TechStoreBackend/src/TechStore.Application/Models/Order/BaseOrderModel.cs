@@ -1,6 +1,5 @@
 ﻿using TechStore.Domain.Enums.Order;
 
-
 namespace TechStore.Application.Models.Order
 {
     public class BaseOrderModel
@@ -14,7 +13,11 @@ namespace TechStore.Application.Models.Order
         public string City { get; set; }
         public string ShippingAddress { get; set; }
         public int ZipCode { get; set; }
-
+        public string? ApplicationUserId { get; set; } = null;
+        public PaymentType? PaymentMethod { get; set; } = PaymentType.Cash;
         public OrderStatus? Status { get; set; } = OrderStatus.Pending;
+        public PaymentStatus? PaymentStatus { get; set; } = null;
+        public string? SessionId { get; set; }
+        public string? PaymentIntentId { get; set; }
     }
 }

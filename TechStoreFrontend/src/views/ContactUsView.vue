@@ -1,5 +1,5 @@
 <script setup>
-import ContactForm from "@/components/ContactForm.vue";
+import ContactForm from "@/components/contact/ContactForm.vue";
 import { ContactUsImage } from "@/assets/images/test/contact";
 </script>
 

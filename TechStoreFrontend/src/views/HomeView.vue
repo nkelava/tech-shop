@@ -4,8 +4,8 @@ import { onMounted, ref } from "vue";
 import ImageSlider from "@/components/ImageSlider.vue";
 import TheBenefits from "@/components/TheBenefits.vue";
 import TheBanners from "@/components/TheAds.vue";
-import ProductGrid from "@/components/ProductGrid.vue";
-import ProductSlider from "@/components/ProductSlider.vue";
+import ProductGrid from "@/components/product/ProductGrid.vue";
+import ProductSlider from "@/components/product/ProductSlider.vue";
 
 const bestSellerProducts = ref([]);
 const newArrivalProducts = ref([]);

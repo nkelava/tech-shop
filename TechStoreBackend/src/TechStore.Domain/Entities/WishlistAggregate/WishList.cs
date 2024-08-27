@@ -1,14 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TechStore.Domain.Entities.Base;
+﻿using TechStore.Domain.Entities.Base;
 using TechStore.Domain.Entities.ProductAggregate;
+using TechStore.Domain.Entities.User;
 
 
-namespace TechStore.Domain.Entities.Wishlist
+namespace TechStore.Domain.Entities.WishlistAggregate
 {
-    [Index(nameof(Email), IsUnique = true)]
     public class Wishlist : Entity
     {
-        public string Email { get; set; }
+        // 1 - 1
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser? ApplicationUser { get; set; }
 
         // n - n
         public List<WishlistProduct> Products { get; set; } = new List<WishlistProduct>();

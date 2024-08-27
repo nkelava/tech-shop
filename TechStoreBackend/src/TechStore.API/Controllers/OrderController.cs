@@ -8,7 +8,9 @@ using TechStore.Application.Interfaces.Services;
 using TechStore.Application.Models.Order;
 using TechStore.Domain.Enums.Order;
 using Stripe.Checkout;
-
+using System.Data;
+using TechStore.Domain.Entities.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace TechStore.API.Controllers
 {
@@ -18,31 +20,48 @@ namespace TechStore.API.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
+        private readonly ICartService _cartService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfiguration _configuration;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<OrderController> _logger;
 
-        public OrderController(IOrderService orderService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, ILogger<OrderController> logger)
+        public OrderController(UserManager<ApplicationUser> userManager, IOrderService orderService, ICartService cartService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, ILogger<OrderController> logger)
         {
             _orderService = orderService;
+            _cartService = cartService;
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
+            _userManager = userManager;
             _logger = logger;
         }
 
-
         [AllowAnonymous]
-        [HttpPost("create-checkout-session")]
-        public async Task<IActionResult> CreateCheckoutSession([FromBody] OrderCreateModel order)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] OrderCreateModel order)
         {
-            try
+            string currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Invalid order model state.");
+                return BadRequest(ModelState);
+            }
+
+            if (!string.IsNullOrWhiteSpace(currentUserEmail))
+            {
+                string currentUserId = _userManager.FindByEmailAsync(currentUserEmail).Result.Id;
+                order.ApplicationUserId = currentUserId;
+            }
+
+            if (order.PaymentMethod == PaymentType.Card)
             {
                 var options = new SessionCreateOptions
                 {
                     LineItems = new List<SessionLineItemOptions>(),
                     Mode = "payment",
-                    SuccessUrl = "http://localhost:5173/order-success",
-                    CancelUrl = "http://localhost:5173/order-cancel",
+                    SuccessUrl = "http://localhost:5173/checkout/success?session_id={CHECKOUT_SESSION_ID}",
+                    CancelUrl = "http://localhost:5173/checkout/cancel?session_id={CHECKOUT_SESSION_ID}",
                 };
 
                 foreach (var item in order.Products)
@@ -60,32 +79,19 @@ namespace TechStore.API.Controllers
                         },
                         Quantity = item.Quantity
                     };
-
                     options.LineItems.Add(sessionLineItem);
                 }
 
                 var service = new SessionService();
-                Session session = service.Create(options);
+                var session = service.Create(options);
 
-                return Ok(session.Url);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while creating the order.");
-                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
-            }
-            //Response.Headers.Add("Location", session.Url);
-            //return new StatusCodeResult(303);
-        }
+                order.SessionId = session.Id;
+                order.PaymentIntentId = session.PaymentIntentId;
+                order.PaymentStatus = PaymentStatus.Pending;
 
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] OrderCreateModel order)
-        {
-            if (!ModelState.IsValid)
-            {
-                _logger.LogWarning("Invalid order model state.");
-                return BadRequest(ModelState);
+                await _orderService.CreateAsync(order);
+
+                return Ok(new { redirectUrl = session.Url });
             }
 
             try
@@ -122,6 +128,49 @@ namespace TechStore.API.Controllers
                 _logger.LogError(ex, "An error occurred while creating the order.");
                 return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
             }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("confirm/{sessionId}")]
+        public async Task<IActionResult> ConfirmOrder(string sessionId)
+        {
+            var order = await _orderService.GetBySessionIdAsync(sessionId);
+
+            if (order == null)
+            {
+                _logger.LogInformation("Order with session ID {Id} not found.", sessionId);
+                return NotFound($"Order with session ID {sessionId} not found.");
+            }
+
+            var service = new SessionService();
+            Session session = service.Get(order?.SessionId);
+
+            if (session.PaymentStatus.ToLower() == "paid")
+            {
+                if (order?.Status == null || order?.Id == null)
+                    return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
+
+                order.Status = OrderStatus.Confirmed;
+                var orderId = await _orderService.UpdatePaymentStatusAsync(order.Id, PaymentStatus.Approved);
+
+                if (orderId == null)
+                {
+                    _logger.LogInformation("Order with session ID {Id} not found.", orderId);
+                    return NotFound($"Order with session ID {orderId} not found.");
+                }
+
+                string currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
+
+                if (!string.IsNullOrWhiteSpace(currentUserEmail))
+                {
+                    var currentUser = await _userManager.FindByEmailAsync(currentUserEmail);
+                    await _cartService.ClearCart(currentUser);
+                }
+
+                return Ok(order);
+            }
+
+            return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing your request.");
         }
 
         [HttpDelete("{id:int}")]
@@ -230,17 +279,19 @@ namespace TechStore.API.Controllers
                 return Unauthorized();
             }
 
+            string currentUserId = _userManager.FindByEmailAsync(currentUserEmail).Result.Id;
+
             try
             {
-                var orders = await _orderService.GetAllAsync(currentUserEmail);
+                var orders = await _orderService.GetAllAsync(currentUserId);
 
                 if (orders == null || !orders.Any())
                 {
-                    _logger.LogInformation("No orders found for user with email {Email}.", currentUserEmail);
+                    _logger.LogInformation("No orders found for user with ID {Id}.", currentUserId);
                     return NotFound("No orders found.");
                 }
 
-                _logger.LogInformation("Orders retrieved successfully for user with email {Email}.", currentUserEmail);
+                _logger.LogInformation("Orders retrieved successfully for user with ID {currentUserId}.", currentUserId);
                 return Ok(orders);
             }
             catch (Exception ex)
