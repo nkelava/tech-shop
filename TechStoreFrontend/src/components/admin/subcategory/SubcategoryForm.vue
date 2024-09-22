@@ -138,14 +138,15 @@ function resetForm() {
         hide-details="auto"
       />
       <!-- TODO: Add image upload -->
-      <base-input
+      <!-- <base-input
         v-model="subcategoryState.image"
         class="mt-5"
         name="image"
         label="Image URL"
         density="compact"
         hide-details="auto"
-      />
+      /> -->
+      <v-file-input label="Image" variant="outlined" density="compact" hide-details="auto" />
       <v-select
         v-model="subcategoryState.category"
         class="mt-5 test"

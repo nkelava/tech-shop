@@ -236,15 +236,16 @@ function resetForm() {
         min="0"
       />
       <!-- TODO: Add image upload -->
-      <base-input
+      <!-- <base-input
         v-model="productState.imageURL"
         class="mt-5"
         name="imageURL"
-        label="Image URL"
+        label="Image"
         :v$="v$.imageURL"
         density="compact"
         hide-details="auto"
-      />
+      /> -->
+      <v-file-input label="Image" variant="outlined" density="compact" hide-details="auto" />
       <v-select
         v-model="productState.subcategory"
         class="mt-5"

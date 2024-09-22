@@ -131,8 +131,8 @@ const resetForm = (form, initialFormState, formState) => {
       <h3 class="details-item__title">Personal Information</h3>
       <v-divider color="warning"></v-divider>
       <v-col class="details-item__desc" cols="12">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laudantium nemo corporis fugiat.
-        Quasi, similique ipsum.
+        Manage your personal details here. Keep your name, email, phone number, and address
+        up-to-date to ensure seamless service and communication. Your privacy is our priority.
       </v-col>
       <v-col cols="12">
         <form class="details-item__form">
@@ -155,9 +155,8 @@ const resetForm = (form, initialFormState, formState) => {
       <h3 class="details-item__title">E-mail Address</h3>
       <v-divider color="warning"></v-divider>
       <v-col class="details-item__desc" cols="12">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab ipsum beatae inventore, suscipit
-        sequi rerum aperiam, dicta commodi velit fugit perferendis delectus odio consequatur et!
-        Vitae ipsam adipisci animi iure.
+        Update your email address here. Ensure it’s current to receive important account
+        notifications and stay connected. Your email is securely stored and never shared.
       </v-col>
       <v-col cols="12">
         <form class="details-item__form">
@@ -170,9 +169,8 @@ const resetForm = (form, initialFormState, formState) => {
       <h3 class="details-item__title">Password</h3>
       <v-divider color="warning"></v-divider>
       <v-col class="details-item__desc" cols="12">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab ipsum beatae inventore, suscipit
-        sequi rerum aperiam, dicta commodi velit fugit perferendis delectus odio consequatur et!
-        Vitae ipsam adipisci animi iure.
+        Change your password regularly to keep your account secure. Choose a strong password to
+        protect your personal information and ensure the safety of your account.
       </v-col>
       <v-col>
         <form class="details-item__form">

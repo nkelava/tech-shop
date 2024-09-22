@@ -10,7 +10,7 @@ import HeliosA from "@/assets/images/test/products/helios300-both.png";
 
 const props = defineProps(["product"]);
 const { product } = toRefs(props);
-console.log(product.value);
+console.log("product>", product.value);
 const productImages = [Helios, HeliosL, HeliosR, HeliosB, HeliosA];
 const currentSlide = ref(0);
 const slideTo = (val) => {
@@ -20,15 +20,15 @@ const slideTo = (val) => {
 
 <template>
   <section class="gallery-container">
-    <carousel id="gallery" :items-to-show="1" :wrap-around="true" v-model="currentSlide">
-      <slide v-for="(image, i) in productImages" :key="i">
-        <div class="carousel__item">
-          <img :src="image" class="gallery__img" alt="default product image" />
-        </div>
-      </slide>
-    </carousel>
+    <!-- <carousel id="gallery" :items-to-show="1" :wrap-around="true" v-model="currentSlide"> -->
+    <!-- <slide v-for="(image, i) in productImages" :key="i"> -->
+    <div class="carousel__item">
+      <img :src="product.imageURL" class="gallery__img" alt="default product image" />
+    </div>
+    <!-- </slide> -->
+    <!-- </carousel> -->
 
-    <carousel
+    <!-- <carousel
       id="thumbnails"
       :items-to-show="3.5"
       :wrap-around="true"
@@ -40,7 +40,7 @@ const slideTo = (val) => {
           <img :src="imageUrl" class="tumbnails__img" alt="default product image" />
         </div>
       </slide>
-    </carousel>
+    </carousel> -->
   </section>
 </template>
 
@@ -63,9 +63,11 @@ const slideTo = (val) => {
   max-height: 400px;
   width: 100%;
   max-width: 400px;
+  border-radius: 5px;
 }
 
 #gallery img,
+.carousel__item img,
 #thumbnails img {
   height: 100%;
   width: 100%;
