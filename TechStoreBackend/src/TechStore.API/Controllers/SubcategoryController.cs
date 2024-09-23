@@ -61,7 +61,6 @@ namespace TechStore.API.Controllers
                         subcategoryImage.CopyTo(fileStream);
                         fileStream.Flush();
                     }
-
                 }
 
                 await _subcategoryService.CreateAsync(subcategory);
@@ -77,7 +76,7 @@ namespace TechStore.API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update(int id, [FromBody] SubcategoryUpdateModel subcategory)
+        public async Task<IActionResult> Update(int id, [FromForm] SubcategoryUpdateModel subcategory)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -90,14 +89,37 @@ namespace TechStore.API.Controllers
 
             try
             {
+                var subcategoryImage = subcategory?.Image;
+                subcategory.Image = null;
+                string path = _webHostEnvironment.WebRootPath + "\\subcategories\\";
+                string fileName = subcategory.Slug + ".png";
+
+                if (subcategoryImage != null && subcategoryImage.Length > 0)
+                {
+
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+
+                    if (System.IO.File.Exists(path + fileName))
+                    {
+                        System.IO.File.Delete(path + fileName);
+                    }
+
+                    using (FileStream fileStream = System.IO.File.Create(path + fileName))
+                    {
+                        subcategoryImage.CopyTo(fileStream);
+                        fileStream.Flush();
+                    }
+                }
+
                 var updatedSubcategory = await _subcategoryService.UpdateAsync(id, subcategory);
 
-                string fileName = updatedSubcategory?.Slug + ".png";
-                var path = Path.Combine(_webHostEnvironment.WebRootPath, "subcategories", fileName);
+                string newFileName = updatedSubcategory?.Slug + ".png";
+                var newPath = Path.Combine(_webHostEnvironment.WebRootPath, "subcategories", fileName);
 
-                if (System.IO.File.Exists(path))
+                if (System.IO.File.Exists(newPath))
                 {
-                    updatedSubcategory.ImageByte = System.IO.File.ReadAllBytes(path);
+                    updatedSubcategory.ImageByte = System.IO.File.ReadAllBytes(newPath);
                 }
 
 
