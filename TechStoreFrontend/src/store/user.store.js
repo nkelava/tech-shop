@@ -43,13 +43,16 @@ export const useUserStore = defineStore("user", {
       const cart = useCartStore();
       const wishlist = useWishlistStore();
 
-      await axiosPrivate.get("/auth/logout").catch((error) => {
-        console.log(error);
-      });
-
-      await cart.clearStore();
-      await wishlist.clearStore();
-      this.clearStore();
+      await axiosPrivate
+        .get("/auth/logout")
+        .catch(async (error) => {
+          console.log(error);
+        })
+        .finally(async () => {
+          this.clearStore();
+          await cart.clearLocalStorage();
+          await wishlist.clearLocalStorage();
+        });
     },
 
     async updateTokens(token, refreshToken) {

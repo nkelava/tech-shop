@@ -117,6 +117,9 @@ export const useWishlistStore = defineStore("wishlist", {
     async clearStore() {
       this.$reset();
     },
+    async clearLocalStorage() {
+      this.$reset();
+    },
   },
   persist: true,
 });

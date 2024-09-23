@@ -30,7 +30,7 @@ const deleteAttributeValue = async (attributeValueId) => {
   await axiosPrivate
     .delete(`/attribute-values/${attributeValueId}`)
     .then((resp) => {
-      if (resp.status === 200) {
+      if (resp?.status === 200) {
         toast.success(ITEM_DELETE_SUCCESS);
       }
     })

@@ -1,6 +1,8 @@
 ﻿
 
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TechStore.Application.Models.Product
 {
@@ -24,6 +26,10 @@ namespace TechStore.Application.Models.Product
 
         [Url(ErrorMessage = "Invalid image URL format.")]
         public string? ImageURL { get; set; }
+        [NotMapped]
+        public IFormFile? Image { get; set; } = null;
+        public byte[]? ImageByte { get; set; }
+
 
         public string? Summary { get; set; }
 

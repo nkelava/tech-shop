@@ -21,7 +21,7 @@ onMounted(() => reloadReportedReviews());
 async function reloadReportedReviews() {
   const resp = await axiosPrivate.get("/reviews/reported").catch((error) => console.log(error));
 
-  if (resp.status !== 200) return;
+  if (resp?.status !== 200) return;
 
   reportedReviews.value = resp.data;
 }
@@ -35,7 +35,7 @@ const deleteReview = async (reviewId) => {
   await axiosPrivate
     .delete(`/reviews/${reviewId}`)
     .then((resp) => {
-      if (resp.status === 200) {
+      if (resp?.status === 200) {
         toast.success(ITEM_DELETE_SUCCESS);
       }
     })
@@ -121,7 +121,7 @@ const currentPageItems = computed(() => {
             <td class="d-flex align-center">
               <v-btn
                 color="green"
-                icon="mdi-lead-pencil"
+                icon="mdi-check"
                 size="32"
                 title="Remove from reported"
                 alt="Remove from reported"

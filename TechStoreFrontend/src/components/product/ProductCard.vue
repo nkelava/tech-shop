@@ -42,7 +42,18 @@ const productPrice = computed(() => {
       max-width="280"
       max-height="450"
     >
-      <v-img class="card__image" :src="product.imageURL || DefaultImage" height="256" cover>
+      <v-img
+        class="card__image"
+        :src="
+          product?.imageURL
+            ? product.imageURL
+            : product?.imageByte
+            ? `data:image/jpeg;base64,` + product?.imageByte
+            : DefaultImage
+        "
+        height="256"
+        cover
+      >
         <template v-slot:placeholder>
           <div class="d-flex align-center justify-center fill-height">
             <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>

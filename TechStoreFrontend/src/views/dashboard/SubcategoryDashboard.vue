@@ -12,7 +12,7 @@ onMounted(() => reloadSubcategories());
 async function reloadSubcategories() {
   const resp = await axiosPrivate.get("/subcategories").catch((error) => console.log(error));
 
-  if (resp.status !== 200) return;
+  if (resp?.status !== 200) return;
 
   subcategories.value = resp.data;
 }

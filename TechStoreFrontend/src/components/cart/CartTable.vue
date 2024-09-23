@@ -1,5 +1,6 @@
 <script setup>
 import { useCartStore } from "@/store";
+import DefaultImage from "@/assets/images/test/products/defaultProductImage.png";
 
 const props = defineProps(["products"]);
 const cart = useCartStore();
@@ -20,7 +21,18 @@ const cart = useCartStore();
     <tbody>
       <tr v-for="product in props.products" :key="product.id">
         <td class="py-2">
-          <img :src="product.imageURL" class="border rounded-lg" width="150" height="150" />
+          <img
+            :src="
+              product?.imageURL
+                ? product.imageURL
+                : product?.imageByte
+                ? `data:image/jpeg;base64,` + product?.imageByte
+                : DefaultImage
+            "
+            class="border rounded-lg"
+            width="150"
+            height="150"
+          />
         </td>
         <td>{{ product.name }}</td>
         <td>${{ product.price }}</td>

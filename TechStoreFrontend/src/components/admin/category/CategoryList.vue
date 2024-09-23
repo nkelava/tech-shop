@@ -30,7 +30,7 @@ const deleteCategory = async (categoryId) => {
   await axiosPrivate
     .delete(`/categories/${categoryId}`)
     .then((resp) => {
-      if (resp.status === 200) {
+      if (resp?.status === 200) {
         toast.success(ITEM_DELETE_SUCCESS);
       }
     })

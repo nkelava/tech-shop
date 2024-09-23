@@ -13,7 +13,7 @@ namespace TechStore.Application.Specifications.WishlistSpecification
         }
 
         public WishlistWithProductsSpecification(string userId) 
-            : base(w => w.ApplicationUser != null && w.ApplicationUser.Id.Equals(userId))
+            : base(w => w.ApplicationUserId.Equals(userId))
         {
             AddInclude(w => w.Products);
         }

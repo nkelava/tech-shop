@@ -25,4 +25,9 @@
     <ProjectReference Include="..\TechStore.Infrastructure\TechStore.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\subcategories\" />
+    <Folder Include="wwwroot\products\" />
+  </ItemGroup>
+
 </Project>

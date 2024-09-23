@@ -13,17 +13,19 @@ namespace TechStore.API.Controllers
     {
         private readonly IProductService _productService;
         private readonly ILogger<ProductController> _logger;
+        private static IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IProductService productService, ILogger<ProductController> logger)
+        public ProductController(IProductService productService, ILogger<ProductController> logger, IWebHostEnvironment webHostEnvironment)
         {
             _productService = productService;
             _logger = logger;
+            _webHostEnvironment = webHostEnvironment;
         }
 
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody]ProductCreateModel product)
+        public async Task<IActionResult> Create([FromForm]ProductCreateModel product)
         {
             if (!ModelState.IsValid)
             {
@@ -31,7 +33,7 @@ namespace TechStore.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingProduct = await _productService.GetBySlugAsync(product.Slug);
+             var existingProduct = await _productService.GetBySlugAsync(product.Slug);
 
             if (existingProduct != null)
             {
@@ -41,6 +43,30 @@ namespace TechStore.API.Controllers
 
             try
             {
+                var productImage = product?.Image;
+                product.Image = null;
+
+                if (productImage != null && productImage.Length > 0)
+                {
+                    string path = _webHostEnvironment.WebRootPath + "\\products\\";
+
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+
+                    string fileName = product.Slug + ".png";
+
+                    if (System.IO.File.Exists(path + fileName))
+                    {
+                        System.IO.File.Delete(path + fileName);
+                    }
+
+                    using (FileStream fileStream = System.IO.File.Create(path + fileName))
+                    {
+                        productImage.CopyTo(fileStream);
+                        fileStream.Flush();
+                    }
+                }
+
                 await _productService.CreateAsync(product);
 
                 _logger.LogInformation("Product created successfully with slug {Slug}.", product.Slug);
@@ -66,6 +92,14 @@ namespace TechStore.API.Controllers
             try
             {
                 var updatedProduct = await _productService.UpdateAsync(id, product);
+                string fileName = updatedProduct?.Slug + ".png";
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, "products", fileName);
+
+                if (System.IO.File.Exists(path))
+                {
+                    updatedProduct.ImageByte = System.IO.File.ReadAllBytes(path);
+                }
+
 
                 if (updatedProduct == null)
                 {
@@ -126,6 +160,13 @@ namespace TechStore.API.Controllers
             try
             {
                 var product = await _productService.GetByIdAsync(id);
+                string fileName = product?.Slug + ".png";
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, "products", fileName);
+
+                if (System.IO.File.Exists(path))
+                {
+                    product.ImageByte = System.IO.File.ReadAllBytes(path);
+                }
 
                 if (product == null)
                 {
@@ -155,6 +196,13 @@ namespace TechStore.API.Controllers
             try
             {
                 var product = await _productService.GetBySlugAsync(slug);
+                string fileName = slug + ".png";
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, "products", fileName);
+
+                if (System.IO.File.Exists(path))
+                {
+                    product.ImageByte = System.IO.File.ReadAllBytes(path);
+                }
 
                 if (product == null)
                 {
@@ -179,6 +227,23 @@ namespace TechStore.API.Controllers
             {
                 var hotOffers = await _productService.GetHotOffersAsync();
 
+                foreach (var product in hotOffers)
+                {
+                    if (product?.ImageURL != null)
+                        continue;
+
+                    string fileName = "";
+                    string path = "";
+
+                    fileName = product?.Slug + ".png";
+                    path = Path.Combine(_webHostEnvironment.WebRootPath, "products", fileName);
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        product.ImageByte = System.IO.File.ReadAllBytes(path);
+                    }
+                }
+
                 _logger.LogInformation("Retrieved hot offer products successfully.");
                 return Ok(hotOffers);
             }
@@ -195,6 +260,24 @@ namespace TechStore.API.Controllers
             try
             {
                 var newProducts = await _productService.GetNewProductsAsync();
+                
+                foreach (var product in newProducts)
+                {
+                    if (product?.ImageURL != null)
+                        continue;
+
+                    string fileName = "";
+                    string path = "";
+
+                    fileName = product?.Slug + ".png";
+                    path = Path.Combine(_webHostEnvironment.WebRootPath, "products", fileName);
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        product.ImageByte = System.IO.File.ReadAllBytes(path);
+                    }
+                }
+
 
                 _logger.LogInformation("Retrieved new products successfully.");
                 return Ok(newProducts);
@@ -212,6 +295,23 @@ namespace TechStore.API.Controllers
             try
             {
                 var bestSellers = await _productService.GetTopSellingProductsAsync();
+
+                foreach (var product in bestSellers)
+                {
+                    if (product?.ImageURL != null)
+                        continue;
+
+                    string fileName = "";
+                    string path = "";
+
+                    fileName = product?.Slug + ".png";
+                    path = Path.Combine(_webHostEnvironment.WebRootPath, "products", fileName);
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        product.ImageByte = System.IO.File.ReadAllBytes(path);
+                    }
+                }
 
                 _logger.LogInformation("Retrieved top selling products successfully.");
                 return Ok(bestSellers);
@@ -231,6 +331,23 @@ namespace TechStore.API.Controllers
             {
                 var topRated = await _productService.GetTopRatedProductsAsync();
 
+                foreach (var product in topRated)
+                {
+                    if (product?.ImageURL != null)
+                        continue;
+
+                    string fileName = "";
+                    string path = "";
+
+                    fileName = product?.Slug + ".png";
+                    path = Path.Combine(_webHostEnvironment.WebRootPath, "products", fileName);
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        product.ImageByte = System.IO.File.ReadAllBytes(path);
+                    }
+                }
+
                 _logger.LogInformation("Retrieved top rated products successfully.");
                 return Ok(topRated);
             }
@@ -247,6 +364,23 @@ namespace TechStore.API.Controllers
             try
             {
                 var products = await _productService.GetProductsBySubcategoryIdAsync(id);
+
+                foreach (var product in products)
+                {
+                    if (product?.ImageURL != null)
+                        continue;
+
+                    string fileName = "";
+                    string path = "";
+
+                    fileName = product?.Slug + ".png";
+                    path = Path.Combine(_webHostEnvironment.WebRootPath, "products", fileName);
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        product.ImageByte = System.IO.File.ReadAllBytes(path);
+                    }
+                }
 
                 if (products == null)
                 {
@@ -271,6 +405,23 @@ namespace TechStore.API.Controllers
             {
                 var products = await _productService.GetProductsBySubcategorySlugAsync(slug);
 
+                foreach (var product in products)
+                {
+                    if (product?.ImageURL != null)
+                        continue;
+
+                    string fileName = "";
+                    string path = "";
+
+                    fileName = product?.Slug + ".png";
+                    path = Path.Combine(_webHostEnvironment.WebRootPath, "products", fileName);
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        product.ImageByte = System.IO.File.ReadAllBytes(path);
+                    }
+                }
+
                 if (products == null)
                 {
                     _logger.LogWarning("Subcategory with slug {Slug} not found.", slug);
@@ -294,6 +445,23 @@ namespace TechStore.API.Controllers
             {
                 var products = await _productService.SearchProductsAsync(search);
 
+                foreach (var product in products)
+                {
+                    if (product?.ImageURL != null)
+                        continue;
+
+                    string fileName = "";
+                    string path = "";
+
+                    fileName = product?.Slug + ".png";
+                    path = Path.Combine(_webHostEnvironment.WebRootPath, "products", fileName);
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        product.ImageByte = System.IO.File.ReadAllBytes(path);
+                    }
+                }
+
                 _logger.LogInformation("Retrieved products for search query '{search}' successfully.", search);
                 return Ok(products);
             }
@@ -310,6 +478,23 @@ namespace TechStore.API.Controllers
             try
             {
                 var products = await _productService.GetProductsByPriceAsync(priceFrom, priceTo);
+
+                foreach (var product in products)
+                {
+                    if (product?.ImageURL != null)
+                        continue;
+
+                    string fileName = "";
+                    string path = "";
+
+                    fileName = product?.Slug + ".png";
+                    path = Path.Combine(_webHostEnvironment.WebRootPath, "products", fileName);
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        product.ImageByte = System.IO.File.ReadAllBytes(path);
+                    }
+                }
 
                 _logger.LogInformation("Retrieved products within the price range {priceFrom} - {priceTo} successfully.", priceFrom, priceTo);
                 return Ok(products);
@@ -328,6 +513,23 @@ namespace TechStore.API.Controllers
             {
                 var products = await _productService.GetProductsByRatingAsync(rating);
 
+                foreach (var product in products)
+                {
+                    if (product?.ImageURL != null)
+                        continue;
+
+                    string fileName = "";
+                    string path = "";
+
+                    fileName = product?.Slug + ".png";
+                    path = Path.Combine(_webHostEnvironment.WebRootPath, "products", fileName);
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        product.ImageByte = System.IO.File.ReadAllBytes(path);
+                    }
+                }
+
                 _logger.LogInformation("Retrieved products with rating {rating} successfully.", rating);
                 return Ok(products);
             }
@@ -344,6 +546,23 @@ namespace TechStore.API.Controllers
             try
             {
                 var products = await _productService.GetAllProductsAsync();
+
+                foreach (var product in products)
+                {
+                    if (product?.ImageURL != null)
+                        continue;
+
+                    string fileName = "";
+                    string path = "";
+
+                    fileName = product?.Slug + ".png";
+                    path = Path.Combine(_webHostEnvironment.WebRootPath, "products", fileName);
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        product.ImageByte = System.IO.File.ReadAllBytes(path);
+                    }
+                }
 
                 _logger.LogInformation("Retrieved products successfully.");
                 return Ok(products);

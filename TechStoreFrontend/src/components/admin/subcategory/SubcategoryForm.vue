@@ -2,7 +2,7 @@
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { useToast } from "vue-toastification";
-import { axiosPrivate } from "@/api/axios";
+import { axiosPrivate, axiosPrivateFile } from "@/api/axios";
 import BaseInput from "@/components/common/BaseInput.vue";
 import FormContainer from "@/components/common/FormContainer.vue";
 import { initialSubcategoryState, subcategoryRules } from "@/vuelidate/subcategory";
@@ -28,7 +28,7 @@ onMounted(async () => {
   await axiosPrivate
     .get("/categories")
     .then((resp) => {
-      if (resp.status !== 200) return;
+      if (resp?.status !== 200) return;
       categories.value = resp.data;
     })
     .catch((error) => {
@@ -70,25 +70,28 @@ async function loadSubcategory(id) {
 const handleSave = async () => {
   if (!(await v$.value.$validate())) return;
 
+  const formData = new FormData();
   loading.value = true;
 
-  const payload = {
-    name: subcategoryState?.name,
-    slug: subcategoryState?.slug,
-    imageURL: subcategoryState?.image,
-    categoryId: subcategoryState?.category,
-  };
+  // Object.entries(subcategoryState).forEach(([key, value]) => {
+  //   formData.append(key, value);
+  // });
+
+  formData.append("name", subcategoryState?.name);
+  formData.append("slug", subcategoryState?.slug);
+  formData.append("categoryId", subcategoryState?.category);
+  formData.append("image", subcategoryState?.image[0]);
 
   try {
     let resp;
 
     if (props?.id) {
-      resp = await axiosPrivate.put(`/subcategories/${props.id}`, payload);
+      resp = await axiosPrivateFile.put(`/subcategories/${props.id}`, formData);
     } else {
-      resp = await axiosPrivate.post("/subcategories", payload);
+      resp = await axiosPrivateFile.post("/subcategories", formData);
     }
 
-    if (resp.status == 200) {
+    if (resp?.status == 200) {
       resetForm();
       toast.success(props?.id ? ITEM_UPDATE_SUCCESS : ITEM_CREATE_SUCCESS);
       emit("clearSelectedId");
@@ -146,7 +149,16 @@ function resetForm() {
         density="compact"
         hide-details="auto"
       /> -->
-      <v-file-input label="Image" variant="outlined" density="compact" hide-details="auto" />
+      <v-file-input
+        v-model="subcategoryState.image"
+        name="image"
+        label="Image upload"
+        accept="image/*"
+        variant="outlined"
+        density="compact"
+        hide-details="auto"
+        show-size
+      />
       <v-select
         v-model="subcategoryState.category"
         class="mt-5 test"

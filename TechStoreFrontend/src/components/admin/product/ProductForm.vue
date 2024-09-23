@@ -2,7 +2,7 @@
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { useToast } from "vue-toastification";
-import { axiosPrivate } from "@/api/axios";
+import { axiosPrivate, axiosPrivateFile } from "@/api/axios";
 import BaseInput from "@/components/common/BaseInput.vue";
 import FormContainer from "@/components/common/FormContainer.vue";
 import { initialProductState, productRules } from "@/vuelidate/product";
@@ -80,8 +80,6 @@ async function loadProduct(id) {
       productState.imageURL = data?.imageURL;
       productState.subcategory = data?.subcategory?.id;
     }
-
-    console.log("product: ", productState);
   } catch (error) {
     toast.error("Failed to load product.");
     console.error(error);
@@ -91,31 +89,48 @@ async function loadProduct(id) {
 const handleSave = async () => {
   if (!(await v$.value.$validate())) return;
 
+  const formData = new FormData();
   loading.value = true;
 
-  const payload = {
-    name: productState?.name,
-    slug: productState?.slug,
-    imageURL: productState?.imageURL,
-    summary: productState?.summary,
-    description: productState?.description,
-    onSale: productState?.onSale,
-    price: productState?.price,
-    unitsInStock: productState?.unitsInStock,
-    promoCodeId: productState?.promoCode,
-    subcategoryId: productState?.subcategory,
-  };
+  formData.append("name", productState?.name);
+  formData.append("slug", productState?.slug);
+  formData.append("image", productState?.image[0]);
+  formData.append("summary", productState?.summary);
+  formData.append("description", productState?.description);
+  formData.append("onSale", productState?.onSale);
+  formData.append("discount", productState?.discount);
+  formData.append("price", productState?.price);
+  formData.append("unitsInStock", productState?.unitsInStock);
+
+  if (productState?.promoCode != null) {
+    formData.append("promoCodeId", productState?.promoCode);
+  }
+
+  formData.append("subcategoryId", productState?.subcategory);
+
+  // const payload = {
+  //   name: productState?.name,
+  //   slug: productState?.slug,
+  //   imageURL: productState?.imageURL,
+  //   summary: productState?.summary,
+  //   description: productState?.description,
+  //   onSale: productState?.onSale,
+  //   price: productState?.price,
+  //   unitsInStock: productState?.unitsInStock,
+  //   promoCodeId: productState?.promoCode,
+  //   subcategoryId: productState?.subcategory,
+  // };
 
   try {
     let resp;
 
     if (props?.id) {
-      resp = await axiosPrivate.put(`/products/${props.id}`, payload);
+      resp = await axiosPrivateFile.put(`/products/${props.id}`, formData);
     } else {
-      resp = await axiosPrivate.post("/products", payload);
+      resp = await axiosPrivateFile.post("/products", formData);
     }
 
-    if (resp.status == 200) {
+    if (resp?.status == 200) {
       resetForm();
       toast.success(props?.id ? ITEM_UPDATE_SUCCESS : ITEM_CREATE_SUCCESS);
       emit("clearSelectedId");
@@ -245,7 +260,16 @@ function resetForm() {
         density="compact"
         hide-details="auto"
       /> -->
-      <v-file-input label="Image" variant="outlined" density="compact" hide-details="auto" />
+      <v-file-input
+        v-model="productState.image"
+        name="image"
+        label="Image upload"
+        accept="image/*"
+        variant="outlined"
+        density="compact"
+        hide-details="auto"
+        show-size
+      />
       <v-select
         v-model="productState.subcategory"
         class="mt-5"

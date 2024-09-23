@@ -12,7 +12,7 @@ onMounted(() => reloadPromoCodes());
 async function reloadPromoCodes() {
   const resp = await axiosPrivate.get("/promo-codes").catch((error) => console.log(error));
 
-  if (resp.status !== 200) return;
+  if (resp?.status !== 200) return;
 
   promoCodes.value = resp.data;
 }

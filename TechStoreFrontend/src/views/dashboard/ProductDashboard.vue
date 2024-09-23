@@ -12,7 +12,7 @@ onMounted(() => reloadProducts());
 async function reloadProducts() {
   const resp = await axiosPrivate.get("/products").catch((error) => console.log(error));
 
-  if (resp.status !== 200) return;
+  if (resp?.status !== 200) return;
 
   products.value = resp.data;
 }

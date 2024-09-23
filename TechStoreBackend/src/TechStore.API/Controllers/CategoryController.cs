@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TechStore.Application.Interfaces.Services;
@@ -14,11 +15,13 @@ namespace TechStore.API.Controllers
     {
         private readonly ICategoryService _categoryService;
         private readonly ILogger<CategoryController> _logger;
+        private static IWebHostEnvironment _webHostEnvironment;
 
-        public CategoryController(ICategoryService categoryService, ILogger<CategoryController> logger)
+        public CategoryController(ICategoryService categoryService, ILogger<CategoryController> logger, IWebHostEnvironment webHostEnvironment)
         {
             _categoryService = categoryService;
             _logger = logger;
+            _webHostEnvironment = webHostEnvironment;
         }
 
 
@@ -186,6 +189,22 @@ namespace TechStore.API.Controllers
                 {
                     _logger.LogWarning("Category with slug {Slug} not found.", slug);
                     return NotFound("Category not found.");
+                }
+
+                foreach (var subcategory in category.Subcategories) {
+                    if (subcategory?.ImageURL != null)
+                        continue;
+
+                    string fileName = "";
+                    string path = "";
+
+                    fileName = subcategory?.Slug + ".png";
+                    path = Path.Combine(_webHostEnvironment.WebRootPath, "subcategories", fileName);
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        subcategory.ImageByte = System.IO.File.ReadAllBytes(path);
+                    }
                 }
 
                 _logger.LogInformation("Category with slug {Slug} fetched successfully.", slug);

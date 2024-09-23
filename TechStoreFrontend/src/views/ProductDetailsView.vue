@@ -10,6 +10,7 @@ const route = useRoute();
 const categorySlug = ref(route.params.category);
 const subcategorySlug = ref(route.params.subcategory);
 const productSlug = ref(route.params.productSlug);
+const subcategoryDetails = ref({});
 const product = ref({});
 const breadcrumbsItems = [
   {
@@ -23,12 +24,12 @@ const breadcrumbsItems = [
     href: `/${categorySlug.value}`,
   },
   {
-    title: `${subcategorySlug.value}`,
+    title: subcategoryDetails.value.name || subcategorySlug.value,
     disabled: false,
-    href: `/${categorySlug.value}/${subcategorySlug.value}`,
+    href: `/${categorySlug.value}/${subcategorySlug?.value}`,
   },
   {
-    title: `${productSlug.value}`,
+    title: product.value.name || productSlug.value,
     disabled: true,
     href: `/${categorySlug.value}/${subcategorySlug.value}/${productSlug.value}`,
   },
@@ -46,6 +47,13 @@ const updateProduct = async () => {
 };
 
 onMounted(async () => {
+  await axiosPublic
+    .get(`/subcategories/${subcategorySlug.value}`)
+    .then((response) => (subcategoryDetails.value = response.data))
+    .catch((error) => {
+      console.error(`Failed to fetch subcategory details for ${subcategorySlug.value}:`, error);
+    });
+
   await getProduct();
 });
 </script>

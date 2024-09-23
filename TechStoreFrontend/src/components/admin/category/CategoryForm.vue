@@ -70,7 +70,7 @@ const handleSave = async () => {
       resp = await axiosPrivate.post("/categories", payload);
     }
 
-    if (resp.status == 200) {
+    if (resp?.status == 200) {
       resetForm();
       toast.success(props?.id ? ITEM_UPDATE_SUCCESS : ITEM_CREATE_SUCCESS);
       emit("clearSelectedId");

@@ -30,7 +30,7 @@ const deleteProduct = async (productId) => {
   await axiosPrivate
     .delete(`/products/${productId}`)
     .then((resp) => {
-      if (resp.status === 200) {
+      if (resp?.status === 200) {
         toast.success(ITEM_DELETE_SUCCESS);
       }
     })

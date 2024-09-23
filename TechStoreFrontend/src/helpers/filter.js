@@ -1,28 +1,38 @@
 export function filterProducts(products, price, rating, filters) {
+  console.log("filters:", filters);
   const filterAttributes = Array.from(filters.keys());
-  let checkAttributeValue = true;
-  let checkRating = true;
-  let checkPrice = true;
 
   const filteredProducts = products.filter((product) => {
-    if (filterAttributes.length) {
-      checkAttributeValue = filterAttributes.some((attrId) =>
+    let checkAttributeValue = true;
+    let checkRating = true;
+    let checkPrice = true;
+
+    // Check attributes if there are filters selected
+    if (filterAttributes.length > 0) {
+      // Check if every selected attribute matches at least one product attribute
+      checkAttributeValue = filterAttributes.every((attrId) =>
         Array.from(filters.get(attrId)).some((attrValue) =>
           product.productAttributes.some((attr) => attr.attributeValueId === attrValue)
         )
       );
     }
 
-    if (rating != 0) {
+    // Check rating
+    if (rating > 0) {
       checkRating = product.rating >= rating;
     }
 
-    checkPrice = product.price >= price.from;
-
-    if (price.to > 0) {
-      checkPrice = product.price <= price.to;
+    // Check price range
+    if (price.from > 0 || price.to > 0) {
+      if (price.from > 0) {
+        checkPrice = product.price >= price.from;
+      }
+      if (price.to > 0) {
+        checkPrice = checkPrice && product.price <= price.to;
+      }
     }
 
+    // Return the product if it passes all filters
     return checkAttributeValue && checkRating && checkPrice;
   });
 

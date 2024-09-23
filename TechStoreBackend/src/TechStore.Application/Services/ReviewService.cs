@@ -39,11 +39,19 @@ namespace TechStore.Application.Services
         public async Task<int?> DeleteAsync(int id)
         {
             var review = _repository.Review.FindById(id);
+            var product = await _repository.Product.GetByIdWithoutSubcategoryAsync(review.ProductId);
 
             if (review == null)
                 return null;
 
+            if (product == null)
+                return null;
+
             _repository.Review.Delete(review);
+            
+            product.ReviewCount--;
+            _repository.Product.Update(product);
+
             await _repository.SaveAsync();
 
             return review.Id;

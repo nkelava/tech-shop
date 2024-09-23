@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace TechStore.Application.Models.Subcategory
@@ -15,6 +17,9 @@ namespace TechStore.Application.Models.Subcategory
         [RegularExpression(@"^[a-z0-9]+(-[a-z0-9]+)*$", ErrorMessage = "Invalid slug format. Use lowercase letters, numbers and hyphens (e.g., 'this-is-a-slug-123').")]
         public string Slug { get; set; }
         public string? ImageURL { get; set; } = null;
+        [NotMapped]
+        public IFormFile? Image { get; set; } = null;
+        public byte[]? ImageByte { get; set; }
 
         [Required(ErrorMessage = "Please specify a category.")]
         public int CategoryId { get; set; }

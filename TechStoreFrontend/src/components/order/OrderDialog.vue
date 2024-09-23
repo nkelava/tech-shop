@@ -49,7 +49,7 @@ const handleSubmit = async () => {
     await axiosPrivate
       .post("/orders", order)
       .then(async (resp) => {
-        if (resp.status !== 200) {
+        if (resp?.status !== 200) {
           toast.error("Uh-oh! There was an issue processing your order. Please try again.");
           return;
         }
@@ -63,7 +63,7 @@ const handleSubmit = async () => {
         if (cart.isUserLoggedIn) {
           const resp = await axiosPrivate.delete("/carts").catch((error) => console.log(error));
 
-          if (resp.status !== 200) {
+          if (resp?.status !== 200) {
             toast.error("Uh-oh! There was an issue while cleaning your cart. Please try again.");
             return;
           }
@@ -80,7 +80,7 @@ const handleSubmit = async () => {
     if (cart.isUserLoggedIn) {
       const resp = await axiosPrivate.delete("/carts").catch((error) => console.log(error));
 
-      if (resp.status !== 200) {
+      if (resp?.status !== 200) {
         toast.error("Uh-oh! There was an issue processing your order. Please try again.");
         return;
       }

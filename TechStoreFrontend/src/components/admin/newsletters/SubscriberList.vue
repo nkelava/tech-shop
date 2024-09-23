@@ -20,7 +20,7 @@ onMounted(() => reloadSubscribers());
 async function reloadSubscribers() {
   const resp = await axiosPrivate.get("/newsletters").catch((error) => console.log(error));
 
-  if (resp.status !== 200) return;
+  if (resp?.status !== 200) return;
 
   subscribers.value = resp.data;
 }
@@ -34,7 +34,7 @@ const unsubscribe = async (subscriberEmail) => {
   await axiosPrivate
     .delete(`/newsletters/${subscriberEmail}`)
     .then((resp) => {
-      if (resp.status === 200) {
+      if (resp?.status === 200) {
         toast.success(ITEM_UPDATE_SUCCESS);
       }
     })

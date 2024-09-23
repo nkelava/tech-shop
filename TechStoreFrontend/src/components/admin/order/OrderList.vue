@@ -24,7 +24,7 @@ onMounted(() => reloadOrders());
 async function reloadOrders() {
   const resp = await axiosPrivate.get("/orders/all").catch((error) => console.log(error));
 
-  if (resp.status !== 200) return;
+  if (resp?.status !== 200) return;
 
   orders.value = resp.data;
 }
@@ -38,7 +38,7 @@ const deleteOrder = async (orderId) => {
   await axiosPrivate
     .delete(`/orders/${orderId}`)
     .then((resp) => {
-      if (resp.status === 200) {
+      if (resp?.status === 200) {
         toast.success(ITEM_DELETE_SUCCESS);
       }
     })
@@ -53,7 +53,7 @@ const updateOrderStatus = async (orderId, orderStatusValue) => {
       orderStatusValue,
     })
     .then((resp) => {
-      if (resp.status === 200) {
+      if (resp?.status === 200) {
         toast.success(ITEM_UPDATE_SUCCESS);
       }
     })

@@ -222,11 +222,14 @@ export const useCartStore = defineStore("cart", {
       if (this.isUserLoggedIn) {
         const resp = await axiosPrivate.delete("/carts").catch((error) => console.log(error));
 
-        if (resp.status !== 200) {
+        if (resp?.status !== 200) {
           toast.error("Uh-oh! There was an issue while cleaning your cart. Please try again.");
           return;
         }
       }
+    },
+    async clearLocalStorage() {
+      this.$reset();
     },
   },
   persist: true,

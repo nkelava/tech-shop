@@ -17,7 +17,9 @@ const props = defineProps(["category", "subcategory"]);
   >
     <div class="card">
       <img
-        :src="props.subcategory.imageURL"
+        :src="
+          props?.subcategory?.imageURL || `data:image/jpeg;base64,` + props?.subcategory?.imageByte
+        "
         @error="$event.target.src = DefaultImage"
         class="card__image"
         alt="subcategory"

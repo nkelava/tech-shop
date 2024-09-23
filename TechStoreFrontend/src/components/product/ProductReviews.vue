@@ -9,6 +9,7 @@ import { formatDate } from "@/helpers/formatDate.js";
 const props = defineProps(["product", "update"]);
 const userStore = useUserStore();
 const toast = useToast();
+const user = ref(null);
 const reviews = ref([]);
 const pageState = ref({
   currentPage: 1,
@@ -24,8 +25,18 @@ const getReviews = async () => {
     .catch((error) => console.log(error));
 };
 
+const getUserInfo = async () => {
+  await axiosPrivate
+    .get(`/users`)
+    .then((response) => {
+      user.value = response.data;
+    })
+    .catch((error) => console.log(error));
+};
+
 onMounted(async () => {
   await getReviews();
+  await getUserInfo();
 });
 
 const handleReviewReport = async (reviewId) => {
@@ -37,7 +48,21 @@ const handleReviewReport = async (reviewId) => {
       toast.success("Review is reported successfully.");
     })
     .catch((error) => {
-      toast.success("Review is not reported.");
+      toast.error("Review is not reported.");
+      console.log(error);
+    });
+};
+
+const handleReviewDelete = async (reviewId) => {
+  await axiosPrivate
+    .delete(`/reviews/${reviewId}`)
+    .then(async () => {
+      toast.success("Review is deleted successfully.");
+      await getReviews();
+      props.update();
+    })
+    .catch((error) => {
+      toast.error("Review is not deleted.");
       console.log(error);
     });
 };
@@ -70,7 +95,7 @@ async function toggleDialog() {
           <span class="review__name">
             {{ review.email }}
             <v-btn
-              v-if="userStore?.isLoggedIn"
+              v-if="userStore?.isLoggedIn && user?.email !== review?.email"
               class="review__report-btn"
               title="Report"
               variant="text"
@@ -78,6 +103,16 @@ async function toggleDialog() {
               density="compact"
               @click="handleReviewReport(review?.id)"
               >Report</v-btn
+            >
+            <v-btn
+              v-if="userStore?.isLoggedIn && user?.email === review?.email"
+              class="review__report-btn"
+              title="Delete"
+              variant="text"
+              color="error"
+              density="compact"
+              @click="handleReviewDelete(review?.id)"
+              >Delete</v-btn
             >
           </span>
           <v-rating v-model="review.rate" size="small" density="compact" readonly />

@@ -38,7 +38,7 @@ onMounted(async () => {
     .get(`/subcategories/${subcategorySlug.value}`)
     .then((response) => (subcategoryDetails.value = response.data))
     .catch((error) => {
-      console.error(`Failed to fetch subcategory details for ${slug}:`, error);
+      console.error(`Failed to fetch subcategory details for ${subcategorySlug.value}:`, error);
     });
 
   await axiosPublic
@@ -49,7 +49,7 @@ onMounted(async () => {
       attributeValuesMap.value = parseProductAttributes(products.value);
     })
     .catch((error) => {
-      console.error(`Failed to fetch products for subcategory ${slug}:`, error);
+      console.error(`Failed to fetch products for subcategory ${subcategorySlug.value}:`, error);
     });
 });
 

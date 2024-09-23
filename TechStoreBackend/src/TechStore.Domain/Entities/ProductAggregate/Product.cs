@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 using TechStore.Domain.Entities.Base;
 using TechStore.Domain.Entities.CartAggregate;
 using TechStore.Domain.Entities.OrderAggregate;
@@ -14,6 +16,9 @@ namespace TechStore.Domain.Entities.ProductAggregate
         public string Name { get; set; }
         public string Slug { get; set; }
         public string? ImageURL { get; set; } = null;
+        [NotMapped]
+        public IFormFile? Image { get; set; } = null;
+        public byte[]? ImageByte { get; set; }
         public string Summary { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; } = 0;

@@ -12,7 +12,7 @@ onMounted(() => reloadCategories());
 async function reloadCategories() {
   const resp = await axiosPrivate.get("/categories").catch((error) => console.log(error));
 
-  if (resp.status !== 200) return;
+  if (resp?.status !== 200) return;
 
   categories.value = resp.data;
 }

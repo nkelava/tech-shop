@@ -105,6 +105,8 @@ function resetForm() {
 
   refetchProducts();
 }
+
+console.log("product spec: ", products);
 </script>
 
 <template>

@@ -12,7 +12,7 @@ onMounted(() => reloadAttributeValues());
 async function reloadAttributeValues() {
   const resp = await axiosPrivate.get("/attribute-values").catch((error) => console.log(error));
 
-  if (resp.status !== 200) return;
+  if (resp?.status !== 200) return;
 
   attributeValues.value = resp.data;
 }

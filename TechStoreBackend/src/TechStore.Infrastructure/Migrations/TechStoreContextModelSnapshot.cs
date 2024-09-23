@@ -376,6 +376,9 @@ namespace TechStore.Infrastructure.Migrations
                     b.Property<int>("Discount")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("ImageByte")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("ImageURL")
                         .HasColumnType("nvarchar(max)");
 
@@ -613,6 +616,9 @@ namespace TechStore.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("ImageByte")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("ImageURL")
                         .HasColumnType("nvarchar(max)");

@@ -1,17 +1,10 @@
 <script setup>
 import { ref, toRefs } from "vue";
-import { Carousel, Slide } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
-import Helios from "@/assets/images/test/products/helios300.png";
-import HeliosL from "@/assets/images/test/products/helios300-lside.png";
-import HeliosR from "@/assets/images/test/products/helios300-rside.png";
-import HeliosB from "@/assets/images/test/products/helios300-back.png";
-import HeliosA from "@/assets/images/test/products/helios300-both.png";
+import DefaultImage from "@/assets/images/test/products/defaultProductImage.png";
 
 const props = defineProps(["product"]);
 const { product } = toRefs(props);
-console.log("product>", product.value);
-const productImages = [Helios, HeliosL, HeliosR, HeliosB, HeliosA];
 const currentSlide = ref(0);
 const slideTo = (val) => {
   currentSlide.value = val;
@@ -20,27 +13,19 @@ const slideTo = (val) => {
 
 <template>
   <section class="gallery-container">
-    <!-- <carousel id="gallery" :items-to-show="1" :wrap-around="true" v-model="currentSlide"> -->
-    <!-- <slide v-for="(image, i) in productImages" :key="i"> -->
     <div class="carousel__item">
-      <img :src="product.imageURL" class="gallery__img" alt="default product image" />
+      <img
+        :src="
+          product?.imageURL
+            ? product.imageURL
+            : product?.imageByte
+            ? `data:image/jpeg;base64,` + product?.imageByte
+            : DefaultImage
+        "
+        class="gallery__img"
+        alt="default product image"
+      />
     </div>
-    <!-- </slide> -->
-    <!-- </carousel> -->
-
-    <!-- <carousel
-      id="thumbnails"
-      :items-to-show="3.5"
-      :wrap-around="true"
-      v-model="currentSlide"
-      ref="carousel"
-    >
-      <slide class="carousel__slide" v-for="(imageUrl, i) in productImages" :key="i">
-        <div class="carousel__item" @click="slideTo(i)">
-          <img :src="imageUrl" class="tumbnails__img" alt="default product image" />
-        </div>
-      </slide>
-    </carousel> -->
   </section>
 </template>
 

@@ -36,7 +36,7 @@ namespace TechStore.API.Controllers
         {
             var currentUserEmail = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
 
-            if (string.IsNullOrWhiteSpace(currentUserEmail))
+            if (currentUserEmail == null)
             {
                 _logger.LogWarning("Unauthorized access attempt.");
                 return Unauthorized("User is not authorized.");

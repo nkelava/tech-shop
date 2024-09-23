@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TechStore.Application.Interfaces.Services;
@@ -14,17 +15,19 @@ namespace TechStore.API.Controllers
     {
         private readonly ISubcategoryService _subcategoryService;
         private readonly ILogger<SubcategoryController> _logger;
+        private static IWebHostEnvironment _webHostEnvironment;
 
 
-        public SubcategoryController(ISubcategoryService subcategoryService, ILogger<SubcategoryController> logger)
+        public SubcategoryController(ISubcategoryService subcategoryService, ILogger<SubcategoryController> logger, IWebHostEnvironment webHostEnvironment)
         {
             _subcategoryService = subcategoryService;
             _logger = logger;
+            _webHostEnvironment = webHostEnvironment;
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] SubcategoryCreateModel subcategory)
+        public async Task<IActionResult> Create([FromForm] SubcategoryCreateModel subcategory)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -36,6 +39,31 @@ namespace TechStore.API.Controllers
 
             try
             {
+                var subcategoryImage = subcategory?.Image;
+                subcategory.Image = null;
+
+                if (subcategoryImage != null && subcategoryImage.Length > 0)
+                {
+                    string path = _webHostEnvironment.WebRootPath + "\\subcategories\\";
+
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+
+                    string fileName = subcategory.Slug + ".png";
+
+                    if (System.IO.File.Exists(path + fileName))
+                    {
+                        System.IO.File.Delete(path + fileName);
+                    }
+
+                    using (FileStream fileStream = System.IO.File.Create(path + fileName))
+                    {
+                        subcategoryImage.CopyTo(fileStream);
+                        fileStream.Flush();
+                    }
+
+                }
+
                 await _subcategoryService.CreateAsync(subcategory);
 
                 _logger.LogInformation("Sucategory created with name {Name}% and slug {Slug}.", subcategory.Name, subcategory.Slug);
@@ -63,6 +91,15 @@ namespace TechStore.API.Controllers
             try
             {
                 var updatedSubcategory = await _subcategoryService.UpdateAsync(id, subcategory);
+
+                string fileName = updatedSubcategory?.Slug + ".png";
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, "subcategories", fileName);
+
+                if (System.IO.File.Exists(path))
+                {
+                    updatedSubcategory.ImageByte = System.IO.File.ReadAllBytes(path);
+                }
+
 
                 if (updatedSubcategory == null)
                 {
@@ -124,6 +161,13 @@ namespace TechStore.API.Controllers
             try
             {
                 var subcategory = await _subcategoryService.GetByIdAsync(id);
+                string fileName = subcategory?.Slug + ".png";
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, "subcategories", fileName);
+
+                if (System.IO.File.Exists(path))
+                {
+                    subcategory.ImageByte = System.IO.File.ReadAllBytes(path);
+                }
 
                 if (subcategory == null)
                 {
@@ -154,6 +198,14 @@ namespace TechStore.API.Controllers
             try
             {
                 var subcategory = await _subcategoryService.GetBySlugAsync(slug);
+                string fileName = subcategory?.Slug + ".png";
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, "subcategories", fileName);
+
+                if (System.IO.File.Exists(path))
+                {
+                    subcategory.ImageByte = System.IO.File.ReadAllBytes(path);
+                }
+
 
                 if (subcategory == null)
                 {
@@ -176,10 +228,22 @@ namespace TechStore.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             _logger.LogInformation("Fetching all subcategories.");
-
             try
             {
                 var subcategories = await _subcategoryService.GetAllAsync();
+                string fileName = "";
+                string path = "";
+
+                foreach (var subcategory in subcategories)
+                {
+                    fileName = subcategory?.Slug + ".png";
+                    path = Path.Combine(_webHostEnvironment.WebRootPath, "subcategories", fileName);
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        subcategory.ImageByte = System.IO.File.ReadAllBytes(path);
+                    }
+                }
 
                 _logger.LogInformation("Successfully fetched all subcategories.");
                 return Ok(subcategories);

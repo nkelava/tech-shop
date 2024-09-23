@@ -23,7 +23,7 @@ onMounted(() => reloadUsers());
 async function reloadUsers() {
   const resp = await axiosPrivate.get("/users/all").catch((error) => console.log(error));
 
-  if (resp.status !== 200) return;
+  if (resp?.status !== 200) return;
   users.value = resp.data;
 }
 
@@ -47,7 +47,7 @@ const deleteUser = async (email) => {
   await axiosPrivate
     .delete(`/users/${email}`)
     .then((resp) => {
-      if (resp.status === 200) {
+      if (resp?.status === 200) {
         toast.success(ITEM_DELETE_SUCCESS);
       }
     })
@@ -59,7 +59,7 @@ const promoteToAdmin = async (email) => {
   await axiosPrivate
     .post(`/users/promote/${email}`)
     .then((resp) => {
-      if (resp.status === 200) {
+      if (resp?.status === 200) {
         toast.success(ITEM_UPDATE_SUCCESS);
       }
     })
@@ -71,7 +71,7 @@ const demoteToUser = async (email) => {
   await axiosPrivate
     .post(`/users/demote/${email}`)
     .then((resp) => {
-      if (resp.status === 200) {
+      if (resp?.status === 200) {
         toast.success(ITEM_UPDATE_SUCCESS);
       }
     })
